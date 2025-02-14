@@ -50,6 +50,8 @@ class Admin extends CI_Controller
                 
         $page_data['breadcrumb'] = $breadcrumb;
 
+        // hola 2
+
 		$page_data['page_name']  = 'student_add';
         $page_data['page_icon'] = 'entypo-graduation-cap';
 		$page_data['page_title'] = ucfirst(get_phrase('student_add'));
