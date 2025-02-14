@@ -1,0 +1,319 @@
+:root {
+    --color-primary: #265044;
+    --color-secondary: #A5B299;
+    --color-terciary: #7CE8A4;
+    --color-forty: #B0DFCC;
+    --color-success: #1B9C85;
+    --color-warning: #F7D060;
+    --color-danger: #981b1b;
+    --color-white: #fff;
+    --color-black: #000;
+    --color-info: #7d8da1;
+    --color-background: #ebebeb;
+}
+
+.btn {
+    cursor: pointer !important;
+}
+
+table.dataTable.no-footer {
+    border-bottom: 0px solid #000 !important;
+}
+
+    .highlight {
+        background-color: #e0f7e0 !important; /* Verde muy claro */
+    }
+/* 
+    .label-status {
+        border-radius: 10px !important;
+        color: #000 !important;
+    } .label-success {
+        background-color: #8FFFC6 !important; 
+    } .label-danger{
+        background-color: #FFC6C6 !important;
+    } */
+
+
+    /* Estilo para los botones con efectos hover */
+    .btn-table {
+        transition: background-color 0.3s ease !important;
+    } 
+
+    .buttons-html5 {
+        /* border: 1px solid #AFAFAF !important; */
+        border: 1px solid #9A9A9A !important;
+        border-radius: 10px !important;
+        margin: 5px 10px 0px 0px !important;
+    } 
+    
+
+.btn-info-hover:hover {
+    background-color: #17a2b8 !important; /* Bootstrap info color */
+    border-color: #17a2b8 !important;
+    color: white !important;
+}
+
+.btn-orange-hover:hover {
+    background-color: #fd7e14 !important; /* Custom orange color */
+    border-color: #fd7e14 !important;
+    color: white !important;
+}
+
+.btn-yellow-hover:hover {
+    background-color: #d9db12 !important; /* Custom orange color */
+    border-color: #fdff20 !important;
+    color: white !important;
+}
+
+.btn-danger-hover:hover {
+    background-color: #dc3545 !important; /* Bootstrap danger color */
+    border-color: #dc3545 !important;
+    color: white !important;
+}
+
+.btn-warning-hover:hover {
+    background-color: #f9ce07 !important; /* Bootstrap danger color */
+    border-color: #f9ce07 !important;
+    color: white !important;
+}
+
+.btn-green-hover:hover {
+    background-color: #00a651 !important; 
+    border-color: #00a651 !important;
+    color: white !important;
+}
+
+.btn-purple-hover:hover {
+    background-color: #ae00cc !important; 
+    border-color: #ae00cc !important;
+    color: white !important;
+}
+
+
+.btn-info {
+    font-weight: bold !important;
+}
+
+
+.btn {
+    border-radius: 18px !important;
+    transition: background-color 0.3s ease !important;
+}
+
+body .badge.badge-primary, body .label-primary {
+    margin: 0px 0px 5px 5px !important;
+}
+
+.label-tag + .label-tag {
+    margin-left: 3px !important;
+}
+
+.subject-span {
+    margin-left: 10px !important;
+    color: var(--color-primary);
+    font-weight: 500 !important;
+}
+
+.mail-env .mail-body .mail-table tbody tr td.col-options a.btn {
+    color: #000 !important;
+} .mail-env .mail-body .mail-table tbody tr td.col-options a.btn:hover {
+    color: #fff !important;
+}
+/* .badge {
+    background-color: #ebebeb;
+    color: #373e4a;
+    font-weight: 600 !important;
+} */
+.badge-tag.badge-red {
+    background-color: #cc2424; 
+    color: #fff;
+}
+.badge-tag.badge-gray {
+    background-color: #1f242c !important; 
+    color: #fff !important;
+}
+.badge-tag.badge-dark-red {
+    background-color: #ee4749;
+    color: #fff;
+}
+.badge-tag.badge-green {
+    background-color: #00a651;
+    color: #fff;
+}
+.badge-tag.badge-blue {
+    background-color: #21a9e1; 
+    color: #fff;
+}
+.badge-tag.badge-yellow {
+    background-color: #fad839; 
+    color: #fff;
+}
+.badge-tag.badge-purple {
+    background-color: #9b59b6;
+    color: #fff;
+}
+.badge-tag.badge-orange {
+    background-color: #e67e22;
+    color: #fff;
+}
+.badge-tag.badge-teal {
+    background-color: #1abc9c;
+    color: #fff;
+}
+.badge-tag.badge-brown {
+    background-color: #8d6e63;
+    color: #fff;
+}
+
+.label-tag {
+    border-radius: 10px;
+}
+.label-tag.label-red {
+    background-color: #cc2424; 
+    color: #fff;
+}
+.label-tag.label-gray {
+    background-color: #303641 !important; 
+    color: #fff !important;
+}
+.label-tag.label-dark-red {
+    background-color: #ee4749;
+    color: #fff;
+}
+.label-tag.label-green {
+    background-color: #00a651;
+    color: #fff;
+}
+.label-tag.label-blue {
+    background-color: #21a9e1; 
+    color: #fff;
+}
+.label-tag.label-yellow {
+    background-color: #fad839; 
+    color: #fff;
+}
+.label-tag.label-purple {
+    background-color: #9b59b6;
+    color: #fff;
+}
+.label-tag.label-orange {
+    background-color: #e67e22;
+    color: #fff;
+}
+.label-tag.label-teal {
+    background-color: #1abc9c;
+    color: #fff;
+}
+.label-tag.label-brown {
+    background-color: #8d6e63;
+    color: #fff;
+}
+
+
+
+.mail-env .mail-sidebar .mail-menu > li a .badge-roundless {
+    display: inline-block;
+    width: 42px !important;
+    height: 20px !important;
+    -webkit-background-clip: padding-box;
+    -moz-background-clip: padding;
+    background-clip: padding-box;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    border-radius: 2px;
+}
+
+.badge-mail-menu {
+    display: inline-block;
+    min-width: 10px;
+    padding: 2px 5px;
+    font-size: 11px;
+    font-weight: normal;
+    color: #fff;
+    line-height: 1;
+    vertical-align: middle;
+    white-space: nowrap;
+    text-align: center;
+    background-color: #999999;
+    border-radius: 10px;
+}
+
+.attachments a i {
+    color: var(--color-primary) !important;
+} .attachments a i {
+    border: 1px solid var(--color-primary) !important;
+    border-radius: 10px !important;
+    padding: 3px 3px !important
+} .attachments .attachments-remaining-items {
+    margin-left: 5px !important;
+    color: var(--color-primary) !important;
+    font-weight: bold !important;
+}
+
+.mail-env .mail-body .mail-table thead tr th .mail-select-options, .mail-env .mail-body .mail-table tfoot tr th .mail-select-options {
+    padding-right: 5px !important;
+}
+
+.mail-pagination .btn-group .btn-left {
+    padding-left: 7px;
+    padding-right: 7px;
+    border-top-right-radius: 0px !important;
+    border-bottom-right-radius: 0px !important;
+} .mail-pagination .btn-group .btn-right {
+    padding-left: 7px;
+    padding-right: 7px;
+    border-top-left-radius: 0px !important;
+    border-bottom-left-radius: 0px !important;
+}
+
+.mail-menu a .tag-txt {
+    padding-left: 10px !important;
+}
+
+.mail-menu a .item-menu-txt {
+    padding-left: 5px !important;
+} 
+
+.dropzone .dz-default.dz-message {
+    /* position: relative !important; */
+        top: 70% !important;
+}
+
+.mail-env .mail-sidebar {
+    background: #fff !important;
+    border-top-left-radius: 10px !important;
+    border-bottom-left-radius: 10px !important;
+}
+
+.mail-env .mail-sidebar .mail-menu > li.active a {
+    background: #ebebeb !important;
+    font-weight: bolder !important;
+}
+
+.mail-env .mail-body {
+    width: 78%;
+    float: right;
+    overflow: hidden;
+    background-color: #fff !important;
+}
+
+
+.mail-env .mail-body .mail-table thead tr th, .mail-env .mail-body .mail-table tfoot tr th {
+        background: #fff !important;
+    border: 0;
+    color: #666666;
+    vertical-align: middle;
+    border-bottom: 0;
+}
+
+.col-name a i.fa.fa-star {
+    color: #e7f100 !important;
+}
+
+.mail-env .mail-body .mail-table tbody tr.unread > td {
+    background-color: #f4fffa !important;
+  }
+
+  .mail-env .mail-body .mail-table tbody tr > td {
+    background-color: #fff !important;
+  }

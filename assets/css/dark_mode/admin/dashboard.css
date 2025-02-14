@@ -1,0 +1,260 @@
+:root {
+    --color-primary: #265044;
+    --color-secondary: #A5B299;
+    --color-terciary: #7CE8A4; /*93FFA5*/
+    --color-success: #1B9C85;
+    --color-warning: #F7D060;
+    --color-danger: #981b1b;
+    --color-white: #fff;
+    --color-black: #000;
+    --color-info: #7d8da1;
+    --color-background: #ebebeb;
+
+    --color-info-dark: #7d8da1;
+    --color-dark: #363949;
+    --color-dark-variant: #677483;
+}
+
+.tile-stats {
+    padding: 40px 0px 40px 0px!important;
+}
+
+.tile-stats .icon {
+    margin-bottom: 80px !important;
+}
+
+.tile-stats .icon i {
+    font-size: 110px !important;
+    margin-right: 0px !important;
+    padding: 0px 90px 0px 10px;
+}
+
+.tile-stats .num, .sub-num {
+    background-color: var(--color-primary);
+}
+
+.num {
+    padding-left: 20px !important;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    z-index: 0 !important;
+}
+
+.sub-num {
+    margin-top: -1px !important;
+    padding-left: 20px !important;
+    padding-bottom: 10px !important;
+    border-bottom-right-radius: 5px;
+    border-bottom-left-radius: 5px;
+    z-index: 0 !important;
+}
+
+.dropdown-menu .divider {
+    height: 2px !important;
+    background-color: var(--color-white) !important;
+}
+.dropdown-menu li a {
+    color: var(--color-primary) !important;
+}
+.dropdown-menu li:hover {
+    background-color: rgb(0, 0, 0, 0.15) !important;
+}
+
+.todo-list > li .neon-cb-replacement.checked .cb-wrapper + label {
+    position: relative !important;
+    display: inline !important;
+    text-decoration: line-through !important;
+    color: var(--color-secondary) !important;
+}
+
+.tile-block .tile-content .todo-list .neon-cb-replacement .cb-wrapper + label {
+    top: -3px;
+    margin-left: 8px;
+}
+
+.todo-list > li .neon-cb-replacement.checked .cb-wrapper + label:after {
+    zoom: 1;
+    filter: alpha(opacity = 80);
+    -webkit-opacity: 0.8;
+    -moz-opacity: 0.8;
+    opacity: 0 !important;
+    width: 100%;
+}
+
+.todo-list > li .neon-cb-replacement .cb-wrapper + label:after {
+    position: absolute;
+    content: '';
+    height: 2px;
+    background: var(--color-white);
+    width: 0%;
+    top: 50%;
+    left: 0;
+    margin: 0;
+    margin-top: 0px;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    -webkit-transition: all 300ms ease-in-out;
+    -moz-transition: all 300ms ease-in-out;
+    -o-transition: all 300ms ease-in-out;
+    transition: all 300ms ease-in-out;
+}
+
+/*ESTILOS ESPECIFICOS PARA ELEMENTOS*/
+/* .calendarPanel {
+    border-bottom: 2px rgba(0, 0, 0, 0.15) solid !important;
+} */
+
+.notes-container {
+    background-color: var(--color-dark) !important;
+    border-top-right-radius: 10px !important;
+    border-top-left-radius: 10px !important;
+}
+
+.row-tasks {
+    background-color: var(--color-dark) !important;
+    padding-top: 20px !important;
+    margin-left: 0px !important;
+    margin-right: 0px !important;
+    border-bottom-right-radius: 10px !important;
+    border-bottom-left-radius: 10px !important;
+}
+
+.second-tile-header {
+    position: absolute !important;
+    top: 0 !important;
+    right: 0 !important;
+    padding-right: 15px !important;
+    border-top-right-radius: 10px !important;
+}
+
+.task-dropdown-menu {
+    background-color: transparent !important;
+    border: solid var(--color-white) 2px !important;
+}
+
+.task-option-a {
+    background-color: transparent !important;
+    color: var(--color-white) !important;
+    font-weight: 600 !important;
+}
+
+.task-option-a i {
+    background-color: transparent !important;
+    color: var(--color-white) !important;
+    border-right: solid var(--color-white) 2px !important;
+}
+
+.todo-list li {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+}
+
+.task-label-a i {
+    background-color: transparent !important;
+    color: var(--color-secondary) !important;
+}
+
+.notes-env {
+    padding: 20px 20px 0px 20px !important;
+    background-color: var(--color-dark) !important;
+    margin: 15px 0px 0px 0px !important;  
+    border-top-right-radius: 10px !important;
+    border-top-left-radius: 10px !important;
+} .notes-list {
+    margin: 0px 0px !important;
+} .note-close {
+    font-size: 22px !important;
+} .write-pad textarea {
+    resize: none !important; 
+}
+
+.tile-stats.tile-white .num, .tile-stats.tile-white h3, .tile-stats.tile-white p {
+    color: var(--color-secondary) !important;
+  }
+  
+  .tile-stats.tile-white {
+    background-color: var(--color-dark) !important;
+    border: 3px solid var(--color-secondary) !important;
+  }
+
+  .panel-primary > .panel-heading {
+    color: var(--color-secondary) !important;
+    background-color: var(--color-dark) !important;
+  }
+
+  .panel-primary, .panel-heading {
+    border-color: var(--color-secondary) !important;
+  }
+
+.panel-title h2 {
+    color: var(--color-secondary) !important;
+    font-weight: bold !important;
+}
+
+.panel-table .panel-body {
+    background-color: var(--color-dark) !important;
+}
+
+.tile-stats {
+    border-radius: 10px !important;
+}
+
+/* .fc-border-separate tbody {
+    color: var(--color-secondary) !important;
+    font-weight: bold !important;
+} */
+
+.notes-env .notes-header > h2 {
+    color: var(--color-secondary) !important;
+} .notes-env {
+    border-bottom: 3px solid var(--color-secondary) !important;
+}
+
+.btn-primary {
+    background-color: var(--color-secondary) !important;
+    color: var(--color-primary) !important;
+} .btn-primary:hover {
+    background-color: var(--color-primary) !important;
+    color: var(--color-secondary) !important;
+}
+
+.student-icon {
+    background-image: url('../../../images/dark_mode/studentIcon.png') !important;
+} .parent-icon {
+    background-image: url('../../../images/dark_mode/parentIcon.png') !important;
+} .teacher-icon {
+    background-image: url('../../../images/dark_mode/teacherIcon.png') !important;
+} .teacherAide-icon {
+    background-image: url('../../../images/dark_mode/teacherAideIcon.png') !important;
+} .secretary-icon {
+    background-image: url('../../../images/dark_mode/secretaryIcon.png') !important;
+} .principal-icon {
+    background-image: url('../../../images/dark_mode/principalIcon.png') !important;
+}
+
+.tile-block .tile-header a, .tile-block .tile-header span {
+    color: var(--color-primary) !important;
+}  .tile-block i {
+    color: var(--color-secondary) !important;
+} 
+
+.tile-block .tile-header a {
+    font-weight: 600 !important;
+} .tile-block .tile-header span {
+    font-weight: 500 !important;
+}
+.todo-list {
+    color: var(--color-primary) !important;
+} .todo-list > li .neon-cb-replacement .cb-wrapper {
+    background-color: var(--color-secondary) !important;  
+} .remaining-items-task span {
+    color: var(--color-primary) !important;
+} .tile-footer a {
+    color: var(--color-primary) !important;
+}
+
+.task-dropdown-menu li a i {
+    color: var(--color-primary) !important;
+}

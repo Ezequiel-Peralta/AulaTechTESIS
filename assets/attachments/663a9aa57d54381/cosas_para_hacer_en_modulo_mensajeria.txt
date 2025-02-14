@@ -1,0 +1,83 @@
+me queda por hacer:
+
+hacer la interfaz de enviar un mensaje y su controlador actualizarlo. (un nuevo hilo thead). LISTO
+
+hacer la logica de responder un mensaje (de un hilo mensaje thead ya creado). LISTO.
+
+
+
+Poder enviar mensajes CC/BCC . lISTO
+
+
+
+pase el cc ids, cc groups, bcc ids, bcc groups a la tabla message thread. actualizar la logica de los controladores message y demas que los usen. LISTO
+
+interfaz chats archivados y poner los mensajes puestos como archivados (draft) ahi. LISTO
+
+
+
+interfaz papelera y poner los mensajes puestos como para eliminar ahi. LISTO
+
+en "por etiquetas" poner las etiquetas correspondientes y el color. LISTO
+
+hacer que el subject en vista message si es muy largo (determinar cuantos caracteres, no se cuanto puede ser), ponga el resto del mensaje con "...". LISTO
+
+hacer que en la vista de message, si hay mas de tres tags en algun mensaje del inbox. Poner solo los tres primeros y un numero +NUMERO. la diferencia total.
+ej: tengo 5 tags en un thread message. poner los tres primeros en la vista message y un +2 al lado.  LISTO
+
+que en la vista message, si el mensaje si tiene un link dentro poner al lado de la fecha, en la parte izquierda el icono "entypo-link" LISTOOO
+si tiene archivos como pdf, word, etc. ponga tambien un icono "entypo-folder"
+si tiene imagenes ponga el icono "entypo-picture"
+si tiene videos ponga el icono "entypo-video"
+si tiene audios ponga el icono "entypo-music" o "entypo-note".
+
+mas adelante si le voy a dar algun uso al icono "entypo-attach"
+
+IMPORTANTE EZEQUIEL!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! debo crear dos tablas nuevas para las notificaciones de mensajes nuevos y determinar
+que usuario vio y cual no. :). LISTO.
+
+Los mensajes NO SE ELIMINAN, quedan en la papelera por ahora. sin fecha de caducidad. LISTO
+
+hacer andar los botones de restaurar en archivado y papelera. LISTO
+
+en ver mensaje (message_read), poder archivar, borrar (enviar a papelera), al escribir un mensaje tambien poder mandarlo a borrador. LISTO
+
+poner la foto de perfil del usuario antes de ult actv. LISTO
+
+tener un boton para "refrecar/recargar" el inbox. LISTO.
+
+separar las opciones de visualizacion entre CC y BCC (preguntarle a chat gpt bien como son) LISTO
+
+hacer opcional el receiver (por ahora hacerlo asi, mas adelante le pregunto a las chicas si esta bien). LISTO
+
+filtrar en el message new, en el input de #to, que no salga mi user. LISTO
+
+creo que queda mejor la palabra Categorias que etiquetas.
+
+
+------------------------PENDIENTES-------------------------------------------------------------------------
+
+
+mejorar estilos visuales PENDIENTE
+
+
+
+agregar la opcion cuando creas un message new la opcion de enviar liks, imagenes, videos, pdf, word, excel. PENDIENTE
+
+interfaz borrador y poner los mensajes puestos como borrador ahi. PENDIENTE
+
+
+
+
+
+--------------------DUDO MUCHO QUE LO HAGA:-----------------------------------------------------------------------------------------------------------
+
+hacer la logica de responder un mensaje EN ESPECIFICO (de un hilo mensaje thead ya creado). PENDIENTE
+
+hacer que en la vista por ejemplo message funcione lo de 1-30 of 789 y lo de pasar pagina a otra. todo dependiendo cuantos tdhead messages haya y 
+que pueda ver el usuario. y tambien hacer funcionar la barra de busqueda de "search for email". PENDIENTE
+
+añadir poder enviar reacciones (emojis) a los mensajes. Como teams. PENDIENTE
+
+en buzon y enviados por mi, poder silenciar las conversaciones y tener la opcion de cuanto tiempo [en tiempo de dias] 24 horas, 7 dias, 14 dias, siempre, etc.
+(preguntarle a chat gpt cuales son las opciones correctas de tiempo) y user un icono como de sonido tachado para representar hilos de mensajes silenciados. PENDIENTE

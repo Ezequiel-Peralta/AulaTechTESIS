@@ -1,0 +1,29 @@
+.badge {
+    background-color: #ebebeb;
+    color: #373e4a;
+    font-weight: 600 !important;
+  }
+  .badge.badge-primary {
+    background-color: #303641;
+    color: #fff;
+  }
+  .badge.badge-secondary {
+    background-color: #ee4749;
+    color: #fff;
+  }
+  .badge.badge-success {
+    background-color: #00a651;
+    color: #fff;
+  }
+  .badge.badge-info {
+    background-color: #21a9e1;
+    color: #fff;
+  }
+  .badge.badge-warning {
+    background-color: #fad839;
+    color: #fff;
+  }
+  .badge.badge-danger {
+    background-color: #cc2424;
+    color: #fff;
+  }

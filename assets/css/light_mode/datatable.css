@@ -1,0 +1,435 @@
+   /* Asegúrate de que la tabla es desplazable horizontalmente */
+   .table-responsive {
+    /* overflow-x: auto; */
+}
+
+table.dataTable.no-footer {
+    border-bottom: 0px solid #000 !important;
+}
+
+/* Establece un ancho mínimo para las columnas */
+table.dataTable thead tr th,
+table.dataTable tbody tr td {
+    /* min-width: 80px !important;
+    white-space: nowrap !important; */
+}
+
+@media (max-width: 767px) {
+    /* Ajusta el estilo para dispositivos móviles */
+    table.dataTable thead tr th,
+    table.dataTable tbody tr td {
+        min-width: 100px !important; /* Ajusta el valor según sea necesario */
+    }
+}
+
+    .highlight {
+        background-color: #e0f7e0 !important; /* Verde muy claro */
+    }
+
+    .label-status {
+        border-radius: 10px !important;
+        color: #000 !important;
+    } .label-success {
+        background-color: #8FFFC6 !important; 
+    } .label-danger{
+        background-color: #FFC6C6 !important;
+    }
+
+    table > tbody > tr.highlight > td, table > tbody > tr.highlight > th {
+        background-color: #EDFFF8 !important;
+    }
+
+    /* Estilo para los botones con efectos hover */
+    .btn-table {
+        transition: background-color 0.3s ease !important;
+    } 
+
+    .buttons-html5 {
+        /* border: 1px solid #AFAFAF !important; */
+        border: 1px solid #9A9A9A !important;
+        border-radius: 10px !important;
+        margin: 5px 10px 0px 0px !important;
+    } 
+    
+    .dataTables_wrapper > div label {
+        color: #5F5F5F !important;
+    } .dataTables_wrapper .dataTables_info {
+        color: #5F5F5F !important;
+    }
+
+.btn-info-hover:hover {
+    background-color: #17a2b8 !important; /* Bootstrap info color */
+    border-color: #17a2b8 !important;
+    color: white !important;
+}
+
+.btn-orange-hover:hover {
+    background-color: #fd7e14 !important; /* Custom orange color */
+    border-color: #fd7e14 !important;
+    color: white !important;
+}
+
+.btn-danger-hover:hover {
+    background-color: #dc3545 !important; /* Bootstrap danger color */
+    border-color: #dc3545 !important;
+    color: white !important;
+}
+
+.btn-warning-hover:hover {
+    background-color: #f9ce07 !important; /* Bootstrap danger color */
+    border-color: #f9ce07 !important;
+    color: white !important;
+}
+
+.btn-green-hover:hover {
+    background-color: #00a651 !important; 
+    border-color: #00a651 !important;
+    color: white !important;
+}
+
+.form-control {
+    background-color: #ebebeb;
+}
+
+a[data-toggle="tab"] i {
+    color: black !important;
+}
+
+.active a[data-toggle="tab"] i {
+    color: #265044 !important;
+}
+
+.menuIcon {
+    color: black;
+}
+.btn-group {
+    text-align: center !important;
+    align-items: center !important;
+}
+
+.nav-tabs.bordered + .tab-content {
+    border: 5px solid white !important;
+    border-top: 0;
+    -webkit-border-radius: 0 0 3px 3px;
+    -webkit-background-clip: padding-box;
+    -moz-border-radius: 0 0 3px 3px;
+    -moz-background-clip: padding;
+    border-radius: 0 0 3px 3px;
+    background-clip: padding-box;
+    padding: 0px 0px !important;
+    border-radius: 0 0 10px 10px !important;
+    margin-bottom: 0px !important;
+}
+
+.nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus {
+    border: 5px solid white !important;
+    border-bottom-color: transparent !important;
+}
+
+.nav-tabs .active a {
+    color: #265044 !important;
+    font-weight: bolder !important;
+}
+
+.nav-tabs li a {
+    color: black !important;
+    font-weight: bold !important;
+}
+
+.dataTables_wrapper {
+    color: #484848 !important;
+    border: 0px solid #ebebeb;
+}
+
+.dataTable thead tr th {
+    color: #000 !important;
+    font-weight: bold !important;
+}
+
+.padded label {
+    color: #265044 !important;
+    font-weight: bold !important;
+}
+
+
+.btn-info {
+    font-weight: bold !important;
+}
+/* 
+.btn-group ul li a {
+    background-color: #265044 !important;
+    color: white !important;
+    border-radius: 0px !important;
+    border-bottom: 2px solid rgba(69, 74, 84, 0.4);
+}
+
+.btn-group ul li a:hover {
+    background-color: #A5B299 !important;
+    border-radius: 0px !important;
+} */
+
+.box-content {
+    padding-top: 10px !important;
+    padding-bottom: 10px !important;
+    background-color: white !important;
+}
+
+thead tr th {
+    background-color: #B0DFCC !important;
+} .row th div {
+    color: #000 !important;
+    font-weight: bold !important;
+}
+
+.dataTables_wrapper table thead tr th.sorting_asc:before,
+.dataTables_wrapper table thead tr th.sorting_desc:before {
+color: white !important;
+}
+
+.table tbody tr td {
+    background-color: #fff !important;
+}  .table tbody tr:hover td {
+    background-color: #f2f2f4 !important;
+}
+
+.nav-tabs li a:hover {
+    background-color: #B0DFCC !important;
+    border-radius: 15px !important;
+}  .nav-tabs li.active a:hover {
+    background-color: #fff !important;
+}
+
+.tile-stats .icon {
+    margin-bottom: 10px !important;
+}
+.tile-stats .icon i {
+    font-size: 110px !important;
+ 
+    margin-right: 0px !important;
+    padding: 0px 90px 0px 10px;
+}
+
+.tile-stats {
+    padding: 40px 0px 40px 0px!important;
+}
+
+.tile-stats .num, .sub-num {
+    background-color: #A5B299;
+}
+.num {
+    padding-left: 20px !important;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    z-index: 0 !important;
+}
+.sub-num {
+    margin-top: -1px !important;
+    padding-left: 20px !important;
+    padding-bottom: 10px !important;
+    border-bottom-right-radius: 5px;
+    border-bottom-left-radius: 5px;
+    z-index: 0 !important;
+}
+
+.nav-tabs {
+    background-color: white !important;
+}
+
+.nav-tabs li.active {
+    border-bottom: 2px solid #265044 !important;
+}
+
+.tab-content {
+    background-color: white !important;
+}
+
+.nav-tabs li {
+    background-color: white !important;
+} .nav-tabs > li > a, .nav-tabs > li > a:hover, .nav-tabs > li > a:focus {
+    border: 5px solid white !important;
+}
+
+table.dataTable thead th.sorting:after {
+    color: #000 !important;
+    font-weight: bold !important;
+}
+
+input[type="checkbox" i] {
+    background-color: transparent !important;
+} 
+
+.table-bordered > thead > tr > th, 
+.table-bordered > tbody > tr > th, 
+.table-bordered > tfoot > tr > th, 
+.table-bordered > thead > tr > td, 
+.table-bordered > tbody > tr > td, 
+.table-bordered > tfoot > tr > td {
+    border: 0px solid #EEEEEE !important;
+    border-top: 1px solid #EEEEEE !important;
+    border-bottom: 1px solid #EEEEEE !important;
+}  
+
+ 
+.table-bordered > tbody > tr > th, 
+.table-bordered > tfoot > tr > th, 
+.table-bordered > tfoot > tr > td {
+    border: 0px solid blue !important;
+} 
+
+.table-bordered > thead > tr > th {
+    border-right: 1px solid #fff !important;
+    border-left: 1px solid #fff !important;
+}
+
+tbody tr {
+    height: 40px !important;
+}  tbody tr td {
+    vertical-align: middle !important;
+    align-items: center !important;
+} thead tr th {
+    vertical-align: middle !important;
+    align-items: center !important;
+}
+
+.table-bordered > tfoot > tr > th, .table-bordered > tfoot > tr > td {
+    background-color: transparent !important;
+}
+
+.tab-pane .mt-2 {
+    padding: 0px 8px !important;
+}
+
+.btn-table {
+    border-radius: 50% !important;
+    border: 0PX solid #A5B299 !important;
+    padding: 6px 8px;
+    background-color: transparent !important;
+}
+
+table > tbody > tr.highlight:hover td, table > tbody > tr.highlight:hover td {
+    background-color: #EDFFF8 !important;
+} 
+
+tfoot tr th input {
+    background-color: #fff !important;
+    border-radius: 10px !important;
+    border: 1px solid #9A9A9A !important;
+}   tfoot tr th input:focus {
+    border: 1px solid #265044 !important;
+}
+
+    .table.dataTable {
+        border-bottom-left-radius: 10px !important;
+        border-bottom-right-radius: 10px !important;
+        border-top-left-radius: 10px !important;
+        border-top-right-radius: 10px !important;
+    }
+
+    .table.dataTable thead {
+        border-top-left-radius: 10px !important;
+        border-top-right-radius: 10px !important;
+    }
+
+    .table.dataTable thead th:first-child {
+        border-top-left-radius: 10px !important;
+    }
+
+    .table.dataTable thead th:last-child {
+        border-top-right-radius: 10px !important;
+    }
+
+    .dataTables_wrapper .dataTables_scrollHead {
+        border-top-left-radius: 10px !important;
+        border-top-right-radius: 10px !important;
+    }
+
+.table-responsive {
+     overflow-x: auto !important; 
+}
+
+.table > tbody > tr:nth-of-type(even) td {
+    background-color: #FCFCFC !important;   
+}  .table > tbody > tr:nth-of-type(even).highlight td {
+    background-color: #EDFFF8 !important;   
+}
+
+.table tbody tr.even td {
+    /* background-color: #FBFBFB !important; */
+    /* background-color: #F7F7F7 !important;  */
+}  
+
+.table tbody tr.even:hover td {
+    /* background-color: #f2f2f4 !important;   */
+    background-color: #DCDCDC !important; 
+} .table tbody tr.odd:hover td {
+    background-color: #DCDCDC !important; 
+} 
+
+.table tbody tr.even.highlight:hover td {
+    /* background-color: #e0f7e0 !important;  */  
+    background-color: #EDFFF8 !important;
+} .table tbody tr.odd.highlight:hover td {
+    /* background-color: #e0f7e0 !important;  */  
+    background-color: #EDFFF8 !important;
+} 
+
+.label {
+    font-size: 80% !important;
+}
+
+.btn {
+    border-radius: 18px !important;
+    transition: background-color 0.3s ease !important;
+}
+
+.nav-tabs {
+    border-radius: 10px 10px 0px 0px !important;    
+} .nav-tabs li {
+    border-radius: 10px 0px 0px 0px !important;
+} .nav-tabs li a {
+    border-radius: 10px 0px 0px 0px !important;
+}
+
+
+
+li a span.badge-nav-tabs-quantity {
+    background-color: transparent !important; 
+    border-radius: 5px !important; 
+    border: 2px solid #000 !important;
+    padding: 5px 8px !important;
+    color: #265044 !important; 
+    margin: 0px 0px 0px 5px !important; 
+    font-weight: bold !important;
+} li.active a span.badge-nav-tabs-quantity {
+    background-color: transparent !important; 
+    border-radius: 5px !important; 
+    border: 2px solid #265044 !important;
+    padding: 5px 8px !important;
+    color: #265044 !important; 
+    margin: 0px 0px 0px 5px !important; 
+    font-weight: bold !important;
+}
+
+.badge-nav-tabs-quantity {
+   
+}
+
+
+.mt-2 a {
+    padding: 6px 10px !important;
+} .tab-side-elements a {
+    padding: 6px 10px !important;
+}
+
+
+.dataTable thead tr th {
+    color: #265044 !important;
+    font-weight: bold !important;
+}
+
+.btn-white {
+    color: #265044;
+    background-color: #FFF;
+    border-color: #FFF;
+    border-color: #ebebeb !important;
+}

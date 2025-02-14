@@ -1,0 +1,114 @@
+:root {
+    --color-primary: #265044;
+    --color-secondary: #A5B299;
+    --color-terciary: #7CE8A4; /*93FFA5*/
+    --color-success: #1B9C85;
+    --color-warning: #F7D060;
+    --color-danger: #981b1b;
+    --color-white: #fff;
+    --color-black: #000;
+    --color-info: #7d8da1;
+    --color-background: #ebebeb;
+  
+    --color-info-dark: #7d8da1;
+    --color-dark: #363949;
+    --color-dark-variant: #677483;
+}
+
+.row-header {
+    font-family: 'Open Sans', 'Source Sans 3', sans-serif !important;
+}
+.entypo-chat, .entypo-logout, .entypo-moon, .entypo-flash, .glyphicon-asterisk {
+    font-size: 18px;
+}
+.list-inline li a {
+    /* font-size: 14px; */
+}
+
+/* .entypo-chat {
+    position: relative;
+    display: block;
+    padding: 10px 10px;
+    color: #737881;
+} */
+
+.row-header {
+    background-color: var(--color-dark) !important;
+    margin-left: -19px !important;
+    margin-right: -19px !important;
+    margin-top: -30px !important;
+    font-family: 'Open Sans', 'Source Sans 3', sans-serif !important;
+}
+
+.profile-info-container {
+    margin-top: 15px !important;
+}
+
+.profile-info {
+    margin-top: 0px !important;
+    background-color: var(--color-dark) !important;
+}
+
+.raw-links {
+    margin-bottom: -5px !important;
+}
+
+.user-name {
+    font-size: 16px !important;
+    color: black !important;
+    font-weight: 600 !important;
+    margin-top: 10px !important
+} .user-type {
+    font-size: 12px !important;
+    color: gray !important;
+}
+
+.user-info > .language-selector {
+}
+
+.li-moon {
+    margin-top: 8px !important;
+    margin-right: 10px !important;
+} .li-chat {
+    margin-top: 8px !important;
+    margin-right: 35px !important;
+} .entypo-flash {
+    color: var(--color-secondary) !important;
+}
+.language-selector {
+    margin-right: -1px !important;
+}
+
+.profile-info.dropdown.pull-right .dropdown-menu {
+    border-color: #fff !important;
+}
+
+@media (max-width: 767px) {
+    .li-moon {
+        margin-top: 6px !important; 
+        margin-right: 5px !important; 
+    } .li-chat {
+        margin-top: 8px !important;  
+        margin-right: 5px !important; 
+    } .language-selector {
+        margin-bottom: 0px !important; 
+        margin-top: 2px !important; 
+        margin-right: -4px !important;
+    }
+}
+
+.profile-info.dropdown > a img {
+    border: 2px solid var(--color-secondary) !important;
+}
+
+.language-selector.open > .dropdown-toggle {
+    background: var(--color-secondary) !important;
+} .language-selector .dropdown-menu {
+    background: var(--color-secondary) !important;
+} .language-selector .dropdown-menu > li.active a {
+    background: var(--color-primary) !important;
+    color: var(--color-secondary) !important;
+} .language-selector .dropdown-menu > li:hover {
+    background: var(--color-primary) !important;
+    color: var(--color-secondary) !important;
+}

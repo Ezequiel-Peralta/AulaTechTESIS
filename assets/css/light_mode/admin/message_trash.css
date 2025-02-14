@@ -1,0 +1,91 @@
+:root {
+    --color-primary: #265044;
+    --color-secondary: #A5B299;
+    --color-terciary: #7CE8A4;
+    --color-forty: #B0DFCC;
+    --color-success: #1B9C85;
+    --color-warning: #F7D060;
+    --color-danger: #981b1b;
+    --color-white: #fff;
+    --color-black: #000;
+    --color-info: #7d8da1;
+    --color-background: #ebebeb;
+}
+
+.dropdown-menu-tags {
+    position: absolute !important;
+    top: 30% !important;
+    left: 52% !important;
+    z-index: 1000;
+    display: none;
+    min-width: 160px;
+    padding: 5px 0;
+    margin: 0 !important; 
+    list-style: none;
+    font-size: 12px;
+    text-align: left;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 0px !important;
+    border-top-left-radius: 12px !important;
+    border-top-right-radius: 12px !important;
+    border-bottom-left-radius: 12px !important;
+    border-bottom-right-radius: 12px !important;
+    padding: 0px 0px 0px 0px !important;
+    -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+}
+
+/* Asegura que el <a> dentro de cada <li> ocupe el 100% del ancho disponible */
+.dropdown-menu-tags.dropdown-primary {
+    /* background-color: #d42020;
+    border-color: #b51b1b; */
+    min-width: 160px; /* Define un ancho mínimo para el menú */
+}
+
+.dropdown-menu-tags.dropdown-primary li {
+    width: 100%; /* Asegura que los <li> ocupen el 100% */
+}
+
+.dropdown-menu-tags.dropdown-primary li button {
+    display: block; /* El enlace <a> ocupa todo el ancho disponible */
+    width: 100%; /* Asegura que el enlace ocupe todo el ancho del <li> */
+    padding: 10px 0px; /* Añade padding para hacer los enlaces más clicables */
+    color: #fff; /* Color del texto blanco */
+    text-align: left; /* Alinea el texto a la izquierda */
+    text-decoration: none; /* Remueve el subrayado */
+    border-radius: 0px !important;
+    cursor: default !important;
+    
+} .dropdown-menu-tags.dropdown-primary li:last-child  button{
+    border-bottom-left-radius: 12px !important;
+    border-bottom-right-radius: 12px !important;
+} .dropdown-menu-tags.dropdown-primary li:first-child button {
+    border-top-left-radius: 12px !important;
+    border-top-right-radius: 12px !important;
+} dropdown-menu-tags.dropdown-primary li:last-child  {
+    border-bottom-left-radius: 12px !important;
+    border-bottom-right-radius: 12px !important;
+} .dropdown-menu-tags.dropdown-primary li:first-child  {
+    border-top-left-radius: 12px !important;
+    border-top-right-radius: 12px !important;
+}
+
+.dropdown-menu-tags.dropdown-primary li button:hover {
+    background-color: var(--color-secondary); /* Cambia el fondo al pasar el mouse */
+    color: #fff; /* Mantiene el color blanco del texto al hacer hover */
+}
+
+/* Opcional: Cambiar el tamaño de los iconos */
+.dropdown-menu-tags.dropdown-primary li button i {
+    margin-right: 8px; /* Añade espacio entre el icono y el texto */
+}
+
+.col-options, .col-options a {
+    user-select: none !important;
+    cursor: default;
+} 
+
+.archor-badge {
+    margin-left: 10px ;
+}

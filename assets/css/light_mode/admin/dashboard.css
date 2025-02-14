@@ -1,0 +1,1064 @@
+:root {
+    --color-primary: #265044;
+    --color-secondary: #A5B299;
+    --color-tertiary: #7CE8A4; /*93FFA5*/
+    --color-forty: #B0DFCC;
+    --color-success: #1B9C85;
+    --color-warning: #F7D060;
+    --color-danger: #981b1b;
+    --color-white: #fff;
+    --color-black: #000;
+    --color-info: #7d8da1;
+    --color-background: #ebebeb;
+}
+
+.tile-stats {
+    padding: 40px 0px 40px 0px!important;
+}
+
+.tile-stats .icon {
+    margin-bottom: 80px !important;
+}
+
+.tile-stats .icon i {
+    font-size: 110px !important;
+    margin-right: 0px !important;
+    padding: 0px 90px 0px 10px;
+}
+
+.tile-stats .num, .sub-num {
+    background-color: var(--color-primary);
+}
+
+.num {
+    padding-left: 20px !important;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    z-index: 0 !important;
+}
+
+.sub-num {
+    margin-top: -1px !important;
+    padding-left: 20px !important;
+    padding-bottom: 10px !important;
+    border-bottom-right-radius: 5px;
+    border-bottom-left-radius: 5px;
+    z-index: 0 !important;
+}
+
+.dropdown-menu .divider {
+    height: 2px !important;
+    background-color: var(--color-white) !important;
+}
+
+.dropdown-menu li:hover {
+    background-color: rgb(0, 0, 0, 0.15) !important;
+}
+
+.todo-list > li .neon-cb-replacement.checked .cb-wrapper + label {
+    position: relative !important;
+    display: inline !important;
+    text-decoration: line-through !important;
+    color: var(--color-white) !important;
+}
+
+.tile-block .tile-content .todo-list .neon-cb-replacement .cb-wrapper + label {
+    top: -3px;
+    margin-left: 8px;
+}
+
+.todo-list > li .neon-cb-replacement.checked .cb-wrapper + label:after {
+    zoom: 1;
+    filter: alpha(opacity = 80);
+    -webkit-opacity: 0.8;
+    -moz-opacity: 0.8;
+    opacity: 0 !important;
+    width: 100%;
+}
+
+.todo-list > li .neon-cb-replacement .cb-wrapper + label:after {
+    position: absolute;
+    content: '';
+    height: 2px;
+    background: var(--color-white);
+    width: 0%;
+    top: 50%;
+    left: 0;
+    margin: 0;
+    margin-top: 0px;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    -webkit-transition: all 300ms ease-in-out;
+    -moz-transition: all 300ms ease-in-out;
+    -o-transition: all 300ms ease-in-out;
+    transition: all 300ms ease-in-out;
+}
+
+/*ESTILOS ESPECIFICOS PARA ELEMENTOS*/
+.calendarPanel {
+    border-bottom: 2px rgba(0, 0, 0, 0.15) solid !important;
+}
+
+.calendar-body {
+    background-color: var(--color-white);
+    border-top-right-radius: 10px !important;
+    border-bottom-right-radius: 10px !important;
+    border-bottom-left-radius: 10px !important;
+}
+
+.calendar-env .calendar-body .fc-content .fc-view table tbody tr td.fc-day {
+    vertical-align: text-top;
+    text-align: left;
+    border-bottom: 3px solid #ebebeb;
+    border-right: 1px solid #ebebeb;
+    padding-top: 3px;
+    padding-left: 10px;
+    font-weight: 500;
+    -moz-transition: all 300ms ease-in-out;
+    -webkit-transition: all 300ms ease-in-out;
+    -o-transition: all 300ms ease-in-out;
+    transition: all 300ms ease-in-out;
+}
+
+.calendar-env .calendar-body .fc-content .fc-view table tbody tr td.fc-day.fc-today .fc-day-number {
+    color: var(--color-white);
+    font-weight: bolder;
+    background-color: var(--color-primary);
+    border: 1px solid var(--color-primary);
+    display: inline-block;
+    /* padding: 5px 8px; */
+    padding: 4px 10px;
+    margin-bottom: 5px;
+    -webkit-border-radius: 3px;
+    -webkit-background-clip: padding-box;
+    -moz-border-radius: 3px;
+    -moz-background-clip: padding;
+    border-radius: 10px;
+    background-clip: padding-box;
+} .calendar-env .calendar-body .fc-content .fc-view table tbody tr td.fc-day.fc-today .fc-day-number:hover {
+    color: var(--color-white);
+    font-weight: bolder;
+    background-color: var(--color-primary);
+    border: 1px solid var(--color-primary);
+} 
+
+.calendar-env .calendar-body .fc-content .fc-view table tbody tr td.fc-day:hover {
+    background-color: var(--color-secondary) !important;
+}
+
+.calendar-env .calendar-body .fc-content .fc-view .fc-event:hover ~ .calendar-env .calendar-body .fc-content .fc-view table tbody tr td.fc-day {
+    background-color: #ececec !important; 
+}
+
+.calendar-env .calendar-body .fc-content .fc-view .fc-event .fc-event-inner:hover ~ .calendar-env .calendar-body .fc-content .fc-view table tbody tr td.fc-day {
+    background-color: #ececec !important;
+}
+
+.calendar-env .calendar-body .fc-content .fc-view .fc-event:hover + .calendar-env .calendar-body .fc-content .fc-view table tbody tr td.fc-day {
+    background-color: #ececec !important; 
+}
+
+.calendar-env .calendar-body .fc-content .fc-view .fc-event:hover {
+    cursor: pointer;
+}
+
+.fc-other-month .fc-day-number {
+    opacity: .3 !important;
+    filter: alpha(opacity = 30) !important;
+} 
+
+.calendar-env .calendar-body .fc-header .fc-button-month {
+    border-top-left-radius: 15px !important;
+    border-bottom-left-radius: 15px !important;
+} .calendar-env .calendar-body .fc-header .fc-button-agendaDay {
+    border-top-right-radius: 15px !important;
+    border-bottom-right-radius: 15px !important;
+} .calendar-env .calendar-body .fc-header .fc-button-today {
+    border-top-right-radius: 15px !important;
+    border-bottom-right-radius: 15px !important;
+    border-top-left-radius: 15px !important;
+    border-bottom-left-radius: 15px !important;
+} .calendar-env .calendar-body .fc-header .fc-button-prev {
+    border-top-left-radius: 15px !important;
+    border-bottom-left-radius: 15px !important;
+}  .calendar-env .calendar-body .fc-header .fc-button-next {
+    border-top-right-radius: 15px !important;
+    border-bottom-right-radius: 15px !important;
+}
+
+
+
+
+
+
+.calendar-env .calendar-body .fc-content .fc-view table tbody tr td.fc-day .fc-day-number {
+    color: var(--color-primary);
+    font-weight: bolder;
+    background-color: transparent;
+    border: 1px solid var(--color-primary);
+    display: inline-block;
+    /* padding: 5px 8px; */
+    padding: 4px 10px;
+    margin-bottom: 5px;
+    -webkit-border-radius: 3px;
+    -webkit-background-clip: padding-box;
+    -moz-border-radius: 3px;
+    -moz-background-clip: padding;
+    border-radius: 10px;
+    background-clip: padding-box;
+}
+
+.calendar-env .calendar-body .fc-content .fc-view .fc-event {
+    position: relative; 
+    padding: 2px 4px;
+    margin-top: 2px;
+    margin-bottom: 8px;
+    -webkit-border-radius: 3px;
+    -webkit-background-clip: padding-box;
+    -moz-border-radius: 3px;
+    -moz-background-clip: padding;
+    /* border-radius: 6px; */
+    border-top-right-radius: 6px;
+    border-bottom-right-radius: 6px;
+    background-clip: padding-box;
+    /* background-color: #f0f0f0;
+    color: #333;  */
+}
+
+.calendar-env .calendar-body .fc-content .fc-view .fc-event::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 4px; 
+    height: 100%;
+    background-color: #333;
+    border-top-left-radius: 6px; 
+    border-bottom-left-radius: 6px; 
+}
+
+.fc-event2 {
+    position: relative; 
+    padding: 2px 13px;
+    margin-top: 2px;
+    margin-bottom: 8px;
+    -webkit-border-radius: 3px;
+    -webkit-background-clip: padding-box;
+    -moz-border-radius: 3px;
+    -moz-background-clip: padding;
+    /* border-radius: 6px; */
+    border-top-right-radius: 6px;
+    border-bottom-right-radius: 6px;
+    background-clip: padding-box;
+    /* background-color: #f0f0f0;
+    color: #333;  */
+}
+
+.fc-event2::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 4px; 
+    height: 100%;
+    background-color: #333;
+    border-top-left-radius: 6px; 
+    border-bottom-left-radius: 6px; 
+}
+
+
+/* Púrpura */
+.calendar-env .calendar-body .fc-content .fc-view .fc-event.color-purple {
+    background-color: #d5b1e1 !important; /* Color púrpura claro */
+    /* color: #800080 !important;  */
+    color: #606060 !important;
+    font-weight: bold !important;
+}
+.calendar-env .calendar-body .fc-content .fc-view .fc-event.color-purple::before {
+    background-color: #800080 !important; /* Color púrpura oscuro */
+}
+
+/* Naranja */
+.calendar-env .calendar-body .fc-content .fc-view .fc-event.color-orange {
+    background-color: #fae2bd !important; /* Color púrpura claro */
+    /* color: #ffae2f !important;  */
+    color: #606060 !important;
+    font-weight: bold !important;
+}
+.calendar-env .calendar-body .fc-content .fc-view .fc-event.color-orange::before {
+    background-color: #ffae2f !important; /* Color púrpura oscuro */
+}
+
+/* Rojo */
+.calendar-env .calendar-body .fc-content .fc-view .fc-event.color-red {
+    background-color: #ffb3b3 !important; /* Color rojo claro */
+    /* color: #ff0000 !important;  */
+    color: #606060 !important;
+    font-weight: bold !important;
+}
+.calendar-env .calendar-body .fc-content .fc-view .fc-event.color-red::before {
+    background-color: #ff0000 !important; /* Color rojo oscuro */
+}
+
+/* Amarillo */
+.calendar-env .calendar-body .fc-content .fc-view .fc-event.color-yellow {
+    background-color: #fff9c4 !important; /* Color amarillo claro */
+    /* color: #ffeb3b !important;  */
+    color: #606060 !important;
+    font-weight: bold !important;
+}
+.calendar-env .calendar-body .fc-content .fc-view .fc-event.color-yellow::before {
+    background-color: #cfbb00 !important; /* Color amarillo oscuro */
+}
+
+/* Rosa */
+.calendar-env .calendar-body .fc-content .fc-view .fc-event.color-pink {
+    background-color: #ffc1d6 !important; /* Color rosa claro */
+    /* color: #e91e63 !important;  */
+    color: #606060 !important;
+    font-weight: bold !important;
+}
+.calendar-env .calendar-body .fc-content .fc-view .fc-event.color-pink::before {
+    background-color: #e91e63 !important; /* Color rosa oscuro */
+}
+
+/* Verde */
+.calendar-env .calendar-body .fc-content .fc-view .fc-event.color-green {
+    background-color: #bdfbdb !important; /* Color rosa claro */
+    /* color: #00a651 !important; */
+    color: #606060 !important;
+    font-weight: bold !important;
+}
+.calendar-env .calendar-body .fc-content .fc-view .fc-event.color-green::before {
+    background-color: #00a651 !important; /* Color rosa oscuro */
+}
+
+/* Celeste */
+.calendar-env .calendar-body .fc-content .fc-view .fc-event.color-blue {
+    background-color: #b3e5fc !important; /* Color celeste claro */
+    /* color: #03a9f4 !important; */
+    color: #606060 !important;
+    font-weight: bold !important;
+}
+.calendar-env .calendar-body .fc-content .fc-view .fc-event.color-blue::before {
+    background-color: #03a9f4 !important; /* Color celeste oscuro */
+}
+
+/* Gris */
+.calendar-env .calendar-body .fc-content .fc-view .fc-event.color-gray {
+    background-color: #e0e0e0 !important; /* Color gris claro */
+    /* color: #9e9e9e !important;  */
+    color: #606060 !important;
+    font-weight: bold !important;
+}
+.calendar-env .calendar-body .fc-content .fc-view .fc-event.color-gray::before {
+    background-color: #9e9e9e !important; /* Color gris oscuro */
+}
+
+/* Marrón */
+.calendar-env .calendar-body .fc-content .fc-view .fc-event.color-brown {
+    background-color: #d7ccc8 !important; /* Color marrón claro */
+    /* color: #795548 !important;  */
+    color: #606060 !important;
+    font-weight: bold !important;
+}
+.calendar-env .calendar-body .fc-content .fc-view .fc-event.color-brown::before {
+    background-color: #795548 !important; /* Color marrón oscuro */
+}
+
+
+
+
+
+
+/* Púrpura */
+.fc-event2.color-purple {
+    background-color: #d5b1e1 !important; /* Color púrpura claro */
+    /* color: #800080 !important;  */
+    color: #606060 !important;
+    font-weight: bold !important;
+}
+.fc-event2.color-purple::before {
+    background-color: #800080 !important; /* Color púrpura oscuro */
+}
+
+/* Naranja */
+.fc-event2.color-orange {
+    background-color: #fae2bd !important; /* Color púrpura claro */
+    /* color: #ffae2f !important;  */
+    color: #606060 !important;
+    font-weight: bold !important;
+}
+.fc-event2.color-orange::before {
+    background-color: #ffae2f !important; /* Color púrpura oscuro */
+}
+
+/* Rojo */
+.fc-event2.color-red {
+    background-color: #ffb3b3 !important; /* Color rojo claro */
+    /* color: #ff0000 !important;  */
+    color: #606060 !important;
+    font-weight: bold !important;
+}
+.fc-event2.color-red::before {
+    background-color: #ff0000 !important; /* Color rojo oscuro */
+}
+
+/* Amarillo */
+.fc-event2.color-yellow {
+    background-color: #fff9c4 !important; /* Color amarillo claro */
+    /* color: #ffeb3b !important;  */
+    color: #606060 !important;
+    font-weight: bold !important;
+}
+.fc-event2.color-yellow::before {
+    background-color: #cfbb00 !important; /* Color amarillo oscuro */
+}
+
+/* Rosa */
+.fc-event2.color-pink {
+    background-color: #ffc1d6 !important; /* Color rosa claro */
+    /* color: #e91e63 !important;  */
+    color: #606060 !important;
+    font-weight: bold !important;
+}
+.fc-event2.color-pink::before {
+    background-color: #e91e63 !important; /* Color rosa oscuro */
+}
+
+/* Verde */
+.fc-event2.color-green {
+    background-color: #bdfbdb !important; /* Color rosa claro */
+    /* color: #00a651 !important; */
+    color: #606060 !important;
+    font-weight: bold !important;
+}
+.fc-event2.color-green::before {
+    background-color: #00a651 !important; /* Color rosa oscuro */
+}
+
+/* Celeste */
+.fc-event2.color-blue {
+    background-color: #b3e5fc !important; /* Color celeste claro */
+    /* color: #03a9f4 !important; */
+    color: #606060 !important;
+    font-weight: bold !important;
+}
+.fc-event2.color-blue::before {
+    background-color: #03a9f4 !important; /* Color celeste oscuro */
+}
+
+/* Gris */
+.fc-event2.color-gray {
+    background-color: #e0e0e0 !important; /* Color gris claro */
+    /* color: #9e9e9e !important;  */
+    color: #606060 !important;
+    font-weight: bold !important;
+}
+.fc-event2.color-gray::before {
+    background-color: #9e9e9e !important; /* Color gris oscuro */
+}
+
+/* Marrón */
+.fc-event2.color-brown {
+    background-color: #d7ccc8 !important; /* Color marrón claro */
+    /* color: #795548 !important;  */
+    color: #606060 !important;
+    font-weight: bold !important;
+}
+.fc-event2.color-brown::before {
+    background-color: #795548 !important; /* Color marrón oscuro */
+}
+
+
+
+
+
+
+
+.calendar-env .calendar-body .fc-content .fc-view .fc-event.color-pink:hover {
+
+}
+
+
+.calendar-env .calendar-body .fc-content .fc-view .fc-event .fc-event-inner {
+    padding: 3px 8px;
+    min-height: 87px !important;
+    max-height: 87px !important;
+    height: 87px !important;
+}
+
+.fc-event-inner2 {
+    padding: 3px 8px;
+    min-height: 87px !important;
+    max-height: 87px !important;
+    height: 87px !important;
+}
+
+
+.event-icon {
+    padding: 0px 0px 15px 0px;
+}
+.event-icon i {
+    font-size: 15px;
+    border-radius: 30px;
+    padding: 6px 5px;
+    margin-bottom: 3px;
+}
+
+/* Púrpura */
+.calendar-env .calendar-body .fc-content .fc-view .fc-event.color-purple .fc-event-inner .fc-event-title .event-icon i {
+    background-color: #800080; /* Color púrpura oscuro */
+    color: #d5b1e1; /* Color púrpura claro */
+}
+
+/* Naranja */
+.calendar-env .calendar-body .fc-content .fc-view .fc-event.color-orange .fc-event-inner .fc-event-title .event-icon i {
+    background-color: #ffae2f; /* Color púrpura oscuro */
+    color: #fae2bd; /* Color púrpura claro */
+}
+
+/* Rojo */
+.calendar-env .calendar-body .fc-content .fc-view .fc-event.color-red .fc-event-inner .fc-event-title .event-icon i {
+    background-color: #ff0000; /* Color rojo oscuro */
+    color: #ffb3b3; /* Color rojo claro */
+}
+
+/* Amarillo */
+.calendar-env .calendar-body .fc-content .fc-view .fc-event.color-yellow .fc-event-inner .fc-event-title .event-icon i {
+    background-color: #cfbb00; /* Color amarillo oscuro */
+    color: #fff9c4; /* Color amarillo claro */
+}
+
+/* Rosa */
+.calendar-env .calendar-body .fc-content .fc-view .fc-event.color-pink .fc-event-inner .fc-event-title .event-icon i {
+    background-color: #e91e63; /* Color rosa oscuro */
+    color: #ffc1d6; /* Color rosa claro */
+}
+
+/* Verde */
+.calendar-env .calendar-body .fc-content .fc-view .fc-event.color-green .fc-event-inner .fc-event-title .event-icon i {
+    background-color: #00a651; 
+    color: #bdfbdb; 
+}
+
+/* Azul (anteriormente light-blue) */
+.calendar-env .calendar-body .fc-content .fc-view .fc-event.color-blue .fc-event-inner .fc-event-title .event-icon i {
+    background-color: #03a9f4; /* Color azul oscuro */
+    color: #b3e5fc; /* Color azul claro */
+}
+
+/* Gris */
+.calendar-env .calendar-body .fc-content .fc-view .fc-event.color-gray .fc-event-inner .fc-event-title .event-icon i {
+    background-color: #9e9e9e; /* Color gris oscuro */
+    color: #e0e0e0; /* Color gris claro */
+}
+
+/* Marrón */
+.calendar-env .calendar-body .fc-content .fc-view .fc-event.color-brown .fc-event-inner .fc-event-title .event-icon i {
+    background-color: #795548; /* Color marrón oscuro */
+    color: #d7ccc8; /* Color marrón claro */
+}
+
+
+.fc-event-title2 .event-icon {
+    padding: 0px 0px 0px 0px;
+}
+
+/* Púrpura */
+.fc-event2.color-purple .fc-event-title2 .event-icon i {
+    background-color: #800080; /* Color púrpura oscuro */
+    color: #d5b1e1; /* Color púrpura claro */
+}
+
+/* Naranja */
+.fc-event2.color-orange .fc-event-title2 .event-icon i {
+    background-color: #ffae2f; /* Color púrpura oscuro */
+    color: #fae2bd; /* Color púrpura claro */
+}
+
+/* Rojo */
+.fc-event2.color-red .fc-event-title2 .event-icon i {
+    background-color: #ff0000; /* Color rojo oscuro */
+    color: #ffb3b3; /* Color rojo claro */
+}
+
+/* Amarillo */
+.fc-event2.color-yellow .fc-event-title2 .event-icon i {
+    background-color: #cfbb00; /* Color amarillo oscuro */
+    color: #fff9c4; /* Color amarillo claro */
+}
+
+/* Rosa */
+.fc-event2.color-pink .fc-event-title2 .event-icon i {
+    background-color: #e91e63; /* Color rosa oscuro */
+    color: #ffc1d6; /* Color rosa claro */
+}
+
+/* Verde */
+.fc-event2.color-green .fc-event-title2 .event-icon i {
+    background-color: #00a651; 
+    color: #bdfbdb; 
+}
+
+/* Azul (anteriormente light-blue) */
+.fc-event2.color-blue .fc-event-title2 .event-icon i {
+    background-color: #03a9f4; /* Color azul oscuro */
+    color: #b3e5fc; /* Color azul claro */
+}
+
+/* Gris */
+.fc-event2.color-gray .fc-event-title2 .event-icon i {
+    background-color: #9e9e9e; /* Color gris oscuro */
+    color: #e0e0e0; /* Color gris claro */
+}
+
+/* Marrón */
+.fc-event2.color-brown .fc-event-title2 .event-icon i {
+    background-color: #795548; /* Color marrón oscuro */
+    color: #d7ccc8; /* Color marrón claro */
+}
+
+
+
+
+
+
+.calendar-env .calendar-body .fc-content .fc-view table thead tr th {
+    text-align: center;
+    padding: 5px 0;
+    border-bottom: 1px solid #ebebeb;
+    background: var(--color-primary);
+    color: var(--color-white);
+} .calendar-env .calendar-body .fc-content .fc-view.fc-view-agendaWeek .fc-agenda-days th, .calendar-env .calendar-body .fc-content .fc-view.fc-view-agendaDay .fc-agenda-days th, .calendar-env .calendar-body .fc-content .fc-view.fc-view-agendaWeek .fc-agenda-days td, .calendar-env .calendar-body .fc-content .fc-view.fc-view-agendaDay .fc-agenda-days td {
+    color: var(--color-white) !important;
+} 
+
+
+
+.calendar-env .calendar-body .fc-header .fc-button {
+    display: inline-block;
+    margin-bottom: 0;
+    font-weight: normal;
+    text-align: center;
+    vertical-align: middle;
+    touch-action: manipulation;
+    cursor: pointer;
+    background-image: none;
+    border: 1px solid transparent;
+    white-space: nowrap;
+    padding: 6px 12px;
+    font-size: 12px;
+    line-height: 1.42857143;
+    border-radius: 3px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    outline: 0 !important;
+    color: var(--color-primary);
+    background-color: #FFF;
+    border-color: #FFF;
+    border-color: var(--color-primary) !important;
+    -webkit-border-radius: 0;
+    -webkit-background-clip: padding-box;
+    -moz-border-radius: 0;
+    -moz-background-clip: padding;
+    border-radius: 0;
+    background-clip: padding-box;
+    border-right-width: 0;
+} .calendar-env .calendar-body .fc-header .fc-button.fc-state-active {
+    background: var(--color-primary);
+    color: var(--color-white);
+} .calendar-env .calendar-body .fc-header .fc-button.fc-state-active:hover {
+    background: var(--color-primary);
+    color: var(--color-white) !important;
+} .calendar-env .calendar-body .fc-header .fc-button:hover {
+    background: var(--color-secondary);
+    color: var(--color-primary);
+}
+
+
+
+.custom-checkbox {
+    position: relative;
+    padding-left: 40px;
+    margin-bottom: 20px;
+    cursor: pointer;
+    font-size: 13px;
+    user-select: none;
+}
+
+.custom-checkbox input[type="checkbox"] {
+    display: none;
+}
+
+.custom-checkbox label {
+    cursor: pointer;
+}
+
+/* Estilo del switch */
+.custom-checkbox label:before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 34px;
+    height: 20px;
+    background-color: #ccc;
+    border-radius: 20px;
+    transition: 0.3s;
+}
+
+.custom-checkbox label:after {
+    content: "";
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 16px;
+    height: 16px;
+    background-color: white;
+    border-radius: 50%;
+    transition: 0.3s;
+}
+
+/* Checkbox activado */
+.custom-checkbox input[type="checkbox"]:checked + label:before {
+    background-color: #4caf50;
+}
+
+.custom-checkbox input[type="checkbox"]:checked + label:after {
+    transform: translateX(14px);
+}
+
+
+
+.myselect {
+    font-size: 12px !important;
+    color: var(--color-primary) !important;
+    padding: 0px 10px 0px 10px !important;
+    display: block !important;
+    width: 100% !important;
+    border: none !important;
+    border-bottom: 0px solid #515151 !important;
+    background: var(--color-forty) !important;
+    border-radius: 12px !important;
+    transition: border-radius 0.2s ease !important; 
+}
+
+.myselect:focus {
+    outline: none !important;
+    border-radius: 12px !important;
+    color: #265044 !important;
+    font-weight: bold !important; 
+}
+
+.bar {
+    position: relative;
+    display: block;
+    width: 100%; /* Make sure the bar takes the full width of the input */
+}
+
+.bar:before, .bar:after {
+    content: '';
+    height: 2px;
+    width: 0;
+    bottom: 0px;
+    position: absolute;
+    background: #265044;
+    transition: 0.2s ease all;
+    -moz-transition: 0.2s ease all;
+    -webkit-transition: 0.2s ease all;
+}
+
+.bar:before {
+    left: 50%;
+}
+
+.bar:after {
+    right: 50%;
+}
+
+
+.highlight-input {
+    position: absolute;
+    height: 60%;
+    width: 100px;
+    top: 25%;
+    left: 0;
+    pointer-events: none;
+    opacity: 0.5;
+}
+
+.myselect:focus ~ .highlight-input {
+    animation: inputhighlight-inputer 0.3s ease;
+}
+
+
+.group {
+    position: relative;
+}
+
+.myinput {
+    font-size: 12px;
+    color: var(--color-primary);
+    padding: 10px 10px 10px 7px;
+    display: block;
+    width: 100%;
+    border: none;
+    border-bottom: 0px solid #515151;
+    background: var(--color-forty);
+    border-radius: 12px;
+    transition: border-radius 0.2s ease; 
+}
+
+
+.myinput:focus {
+    outline: none;
+    border-radius: 0; 
+    color: #265044;
+    font-weight: bold; 
+}
+
+.mylabel {
+    color: #999;
+    font-size: 12px;
+    font-weight: normal;
+    position: absolute;
+    pointer-events: none;
+    left: 15px;
+    top: 10px;
+    transition: 0.2s ease all;
+    -moz-transition: 0.2s ease all;
+    -webkit-transition: 0.2s ease all;
+}
+
+.myinput:focus ~ .mylabel, .myinput:valid ~ .mylabel {
+    top: -20px;
+    font-size: 12px;
+}
+
+.bar {
+    position: relative;
+    display: block;
+    width: 100%; /* Make sure the bar takes the full width of the input */
+}
+
+.bar:before, .bar:after {
+    content: '';
+    height: 2px;
+    width: 0;
+    bottom: 0px;
+    position: absolute;
+    background: #265044;
+    transition: 0.2s ease all;
+    -moz-transition: 0.2s ease all;
+    -webkit-transition: 0.2s ease all;
+}
+
+.bar:before {
+    left: 50%;
+}
+
+.bar:after {
+    right: 50%;
+}
+
+.myinput:focus ~ .bar:before, .myinput:focus ~ .bar:after {
+    width: 50%;
+}
+
+.highlight-input {
+    position: absolute;
+    height: 60%;
+    width: 100px;
+    top: 25%;
+    left: 0;
+    pointer-events: none;
+    opacity: 0.5;
+}
+
+.myinput:focus ~ .highlight-input {
+    animation: inputhighlight-inputer 0.3s ease;
+}
+
+.myselect:focus ~ .highlight-input {
+    animation: inputhighlight-inputer 0.3s ease;
+}
+
+@keyframes inputhighlight-inputer {
+    from {
+        background: #5264AE;
+    }
+
+    to {
+        width: 0;
+        background: transparent;
+    }
+}
+
+/* Estilos para el botón */
+.btn-event {
+    background-color: var(--color-primary); /* Color de fondo principal */
+    color: var(--color-white); /* Texto blanco */
+    border: none; /* Sin borde por defecto */
+    border-radius: 10px !important; /* Bordes redondeados */
+    font-size: 12px; /* Tamaño de fuente */
+    font-weight: bold; /* Texto en negrita */
+    cursor: pointer; /* Cursor en forma de mano al pasar */
+    transition: all 0.4s ease; /* Transición suave */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Sombra */
+}
+
+/* Efecto hover */
+.btn-event:hover {
+    background-color: var(--color-white); /* Fondo blanco al pasar el ratón */
+    border: 2px solid var(--color-primary); /* Borde visible al hacer hover */
+    color: var(--color-primary); /* Texto en el color principal */
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3); /* Aumentar sombra */
+    transform: translateY(-2px); /* Eleva el botón */
+}
+
+/* Efecto de clic */
+.btn-event:active {
+    background-color: var(--color-primary); /* Mantener el color principal en clic */
+    color: var(--color-white); /* Mantener el texto blanco */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Reducir sombra en clic */
+    transform: translateY(1px); /* Movimiento sutil hacia abajo al hacer clic */
+}
+
+/* Estilos adicionales para móviles */
+@media (max-width: 768px) {
+    .btn-event {
+        width: 100%; /* Botón a ancho completo en pantallas pequeñas */
+    }
+}
+
+
+.calendar-env .calendar-sidebar-row {
+    background-color: var(--color-white);
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+} .calendar-sidebar {
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+}
+
+.panel-event {
+    border: var(--color-primary) solid 2px;
+    border-radius: 12px !important;
+}
+
+.panel-group.joined > .panel > .panel-heading h4 a:before {
+    position: relative;
+    content: '\e87a';
+    display: inline-block;
+    font-family: "Entypo";
+    color: var(--color-primary) !important;
+    padding: 10px 15px;
+    padding: 0;
+    float: right;
+    font-size: 17px;
+    margin-left: 13px;
+    top: 0px;
+    -webkit-transition: all 300ms ease-in-out;
+    -moz-transition: all 300ms ease-in-out;
+    -o-transition: all 300ms ease-in-out;
+    transition: all 300ms ease-in-out;
+}
+
+#add_event_form .input-group label {
+    color: var(--color-primary) !important;
+} #add_event_form .input-group p {
+    color: var(--color-secondary) !important;
+    font-weight: bold !important;
+}
+
+
+
+
+
+
+
+
+.notes-container {
+    background-color: var(--color-white) !important;
+    border-top-right-radius: 10px !important;
+    border-top-left-radius: 10px !important;
+}
+
+.row-tasks {
+    background-color: var(--color-white) !important;
+    margin-left: 0px !important;
+    margin-right: 0px !important;
+    border-bottom-right-radius: 10px !important;
+    border-bottom-left-radius: 10px !important;
+}
+
+.second-tile-header {
+    position: absolute !important;
+    top: 0 !important;
+    right: 0 !important;
+    padding-right: 15px !important;
+    border-top-right-radius: 10px !important;
+}
+
+.task-dropdown-menu {
+    background-color: transparent !important;
+    border: solid var(--color-white) 2px !important;
+}
+
+.task-option-a {
+    background-color: transparent !important;
+    color: var(--color-white) !important;
+    font-weight: 600 !important;
+}
+
+.task-option-a i {
+    background-color: transparent !important;
+    color: var(--color-white) !important;
+    border-right: solid var(--color-white) 2px !important;
+}
+
+.todo-list li {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+}
+
+.task-label-a i {
+    background-color: transparent !important;
+    color: var(--color-white) !important;
+}
+
+.notes-env {
+    padding: 20px !important;
+    background-color: var(--color-white) !important;
+    margin: 15px 0px 0px 0px !important;  
+    border-top-right-radius: 10px !important;
+    border-top-left-radius: 10px !important;
+} .notes-list {
+    margin: 0px 0px !important;
+} .note-close {
+    font-size: 22px !important;
+} .write-pad textarea {
+    resize: none !important; 
+}
+
+  
+.tile-stats.tile-white {
+    border: 3px solid var(--color-forty) !important;
+} .tile-stats {
+    border-radius: 10px !important;
+}
+
+.tile-stats.tile-white .num, .tile-stats.tile-white h3 {
+    color: var(--color-white) !important;
+}
+
+.panel-group.joined > .panel-tasks > .panel-heading + .panel-collapse {
+    background-color: #fff !important;
+    margin-bottom: 0;
+    font-size: 12px;
+}

@@ -1,0 +1,138 @@
+:root {
+    --color-primary: #265044;
+    --color-secondary: #A5B299;
+    --color-tertiary: #7CE8A4; /*93FFA5*/
+    --color-forty: #B0DFCC;
+    --color-success: #1B9C85;
+    --color-warning: #F7D060;
+    --color-danger: #981b1b;
+    --color-white: #fff;
+    --color-black: #000;
+    --color-info: #7d8da1;
+    --color-background: #ebebeb;
+}
+
+.mail-info-users {
+    margin: 100px 0px 0px 0px !important
+}
+
+.panel-group {
+    margin-bottom: 0px !important;
+}
+
+.panel-group.joined > .panel:last-child {
+    -webkit-border-radius: 0 0 3px 3px;
+    -webkit-background-clip: padding-box;
+    -moz-border-radius: 0 0 3px 3px;
+    -moz-background-clip: padding;
+    border-radius: 10px 10px 10px 10px !important;
+    background-clip: padding-box;
+}
+
+.mail-env .mail-body .mail-header .mail-search, .mail-env .mail-body .mail-header .mail-links {
+    float: left;
+    text-align: right;
+    width: 100% !important;
+}
+
+.message-details {
+    padding: 15px;
+    background-color: #f9f9f9; /* Fondo más claro para diferenciar */
+    border-radius: 8px;
+    margin-bottom: 15px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.message-sender,
+.message-receiver,
+.message-cc,
+.message-bcc {
+    margin-bottom: 10px; /* Espaciado entre remitentes y destinatarios */
+    
+}
+
+.message-sender span,
+.message-receiver span,
+.message-cc span,
+.message-bcc span {
+    font-weight: bold;
+    color: #333; /* Color del texto del título */
+}
+
+.user-info-mail {
+    display: flex;
+    flex-wrap: wrap; /* Permite que los usuarios se envuelvan si son muchos */
+    margin-top: 5px;
+}
+
+.user-info-mail a {
+    margin-right: 15px; /* Espacio entre usuarios */
+    margin-bottom: 10px;
+    text-decoration: none;
+    color: #007bff; /* Color azul para los enlaces */
+}
+
+.user-info-mail a:hover {
+    text-decoration: underline; /* Subrayar al pasar el ratón */
+}
+
+.img-circle {
+    margin-right: 5px; /* Espacio entre la imagen y el texto */
+}
+
+.dropdown-menu-accordion {
+    position: absolute;
+    top: 20% !important;
+    left: 2% !important;
+    z-index: 1000;
+    display: none;
+    float: left;
+    min-width: 160px;
+    padding: 5px 0;
+    margin: 2px 0 0;
+    list-style: none;
+    font-size: 12px;
+    text-align: left;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    border-radius: 3px;
+    -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+    background-clip: padding-box;
+}
+
+.fake-form {
+    cursor: pointer !important;
+}
+.mail-reply {
+    background-color: var(--color-white);
+}
+
+.fake-form {
+    background-color: var(--color-white);
+}
+
+a i .add {
+    background-color: var(--color-primary) !important;
+    color: var(--color-white) !important;
+} a i .remove {
+    background-color: var(--color-secondary) !important;
+    color: var(--color-white) !important;
+}
+
+div:where(.swal2-container) div:where(.swal2-popup) {
+    display: none;
+    position: relative;
+    box-sizing: border-box;
+    grid-template-columns: minmax(0, 100%);
+    width: 44em !important;
+    max-width: 100%;
+    padding: 0 0 1.25em;
+    border: none;
+    border-radius: 5px;
+    background: #fff;
+    color: hsl(0, 0%, 33%);
+    font-family: inherit;
+    font-size: 1rem;
+}

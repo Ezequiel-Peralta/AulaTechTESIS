@@ -1,0 +1,124 @@
+<ul class="nav nav-tabs bordered">
+			<li class="active">
+            	<a href="#list" data-toggle="tab"><i class="entypo-menu"></i> 
+					<?php echo ('Lista de materias');?>
+                    	</a></li>
+			<li>
+            	<a href="#add" data-toggle="tab"><i class="entypo-plus-circled"></i>
+					<?php echo ('Añadir materia');?>
+                    	</a></li>
+		</ul>
+		<div class="tab-content">            
+            <div class="tab-pane box active" id="list">
+				
+                <table class="table table-bordered table-hover table-striped datatable" id="table_export">
+                	<thead>
+                		<tr>
+                            <th><div><?php echo ('Curso');?></div></th>
+                    		<th><div><?php echo ('Nombre');?></div></th>
+                    		<th><div><?php echo ('Profesor');?></div></th>
+                    		<th class="text-center"><div><?php echo ('Opciones');?></div></th>
+						</tr>
+					</thead>
+                    <tbody>
+                    	<?php
+                            $count = 1;
+                            foreach($subjects as $row):
+                        ?>
+                        <tr>
+							<!-- <td><?php echo $this->crud_model->get_type_name_by_id('class',$row['class_id']);?></td> -->
+                            <td><?php echo $this->crud_model->get_type_name_by_id('section',$row['section_id']);?></td>
+                            <td><?php echo $row['name'];?></td>
+							<td><?php echo $this->crud_model->get_type_name_by_id('teacher',$row['teacher_id']);?></td>
+							<td class="text-center">
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-info btn-sm dropdown-toggle" data-toggle="dropdown">
+                                    Acción <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu dropdown-default pull-right" role="menu">
+                                    
+                                    <li>
+                                        <a href="#" onclick="showAjaxModal('<?php echo base_url();?>index.php?modal/popup/modal_edit_subject/<?php echo $row['subject_id'];?>');">
+                                            <i class="entypo-pencil"></i>
+                                                <?php echo ('Editar');?>
+                                            </a>
+                                                    </li>
+                                    <li>
+                                        <a href="#" onclick="confirm_modal('<?php echo base_url();?>index.php?admin/subject/delete/<?php echo $row['subject_id'];?>/<?php echo $class_id;?>');">
+                                            <i class="entypo-trash"></i>
+                                                <?php echo ('Eliminar');?>
+                                            </a>
+                                                    </li>
+                                </ul>
+                            </div>
+        					</td>
+                        </tr>
+                        <?php endforeach;?>
+                    </tbody>
+                </table>
+			</div>
+            
+            
+			<div class="tab-pane box" id="add" style="padding: 5px">
+                <div class="box-content">
+                	<?php echo form_open(base_url() . 'index.php?admin/subject/create' , array('class' => 'form-horizontal form-groups-bordered validate','target'=>'_top'));?>
+                        <div class="padded">
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label"><?php echo ('Nombre');?></label>
+                                <div class="col-sm-5">
+                                    <input type="text" class="form-control" name="name" data-validate="required" data-message-required="<?php echo ('Value Required');?>"/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label"><?php echo ('Año');?></label>
+                                <div class="col-sm-5">
+                                <select name="class_id" class="form-control" style="width:100%;" data-validate="required" id="class_id" 
+								data-message-required="<?php echo ('Valor requerido');?>"
+									onchange="return get_class_sections(this.value)">
+                                        <option value=""><?php echo ('Seleccionar');?></option>
+                                        <?php 
+										$classes = $this->db->get('class')->result_array();
+										foreach($classes as $row):
+										?>
+                                    		<option value="<?php echo $row['class_id'];?>"><?php echo $row['name'];?></option>
+                                        <?php
+										endforeach;
+										?>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label"><?php echo ('Curso');?></label>
+                                <div class="col-sm-5">
+                                    <select name="section_id" class="form-control" id="section_selector_holder"  data-validate="required" data-message-required="<?php echo ('Valor requerido');?>">
+                                        <option value=""><?php echo ('Primero seleccionar el año');?></option>
+                                        
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label"><?php echo ('Profesor');?></label>
+                                <div class="col-sm-5">
+                                    <select name="teacher_id" class="form-control" style="width:100%;">
+                                    	<?php 
+										$teachers = $this->db->get('teacher')->result_array();
+										foreach($teachers as $row):
+										?>
+                                    		<option value="<?php echo $row['teacher_id'];?>"><?php echo $row['name'];?></option>
+                                        <?php
+										endforeach;
+										?>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group text-center">
+                              <div class="col-sm-offset-3 col-sm-5">
+                                  <button type="submit" class="btn btn-info"><?php echo ('Aceptar');?></button>
+                              </div>
+						   </div>
+                    </form>                
+                </div>                
+			</div>
+            
+		</div>
