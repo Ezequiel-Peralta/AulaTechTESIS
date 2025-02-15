@@ -19,7 +19,7 @@ class Login_in extends CI_Controller {
 
     public function index() {
         if ($this->session->userdata('admin_login') == 1)
-            redirect(base_url() . 'index.php?admin/dashboard', 'refresh');
+            redirect(base_url() . 'index.php?admin/dashboardPepe', 'refresh');
 
         if ($this->session->userdata('teacher_login') == 1)
             redirect(base_url() . 'index.php?teacher/dashboard', 'refresh');

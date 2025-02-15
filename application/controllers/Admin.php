@@ -1,4 +1,9 @@
 <?php
+
+//require 'AdminCarpeta/dashboard.php';
+//$dashboard = new Dashboard(); // Crea una instancia de la clase
+//$resultado = $dashboard->index();
+ 
 if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 
@@ -28,7 +33,7 @@ class Admin extends CI_Controller
             redirect(base_url() . 'index.php?admin/dashboard', 'refresh');
     }
     
-    
+
     
 
     
@@ -40,7 +45,7 @@ class Admin extends CI_Controller
         $breadcrumb = array(
             array(
                 'text' => ucfirst(get_phrase('home')),
-                'url' => base_url('index.php?admin/dashboard')
+                'url' => base_url('index.php?admin/controllers/views/backed/index.php')
             ),
             array(
                 'text' => ucfirst(get_phrase('student_add')),
@@ -68,7 +73,8 @@ class Admin extends CI_Controller
         $breadcrumb = array(
             array(
                 'text' => ucfirst(get_phrase('home')),
-                'url' => base_url('index.php?admin/dashboard')
+                'url' => base_url('index.php?/Admin/dashboard.php')
+
             ),
             array(
                 'text' => ucfirst(get_phrase('add_library')),
@@ -1901,7 +1907,7 @@ class Admin extends CI_Controller
         $this->load->view('backend/index', $page_data);
     }
 
-
+  
 
     function help()
     {

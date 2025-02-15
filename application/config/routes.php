@@ -53,6 +53,6 @@ $route['default_controller'] = 'login';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
 
-$route['admin/dashboard'] = 'admin/dashboard/index';
+$route['admin/dashboard'] = 'AdminCarpeta/Dashboard';
 
 
