@@ -1,9 +1,4 @@
 <?php
-
-//require 'AdminCarpeta/dashboard.php';
-//$dashboard = new Dashboard(); // Crea una instancia de la clase
-//$resultado = $dashboard->index();
- 
 if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 
@@ -33,10 +28,6 @@ class Admin extends CI_Controller
             redirect(base_url() . 'index.php?admin/dashboard', 'refresh');
     }
     
-
-    
-
-    
 	function student_add()
 	{
 		if ($this->session->userdata('admin_login') != 1)
@@ -60,10 +51,6 @@ class Admin extends CI_Controller
 		$page_data['page_title'] = ucfirst(get_phrase('student_add'));
 		$this->load->view('backend/index', $page_data);
 	}
-
-
-
-
 
     function add_library()
 	{
@@ -89,8 +76,6 @@ class Admin extends CI_Controller
 		$page_data['page_title'] = ucfirst(get_phrase('add_library'));
 		$this->load->view('backend/index', $page_data);
 	}
-
-
 
     function library($param1 = '', $param2 = '', $param3 = '', $param4 = '')
     {
@@ -329,10 +314,6 @@ class Admin extends CI_Controller
         }
         
     }
-
-
-
-
 
     function add_behavior($param1 = '', $param2 = '', $param3 = '')
 	{
@@ -1907,7 +1888,7 @@ class Admin extends CI_Controller
         $this->load->view('backend/index', $page_data);
     }
 
-  
+
 
     function help()
     {
@@ -3737,10 +3718,10 @@ class Admin extends CI_Controller
     }
 
     function get_guardians() {
-        $guardians = $this->crud_model->get_guardians();
+        $guardians = $this->crudGuardian->get_guardians();
         
         foreach ($guardians as $row) {
-            $guardian_details = $this->crud_model->get_guardian_info($row['guardian_id']);
+            $guardian_details = $this->crudGuardian->get_guardian_info($row['guardian_id']);
             
             // Verificar si se encontraron detalles del guardián
             $firstname = isset($guardian_details['firstname']) ? $guardian_details['firstname'] : '';
@@ -4131,12 +4112,12 @@ class Admin extends CI_Controller
         $page_data['subject_amount'] = $this->crud_model->get_section_subject_amount2($section_id);
         $page_data['student_amount'] = $this->crud_model->get_section_student_amount2($section_id);
         $page_data['used_section_history'] = $used_section_history;
-        // $page_data['attendance_student_presente'] = $this->crud_model->get_attendance_student_section_amount($section_id, 1);
-        // $page_data['attendance_student_ausente'] = $this->crud_model->get_attendance_student_section_amount($section_id, 2);
-        // $page_data['attendance_student_tardanza'] = $this->crud_model->get_attendance_student_section_amount($section_id, 3);
-        // $page_data['attendance_student_ausencia_justificada'] = $this->crud_model->get_attendance_student_section_amount($section_id, 4);
+        // $page_data['attendance_student_presente'] = $this->crudAttendance->get_attendance_student_amount($section_id, 1);
+        // $page_data['attendance_student_ausente'] = $this->crudAttendance->get_attendance_student_amount($section_id, 2);
+        // $page_data['attendance_student_tardanza'] = $this->crudAttendance->get_attendance_student_amount($section_id, 3);
+        // $page_data['attendance_student_ausencia_justificada'] = $this->crudAttendance->get_attendance_student_amount($section_id, 4);
 
-        $page_data['day_data'] = $this->crud_model->get_attendance_data_for_chart2($section_id);
+        $page_data['day_data'] = $this->crudAttendance->get_attendance_data_for_chart2($section_id);
 
         $page_data['section_name'] 	= $this->crud_model->get_section_name2($section_id);
         $page_data['section_id']   = $section_id;
@@ -4146,10 +4127,10 @@ class Admin extends CI_Controller
         // $complete_class_name = $this->crud_model->get_class_name_numeric($class_id) . "° " . $this->crud_model->get_section_letter_name($section_id);
         // $subject_amount = $this->crud_model->get_section_subject_amount($section_id);
         // $student_amount = $this->crud_model->get_section_student_amount($section_id);
-        // $attendance_student_presente = $this->crud_model->get_attendance_student_section_amount($section_id, 1);
-        // $attendance_student_ausente = $this->crud_model->get_attendance_student_section_amount($section_id, 2);
-        // $attendance_student_tardanza = $this->crud_model->get_attendance_student_section_amount($section_id, 3);
-        // $attendance_student_ausencia_justificada = $this->crud_model->get_attendance_student_section_amount($section_id, 4);
+        // $attendance_student_presente = $this->crudAttendance->get_attendance_student_amount($section_id, 1);
+        // $attendance_student_ausente = $this->crudAttendance->get_attendance_student_amount($section_id, 2);
+        // $attendance_student_tardanza = $this->crudAttendance->get_attendance_student_amount($section_id, 3);
+        // $attendance_student_ausencia_justificada = $this->crudAttendance->get_attendance_student_amount($section_id, 4);
 
         // // Datos a enviar a la vista
         // $data = array(
@@ -4173,19 +4154,19 @@ class Admin extends CI_Controller
 
 
     function filter_attendance($section_id = '', $filter_type = '', $date = '', $start_date = '', $end_date = '', $dateMoth = '', $start_date_yearly = '', $end_date_yearly = '') {
-        $attendance_student_presente = $this->crud_model->get_attendance_student_section_amount2(
+        $attendance_student_presente = $this->crudAttendance->get_attendance_student_section_amount2(
             $section_id, 1, $filter_type, $date, $start_date, $end_date, $dateMoth, $start_date_yearly, $end_date_yearly
         );
     
-        $attendance_student_ausente = $this->crud_model->get_attendance_student_section_amount2(
+        $attendance_student_ausente = $this->crudAttendance->get_attendance_student_section_amount2(
             $section_id, 2, $filter_type, $date, $start_date, $end_date, $dateMoth, $start_date_yearly, $end_date_yearly
         );
     
-        $attendance_student_tardanza = $this->crud_model->get_attendance_student_section_amount2(
+        $attendance_student_tardanza = $this->crudAttendance->get_attendance_student_section_amount2(
             $section_id, 3, $filter_type, $date, $start_date, $end_date, $dateMoth, $start_date_yearly, $end_date_yearly
         );
     
-        $attendance_student_ausencia_justificada = $this->crud_model->get_attendance_student_section_amount2(
+        $attendance_student_ausencia_justificada = $this->crudAttendance->get_attendance_student_section_amount2(
             $section_id, 4, $filter_type, $date, $start_date, $end_date, $dateMoth, $start_date_yearly, $end_date_yearly
         );
     
@@ -4212,19 +4193,19 @@ class Admin extends CI_Controller
     
 
     function filter_attendance_student($student_id = '', $filter_type = '', $date = '', $start_date = '', $end_date = '', $dateMoth = '' , $start_date_yearly = '', $end_date_yearly = '') {
-        $attendance_student_presente = $this->crud_model->get_attendance_student_amount(
+        $attendance_student_presente = $this->crudAttendance->get_attendance_student_amount(
             $student_id, 1, $filter_type, $date, $start_date, $end_date, $dateMoth, $start_date_yearly, $end_date_yearly
         );
     
-        $attendance_student_ausente = $this->crud_model->get_attendance_student_amount(
+        $attendance_student_ausente = $this->crudAttendance->get_attendance_student_amount(
             $student_id, 2, $filter_type, $date, $start_date, $end_date, $dateMoth, $start_date_yearly, $end_date_yearly
         );
     
-        $attendance_student_tardanza = $this->crud_model->get_attendance_student_amount(
+        $attendance_student_tardanza = $this->crudAttendance->get_attendance_student_amount(
             $student_id, 3, $filter_type, $date, $start_date, $end_date, $dateMoth, $start_date_yearly, $end_date_yearly
         );
     
-        $attendance_student_ausencia_justificada = $this->crud_model->get_attendance_student_amount(
+        $attendance_student_ausencia_justificada = $this->crudAttendance->get_attendance_student_amount(
             $student_id, 4, $filter_type, $date, $start_date, $end_date, $dateMoth, $start_date_yearly, $end_date_yearly
         );
     
@@ -4255,7 +4236,7 @@ class Admin extends CI_Controller
         if ($this->session->userdata('admin_login') != 1)
             redirect(base_url(), 'refresh');
 
-        $student_info = $this->crud_model->get_student_info($student_id);
+        $student_info = $this->crudStudent->get_student_info($student_id);
        
         $breadcrumb = array(
             array(
@@ -8000,7 +7981,7 @@ class Admin extends CI_Controller
     //     $teachers = $this->crud_model->get_tearchers();
         
     //     foreach ($teachers as $row) {
-    //         $teacher_details = $this->crud_model->get_teachers_info($row['teacher_id']);
+    //         $teacher_details = $this->crudTeacher->get_teachers_info($row['teacher_id']);
             
     //         if (!empty($teacher_details)) {
     //             $firstname = isset($teacher_details['firstname']) ? $teacher_details['firstname'] : '';
@@ -8015,7 +7996,7 @@ class Admin extends CI_Controller
         $teachers = $this->crud_model->get_tearchers();
         
         foreach ($teachers as $row) {
-            $teacher_details = $this->crud_model->get_teachers_info($row['teacher_id']);
+            $teacher_details = $this->crudTeacher->get_teachers_info($row['teacher_id']);
             
             if (!empty($teacher_details)) {
                 $firstname = isset($teacher_details['firstname']) ? $teacher_details['firstname'] : '';
@@ -13320,12 +13301,12 @@ class Admin extends CI_Controller
 
     public function printReportCardES($student_id = '', $section_id = '')
     {
-        $student_data = $this->crud_model->get_student_info2($student_id);
+        $student_data = $this->crudStudent->get_student_info2($student_id);
         $section = $this->crud_model->get_section_info4($section_id);
         $class_name = $this->crud_model->get_class_name($section['class_id']);
         $academic_period = $this->crud_model->get_academic_period_name_per_section2($section['section_id']);
         $section_letter_name = $section['letter_name'];
-        $subjects = $this->crud_model->get_subjects_by_section2($section_id);
+        $subjects = $this->crudSubject->get_subjects_by_section2($section_id);
         $shift = ($section['shift_id'] == 1) ? ucfirst(get_phrase('morning')) : ucfirst(get_phrase('afternoon'));
         $academic_period_id = $section['academic_period_id'];
 
@@ -13656,7 +13637,7 @@ class Admin extends CI_Controller
     
         foreach ($subjects as $subject) {
             // Obtener las marcas del estudiante para la asignatura
-            $marks = $this->crud_model->get_marks_by_student_subject2($student_id, $subject['subject_id'], $section['academic_period_id']);
+            $marks = $this->crudMark->get_marks_by_student_subject2($student_id, $subject['subject_id'], $section['academic_period_id']);
     
             // Inicializar un array para almacenar los marks organizados por exam_type_id
             $marks_by_exam_type = array_fill(1, 21, ''); // Rellenar todas las posiciones con valores vacíos
@@ -13779,7 +13760,7 @@ class Admin extends CI_Controller
                 // Recorre las asignaturas y sus marcas
                 foreach ($subjects as $subject) {
                     // Obtener las marcas para el subject con exam_type_id = 21
-                    $marks = $this->crud_model->get_marks_by_student_subject3($student_id, $subject['subject_id'], $section['academic_period_id']);
+                    $marks = $this->crudMark->get_marks_by_student_subject3($student_id, $subject['subject_id'], $section['academic_period_id']);
                 
                     foreach ($marks as $mark) {
                         if ($mark['exam_type_id'] == 21 && ($mark['date'] !== null && $mark['date'] !== '' && $mark['mark_obtained'] < 7)) {
@@ -14159,7 +14140,7 @@ class Admin extends CI_Controller
     public function printStudentTableES($section_id = '')
     {
         // Obtener datos de los estudiantes y la sección
-        $student_data = $this->crud_model->get_students_per_section($section_id);
+        $student_data = $this->crudStudent>get_students_per_section($section_id);
         $section = $this->crud_model->get_section_info($section_id);
         $class_name = $this->crud_model->get_class_name($section['class_id']);
         $academic_period = $this->crud_model->get_academic_period_name_per_section($section_id);
@@ -14332,7 +14313,7 @@ class Admin extends CI_Controller
     public function printStudentTableEN($section_id = '')
     {
         // Obtener datos de los estudiantes y secciones
-        $student_data = $this->crud_model->get_students_per_section($section_id);
+        $student_data = $this->crudStudent>get_students_per_section($section_id);
         $section = $this->crud_model->get_section_info($section_id);
         $section_letter_name = $this->crud_model->get_section_letter_name($section_id);
         $class_name = $this->crud_model->get_class_name($section['class_id']);
@@ -15279,7 +15260,7 @@ class Admin extends CI_Controller
     public function printStudentAdmissionsTableES()
     {
         // Obtener datos de los estudiantes y la sección
-        $student_data = $this->crud_model->get_students_admissions();
+        $student_data = $this->crudStudent>get_students_admissions();
         $academic_period = $this->crud_model->get_active_academic_period_name();
 
         $studentsPerPage = 13;
@@ -15453,7 +15434,7 @@ class Admin extends CI_Controller
 
     public function printStudentAdmissionsTableEN()
     {
-        $student_data = $this->crud_model->get_students_admissions();
+        $student_data = $this->crudStudent>get_students_admissions();
         $academic_period = $this->crud_model->get_active_academic_period_name();
     
         // Número máximo de estudiantes por página
@@ -15633,7 +15614,7 @@ class Admin extends CI_Controller
     public function printStudentPreEnrollmentsTableES()
     {
         // Obtener datos de los estudiantes y la sección
-        $student_data = $this->crud_model->get_students_pre_enrollments();
+        $student_data = $this->crudStudent>get_students_pre_enrollments();
         $academic_period = $this->crud_model->get_active_academic_period_name();
 
         $studentsPerPage = 13;
@@ -15805,7 +15786,7 @@ class Admin extends CI_Controller
 
     public function printStudentPreEnrollmentsTableEN()
     {
-        $student_data = $this->crud_model->get_students_pre_enrollments();
+        $student_data = $this->crudStudent>get_students_pre_enrollments();
         $academic_period = $this->crud_model->get_active_academic_period_name();
     
         // Número máximo de estudiantes por página
@@ -15978,7 +15959,4 @@ class Admin extends CI_Controller
         // Mostrar el HTML
         echo $html;
     }
-    
-
-
 }
