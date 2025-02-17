@@ -1,10 +1,7 @@
 <?php
-if (!defined('BASEPATH'))
-    exit('No direct script access allowed');
 
 class Attendance extends CI_Controller
 {
-    
     
 	function __construct()
 	{
@@ -19,15 +16,6 @@ class Attendance extends CI_Controller
 		$this->output->set_header('Pragma: no-cache');
 		
     }
-    
-    public function index()
-    {
-        if ($this->session->userdata('admin_login') != 1)
-            redirect(base_url() . 'index.php?login', 'refresh');
-        if ($this->session->userdata('admin_login') == 1)
-            redirect(base_url() . 'index.php?admin/dashboard', 'refresh');
-    }
-    
 
 
     function attendance_student($class_id = '')
@@ -57,18 +45,6 @@ class Attendance extends CI_Controller
         $this->load->view('backend/index', $page_data);    
     }
 
-    // function attendance_student($class_id = '') {
-    //     if ($this->session->userdata('admin_login') != 1)
-    //         redirect(base_url(), 'refresh');
-        
-    //     $data['all_classes'] = $this->db->get('class')->result_array();
-    //     $data['page_name'] = 'attendance_student';
-    //     $data['page_icon'] = 'entypo-clipboard';
-    //     $data['page_title'] = 'Administrar asistencia de estudiantes';
-    //     $data['class_id'] = $class_id;
-    //     $this->load->view('backend/index', $data);
-    // }
-    
     function manage_attendance_student($date = '', $month = '', $year = '', $section_id = '')
     {
         if ($this->session->userdata('admin_login') != 1) {
@@ -189,7 +165,6 @@ class Attendance extends CI_Controller
     }
 
 
-
     function manage_attendance_student_selector()
     {
         // Construye la URL base
@@ -212,23 +187,6 @@ class Attendance extends CI_Controller
         // Redirige a la URL construida
         redirect($redirect_url, 'refresh');
     }
-
-    // function upload_observation_student_image () 
-    // {
-    //     $day      = $this->input->post('day');
-    //     $month  = $this->input->post('month');
-    //     $year = $this->input->post('year');
-    //     $class_id  = $this->input->post('class_id');
-    //     $section_id = $this->input->post('section_id');
-    //     $student_id = $this->input->post('student_id');
-
-    //     $student = $this->db->get_where('student', array('student_id' => $student_id))->row_array();
-    //     $file_name = $student['name'] . '-' . $student['matricula']  . '-ausenciaJustificada.jpg';
-    //     $file_path = 'uploads/asistencias/' . $file_name;
-
-    //     move_uploaded_file($_FILES['userfile']['tmp_name'], $file_path);
-    //     redirect(base_url() . 'index.php?admin/manage_attendance_student/'.$day.'/'.$month.'/'.$year.'/'.$class_id.'/'.$section_id);
-    // }
 
     function summary_attendance_student($section_id='')
     {
@@ -355,8 +313,6 @@ class Attendance extends CI_Controller
         ]);
     }
     
-    
-
     function filter_attendance_student($student_id = '', $filter_type = '', $date = '', $start_date = '', $end_date = '', $dateMoth = '' , $start_date_yearly = '', $end_date_yearly = '') {
         $attendance_student_presente = $this->crud_model->get_attendance_student_amount(
             $student_id, 1, $filter_type, $date, $start_date, $end_date, $dateMoth, $start_date_yearly, $end_date_yearly
@@ -393,8 +349,6 @@ class Attendance extends CI_Controller
             'percentage_justificados' => $percentage_justificados
         ]);
     }
-
-    
 
     function details_attendance_student($student_id='')
     {
@@ -459,6 +413,7 @@ class Attendance extends CI_Controller
             ));
             redirect(base_url() . 'index.php?admin/details_attendance_student/' . $param1, 'refresh');
     }
+
 
 
 

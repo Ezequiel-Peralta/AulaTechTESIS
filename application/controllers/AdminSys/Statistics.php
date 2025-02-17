@@ -1,10 +1,7 @@
 <?php
-if (!defined('BASEPATH'))
-    exit('No direct script access allowed');
 
 class Statistics extends CI_Controller
 {
-    
     
 	function __construct()
 	{
@@ -19,15 +16,6 @@ class Statistics extends CI_Controller
 		$this->output->set_header('Pragma: no-cache');
 		
     }
-    
-    public function index()
-    {
-        if ($this->session->userdata('admin_login') != 1)
-            redirect(base_url() . 'index.php?login', 'refresh');
-        if ($this->session->userdata('admin_login') == 1)
-            redirect(base_url() . 'index.php?admin/dashboard', 'refresh');
-    }
-    
 
 
     function statistics()
@@ -547,6 +535,18 @@ class Statistics extends CI_Controller
     }
 
     
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 }

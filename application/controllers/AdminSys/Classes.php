@@ -1,10 +1,7 @@
 <?php
-if (!defined('BASEPATH'))
-    exit('No direct script access allowed');
 
 class Classes extends CI_Controller
 {
-    
     
 	function __construct()
 	{
@@ -19,18 +16,8 @@ class Classes extends CI_Controller
 		$this->output->set_header('Pragma: no-cache');
 		
     }
-    
-    public function index()
-    {
-        if ($this->session->userdata('admin_login') != 1)
-            redirect(base_url() . 'index.php?login', 'refresh');
-        if ($this->session->userdata('admin_login') == 1)
-            redirect(base_url() . 'index.php?admin/dashboard', 'refresh');
-    }
-    
 
-
-    function classes($param1 = '', $param2 = '')
+	function classes($param1 = '', $param2 = '')
     {
         if ($this->session->userdata('admin_login') != 1)
             redirect(base_url(), 'refresh');
@@ -102,32 +89,18 @@ class Classes extends CI_Controller
         $this->load->view('backend/index', $page_data);
     }
 
-    function get_class_section($class_id)
+	function get_class_content2()
     {
-        $this->db->select('section.section_id, section.name');
-        $this->db->where('section.class_id', $class_id); 
-        $this->db->from('section');
-        $this->db->join('academic_period', 'section.academic_period_id = academic_period.id');
-        $this->db->where('academic_period.status_id', 1); 
-        $sections = $this->db->get()->result_array();
-        
-        foreach ($sections as $row) {
-            echo '<option value="' . $row['section_id'] . '">' . $row['name'] . '</option>';
+        $this->db->select('class.class_id, class.name');
+        $this->db->from('class');
+        $classes = $this->db->get()->result_array();
+        echo '<option value="">' . 'seleccionar' . '</option>';
+        foreach ($classes as $row) {
+            echo '<option value="' . $row['class_id'] . '">' . $row['name'] . '°' . '</option>';
         }
     }
 
-    function get_class_all_section()
-    {
-        $this->db->select('section.section_id, section.name');
-        $this->db->from('section');
-        $this->db->join('academic_period', 'section.academic_period_id = academic_period.id');
-        $this->db->where('academic_period.status_id', 1); 
-        $sections = $this->db->get()->result_array();
-        
-        foreach ($sections as $row) {
-            echo '<option value="' . $row['section_id'] . '">' . $row['name'] . '</option>';
-        }
-    }
+
 
 
 }

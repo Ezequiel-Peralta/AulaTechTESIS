@@ -1,10 +1,7 @@
 <?php
-if (!defined('BASEPATH'))
-    exit('No direct script access allowed');
 
 class Events extends CI_Controller
 {
-    
     
 	function __construct()
 	{
@@ -19,19 +16,6 @@ class Events extends CI_Controller
 		$this->output->set_header('Pragma: no-cache');
 		
     }
-    
-    public function index()
-    {
-        if ($this->session->userdata('admin_login') != 1)
-            redirect(base_url() . 'index.php?login', 'refresh');
-        if ($this->session->userdata('admin_login') == 1)
-            redirect(base_url() . 'index.php?admin/dashboard', 'refresh');
-    }
-
-
-
-
-
 
     function events($param1 = '', $param2 = '', $param3 = '', $param4 = '', $param5 = '', $param6 = '', $param7 = '', $param8 = '', $param9 = '', $param10 = '', $param11 = '', $param12 = '', $param13 = '',  $param14 = '') {
         if ($this->session->userdata('admin_login') != 1) {
@@ -300,6 +284,8 @@ class Events extends CI_Controller
         
         
     }
+
+
 
 
 

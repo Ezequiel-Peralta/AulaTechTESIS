@@ -1,10 +1,7 @@
 <?php
-if (!defined('BASEPATH'))
-    exit('No direct script access allowed');
 
 class Principal extends CI_Controller
 {
-    
     
 	function __construct()
 	{
@@ -19,15 +16,7 @@ class Principal extends CI_Controller
 		$this->output->set_header('Pragma: no-cache');
 		
     }
-    
-    public function index()
-    {
-        if ($this->session->userdata('admin_login') != 1)
-            redirect(base_url() . 'index.php?login', 'refresh');
-        if ($this->session->userdata('admin_login') == 1)
-            redirect(base_url() . 'index.php?admin/dashboard', 'refresh');
-    }
-    
+
 
     function principals_information()
     {
@@ -60,7 +49,6 @@ class Principal extends CI_Controller
         $this->load->view('backend/index', $page_data);
     }
 
-
     function principal_profile($principal_id = '')
     {
         if ($this->session->userdata('admin_login') != 1)
@@ -85,9 +73,6 @@ class Principal extends CI_Controller
         
         $this->load->view('backend/index', $page_data);
     }
-
-
-
 
     function principal($param1 = '', $param2 = '', $param3 = '')
     {
@@ -279,7 +264,6 @@ class Principal extends CI_Controller
     }
     
 
-
     function add_principal()
 	{
 		if ($this->session->userdata('admin_login') != 1)
@@ -302,6 +286,8 @@ class Principal extends CI_Controller
 		$page_data['page_title'] = ucfirst(get_phrase('add_principal'));
 		$this->load->view('backend/index', $page_data);
 	}
+
+
     function edit_principal($principal_id = '')
 	{
 		if ($this->session->userdata('admin_login') != 1)
@@ -377,5 +363,5 @@ class Principal extends CI_Controller
 
 
 
+
 }
-    

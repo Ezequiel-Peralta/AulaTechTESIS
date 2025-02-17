@@ -1,10 +1,7 @@
 <?php
-if (!defined('BASEPATH'))
-    exit('No direct script access allowed');
 
-class TeacherAide extends CI_Controller
+class Secretary extends CI_Controller
 {
-    
     
 	function __construct()
 	{
@@ -19,19 +16,8 @@ class TeacherAide extends CI_Controller
 		$this->output->set_header('Pragma: no-cache');
 		
     }
-    
-    public function index()
-    {
-        if ($this->session->userdata('admin_login') != 1)
-            redirect(base_url() . 'index.php?login', 'refresh');
-        if ($this->session->userdata('admin_login') == 1)
-            redirect(base_url() . 'index.php?admin/dashboard', 'refresh');
-    }
-    
 
-
-
-    function teachers_aide_information()
+    function secretaries_information()
     {
         if ($this->session->userdata('admin_login') != 1)
             redirect('login', 'refresh');
@@ -42,26 +28,27 @@ class TeacherAide extends CI_Controller
                 'url' => base_url('index.php?admin/dashboard')
             ),
             array(
-                'text' => ucfirst(get_phrase('manage_teachers_aide')),
-                'url' => base_url('index.php?admin/teachers_aide_information/')
+                'text' => ucfirst(get_phrase('manage_secretaries')),
+                'url' => base_url('index.php?admin/secretaries_information/')
             )
         );
                     
         $page_data['breadcrumb'] = $breadcrumb;
 
-        $this->db->select('teacher_aide.teacher_aide_id, teacher_aide.email, teacher_aide.username, teacher_aide_details.firstname, teacher_aide_details.lastname, teacher_aide_details.dni, teacher_aide_details.photo, teacher_aide_details.user_status_id');
-        $this->db->from('teacher_aide');
-        $this->db->join('teacher_aide_details', 'teacher_aide.teacher_aide_id = teacher_aide_details.teacher_aide_id');
-        $this->db->order_by('teacher_aide_details.lastname', 'ASC');
+        $this->db->select('secretary.secretary_id, secretary.email, secretary.username, secretary_details.firstname, secretary_details.lastname, secretary_details.dni, secretary_details.photo, secretary_details.user_status_id');
+        $this->db->from('secretary');
+        $this->db->join('secretary_details', 'secretary.secretary_id = secretary_details.secretary_id');
+        $this->db->order_by('secretary_details.lastname', 'ASC');
         $query = $this->db->get();
-        $page_data['teachers_aide']  = $query->result_array();
-        $page_data['page_name']   = 'teachers_aide_information';
-        $page_data['page_title']  = ucfirst(get_phrase('manage_teachers_aide'));
+        $page_data['secretaries']  = $query->result_array();
+
+        $page_data['page_name']   = 'secretaries_information';
+        $page_data['page_title']  = ucfirst(get_phrase('manage_secretaries'));
         
         $this->load->view('backend/index', $page_data);
     }
 
-    function teacher_aide_profile($teacher_aide_id = '')
+    function secretary_profile($secretary_id = '')
     {
         if ($this->session->userdata('admin_login') != 1)
             redirect('login', 'refresh');
@@ -72,23 +59,21 @@ class TeacherAide extends CI_Controller
                 'url' => base_url('index.php?admin/dashboard')
             ),
             array(
-                'text' => ucfirst(get_phrase('manage_teachers_aide')) . '&nbsp;&nbsp;/&nbsp;&nbsp;' . ucfirst(get_phrase('view_profile')),
-                'url' => base_url('index.php?admin/teacher_aide_profile/' . $teacher_aide_id)
+                'text' => ucfirst(get_phrase('manage_secretaries')) . '&nbsp;&nbsp;/&nbsp;&nbsp;' . ucfirst(get_phrase('view_profile')),
+                'url' => base_url('index.php?admin/secretary_profile/' . $secretary_id)
             )
         );
                     
         $page_data['breadcrumb'] = $breadcrumb;
 
-        $page_data['page_name']   = 'teacher_aide_profile';
+        $page_data['page_name']   = 'secretary_profile';
         $page_data['page_title']  = ucfirst(get_phrase('view_profile'));
-        $page_data['param2']  = $teacher_aide_id;
+        $page_data['param2']  = $secretary_id;
         
         $this->load->view('backend/index', $page_data);
     }
 
-
-
-    function teacher_aide($param1 = '', $param2 = '', $param3 = '')
+    function secretary($param1 = '', $param2 = '', $param3 = '')
     {
         if ($this->session->userdata('admin_login') != 1)
             redirect(base_url(), 'refresh');
@@ -97,8 +82,8 @@ class TeacherAide extends CI_Controller
             $data['username']    			= $this->input->post('username');
             $data['password']    			= $this->input->post('password');
 
-            $this->db->insert('teacher_aide', $data);
-            $insertedTeacherAideId = $this->db->insert_id();
+            $this->db->insert('secretary', $data);
+            $insertedSecretaryId = $this->db->insert_id();
 
             $dataAddress['state'] = $this->input->post('state');
             $dataAddress['postalcode'] = $this->input->post('postalcode');
@@ -110,9 +95,9 @@ class TeacherAide extends CI_Controller
             $this->db->insert('address', $dataAddress);
             $insertedAddressId = $this->db->insert_id();
             
-            $dataDetails['teacher_aide_id'] = $insertedTeacherAideId;
+            $dataDetails['secretary_id'] = $insertedSecretaryId;
             $dataDetails['address_id'] = $insertedAddressId;
-            $dataDetails['user_group_id']        			= '4';
+            $dataDetails['user_group_id']        			= '5';
             $dataDetails['firstname']        			= $this->input->post('firstname');
             $dataDetails['lastname']        			= $this->input->post('lastname');
             $dataDetails['dni']        			= $this->input->post('dni');
@@ -123,27 +108,18 @@ class TeacherAide extends CI_Controller
             $dataDetails['user_status_id']  	 = 1;
 
             if (!empty($_FILES['userfile']['name'])) {
-                $file_name = 'teacher aide id - ' . $insertedTeacherAideId . '.jpg';
-                $file_path = 'uploads/teacher_aide_image/' . $file_name;
+                $file_name = 'secretary id - ' . $insertedSecretaryId . '.jpg';
+                $file_path = 'uploads/secretary_image/' . $file_name;
                 move_uploaded_file($_FILES['userfile']['tmp_name'], $file_path);
                 $dataDetails['photo'] = $file_path;
             } else {
                 $dataDetails['photo'] = 'assets/images/default-user-img.jpg';
             }
 
-            $this->db->insert('teacher_aide_details', $dataDetails);
-
-            $section_ids = $this->input->post('section_id');
-
-            if (!empty($section_ids)) {
-                foreach ($section_ids as $section_id) {
-                    $this->db->where('section_id', $section_id);
-                    $this->db->update('section', array('teacher_aide_id' => $insertedTeacherAideId));
-                }
-            }
+            $this->db->insert('secretary_details', $dataDetails);
 
             $this->session->set_flashdata('flash_message', array(
-                'title' => ucfirst(get_phrase('teacher_aide_added_successfully')),
+                'title' => ucfirst(get_phrase('secretary_added_successfully')),
                 'text' => '',
                 'icon' => 'success',
                 'showCloseButton' => 'true',
@@ -152,19 +128,19 @@ class TeacherAide extends CI_Controller
                 'timer' => '10000',
                 'timerProgressBar' => 'true',
             ));
-            redirect(base_url() . 'index.php?admin/teachers_aide_information/', 'refresh');
+            redirect(base_url() . 'index.php?admin/secretaries_information/', 'refresh');
         }
         if ($param1 == 'update') {
-            $teacher_aide_id = $param2; 
-            $teacher_aide_details = $this->db->get_where('teacher_aide_details', array('teacher_aide_id' => $teacher_aide_id))->row_array();
-            $address_id = $teacher_aide_details['address_id'];
+            $secretary_id = $param2; 
+            $secretary_details = $this->db->get_where('secretary_details', array('secretary_id' => $secretary_id))->row_array();
+            $address_id = $secretary_details['address_id'];
         
             $data['email'] = $this->input->post('email');
             $data['username'] = $this->input->post('username');
             $data['password'] = $this->input->post('password');
         
-            $this->db->where('teacher_aide_id', $teacher_aide_id);
-            $this->db->update('teacher_aide', $data);
+            $this->db->where('secretary_id', $secretary_id);
+            $this->db->update('secretary', $data);
         
             $dataAddress['state'] = $this->input->post('state');
             $dataAddress['postalcode'] = $this->input->post('postalcode');
@@ -185,58 +161,23 @@ class TeacherAide extends CI_Controller
             $dataDetails['gender_id'] = $this->input->post('gender_id');
         
             if (!empty($_FILES['userfile']['name'])) {
-                if (!empty($teacher_aide_details['photo']) && file_exists($teacher_aide_details['photo'])) {
-                    unlink($teacher_aide_details['photo']);
+                if (!empty($secretary_details['photo']) && file_exists($secretary_details['photo'])) {
+                    unlink($secretary_details['photo']);
                 }
-                $file_name = 'teacher aide id - ' . $teacher_aide_id . '.jpg';
-                $file_path = 'uploads/teacher_aide_image/' . $file_name;
+                $file_name = 'secretary id - ' . $secretary_id . '.jpg';
+                $file_path = 'uploads/secretary_image/' . $file_name;
                 $dataDetails['photo'] = $file_path;
                 move_uploaded_file($_FILES['userfile']['tmp_name'], $file_path);
             } else {
-                $dataDetails['photo'] = $teacher_aide_details['photo'];
+                $dataDetails['photo'] = $secretary_details['photo'];
             }
         
-            $this->db->where('teacher_aide_id', $teacher_aide_id);
-            $this->db->update('teacher_aide_details', $dataDetails);
+            $this->db->where('secretary_id', $secretary_id);
+            $this->db->update('secretary_details', $dataDetails);
         
-            $section_ids = $this->input->post('section_id');
-            if (!is_array($section_ids)) {
-                $section_ids = []; 
-            }
-
-            $existing_section_ids = $this->db->select('section_id')
-                ->from('section')
-                ->where('teacher_aide_id', $teacher_aide_id)
-                ->get()
-                ->result_array();
-
-            $existing_section_ids = array_column($existing_section_ids, 'section_id');
-
-            $sections_to_delete = array_diff($existing_section_ids, $section_ids); 
-            $sections_to_add = array_diff($section_ids, $existing_section_ids);
-            $sections_to_keep = array_intersect($existing_section_ids, $section_ids);
-
-            // if (empty($section_ids)) {
-            //     $this->db->where('teacher_aide_id', $teacher_aide_id)
-            //             ->update('section', ['teacher_aide_id' => NULL]);
-            // } else {
-                if (!empty($sections_to_delete)) {
-                    $this->db->where('teacher_aide_id', $teacher_aide_id)
-                            ->where_in('section_id', $sections_to_delete)
-                            ->update('section', ['teacher_aide_id' => NULL]);
-                }
-
-                if (!empty($sections_to_add)) {
-                    foreach ($sections_to_add as $section_id) {
-                        $this->db->where('section_id', $section_id);
-                        $this->db->update('section', ['teacher_aide_id' => $teacher_aide_id]);
-                    }
-                }
-            // }
-
         
             $this->session->set_flashdata('flash_message', array(
-                'title' => ucfirst(get_phrase('teacher_aide_updated_successfully')),
+                'title' => ucfirst(get_phrase('secretary_updated_successfully')),
                 'text' => '',
                 'icon' => 'success',
                 'showCloseButton' => 'true',
@@ -246,20 +187,20 @@ class TeacherAide extends CI_Controller
                 'timerProgressBar' => 'true',
             ));
         
-            redirect(base_url() . 'index.php?admin/teachers_aide_information/', 'refresh');
+            redirect(base_url() . 'index.php?admin/secretaries_information/', 'refresh');
         }
 
-        if ($param1 == 'disable_teacher_aide') {
-            $teacher_aide_id = $param2;  
+        if ($param1 == 'disable_secretary') {
+            $secretary_id = $param2;  
     
-            if ($teacher_aide_id) {
-                $this->db->where('teacher_aide_id', $teacher_aide_id);
-                $this->db->update('teacher_aide_details', array(
+            if ($secretary_id) {
+                $this->db->where('secretary_id', $secretary_id);
+                $this->db->update('secretary_details', array(
                     'user_status_id' => 0
                 ));
     
                 $this->session->set_flashdata('flash_message', array(
-                    'title' => ucfirst(get_phrase('teacher_aide_disabled_successfully')),
+                    'title' => ucfirst(get_phrase('secretary_disabled_successfully')),
                     'text' => '',
                     'icon' => 'success',
                     'showCloseButton' => 'true',
@@ -270,7 +211,7 @@ class TeacherAide extends CI_Controller
                 ));
             } else {
                 $this->session->set_flashdata('flash_message', array(
-                    'title' => ucfirst(get_phrase('error_disabling_teacher_aide')),
+                    'title' => ucfirst(get_phrase('error_disabling_secretary')),
                     'text' => '',
                     'icon' => 'error',
                     'showCloseButton' => 'true',
@@ -281,20 +222,20 @@ class TeacherAide extends CI_Controller
                 ));
             }
     
-            redirect(base_url() . 'index.php?admin/teachers_aide_information/', 'refresh');
+            redirect(base_url() . 'index.php?admin/secretaries_information/', 'refresh');
         }
 
-        if ($param1 == 'enable_teacher_aide') {
-            $teacher_aide_id = $param2;  
+        if ($param1 == 'enable_secretary') {
+            $secretary_id = $param2;  
     
-            if ($teacher_aide_id) {
-                $this->db->where('teacher_aide_id', $teacher_aide_id);
-                $this->db->update('teacher_aide_details', array(
+            if ($secretary_id) {
+                $this->db->where('secretary_id', $secretary_id);
+                $this->db->update('secretary_details', array(
                     'user_status_id' => 1
                 ));
     
                 $this->session->set_flashdata('flash_message', array(
-                    'title' => ucfirst(get_phrase('teacher_aide_enabled_successfully')),
+                    'title' => ucfirst(get_phrase('secretary_enabled_successfully')),
                     'text' => '',
                     'icon' => 'success',
                     'showCloseButton' => 'true',
@@ -305,7 +246,7 @@ class TeacherAide extends CI_Controller
                 ));
             } else {
                 $this->session->set_flashdata('flash_message', array(
-                    'title' => ucfirst(get_phrase('error_enabling_teacher_aide')),
+                    'title' => ucfirst(get_phrase('error_enabling_secretary')),
                     'text' => '',
                     'icon' => 'error',
                     'showCloseButton' => 'true',
@@ -316,11 +257,12 @@ class TeacherAide extends CI_Controller
                 ));
             }
     
-            redirect(base_url() . 'index.php?admin/teachers_aide_information/', 'refresh');
+            redirect(base_url() . 'index.php?admin/secretaries_information/', 'refresh');
         }
         
     }
-	function teacher_aide_add()
+
+    function add_secretary()
 	{
 		if ($this->session->userdata('admin_login') != 1)
             redirect(base_url(), 'refresh');
@@ -331,54 +273,27 @@ class TeacherAide extends CI_Controller
                 'url' => base_url('index.php?admin/dashboard')
             ),
             array(
-                'text' => ucfirst(get_phrase('add_teacher_aide')),
-                'url' => base_url('index.php?admin/teacher_aide_add')
+                'text' => ucfirst(get_phrase('add_secretary')),
+                'url' => base_url('index.php?admin/add_secretary')
             )
         );
                 
         $page_data['breadcrumb'] = $breadcrumb;
 
-		$page_data['page_name']  = 'teacher_aide_add';
-        $page_data['page_icon'] = 'entypo-graduation-cap';
-		$page_data['page_title'] = ucfirst(get_phrase('add_teacher_aide'));
+		$page_data['page_name']  = 'add_secretary';
+		$page_data['page_title'] = ucfirst(get_phrase('add_secretary'));
 		$this->load->view('backend/index', $page_data);
 	}
 
-
-
-    function add_teacher_aide()
-	{
-		if ($this->session->userdata('admin_login') != 1)
-            redirect(base_url(), 'refresh');
-			
-        $breadcrumb = array(
-            array(
-                'text' => ucfirst(get_phrase('home')),
-                'url' => base_url('index.php?admin/dashboard')
-            ),
-            array(
-                'text' => ucfirst(get_phrase('add_teacher_aide')),
-                'url' => base_url('index.php?admin/add_teacher_aide')
-            )
-        );
-                
-        $page_data['breadcrumb'] = $breadcrumb;
-
-		$page_data['page_name']  = 'add_teacher_aide';
-		$page_data['page_title'] = ucfirst(get_phrase('add_teacher_aide'));
-		$this->load->view('backend/index', $page_data);
-	}
-
-    function edit_teacher_aide($teacher_aide_id = '')
+    function edit_secretary($secretary_id = '')
 	{
 		if ($this->session->userdata('admin_login') != 1)
             redirect('login', 'refresh');
 
-            
-            $page_complete_name = 'edit_teacher_aide'; // Nombre de la página
+            $page_complete_name = 'edit_secretary'; // Nombre de la página
             $user_id = $this->session->userdata('login_user_id'); // ID del usuario actual
             $user_group = $this->session->userdata('login_type'); // Grupo del usuario actual
-            $element_id = $teacher_aide_id; // ID del elemento específico (ej. curso o sección)
+            $element_id = $secretary_id; // ID del elemento específico (ej. curso o sección)
 
             // Buscar registros para este page_name y element_id
             $this->db->where('page_name', $page_complete_name);
@@ -421,62 +336,26 @@ class TeacherAide extends CI_Controller
             }
 
 
-
         $breadcrumb = array(
             array(
                 'text' => ucfirst(get_phrase('home')),
                 'url' => base_url()
             ),
             array(
-                'text' => ucfirst(get_phrase('edit_teacher_aide')),
+                'text' => ucfirst(get_phrase('edit_secretary')),
                 'url' => base_url('')
             )
         );
 
-        $selected_section_ids = array_map('intval', array_column(
-            $this->db->select('section_id')
-                     ->where('teacher_aide_id', $teacher_aide_id)
-                     ->get('section')
-                     ->result_array(),
-            'section_id'
-        ));
-  
-        $page_data['selected_section_ids'] = $selected_section_ids;
 
         $page_data['breadcrumb'] = $breadcrumb;
 			
-		$page_data['page_name']  = 'edit_teacher_aide';
-		$page_data['page_title'] 	= 'edit_teacher_aide';
-		$page_data['teacher_aide_id'] 	= $teacher_aide_id;
+		$page_data['page_name']  = 'edit_secretary';
+		$page_data['page_title'] 	= 'edit_secretary';
+		$page_data['secretary_id'] 	= $secretary_id;
 		$this->load->view('backend/index', $page_data);
 	}
 
-
-
-    function teacherAide_edit($param2 = '')
-	{
-		if ($this->session->userdata('admin_login') != 1)
-            redirect('login', 'refresh');
-
-        $breadcrumb = array(
-            array(
-                'text' => ucfirst(get_phrase('home')),
-                'url' => base_url()
-            ),
-            array(
-                'text' => ucfirst(get_phrase('edit_teacherAide')),
-                'url' => base_url('')
-            )
-        );
-                
-        $page_data['breadcrumb'] = $breadcrumb;
-			
-		$page_data['page_name']  = 'teacherAide_edit';
-		$page_data['page_title'] 	= 'teacherAide_edit';
-		$page_data['param2'] 	= $param2;
-		$this->load->view('backend/index', $page_data);
-	}
 
 
 }
-      

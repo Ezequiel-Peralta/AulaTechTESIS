@@ -1,10 +1,7 @@
 <?php
-if (!defined('BASEPATH'))
-    exit('No direct script access allowed');
 
 class Library extends CI_Controller
 {
-    
     
 	function __construct()
 	{
@@ -19,15 +16,7 @@ class Library extends CI_Controller
 		$this->output->set_header('Pragma: no-cache');
 		
     }
-    
-    public function index()
-    {
-        if ($this->session->userdata('admin_login') != 1)
-            redirect(base_url() . 'index.php?login', 'refresh');
-        if ($this->session->userdata('admin_login') == 1)
-            redirect(base_url() . 'index.php?admin/dashboard', 'refresh');
-    }
-    
+
 
     function add_library()
 	{
@@ -37,7 +26,8 @@ class Library extends CI_Controller
         $breadcrumb = array(
             array(
                 'text' => ucfirst(get_phrase('home')),
-                'url' => base_url('index.php?admin/dashboard')
+                'url' => base_url('index.php?/Admin/dashboard.php')
+
             ),
             array(
                 'text' => ucfirst(get_phrase('add_library')),
@@ -294,6 +284,7 @@ class Library extends CI_Controller
     }
 
 
+
     function edit_library($library_id = '')
 	{
 		if ($this->session->userdata('admin_login') != 1)
@@ -361,8 +352,7 @@ class Library extends CI_Controller
 		$page_data['page_title'] = ucfirst(get_phrase('edit_library'));
 		$this->load->view('backend/index', $page_data);
 	}
-
-
+	
 
     function view_library($section_id = '', $subject_id = '')
     {
@@ -464,6 +454,7 @@ class Library extends CI_Controller
         $this->load->view('backend/index', $page_data);
     }
 
+
     function manage_library()
 	{
 		if ($this->session->userdata('admin_login') != 1)
@@ -485,7 +476,6 @@ class Library extends CI_Controller
 		$page_data['page_title'] 	= ucfirst(get_phrase('manage_library'));
 		$this->load->view('backend/index', $page_data);
 	}
-
 
     function library_information($section_id = '')
 	{
@@ -521,5 +511,5 @@ class Library extends CI_Controller
 		$this->load->view('backend/index', $page_data);
 	}
 
-    
-}  
+
+}

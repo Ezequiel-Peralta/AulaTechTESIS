@@ -1,10 +1,7 @@
 <?php
-if (!defined('BASEPATH'))
-    exit('No direct script access allowed');
 
 class Marks extends CI_Controller
 {
-    
     
 	function __construct()
 	{
@@ -19,16 +16,30 @@ class Marks extends CI_Controller
 		$this->output->set_header('Pragma: no-cache');
 		
     }
-    
-    public function index()
-    {
-        if ($this->session->userdata('admin_login') != 1)
-            redirect(base_url() . 'index.php?login', 'refresh');
-        if ($this->session->userdata('admin_login') == 1)
-            redirect(base_url() . 'index.php?admin/dashboard', 'refresh');
-    }
 
+    function student_mark_history($class_id = '')
+	{
+		if ($this->session->userdata('admin_login') != 1)
+            redirect('login', 'refresh');
 
+        $breadcrumb = array(
+            array(
+                'text' => ucfirst(get_phrase('home')),
+                'url' => base_url()
+            ),
+            array(
+                'text' => ucfirst(get_phrase('manage_marks')),
+                'url' => base_url('index.php?admin/attendance_student/' . $class_id)
+            )
+        );
+                
+        $page_data['breadcrumb'] = $breadcrumb;
+			
+		$page_data['page_name']  = 'student_mark_history';
+		$page_data['page_title'] 	= ucfirst(get_phrase('academic_history')) . ' - ' . $this->crud_model->get_class_name($class_id);
+		$page_data['class_id'] 	= $class_id;
+		$this->load->view('backend/index', $page_data);
+	}
 
     function marks_per_exam($class_id = '', $section_id = '', $subject_id = '', $exam_id = '', $exam_type_id = '')
     {
@@ -161,7 +172,6 @@ class Marks extends CI_Controller
 		$page_data['class_id'] 	= $class_id;
 		$this->load->view('backend/index', $page_data);
 	}
-
 
     function view_student_mark($section_id = '', $subject_id = '')
 	{
@@ -310,7 +320,6 @@ class Marks extends CI_Controller
 		$this->load->view('backend/index', $page_data);
 	}
 
-
     function mark($operation = '', $class_id = '', $section_id = '', $subject_id = '',  $student_id = '', $exam_type = '', $mark_obtained = '',  $date = '', $mark_id = '') {
         if ($this->session->userdata('admin_login') != 1)
             redirect('login', 'refresh');
@@ -385,7 +394,13 @@ class Marks extends CI_Controller
     }
     
 
-  
+
+
+
+
+
+
+
 
 
 

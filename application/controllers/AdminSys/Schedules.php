@@ -1,10 +1,7 @@
 <?php
-if (!defined('BASEPATH'))
-    exit('No direct script access allowed');
 
-class schedules extends CI_Controller
+class Schedules extends CI_Controller
 {
-    
     
 	function __construct()
 	{
@@ -19,19 +16,6 @@ class schedules extends CI_Controller
 		$this->output->set_header('Pragma: no-cache');
 		
     }
-    
-    public function index()
-    {
-        if ($this->session->userdata('admin_login') != 1)
-            redirect(base_url() . 'index.php?login', 'refresh');
-        if ($this->session->userdata('admin_login') == 1)
-            redirect(base_url() . 'index.php?admin/dashboard', 'refresh');
-    }
-    
-
-
-
-
 
 
     function schedules($param1 = '', $param2 = '' , $param3 = '', $param4 = '')
@@ -149,7 +133,6 @@ class schedules extends CI_Controller
     }
 
 
-
     function add_schedule()
 	{
 		if ($this->session->userdata('admin_login') != 1)
@@ -244,8 +227,6 @@ class schedules extends CI_Controller
 		$this->load->view('backend/index', $page_data);
 	}
 
-
-
     function view_schedules($section_id = '', $teacher_id = '')
     {
         if ($this->session->userdata('admin_login') != 1) {
@@ -333,7 +314,6 @@ class schedules extends CI_Controller
         $this->load->view('backend/index', $page_data);
     }
 
-
     function manage_schedules()
 	{
 		if ($this->session->userdata('admin_login') != 1)
@@ -382,6 +362,7 @@ class schedules extends CI_Controller
 		$page_data['page_title'] 	= ucfirst(get_phrase('manage_schedules')) . ' - ' . $section_data['name'];
 		$this->load->view('backend/index', $page_data);
 	}
+
 
 
 }

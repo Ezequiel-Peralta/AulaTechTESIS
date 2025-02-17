@@ -1,10 +1,7 @@
 <?php
-if (!defined('BASEPATH'))
-    exit('No direct script access allowed');
 
 class Behavior extends CI_Controller
 {
-    
     
 	function __construct()
 	{
@@ -19,15 +16,6 @@ class Behavior extends CI_Controller
 		$this->output->set_header('Pragma: no-cache');
 		
     }
-    
-    public function index()
-    {
-        if ($this->session->userdata('admin_login') != 1)
-            redirect(base_url() . 'index.php?login', 'refresh');
-        if ($this->session->userdata('admin_login') == 1)
-            redirect(base_url() . 'index.php?admin/dashboard', 'refresh');
-    }
-
 
 
     function add_behavior($param1 = '', $param2 = '', $param3 = '')
@@ -55,6 +43,7 @@ class Behavior extends CI_Controller
 		$page_data['page_title'] = ucfirst(get_phrase('add_behavior'));
 		$this->load->view('backend/index', $page_data);
 	}
+
 
     function edit_behavior($behavior_id = '')
 	{
@@ -185,9 +174,6 @@ class Behavior extends CI_Controller
     }
 
 
-
-
-
     function behavior_information($param1 = '', $param2 = '', $param3 = '')
     {
         if ($this->session->userdata('admin_login') != 1)
@@ -311,10 +297,7 @@ class Behavior extends CI_Controller
     }
 
     
-
-
-
-    function student_behavior($student_id = '')
+	function student_behavior($student_id = '')
     {
         if ($this->session->userdata('admin_login') != 1)
             redirect('login', 'refresh');
@@ -354,7 +337,6 @@ class Behavior extends CI_Controller
     }
 
 
-
     function manage_behavior()
 	{
 		if ($this->session->userdata('admin_login') != 1)
@@ -376,6 +358,18 @@ class Behavior extends CI_Controller
 		$page_data['page_title'] 	= ucfirst(get_phrase('manage_behavior'));
 		$this->load->view('backend/index', $page_data);
 	}
+
+	
+
+
+
+
+
+
+
+
+
+
 
 
 

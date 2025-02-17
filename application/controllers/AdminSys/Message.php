@@ -1,10 +1,7 @@
 <?php
-if (!defined('BASEPATH'))
-    exit('No direct script access allowed');
 
 class Message extends CI_Controller
 {
-    
     
 	function __construct()
 	{
@@ -19,18 +16,9 @@ class Message extends CI_Controller
 		$this->output->set_header('Pragma: no-cache');
 		
     }
-    
-    public function index()
-    {
-        if ($this->session->userdata('admin_login') != 1)
-            redirect(base_url() . 'index.php?login', 'refresh');
-        if ($this->session->userdata('admin_login') == 1)
-            redirect(base_url() . 'index.php?admin/dashboard', 'refresh');
-    }
-    
 
 
-function message($param1 = 'message_default', $param2 = '', $param3 = '') {
+    function message($param1 = 'message_default', $param2 = '', $param3 = '') {
         if ($this->session->userdata('admin_login') != 1)
             redirect(base_url(), 'refresh');
     
@@ -794,9 +782,6 @@ function message($param1 = 'message_default', $param2 = '', $param3 = '') {
         $this->load->view('backend/index', $page_data);
     }
 
-
-
-
     function message_tag($param1 = '') {
         if ($this->session->userdata('admin_login') != 1)
             redirect(base_url(), 'refresh');
@@ -1219,10 +1204,6 @@ function message($param1 = 'message_default', $param2 = '', $param3 = '') {
         $this->load->view('backend/index', $page_data);
     }
 
-
-
-
-
     function message_draft($param1 = 'message_default', $param2 = '', $param3 = '') {
         if ($this->session->userdata('admin_login') != 1)
             redirect(base_url(), 'refresh');
@@ -1595,8 +1576,6 @@ function message($param1 = 'message_default', $param2 = '', $param3 = '') {
         $this->load->view('backend/index', $page_data);
     }
 
-
-
     function message_trash($param1 = 'message_default', $param2 = '', $param3 = '') {
         if ($this->session->userdata('admin_login') != 1)
             redirect(base_url(), 'refresh');
@@ -1960,7 +1939,6 @@ function message($param1 = 'message_default', $param2 = '', $param3 = '') {
         $this->load->view('backend/index', $page_data);
     }
 
-    
 
     function message_read($message_thread_code = '') {
         // Verificar que el usuario esté logueado
@@ -2374,7 +2352,7 @@ function message($param1 = 'message_default', $param2 = '', $param3 = '') {
         // Cargar la vista
         $this->load->view('backend/index', $page_data);
     }
-    
+
     function get_user_details($group, $id) {
         // Verificar que el grupo no esté vacío
         if (empty($group) || empty($id)) {
@@ -2412,7 +2390,6 @@ function message($param1 = 'message_default', $param2 = '', $param3 = '') {
         // Unir los detalles con el email
         return array_merge($details, $email);
     }
-    
     
     function message_new($param1 = '', $param2 = '') {
         if ($this->session->userdata('admin_login') != 1)
@@ -3135,7 +3112,6 @@ function message($param1 = 'message_default', $param2 = '', $param3 = '') {
         $this->load->view('backend/index', $page_data);
     }
     
-
     function message_sent($param1 = 'message_default', $param2 = '', $param3 = '') {
         if ($this->session->userdata('admin_login') != 1)
             redirect(base_url(), 'refresh');
@@ -3499,7 +3475,6 @@ function message($param1 = 'message_default', $param2 = '', $param3 = '') {
     
         $this->load->view('backend/index', $page_data);
     }
-
 
     function message_settings($param1 = '', $param2 = '', $param3 = '', $param4 = '') {
         // Verificar que el usuario esté logueado
@@ -3890,6 +3865,5 @@ function message($param1 = 'message_default', $param2 = '', $param3 = '') {
         }
     
     }
-
 
 }

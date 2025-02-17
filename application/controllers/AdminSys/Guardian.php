@@ -1,10 +1,7 @@
 <?php
-if (!defined('BASEPATH'))
-    exit('No direct script access allowed');
 
 class Guardian extends CI_Controller
 {
-    
     
 	function __construct()
 	{
@@ -19,15 +16,6 @@ class Guardian extends CI_Controller
 		$this->output->set_header('Pragma: no-cache');
 		
     }
-    
-    public function index()
-    {
-        if ($this->session->userdata('admin_login') != 1)
-            redirect(base_url() . 'index.php?login', 'refresh');
-        if ($this->session->userdata('admin_login') == 1)
-            redirect(base_url() . 'index.php?admin/dashboard', 'refresh');
-    }
-
 
     function guardian_profile($guardian_id = '')
     {
@@ -69,7 +57,6 @@ class Guardian extends CI_Controller
         }
     }
 
-
     function guardian_add()
 	{
 		if ($this->session->userdata('admin_login') != 1)
@@ -93,6 +80,7 @@ class Guardian extends CI_Controller
 		$page_data['page_title'] = ucfirst(get_phrase('add_guardian'));
 		$this->load->view('backend/index', $page_data);
 	}
+
 
     function guardian($param1 = '', $param2 = '', $param3 = '')
     {
@@ -365,48 +353,7 @@ class Guardian extends CI_Controller
             echo '<option value="' . $row['guardian_id'] . '">' . $row['firstname'] . ' ' . $row['lastname'] . '</option>';
         }
     }
+   
 
-    function parent($param1 = '', $param2 = '', $param3 = '')
-    {
-        if ($this->session->userdata('admin_login') != 1)
-            redirect('login', 'refresh');
-        if ($param1 == 'create') {
-            $data['name']        			= $this->input->post('name');
-            $data['dni']        			= $this->input->post('dni');
-            $data['email']       			= $this->input->post('email');
-            $data['password']    			= $this->input->post('password');
-            $data['phone_cel']       			= $this->input->post('phone_cel');
-            $data['phone_fij']       			= $this->input->post('phone_fij');
-            $data['address']     			= $this->input->post('address');
-            $data['gender']  			= $this->input->post('gender');
-            $this->db->insert('parent', $data);
-            $this->session->set_flashdata('flash_message' , get_phrase('datos agregados exitosamente'));
-            redirect(base_url() . 'index.php?admin/parent/', 'refresh');
-        }
-        if ($param1 == 'edit') {
-            $data['name']        			= $this->input->post('name');
-            $data['dni']        			= $this->input->post('dni');
-            $data['email']       			= $this->input->post('email');
-            $data['password']    			= $this->input->post('password');
-            $data['phone_cel']       			= $this->input->post('phone_cel');
-            $data['phone_fij']       			= $this->input->post('phone_fij');
-            $data['address']     			= $this->input->post('address');
-            $data['gender']  			= $this->input->post('gender');
-            $this->db->where('parent_id' , $param2);
-            $this->db->update('parent' , $data);
-            $this->session->set_flashdata('flash_message' , get_phrase('datos actualizados exitosamente'));
-            redirect(base_url() . 'index.php?admin/parent/', 'refresh');
-        }
-        if ($param1 == 'delete') {
-            $this->db->where('parent_id' , $param2);
-            $this->db->delete('parent');
-            $this->session->set_flashdata('flash_message' , get_phrase('datos eliminados exitosamente'));
-            redirect(base_url() . 'index.php?admin/parent/', 'refresh');
-        }
-        $page_data['page_title'] 	= ucfirst(get_phrase('parent_section'));
-        $page_data['page_icon'] 	= 'entypo-users';
-        $page_data['page_name']  = 'parent';
-        $this->load->view('backend/index', $page_data);
-    }
-    
+
 }

@@ -1,10 +1,7 @@
 <?php
-if (!defined('BASEPATH'))
-    exit('No direct script access allowed');
 
 class News extends CI_Controller
 {
-    
     
 	function __construct()
 	{
@@ -19,16 +16,6 @@ class News extends CI_Controller
 		$this->output->set_header('Pragma: no-cache');
 		
     }
-    
-    public function index()
-    {
-        if ($this->session->userdata('admin_login') != 1)
-            redirect(base_url() . 'index.php?login', 'refresh');
-        if ($this->session->userdata('admin_login') == 1)
-            redirect(base_url() . 'index.php?admin/dashboard', 'refresh');
-    }
-
-
 
     function edit_news($param2 = '')
 	{
@@ -338,8 +325,6 @@ class News extends CI_Controller
         }
             
     }
-   
-
 
     function manage_news()
 	{
@@ -362,6 +347,7 @@ class News extends CI_Controller
 		$page_data['page_title'] 	= ucfirst(get_phrase('manage_news'));
 		$this->load->view('backend/index', $page_data);
 	}
+
 
     function view_news($user_type = '')
     {
@@ -409,6 +395,12 @@ class News extends CI_Controller
 		$page_data['page_title'] = ucfirst(get_phrase('add_news'));
 		$this->load->view('backend/index', $page_data);
 	}
+
+
+
+
+
+
 
 
 }
