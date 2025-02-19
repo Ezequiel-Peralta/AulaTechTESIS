@@ -137,4 +137,4 @@ $autoload['language'] = array();
 |	$autoload['model'] = array('first_model' => 'first');
 */
 
-$autoload['model'] = array('crud_model','student/CrudStudent' => 'crudStudent','attendance/CrudAttendance' => 'crudAttendance','exam/CrudExam'=> 'crudExam','guardian/CrudGuardian' => 'crudGuardian','mark/CrudMark' => 'crudMark','parent/CrudParent' => 'crudParent','subject/CrudSubject' => 'crudSubject','teacher/CrudTeacher' => 'crudTeacher');
+$autoload['model'] = array('crud_model');

@@ -2313,4 +2313,8 @@ class Crud_model extends CI_Model {
         return json_encode($dataPorSeccion, JSON_UNESCAPED_UNICODE);
     }
     
+
+
+
+
 }
