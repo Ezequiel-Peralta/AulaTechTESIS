@@ -65,7 +65,7 @@
                 
                 <?php if($exam_id >0 && $class_id >0 && $section_id >0 && $subject_id >0 ):?>
                 <?php 
-						$students = $this->crud_model->get_students_per_section($section_id);
+						$students = $this->crudStudent->get_students_per_section($section_id);
 						foreach($students as $row):
 							$verify_data = array(	
                                 'exam_id' => $exam_id,
@@ -97,7 +97,7 @@
                     </thead>
                     <tbody>
                         <?php 
-                        $students = $this->crud_model->get_students_per_section($section_id);
+                        $students = $this->crudStudent->get_students_per_section($section_id);
                         foreach($students as $row):
                             $verify_data = array(
                                 'exam_id' => $exam_id,
@@ -117,10 +117,10 @@
                             <td class="text-center">
                                 <?php 
                                     $exam_type_id = ''; // Inicializar variable de tipo de examen
-                                    $exams = $this->crud_model->get_exam_info($exam_id);
+                                    $exams = $this->crudExam->get_exam_info($exam_id);
                                     foreach($exams as $row3):
                                         $exam_type_id = $row3['exam_type_id'];
-                                        $exam_type_info = $this->crud_model->get_exam_type_info($exam_type_id);
+                                        $exam_type_info = $this->crudExam->get_exam_type_info($exam_type_id);
                                         if (!empty($exam_type_info)) {
                                             echo $exam_type_info[0]['short_name']; 
                                         }

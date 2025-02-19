@@ -47,7 +47,7 @@ class Guardian extends CI_Controller
         $guardians = $this->crud_model->get_guardians();
         
         foreach ($guardians as $row) {
-            $guardian_details = $this->crud_model->get_guardian_info($row['guardian_id']);
+            $guardian_details = $this->crudGuardian->get_guardian_info($row['guardian_id']);
             
             // Verificar si se encontraron detalles del guardián
             $firstname = isset($guardian_details['firstname']) ? $guardian_details['firstname'] : '';

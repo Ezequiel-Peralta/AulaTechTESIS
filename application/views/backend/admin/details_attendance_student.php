@@ -22,28 +22,28 @@ $current_month_name = date('F'); // January, February, ..., December
 $current_month_start = date('F', strtotime('first day of last month')); 
 $current_month_end = date('F', strtotime('last day of this month'));
 
-$attendance_data = $this->crud_model->get_attendance_data_for_student($student_id);
+$attendance_data = $this->crudAttendance->get_attendance_data_for_student($student_id);
 
 $count_attendance_data = count($attendance_data);
 
 
 if (empty($attendance_student_presente)) {
-    $attendance_student_presente = $this->crud_model->get_attendance_student_amount($student_id, 1, 'daily', $current_date);
+    $attendance_student_presente = $this->crudAttendance->get_attendance_student_amount($student_id, 1, 'daily', $current_date);
 }
 
 // Verifica y obtiene el valor de 'ausente'
 if (empty($attendance_student_ausente)) {
-    $attendance_student_ausente = $this->crud_model->get_attendance_student_amount($student_id, 2, 'daily', $current_date);
+    $attendance_student_ausente = $this->crudAttendance->get_attendance_student_amount($student_id, 2, 'daily', $current_date);
 }
 
 // Verifica y obtiene el valor de 'tardanza'
 if (empty($attendance_student_tardanza)) {
-    $attendance_student_tardanza = $this->crud_model->get_attendance_student_amount($student_id, 3, 'daily', $current_date);
+    $attendance_student_tardanza = $this->crudAttendance->get_attendance_student_amount($student_id, 3, 'daily', $current_date);
 }
 
 // Verifica y obtiene el valor de 'ausencia justificada'
 if (empty($attendance_student_ausencia_justificada)) {
-    $attendance_student_ausencia_justificada = $this->crud_model->get_attendance_student_amount($student_id, 4, 'daily', $current_date);
+    $attendance_student_ausencia_justificada = $this->crudAttendance->get_attendance_student_amount($student_id, 4, 'daily', $current_date);
 }
 
 $total_attendance = $attendance_student_presente + $attendance_student_ausente + $attendance_student_tardanza + $attendance_student_ausencia_justificada;
@@ -131,7 +131,7 @@ function getStatusClass($status)
 
 
 <?php
-$student_info = $this->crud_model->get_student_info($student_id);
+$student_info = $this->crudStudent->get_student_info($student_id);
 foreach($student_info as $row):?>
 
 <div class="profile-header" style="border-radius: 15px;">

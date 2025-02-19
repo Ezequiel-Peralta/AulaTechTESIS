@@ -1,5 +1,5 @@
 <?php
-$teacher_info = $this->crud_model->get_teacher_info($param2);
+$teacher_info = $this->crudTeacher->get_teacher_info($param2);
 foreach($teacher_info as $row):?>
 
     <div class="profile-header" style="border-radius: 15px;">

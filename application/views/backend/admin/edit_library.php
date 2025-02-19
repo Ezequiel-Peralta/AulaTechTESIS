@@ -103,7 +103,7 @@
                                                     <?php echo ucfirst(get_phrase(empty($file['section_id']) ? 'first_select_the_class_and_section' : 'select')); ?>
                                                 </option>
                                             <?php 
-											$subjects = $this->crud_model->get_subjects_by_section($file['section_id']);
+											$subjects = $this->crudSubject->get_subjects_by_section($file['section_id']);
 											foreach ($subjects as $subject):
 												$selected = ($subject['subject_id'] == $file['subject_id']) ? 'selected' : '';
 											?>

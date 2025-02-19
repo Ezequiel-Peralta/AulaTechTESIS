@@ -75,7 +75,7 @@ $section_info = $this->crud_model->get_section_info4($section_id)?>
             <br>
                 <div class="profile-container"> 
                     <?php
-                        $teacher_aide_info = $this->crud_model->get_teacher_aide_info_per_section($section_info['section_id']);
+                        $teacher_aide_info = $this->crudTeacher->get_teacher_aide_info_per_section($section_info['section_id']);
                         foreach ($teacher_aide_info as $row2): ?>
                     <a href="<?php echo base_url(); ?>index.php?admin/teacher_aide_profile/<?php echo $row2['teacher_aide_id']; ?>">
                         <div class="profile-card">
@@ -215,7 +215,7 @@ $section_info = $this->crud_model->get_section_info4($section_id)?>
             <br>
                 <div class="profile-container"> 
                     <?php
-                        $student_info = $this->crud_model->get_student_info_per_section($section_info['section_id']);
+                        $student_info = $this->crudStudent->get_student_info_per_section($section_info['section_id']);
                         foreach ($student_info as $student): ?>
                         <a href="<?php echo base_url(); ?>index.php?admin/student_profile/<?php echo $student['student_id'];?>">
                             <div class="profile-card" style="min-height: 240px !important;"> 
