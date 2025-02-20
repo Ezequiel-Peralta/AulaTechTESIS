@@ -347,7 +347,7 @@ class Teacher extends CI_Controller
         $teachers = $this->crud_model->get_tearchers();
         
         foreach ($teachers as $row) {
-            $teacher_details = $this->crud_model->get_teachers_info($row['teacher_id']);
+            $teacher_details = $this->crudTeacher->get_teachers_info($row['teacher_id']);
             
             if (!empty($teacher_details)) {
                 $firstname = isset($teacher_details['firstname']) ? $teacher_details['firstname'] : '';

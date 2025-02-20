@@ -6,7 +6,7 @@
 <div class="modal-body" style="height:500px; overflow:auto;">
     <div class="row">
     <?php
-$student_info = $this->crud_model->get_student_info($param2);
+$student_info = $this->crudStudent->get_student_info($param2);
 foreach ($student_info as $row1):
     ?>
     <center>
@@ -60,14 +60,14 @@ foreach ($student_info as $row1):
                                     </thead>
                                     <tbody>
                                         <?php
-                                        $subjects = $this->crud_model->get_subjects_by_section($row1['section_id']);
+                                        $subjects = $this->crudSubject->get_subjects_by_section($row1['section_id']);
                                         foreach ($subjects as $row2):
                                             ?>
                                             <tr>
                                                 <td class="text-center subject-element-cell"><?php echo $row2['name']; ?></td>
                                                 <?php
                                                 // Obtener las calificaciones para esta materia
-                                                $marks = $this->crud_model->get_marks_by_student_subject($row1['student_id'], $row2['subject_id']); 
+                                                $marks = $this->crudMark->get_marks_by_student_subject($row1['student_id'], $row2['subject_id']); 
 
                                                   // Create an associative array to store all marks
                                                 $all_marks = array(
@@ -82,7 +82,7 @@ foreach ($student_info as $row1):
                                                 $mark_array = array();
                                                 foreach ($marks as $mark) {
                                                     $exam_type_id = $mark['exam_type_id'];
-                                                    $exam_type_info = $this->crud_model->get_exam_type_info($exam_type_id);
+                                                    $exam_type_info = $this->crudExam->get_exam_type_info($exam_type_id);
                                                     
                                                     if (!empty($exam_type_info) && isset($exam_type_info[0]['short_name'])) {
                                                         $short_name = $exam_type_info[0]['short_name'];

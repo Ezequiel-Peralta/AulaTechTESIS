@@ -1,5 +1,5 @@
 <?php
-$student_info = $this->crud_model->get_student_info($param2);
+$student_info = $this->crudStudent->get_student_info($param2);
 foreach($student_info as $row):?>
 
 
@@ -9,7 +9,7 @@ foreach($student_info as $row):?>
     <i class="entypo-user"></i>
     <?php
         if ($param4 == 'teacher_aide') {
-            $info = $this->crud_model->get_teacher_aide_info($param3);
+            $info = $this->crudTeacher->get_teacher_aide_info($param3);
             foreach($info as $row9):
     ?>
                 <a href="javascript:;" onclick="showAjaxModal('<?php echo base_url();?>index.php?modal/popup/modal_teacher_aide_profile/<?php echo $row9['teacher_aide_id'];?>');" class="breadcrumb-link">
@@ -29,7 +29,7 @@ foreach($student_info as $row):?>
     <?php
             endforeach;
         } elseif ($param4 == 'teacher') {
-            $info = $this->crud_model->get_teacher_info($param3);
+            $info = $this->crudTeacher->get_teacher_info($param3);
             foreach($info as $row9):
     ?>
                 <a href="javascript:;" onclick="showAjaxModal('<?php echo base_url();?>index.php?modal/popup/modal_teacher_profile/<?php echo $row9['teacher_id'];?>');" class="breadcrumb-link">
@@ -49,7 +49,7 @@ foreach($student_info as $row):?>
     <?php
             endforeach;
         } elseif ($param4 == 'guardian') {
-            $info = $this->crud_model->get_guardian_info($param3);
+            $info = $this->crudGuardian->get_guardian_info($param3);
             foreach($info as $row9):
     ?>
                 <a href="javascript:;" onclick="showAjaxModal('<?php echo base_url();?>index.php?modal/popup/modal_guardian_profile/<?php echo $row9['guardian_id'];?>');" class="breadcrumb-link">
@@ -69,7 +69,7 @@ foreach($student_info as $row):?>
     <?php
             endforeach;
         } elseif ($param4 == 'subject') {
-            $info = $this->crud_model->get_subject_info($param3);
+            $info = $this->crudSubject->get_student_info_per_section2($param3);
             foreach($info as $row9):
     ?>
                 <a href="javascript:;" onclick="showAjaxModal('<?php echo base_url();?>index.php?modal/popup/modal_subject_profile/<?php echo $row9['subject_id'];?>');" class="breadcrumb-link">
@@ -200,7 +200,7 @@ foreach($student_info as $row):?>
                 </li>
                 <li>
                     <?php
-                        $teacher_aide_info = $this->crud_model->get_teacher_aide_info_per_section($row['section_id']);
+                        $teacher_aide_info = $this->crudTeacher->get_teacher_aide_info_per_section($row['section_id']);
                         foreach($teacher_aide_info as $row2):?>
                     <strong class="info-title"><i class="entypo-user"></i> Preceptor</strong>
                 </li>
@@ -222,7 +222,7 @@ foreach($student_info as $row):?>
                     <strong class="info-title"><i class="entypo-user"></i> Profesores</strong>
                 </li>
                 <?php
-                    $teacher_info = $this->crud_model->get_teacher_info_per_section($row['section_id']);
+                    $teacher_info = $this->crudTeacher->get_teacher_info_per_section($row['section_id']);
                     foreach($teacher_info as $teacher):?>
                     <div>
                         <div class="row">
@@ -252,7 +252,7 @@ foreach($student_info as $row):?>
         <h4 class="card-title" style="font-weight: bold;">Información de tutores</h4>
         <br>
         <?php
-            $guardians_info = $this->crud_model->get_guardian_info_per_student($row['student_id']);
+            $guardians_info = $this->crudGuardian->get_guardian_info_per_student($row['student_id']);
             foreach($guardians_info as $guardian):?>
         <div class="card-body card-body-guardian">
             <a href="javascript:;" onclick="showAjaxModal('<?php echo base_url();?>index.php?modal/popup/modal_guardian_profile/<?php echo $guardian['guardian_id'];?>/<?php echo $row['student_id'];?>/<?php echo 'student';?>');">

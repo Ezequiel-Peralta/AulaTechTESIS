@@ -1,5 +1,5 @@
 <?php 
-$edit_data		=	$this->crud_model->get_student_info($param2);
+$edit_data		=	$this->crudStudent->get_student_info($param2);
 foreach ( $edit_data as $row):
 ?>
 

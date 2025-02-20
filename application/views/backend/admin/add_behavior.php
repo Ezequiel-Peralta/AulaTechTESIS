@@ -78,7 +78,7 @@
                                                     <?php echo ucfirst(get_phrase(empty($class_id) ? 'first_select_the_class_and_section' : 'select')); ?>
                                                 </option>
 											<?php 
-											$students = $this->crud_model->get_student_info_per_section($section_id);
+											$students = $this->crudStudent->get_student_info_per_section($section_id);
 											foreach ($students as $student):
 												$selected = ($student['student_id'] == $student_id) ? 'selected' : '';
 											?>
