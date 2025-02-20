@@ -235,12 +235,14 @@ class Attendance extends CI_Controller
         $page_data['subject_amount'] = $this->crud_model->get_section_subject_amount2($section_id);
         $page_data['student_amount'] = $this->crud_model->get_section_student_amount2($section_id);
         $page_data['used_section_history'] = $used_section_history;
+
         // $page_data['attendance_student_presente'] = $this->crudAttendance->get_attendance_student_section_amount($section_id, 1);
         // $page_data['attendance_student_ausente'] = $this->crudAttendance->get_attendance_student_section_amount($section_id, 2);
         // $page_data['attendance_student_tardanza'] = $this->crudAttendance->get_attendance_student_section_amount($section_id, 3);
         // $page_data['attendance_student_ausencia_justificada'] = $this->crudAttendance->get_attendance_student_section_amount($section_id, 4);
 
         $page_data['day_data'] = $this->crudAttendance->get_attendance_data_for_chart2($section_id);
+
 
         $page_data['section_name'] 	= $this->crud_model->get_section_name2($section_id);
         $page_data['section_id']   = $section_id;
@@ -253,7 +255,7 @@ class Attendance extends CI_Controller
         // $attendance_student_presente = $this->crudAttendance->get_attendance_student_section_amount($section_id, 1);
         // $attendance_student_ausente = $this->crudAttendance->get_attendance_student_section_amount($section_id, 2);
         // $attendance_student_tardanza = $this->crudAttendance->get_attendance_student_section_amount($section_id, 3);
-        // $attendance_student_ausencia_justificada = $this->crudAttendance->get_attendance_student_section_amount($section_id, 4);
+        // $attendance_student_ausencia_justificada = $this->crudAttendance->get_attendance_student_section_amount($section_id, 4)
 
         // // Datos a enviar a la vista
         // $data = array(
