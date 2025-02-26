@@ -110,19 +110,13 @@ $news = $this->db->get()->result_array();
                             $date = DateTime::createFromFormat('Y-m-d', $new['date']);
                             
                             // Obtener día y mes en español o inglés
-                            $days = ['Sunday' => 'Domingo', 'Monday' => 'Lunes', 'Tuesday' => 'Martes', 
-                                    'Wednesday' => 'Miércoles', 'Thursday' => 'Jueves', 
-                                    'Friday' => 'Viernes', 'Saturday' => 'Sábado'];
-
-                            $months = ['January' => 'Enero', 'February' => 'Febrero', 'March' => 'Marzo', 
-                                    'April' => 'Abril', 'May' => 'Mayo', 'June' => 'Junio', 
-                                    'July' => 'Julio', 'August' => 'Agosto', 'September' => 'Septiembre', 
-                                    'October' => 'Octubre', 'November' => 'Noviembre', 'December' => 'Diciembre'];
+                           
+                            
 
                             if ($this->session->userdata('language_preference') === 'spanish') {
                                 $day = strftime('%A', $date->getTimestamp());
                                 $month = strftime('%B', $date->getTimestamp());
-                                echo $days[$day] . ', ' . $date->format('d') . ' de ' . $months[$month] . ' del ' . $date->format('Y');
+                                echo DAYSMAP[$day] . ', ' . $date->format('d') . ' de ' . MONTHSMAP[$month] . ' del ' . $date->format('Y');
                             } else {
                                 echo $date->format('l, d F Y');
                             }

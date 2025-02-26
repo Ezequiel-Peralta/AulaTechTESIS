@@ -1,7 +1,23 @@
 <?php
 
-if (!defined('BASEPATH'))
-    exit('No direct script access allowed');
+if (!defined('BASEPATH'))   
+ $months = [
+    'january' => '01',
+    'february' => '02',
+    'march' => '03',
+    'april' => '04',
+    'may' => '05',
+    'june' => '06',
+    'july' => '07',
+    'august' => '08',
+    'september' => '09',
+    'october' => '10',
+    'november' => '11',
+    'december' => '12'
+];
+
+
+  exit('No direct script access allowed');
 
 class Admin extends CI_Controller
 {
@@ -31,6 +47,7 @@ class Admin extends CI_Controller
 
     function payments()
     {
+        
         if ($this->session->userdata('admin_login') != 1)
             redirect('login', 'refresh');
             
@@ -72,9 +89,11 @@ class Admin extends CI_Controller
 
     function parent($param1 = '', $param2 = '', $param3 = '')
     {
+        
         if ($this->session->userdata('admin_login') != 1)
             redirect('login', 'refresh');
-        if ($param1 == 'create') {
+        switch ($param1) {
+        case 'create': 
             $data['name']        			= $this->input->post('name');
             $data['dni']        			= $this->input->post('dni');
             $data['email']       			= $this->input->post('email');
@@ -86,8 +105,8 @@ class Admin extends CI_Controller
             $this->db->insert('parent', $data);
             $this->session->set_flashdata('flash_message' , get_phrase('datos agregados exitosamente'));
             redirect(base_url() . 'index.php?admin/parent/', 'refresh');
-        }
-        if ($param1 == 'edit') {
+        
+        case 'edit':
             $data['name']        			= $this->input->post('name');
             $data['dni']        			= $this->input->post('dni');
             $data['email']       			= $this->input->post('email');
@@ -100,12 +119,14 @@ class Admin extends CI_Controller
             $this->db->update('parent' , $data);
             $this->session->set_flashdata('flash_message' , get_phrase('datos actualizados exitosamente'));
             redirect(base_url() . 'index.php?admin/parent/', 'refresh');
-        }
-        if ($param1 == 'delete') {
+       
+        case 'delete':
             $this->db->where('parent_id' , $param2);
             $this->db->delete('parent');
             $this->session->set_flashdata('flash_message' , get_phrase('datos eliminados exitosamente'));
             redirect(base_url() . 'index.php?admin/parent/', 'refresh');
+        default:
+         echo(" no se recibio un parametro de entrada");
         }
         $page_data['page_title'] 	= ucfirst(get_phrase('parent_section'));
         $page_data['page_icon'] 	= 'entypo-users';
