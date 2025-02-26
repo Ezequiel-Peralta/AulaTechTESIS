@@ -3,72 +3,8 @@ class CrudAttendance extends CI_Model{
     function __construct(){
         parent::__construct();
     }
+
     function get_attendance_student_section_amount($section_id = '', $attendance_type = '', $filter_type = '', $date = '', $start_date = '', $end_date = '', $dateMoth = '', $start_date_yearly = '', $end_date_yearly = '') {
-        $this->db->where('section_id', $section_id);
-        $this->db->where('status', $attendance_type);
-    
-        if ($filter_type === 'daily' && !empty($date)) {
-            $this->db->where('date', $date);
-        } elseif ($filter_type === 'weekly' && !empty($start_date) && !empty($end_date)) {
-            $this->db->where('date >=', $start_date);
-            $this->db->where('date <=', $end_date);
-        } elseif ($filter_type === 'monthly' && !empty($dateMoth)) {
-            $months = [
-                'january' => '01',
-                'february' => '02',
-                'march' => '03',
-                'april' => '04',
-                'may' => '05',
-                'june' => '06',
-                'july' => '07',
-                'august' => '08',
-                'september' => '09',
-                'october' => '10',
-                'november' => '11',
-                'december' => '12'
-            ];
-
-            $month_number = isset($months[strtolower($dateMoth)]) ? $months[strtolower($dateMoth)] : null;
-
-            if ($month_number) {
-                $this->db->where('MONTH(date)', $month_number);
-            }
-        } elseif ($filter_type === 'yearly' && !empty($start_date_yearly) && !empty($end_date_yearly)) {
-            $months = [
-                'january' => '01',
-                'february' => '02',
-                'march' => '03',
-                'april' => '04',
-                'may' => '05',
-                'june' => '06',
-                'july' => '07',
-                'august' => '08',
-                'september' => '09',
-                'october' => '10',
-                'november' => '11',
-                'december' => '12'
-            ];
-    
-            $start_month_number = isset($months[strtolower($start_date_yearly)]) ? $months[strtolower($start_date_yearly)] : null;
-            $end_month_number = isset($months[strtolower($end_date_yearly)]) ? $months[strtolower($end_date_yearly)] : null;
-    
-            if ($start_month_number && $end_month_number) {
-                $current_year = date('Y');
-                $start_date = $current_year . '-' . $start_month_number . '-01';
-                $end_date = $current_year . '-' . $end_month_number . '-31';
-    
-                $this->db->where('date >=', $start_date);
-                $this->db->where('date <=', $end_date);
-            }
-        }
-    
-        $amount = $this->db->from('attendance_student')->count_all_results();
-    
-        return $amount; 
-    }
-
-
-    function get_attendance_student_section_amount2($section_id = '', $attendance_type = '', $filter_type = '', $date = '', $start_date = '', $end_date = '', $dateMoth = '', $start_date_yearly = '', $end_date_yearly = '') {
         $this->db->where('section_id', $section_id);
         $this->db->where('status', $attendance_type);
     

@@ -45,22 +45,22 @@ if ($total_students === 0) {
 }
 
 if (empty($attendance_student_presente)) {
-    $attendance_student_presente = $this->crudAttendance->get_attendance_student_section_amount2($section_id, 1, 'daily', $current_date);
+    $attendance_student_presente = $this->crudAttendance->get_attendance_student_section_amount($section_id, 1, 'daily', $current_date);
 }
 
 // Verifica y obtiene el valor de 'ausente'
 if (empty($attendance_student_ausente)) {
-    $attendance_student_ausente = $this->crudAttendance->get_attendance_student_section_amount2($section_id, 2, 'daily', $current_date);
+    $attendance_student_ausente = $this->crudAttendance->get_attendance_student_section_amount($section_id, 2, 'daily', $current_date);
 }
 
 // Verifica y obtiene el valor de 'tardanza'
 if (empty($attendance_student_tardanza)) {
-    $attendance_student_tardanza = $this->crudAttendance->get_attendance_student_section_amount2($section_id, 3, 'daily', $current_date);
+    $attendance_student_tardanza = $this->crudAttendance->get_attendance_student_section_amount($section_id, 3, 'daily', $current_date);
 }
 
 // Verifica y obtiene el valor de 'ausencia justificada'
 if (empty($attendance_student_ausencia_justificada)) {
-    $attendance_student_ausencia_justificada = $this->crudAttendance->get_attendance_student_section_amount2($section_id, 4, 'daily', $current_date);
+    $attendance_student_ausencia_justificada = $this->crudAttendance->get_attendance_student_section_amount($section_id, 4, 'daily', $current_date);
 }
 
 $total_attendance = $attendance_student_presente + $attendance_student_ausente + $attendance_student_tardanza + $attendance_student_ausencia_justificada;

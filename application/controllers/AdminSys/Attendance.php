@@ -236,62 +236,29 @@ class Attendance extends CI_Controller
         $page_data['student_amount'] = $this->crud_model->get_section_student_amount2($section_id);
         $page_data['used_section_history'] = $used_section_history;
 
-        // $page_data['attendance_student_presente'] = $this->crudAttendance->get_attendance_student_section_amount($section_id, 1);
-        // $page_data['attendance_student_ausente'] = $this->crudAttendance->get_attendance_student_section_amount($section_id, 2);
-        // $page_data['attendance_student_tardanza'] = $this->crudAttendance->get_attendance_student_section_amount($section_id, 3);
-        // $page_data['attendance_student_ausencia_justificada'] = $this->crudAttendance->get_attendance_student_section_amount($section_id, 4);
-
         $page_data['day_data'] = $this->crudAttendance->get_attendance_data_for_chart2($section_id);
 
 
         $page_data['section_name'] 	= $this->crud_model->get_section_name2($section_id);
         $page_data['section_id']   = $section_id;
         $this->load->view('backend/index', $page_data);    
-
-        // Consultas a la base de datos para obtener los datos necesarios
-        // $complete_class_name = $this->crud_model->get_class_name_numeric($class_id) . "° " . $this->crud_model->get_section_letter_name($section_id);
-        // $subject_amount = $this->crud_model->get_section_subject_amount($section_id);
-        // $student_amount = $this->crud_model->get_section_student_amount($section_id);
-        // $attendance_student_presente = $this->crudAttendance->get_attendance_student_section_amount($section_id, 1);
-        // $attendance_student_ausente = $this->crudAttendance->get_attendance_student_section_amount($section_id, 2);
-        // $attendance_student_tardanza = $this->crudAttendance->get_attendance_student_section_amount($section_id, 3);
-        // $attendance_student_ausencia_justificada = $this->crudAttendance->get_attendance_student_section_amount($section_id, 4)
-
-        // // Datos a enviar a la vista
-        // $data = array(
-        //     'page_name' => 'summary_attendance_student',
-        //     'page_icon' => 'entypo-clipboard',
-        //     'page_title' => 'Resumen de asistencia - ' . $complete_class_name,
-        //     'class_id' => $class_id,
-        //     'complete_class_name' => $complete_class_name,
-        //     'subject_amount' => $subject_amount,
-        //     'student_amount' => $student_amount,
-        //     'attendance_student_presente' => $attendance_student_presente,
-        //     'attendance_student_ausente' => $attendance_student_ausente,
-        //     'attendance_student_tardanza' => $attendance_student_tardanza,
-        //     'attendance_student_ausencia_justificada' => $attendance_student_ausencia_justificada,
-        //     'section_id' => $section_id
-        // );
-
-        // // Cargar la vista con los datos
-        // $this->load->view('backend/index', $data);
     }
 
 
     function filter_attendance($section_id = '', $filter_type = '', $date = '', $start_date = '', $end_date = '', $dateMoth = '', $start_date_yearly = '', $end_date_yearly = '') {
-        $attendance_student_presente = $this->crudAttendance->get_attendance_student_section_amount2(
+        $attendance_student_presente = $this->crudAttendance->get_attendance_student_section_amount(
             $section_id, 1, $filter_type, $date, $start_date, $end_date, $dateMoth, $start_date_yearly, $end_date_yearly
         );
     
-        $attendance_student_ausente = $this->crudAttendance->get_attendance_student_section_amount2(
+        $attendance_student_ausente = $this->crudAttendance->get_attendance_student_section_amount(
             $section_id, 2, $filter_type, $date, $start_date, $end_date, $dateMoth, $start_date_yearly, $end_date_yearly
         );
     
-        $attendance_student_tardanza = $this->crudAttendance->get_attendance_student_section_amount2(
+        $attendance_student_tardanza = $this->crudAttendance->get_attendance_student_section_amount(
             $section_id, 3, $filter_type, $date, $start_date, $end_date, $dateMoth, $start_date_yearly, $end_date_yearly
         );
     
-        $attendance_student_ausencia_justificada = $this->crudAttendance->get_attendance_student_section_amount2(
+        $attendance_student_ausencia_justificada = $this->crudAttendance->get_attendance_student_section_amount(
             $section_id, 4, $filter_type, $date, $start_date, $end_date, $dateMoth, $start_date_yearly, $end_date_yearly
         );
     
