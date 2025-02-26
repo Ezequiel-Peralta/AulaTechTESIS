@@ -1,5 +1,5 @@
 <?php
-$guardian_info = $this->crud_model->get_guardian_info($param2);
+$guardian_info = $this->crudGuardian->get_guardian_info($param2);
 foreach($guardian_info as $row):?>
 
 
@@ -9,7 +9,7 @@ foreach($guardian_info as $row):?>
         <i class="entypo-user"></i>
         <?php
         if ($param4 == 'student') {
-            $info = $this->crud_model->get_student_info($param3);
+            $info = $this->crudStudent->get_student_info($param3);
             foreach ($info as $row9):
                 $lastname = !empty($row9['lastname']) ? $row9['lastname'] : '';
                 $firstname_initial = !empty($row9['firstname']) ? mb_substr($row9['firstname'], 0, 1) . '.' : '';
@@ -124,7 +124,7 @@ foreach($guardian_info as $row):?>
         <h4 class="card-title" style="font-weight: bold;">Información de hijos</h4>
         <br>
         <?php
-            $students_info = $this->crud_model->get_student_info_per_guardian($row['guardian_id']);
+            $students_info = $this->crudStudent->get_student_info_per_guardian($row['guardian_id']);
             foreach($students_info as $student):?>
         <div class="card-body card-body-guardian">
             <a href="javascript:;" onclick="showAjaxModal('<?php echo base_url();?>index.php?modal/popup/modal_student_profile/<?php echo $student['student_id'];?>/<?php echo $row['guardian_id'];?>/<?php echo 'guardian';?>');">
