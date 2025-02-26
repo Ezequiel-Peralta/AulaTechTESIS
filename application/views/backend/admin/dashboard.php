@@ -255,24 +255,9 @@
                         // Crear un objeto DateTime con el string recibido
                         $date = new DateTime($dateString);
 
-                        // Array con los meses en español
-                        $months = [
-                            '01' => ucfirst(get_phrase('january')),
-                            '02' => ucfirst(get_phrase('february')),
-                            '03' => ucfirst(get_phrase('march')),
-                            '04' => ucfirst(get_phrase('april')),
-                            '05' => ucfirst(get_phrase('may')),
-                            '06' => ucfirst(get_phrase('june')),
-                            '07' => ucfirst(get_phrase('july')),
-                            '08' => ucfirst(get_phrase('august')),
-                            '09' => ucfirst(get_phrase('september')),
-                            '10' => ucfirst(get_phrase('october')),
-                            '11' => ucfirst(get_phrase('november')),
-                            '12' => ucfirst(get_phrase('december')),
-                        ];
-
+                      
                         // Formatear la fecha: Día de Mes del Año
-                        $formattedDate = $date->format('d') . ' de ' . $months[$date->format('m')] . ' del ' . $date->format('Y');
+                        $formattedDate = $date->format('d') . ' de ' . MONTHS[$date->format('m')] . ' del ' . $date->format('Y');
 
                         // Agregar la hora si se solicita
                         if ($includeTime && $dateString != null) {
@@ -364,24 +349,10 @@
                         // Crear un objeto DateTime con el string recibido
                         $date = new DateTime($dateString);
 
-                        // Array con los meses en español
-                        $months = [
-                            '01' => ucfirst(get_phrase('january')),
-                            '02' => ucfirst(get_phrase('february')),
-                            '03' => ucfirst(get_phrase('march')),
-                            '04' => ucfirst(get_phrase('april')),
-                            '05' => ucfirst(get_phrase('may')),
-                            '06' => ucfirst(get_phrase('june')),
-                            '07' => ucfirst(get_phrase('july')),
-                            '08' => ucfirst(get_phrase('august')),
-                            '09' => ucfirst(get_phrase('september')),
-                            '10' => ucfirst(get_phrase('october')),
-                            '11' => ucfirst(get_phrase('november')),
-                            '12' => ucfirst(get_phrase('december')),
-                        ];
-
+                       
+                
                         // Formatear la fecha: Día de Mes del Año
-                        $formattedDate = $date->format('d') . ' de ' . $months[$date->format('m')] . ' del ' . $date->format('Y');
+                        $formattedDate = $date->format('d') . ' de ' . MONTHS[$date->format('m')] . ' del ' . $date->format('Y');
 
                         // Agregar la hora si se solicita
                         if ($includeTime && $dateString != null) {

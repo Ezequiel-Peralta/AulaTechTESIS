@@ -238,11 +238,8 @@ $titleES = 'Reporte de Estudiantes - ' . $section_name . ' - ' . date('d-m-Y');
                         <select id="monthly" class="form-control text-center customSelect">
                             <?php
                             // Lista de meses en inglés
-                            $months = [
-                                "January", "February", "March", "April", "May", "June",
-                                "July", "August", "September", "October", "November", "December"
-                            ];
-                            foreach ($months as $month) {
+                            
+                            foreach (MONTHSENGLISH as $month) {
                                 $selected = ($month === $current_month_name) ? 'selected' : '';
                                 echo "<option value='{$month}' {$selected}>" . ucfirst(get_phrase($month)) . "</option>";
                             }
@@ -254,11 +251,8 @@ $titleES = 'Reporte de Estudiantes - ' . $section_name . ' - ' . date('d-m-Y');
                     <div class="form-group">
                         <select id="startDateYearly" class="form-control text-center customSelect">
                             <?php
-                            $months = [
-                                "January", "February", "March", "April", "May", "June",
-                                "July", "August", "September", "October", "November", "December"
-                            ];
-                            foreach ($months as $month) {
+                           
+                            foreach (MONTHSENGLISH as $month) {
                                 $selected = ($month === $current_month_start) ? 'selected' : '';
                                 echo "<option value='{$month}' {$selected}>" . ucfirst(get_phrase($month)) . "</option>";
                             }
@@ -270,11 +264,8 @@ $titleES = 'Reporte de Estudiantes - ' . $section_name . ' - ' . date('d-m-Y');
                     <div class="form-group">
                         <select id="endDateYearly" class="form-control text-center customSelect">
                             <?php
-                            $months = [
-                                "January", "February", "March", "April", "May", "June",
-                                "July", "August", "September", "October", "November", "December"
-                            ];
-                            foreach ($months as $month) {
+                             
+                            foreach (MONTHSENGLISH as $month) {
                                 $selected = ($month === $current_month_end) ? 'selected' : '';
                                 echo "<option value='{$month}' {$selected}>" . ucfirst(get_phrase($month)) . "</option>";
                             }
@@ -386,11 +377,8 @@ $titleES = 'Reporte de Estudiantes - ' . $section_name . ' - ' . date('d-m-Y');
                         <select id="monthly2" class="form-control text-center customSelect">
                             <?php
                             // Lista de meses en inglés
-                            $months = [
-                                "January", "February", "March", "April", "May", "June",
-                                "July", "August", "September", "October", "November", "December"
-                            ];
-                            foreach ($months as $month) {
+                             
+                            foreach (MONTHSENGLISH as $month) {
                                 $selected = ($month === $current_month_name) ? 'selected' : '';
                                 echo "<option value='{$month}' {$selected}>" . ucfirst(get_phrase($month)) . "</option>";
                             }
@@ -402,11 +390,8 @@ $titleES = 'Reporte de Estudiantes - ' . $section_name . ' - ' . date('d-m-Y');
                     <div class="form-group">
                         <select id="startDateYearly2" class="form-control text-center customSelect">
                             <?php
-                            $months = [
-                                "January", "February", "March", "April", "May", "June",
-                                "July", "August", "September", "October", "November", "December"
-                            ];
-                            foreach ($months as $month) {
+                             
+                            foreach (MONTHSENGLISH as $month) {
                                 $selected = ($month === $current_month_start) ? 'selected' : '';
                                 echo "<option value='{$month}' {$selected}>" . ucfirst(get_phrase($month)) . "</option>";
                             }
@@ -418,11 +403,8 @@ $titleES = 'Reporte de Estudiantes - ' . $section_name . ' - ' . date('d-m-Y');
                     <div class="form-group">
                         <select id="endDateYearly2" class="form-control text-center customSelect">
                             <?php
-                            $months = [
-                                "January", "February", "March", "April", "May", "June",
-                                "July", "August", "September", "October", "November", "December"
-                            ];
-                            foreach ($months as $month) {
+                             
+                            foreach (MONTHSENGLISH as $month) {
                                 $selected = ($month === $current_month_end) ? 'selected' : '';
                                 echo "<option value='{$month}' {$selected}>" . ucfirst(get_phrase($month)) . "</option>";
                             }

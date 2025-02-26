@@ -18,7 +18,7 @@ class Principal extends CI_Controller
     }
 
 
-    function principals_information()
+    function principal_information()
     {
         if ($this->session->userdata('admin_login') != 1)
             redirect('login', 'refresh');
@@ -30,7 +30,7 @@ class Principal extends CI_Controller
             ),
             array(
                 'text' => ucfirst(get_phrase('manage_principals')),
-                'url' => base_url('index.php?admin/principals_information/')
+                'url' => base_url('index.php?admin/principal_information/')
             )
         );
                     
@@ -43,7 +43,7 @@ class Principal extends CI_Controller
         $query = $this->db->get();
         $page_data['principals']  = $query->result_array();
 
-        $page_data['page_name']   = 'principals_information';
+        $page_data['page_name']   = 'principal_information';
         $page_data['page_title']  = ucfirst(get_phrase('manage_principals'));
         
         $this->load->view('backend/index', $page_data);
@@ -129,7 +129,7 @@ class Principal extends CI_Controller
                 'timer' => '10000',
                 'timerProgressBar' => 'true',
             ));
-            redirect(base_url() . 'index.php?admin/principals_information/', 'refresh');
+            redirect(base_url() . 'index.php?admin/principal_information/', 'refresh');
         }
         if ($param1 == 'update') {
             $principal_id = $param2; 
@@ -188,7 +188,7 @@ class Principal extends CI_Controller
                 'timerProgressBar' => 'true',
             ));
         
-            redirect(base_url() . 'index.php?admin/principals_information/', 'refresh');
+            redirect(base_url() . 'index.php?admin/principal_information/', 'refresh');
         }
 
         if ($param1 == 'disable_principal') {
@@ -223,7 +223,7 @@ class Principal extends CI_Controller
                 ));
             }
     
-            redirect(base_url() . 'index.php?admin/principals_information/', 'refresh');
+            redirect(base_url() . 'index.php?admin/principal_information/', 'refresh');
         }
 
         if ($param1 == 'enable_principal') {
@@ -258,7 +258,7 @@ class Principal extends CI_Controller
                 ));
             }
     
-            redirect(base_url() . 'index.php?admin/principals_information/', 'refresh');
+            redirect(base_url() . 'index.php?admin/principal_information/', 'refresh');
         }
         
     }

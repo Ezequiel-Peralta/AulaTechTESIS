@@ -253,8 +253,8 @@ $route['admin/edit_secretary'] = 'AdminSys/Secretary/edit_secretary';
 
 //Principal
 
-//Principal - principals_information
-$route['admin/principals_information'] = 'AdminSys/Principal/principals_information';
+//Principal - principal_information
+$route['admin/principal_information'] = 'AdminSys/Principal/principal_information';
 
 //Principal - principal_profile
 $route['admin/principal_profile/(:any)'] = 'AdminSys/Principal/principal_profile/$1';

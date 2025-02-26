@@ -371,7 +371,7 @@
         if ($page_name == 'teacher' || $page_name == 'teachers_information'  || $page_name == 'teacher_profile' || $page_name == 'add_teacher' || $page_name == 'edit_teacher' ||
                 $page_name == 'teacher_aide' || $page_name == 'teachers_aide_information'  || $page_name == 'teacher_aide_profile' || $page_name == 'add_teacher_aide' || $page_name == 'edit_teacher_aide' ||
                 $page_name == 'secretary' || $page_name == 'secretaries_information'  || $page_name == 'secretary_profile' || $page_name == 'add_secretary' || $page_name == 'edit_secretary' ||
-                $page_name == 'principal' || $page_name == 'principals_information'  || $page_name == 'principal_profile' || $page_name == 'add_principal' || $page_name == 'edit_principal')
+                $page_name == 'principal' || $page_name == 'principal_information'  || $page_name == 'principal_profile' || $page_name == 'add_principal' || $page_name == 'edit_principal')
             echo 'opened active has-sub';
         ?> ">
             <a href="#">
@@ -430,7 +430,7 @@
                         </li>
                     </ul>
                 </li>
-                <li class="<?php if ($page_name == 'principals_information' || $page_name == 'principal_profile'  || $page_name == 'edit_principal'  || $page_name == 'principals_information' || $page_name == 'add_principal') echo 'active'; ?> ">
+                <li class="<?php if ($page_name == 'principal_information' || $page_name == 'principal_profile'  || $page_name == 'edit_principal'  || $page_name == 'principal_information' || $page_name == 'add_principal') echo 'active'; ?> ">
                     <a href="#">
                         <span><i class="entypo-dot"></i> <?php echo ucfirst(get_phrase('principals')); ?></span>
                     </a>
@@ -440,8 +440,8 @@
                                 <span><i class="entypo-dot"></i><?php echo ucfirst(get_phrase('add_principal')); ?> </span>
                             </a>
                         </li>
-                        <li class="<?php if ($page_name == 'principals_information') echo 'active'; ?>">
-                            <a href="<?php echo base_url(); ?>index.php?admin/principals_information">
+                        <li class="<?php if ($page_name == 'principal_information') echo 'active'; ?>">
+                            <a href="<?php echo base_url(); ?>index.php?admin/principal_information">
                                 <span><i class="entypo-dot"></i><?php echo ucfirst(get_phrase('manage_principals')); ?> </span>
                             </a>
                         </li>
