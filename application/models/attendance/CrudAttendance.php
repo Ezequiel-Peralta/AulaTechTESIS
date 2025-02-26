@@ -3,6 +3,7 @@ class CrudAttendance extends CI_Model{
     function __construct(){
         parent::__construct();
     }
+
     function get_attendance_student_section_amount($section_id = '', $attendance_type = '', $filter_type = '', $date = '', $start_date = '', $end_date = '', $dateMoth = '', $start_date_yearly = '', $end_date_yearly = '') {
         $this->db->where('section_id', $section_id);
         $this->db->where('status', $attendance_type);
