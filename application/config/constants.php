@@ -84,3 +84,22 @@ define('EXIT_USER_INPUT', 7); // invalid user input
 define('EXIT_DATABASE', 8); // database error
 define('EXIT__AUTO_MIN', 9); // lowest automatically-assigned error code
 define('EXIT__AUTO_MAX', 125); // highest automatically-assigned error code
+
+define('MONTHS', serialize(array('january' => '01','february' => '02','march' => '03','april' => '04','may' => '05','june' => '06','july' => '07','august' => '08','september' => '09','october' => '10','november' => '11','december' => '12')));
+define('MONTHSMAP', serialize(array('January' => 'Enero','February' => 'Febrero','March' => 'Marzo','April' => 'Abril','May' => 'Mayo','June' => 'Junio','July' => 'Julio',
+        'August' => 'Agosto',
+        'September' => 'Septiembre',
+        'October' => 'Octubre',
+        'November' => 'Noviembre',
+        'December' => 'Diciembre')));
+ define('MONTHSENGLISH', serialize(array("January", "February", "March", "April", "May", "June",
+                                "July", "August", "September", "October", "November", "December")));
+define('DAYSMAP', serialize(array('Sunday' => 'Domingo', 'Monday' => 'Lunes', 'Tuesday' => 'Martes', 
+                     'Wednesday' => 'Miércoles', 'Thursday' => 'Jueves', 
+                     'Friday' => 'Viernes', 'Saturday' => 'Sábado')));
+
+
+
+
+
+         
