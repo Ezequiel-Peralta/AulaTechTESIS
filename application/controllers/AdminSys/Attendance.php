@@ -9,6 +9,9 @@ class Attendance extends CI_Controller
 		$this->load->database();
         $this->load->library('session');
 
+        $this->load->model('attendance/attendance_model'); // Cargar el modelo de asistencia
+        $this->load->library('Attendance_service'); // Cargar la librería de servicio de asistencia 
+
         date_default_timezone_set('America/Argentina/Buenos_Aires');
 		
        /*cache control*/
@@ -17,14 +20,13 @@ class Attendance extends CI_Controller
 		
     }
 
-
     function attendance_student($class_id = '')
     {
         if ($this->session->userdata('admin_login') != 1)
             redirect(base_url(), 'refresh');
-        if ($class_id == '')
-            $class_id           =   $this->db->get('class')->first_row()->class_id;
 
+        $class_id = empty($class_id) ? $this->attendance_model->get_first_class_id() : $class_id;
+        
         $breadcrumb = array(
             array(
                 'text' => ucfirst(get_phrase('home')),
@@ -36,90 +38,34 @@ class Attendance extends CI_Controller
             )
         );
         
-        $page_data['breadcrumb'] = $breadcrumb;
-
-        $page_data['page_name']  = 'attendance_student';
-        $page_data['page_icon'] = 'entypo-clipboard';
-        $page_data['page_title'] = ucfirst(get_phrase('manage_student_attendance'));
-        $page_data['class_id']   = $class_id;
+        $page_data = [
+            'breadcrumb' => $breadcrumb,
+            'page_name' => 'attendance_student',
+            'page_title' => ucfirst(get_phrase('manage_student_attendance')),
+            'class_id' => $class_id
+        ];
+        
         $this->load->view('backend/index', $page_data);    
     }
 
-    function manage_attendance_student($date = '', $month = '', $year = '', $section_id = '')
-    {
+    function manage_attendance_student($date = '', $month = '', $year = '', $section_id = '') {
         if ($this->session->userdata('admin_login') != 1) {
             redirect(base_url(), 'refresh');
         }
 
-            $page_complete_name = 'manage_attendance_student'; // Nombre de la página
-            $user_id = $this->session->userdata('login_user_id'); // ID del usuario actual
-            $user_group = $this->session->userdata('login_type'); // Grupo del usuario actual
-            $element_id = $section_id; // ID del elemento específico (ej. curso o sección)
-
-            // Buscar registros para este page_name y element_id
-            $this->db->where('page_name', $page_complete_name);
-            $this->db->where('element_id', $element_id);
-            $tracking = $this->db->get('page_tracking')->row_array();
-
-            if (!empty($tracking)) {
-                // Verificar si el registro está siendo utilizado por otro usuario
-                if ($tracking['user_id'] !== NULL && $tracking['user_group'] !== NULL && ($tracking['user_id'] !== $user_id || $tracking['user_group'] !== $user_group)) {
-                    // Si otro usuario está accediendo a este elemento, redirige con un mensaje
-                    $this->session->set_flashdata('flash_message', array(
-                        'title' => '¡' . ucfirst(get_phrase('this_page_is_being_used_by_another_user')) . '!',
-                        'text' => '',
-                        'icon' => 'error',
-                        'showCloseButton' => 'true',
-                        'confirmButtonText' => ucfirst(get_phrase('accept')),
-                        'confirmButtonColor' => '#1a92c4',
-                        'timer' => '10000',
-                        'timerProgressBar' => 'true',
-                    ));
-                    redirect(base_url() . 'index.php?admin/dashboard/', 'refresh');
-                } else {
-                    // Si el usuario actual ya tiene acceso al elemento, actualiza el registro
-                    $dataTracking = array(
-                        'user_id' => $user_id,
-                        'user_group' => $user_group
-                    );
-                    $this->db->where('page_tracking_id', $tracking['page_tracking_id']);
-                    $this->db->update('page_tracking', $dataTracking);
-                }
-            } else {
-                // Si no existe un registro con este element_id, se inserta uno nuevo
-                $dataTracking = array(
-                    'page_name' => $page_complete_name,
-                    'element_id' => $element_id,
-                    'user_id' => $user_id,
-                    'user_group' => $user_group
-                );
-                $this->db->insert('page_tracking', $dataTracking);
-            }
-
-        // Verificar si se ha enviado un formulario
         if ($_POST) {
-            // Obtener el estado de asistencia de los estudiantes del formulario
-            $students = $this->db->get_where('student_details', array('section_id' => $section_id))->result_array();
+            $students = $this->attendance_model->get_students_by_section($section_id);
+            $attendance_data = [];
 
-            // Actualizar el estado de asistencia de cada estudiante
             foreach ($students as $row) {
-                $attendance_status = $this->input->post('status_' . $row['student_id']);
-                $observation = $this->input->post('observation_' . $row['student_id']);
-
-                $this->db->where('student_id', $row['student_id']);
-                $this->db->where('date', $this->input->post('date'));
-
-                // Datos a actualizar, incluyendo el section_id
-                $attendance_data = array(
-                    'status' => $attendance_status,
-                    'observation' => ($attendance_status == 4) ? $observation : '',
-                    'section_id' => $section_id
-                );
-
-                $this->db->update('attendance_student', $attendance_data);
+                $attendance_data[$row['student_id']] = [
+                    'status' => $this->input->post('status_' . $row['student_id']),
+                    'observation' => $this->input->post('observation_' . $row['student_id'])
+                ];
             }
 
-            // Redirigir de vuelta a la página de administración de asistencia con los parámetros originales
+            $this->Attendance_service->update_attendance($section_id, $this->input->post('date'), $attendance_data);
+
             $this->session->set_flashdata('flash_message', array(
                 'title' => 'Asistencia actualizada correctamente!',
                 'text' => '',
@@ -133,7 +79,6 @@ class Attendance extends CI_Controller
             redirect(base_url() . 'index.php?admin/manage_attendance_student/' . $date . '/' . $month . '/' . $year . '/' . $section_id, 'refresh');
         }
 
-        // Configuración del breadcrumb
         $breadcrumb = array(
             array(
                 'text' => ucfirst(get_phrase('home')),
@@ -148,19 +93,17 @@ class Attendance extends CI_Controller
                 'url' => null
             )
         );
-        $page_data['breadcrumb'] = $breadcrumb;
 
-        // Obtener los datos de la página
-        $page_data['date'] = $date;
-        $page_data['month'] = $month;
-        $page_data['year'] = $year;
-        $page_data['section_id'] = $section_id;
+        $page_data = array(
+            'breadcrumb' => $breadcrumb,
+            'date' => $date,
+            'month' => $month,
+            'year' => $year,
+            'section_id' => $section_id,
+            'page_name' => 'manage_attendance_student',
+            'page_title' => ucfirst(get_phrase('manage_student_attendance'))
+        );
 
-        // Configurar el nombre y título de la página
-        $page_data['page_name'] = 'manage_attendance_student';
-        $page_data['page_title'] = ucfirst(get_phrase('manage_student_attendance'));
-
-        // Cargar la vista con los datos de la página
         $this->load->view('backend/index', $page_data);
     }
 
@@ -188,20 +131,17 @@ class Attendance extends CI_Controller
         redirect($redirect_url, 'refresh');
     }
 
-    function summary_attendance_student($section_id='')
-    {
-        if ($this->session->userdata('admin_login') != 1)
+    function summary_attendance_student($section_id='') {
+        if ($this->session->userdata('admin_login') != 1) {
             redirect(base_url(), 'refresh');
+        }
 
-        
         $used_section_history = false;
 
-        $this->db->where('section_id', $section_id);
-        $section_data = $this->db->get('section')->row_array();
+        $section_data = $this->attendance_model->get_section_data($section_id);
 
         if (empty($section_data)) {
-            $this->db->where('section_id', $section_id);
-            $section_data = $this->db->get('section_history')->row_array();
+            $section_data = $this->attendance_model->get_section_history_data($section_id);
             $used_section_history = true;
         }
 
@@ -211,6 +151,26 @@ class Attendance extends CI_Controller
             $academic_period_name = $this->crud_model->get_academic_period_name_per_section2($section_id);
             $page_data['academic_period_id'] = $section_data['academic_period_id']; 
         }
+
+         // Obtener el conteo de todos los estudiantes
+         $all_student_count = $this->attendance_model->get_all_student_count($section_id);
+
+         // Obtener los estudiantes
+         $students = $this->attendance_model->get_students($section_id);
+
+        $current_date = date('Y-m-d');
+        $attendance_student_presente = $this->attendance_model->get_attendance_student_section_amount($section_id, 1, 'daily', $current_date);
+        $attendance_student_ausente = $this->attendance_model->get_attendance_student_section_amount($section_id, 2, 'daily', $current_date);
+        $attendance_student_tardanza = $this->attendance_model->get_attendance_student_section_amount($section_id, 3, 'daily', $current_date);
+        $attendance_student_ausencia_justificada = $this->attendance_model->get_attendance_student_section_amount($section_id, 4, 'daily', $current_date);
+
+        $total_attendance = $attendance_student_presente + $attendance_student_ausente + $attendance_student_tardanza + $attendance_student_ausencia_justificada;
+        $percentage_presente = $total_attendance > 0 ? number_format(($attendance_student_presente / $total_attendance) * 100, 2) : 0;
+        $percentage_ausente = $total_attendance > 0 ? number_format(($attendance_student_ausente / $total_attendance) * 100, 2) : 0;
+        $percentage_tardanza = $total_attendance > 0 ? number_format(($attendance_student_tardanza / $total_attendance) * 100, 2) : 0;
+        $percentage_justificados = $total_attendance > 0 ? number_format(($attendance_student_ausencia_justificada / $total_attendance) * 100, 2) : 0;
+
+        $academic_periods = $this->attendance_model->get_academic_periods();
 
         $breadcrumb = array(
             array(
@@ -227,38 +187,47 @@ class Attendance extends CI_Controller
             )
         );
 
-        $page_data['breadcrumb'] = $breadcrumb;
+        $page_data = array(
+            'breadcrumb' => $breadcrumb,
+            'page_name' => 'summary_attendance_student',
+            'page_title' => ucfirst(get_phrase('attendance_summary')),
+            'subject_amount' => $this->crud_model->get_section_subject_amount2($section_id),
+            'student_amount' => $this->crud_model->get_section_student_amount2($section_id),
+            'used_section_history' => $used_section_history,
+            'day_data' => $this->attendance_service->get_attendance_data_for_chart2($section_id),
+            'section_name' => $this->crud_model->get_section_name2($section_id),
+            'section_id' => $section_id,
+            'attendance_student_presente' => $attendance_student_presente,
+            'attendance_student_ausente' => $attendance_student_ausente,
+            'attendance_student_tardanza' => $attendance_student_tardanza,
+            'attendance_student_ausencia_justificada' => $attendance_student_ausencia_justificada,
+            'percentage_presente' => $percentage_presente,
+            'percentage_ausente' => $percentage_ausente,
+            'percentage_tardanza' => $percentage_tardanza,
+            'percentage_justificados' => $percentage_justificados,
+            'all_student_count' => $all_student_count,
+            'students' => $students,
+            'academic_periods' => $academic_periods
+        );
 
-        $page_data['page_name']  = 'summary_attendance_student';
-        $page_data['page_icon'] = 'entypo-clipboard';
-        $page_data['page_title'] 	= ucfirst(get_phrase('attendance_summary')). " - " . $this->crud_model->get_section_name($section_id);
-        $page_data['subject_amount'] = $this->crud_model->get_section_subject_amount2($section_id);
-        $page_data['student_amount'] = $this->crud_model->get_section_student_amount2($section_id);
-        $page_data['used_section_history'] = $used_section_history;
-
-        $page_data['day_data'] = $this->crudAttendance->get_attendance_data_for_chart2($section_id);
-
-
-        $page_data['section_name'] 	= $this->crud_model->get_section_name2($section_id);
-        $page_data['section_id']   = $section_id;
-        $this->load->view('backend/index', $page_data);    
+        $this->load->view('backend/index', $page_data);
     }
 
 
     function filter_attendance($section_id = '', $filter_type = '', $date = '', $start_date = '', $end_date = '', $dateMoth = '', $start_date_yearly = '', $end_date_yearly = '') {
-        $attendance_student_presente = $this->crudAttendance->get_attendance_student_section_amount(
+        $attendance_student_presente = $this->attendance_model->get_attendance_student_section_amount(
             $section_id, 1, $filter_type, $date, $start_date, $end_date, $dateMoth, $start_date_yearly, $end_date_yearly
         );
     
-        $attendance_student_ausente = $this->crudAttendance->get_attendance_student_section_amount(
+        $attendance_student_ausente = $this->attendance_model->get_attendance_student_section_amount(
             $section_id, 2, $filter_type, $date, $start_date, $end_date, $dateMoth, $start_date_yearly, $end_date_yearly
         );
     
-        $attendance_student_tardanza = $this->crudAttendance->get_attendance_student_section_amount(
+        $attendance_student_tardanza = $this->attendance_model->get_attendance_student_section_amount(
             $section_id, 3, $filter_type, $date, $start_date, $end_date, $dateMoth, $start_date_yearly, $end_date_yearly
         );
     
-        $attendance_student_ausencia_justificada = $this->crudAttendance->get_attendance_student_section_amount(
+        $attendance_student_ausencia_justificada = $this->attendance_model->get_attendance_student_section_amount(
             $section_id, 4, $filter_type, $date, $start_date, $end_date, $dateMoth, $start_date_yearly, $end_date_yearly
         );
     
@@ -283,19 +252,19 @@ class Attendance extends CI_Controller
     }
     
     function filter_attendance_student($student_id = '', $filter_type = '', $date = '', $start_date = '', $end_date = '', $dateMoth = '' , $start_date_yearly = '', $end_date_yearly = '') {
-        $attendance_student_presente = $this->crudAttendance->get_attendance_student_amount(
+        $attendance_student_presente = $this->attendance_model->get_attendance_student_amount(
             $student_id, 1, $filter_type, $date, $start_date, $end_date, $dateMoth, $start_date_yearly, $end_date_yearly
         );
     
-        $attendance_student_ausente = $this->crudAttendance->get_attendance_student_amount(
+        $attendance_student_ausente = $this->attendance_model->get_attendance_student_amount(
             $student_id, 2, $filter_type, $date, $start_date, $end_date, $dateMoth, $start_date_yearly, $end_date_yearly
         );
     
-        $attendance_student_tardanza = $this->crudAttendance->get_attendance_student_amount(
+        $attendance_student_tardanza = $this->attendance_model->get_attendance_student_amount(
             $student_id, 3, $filter_type, $date, $start_date, $end_date, $dateMoth, $start_date_yearly, $end_date_yearly
         );
     
-        $attendance_student_ausencia_justificada = $this->crudAttendance->get_attendance_student_amount(
+        $attendance_student_ausencia_justificada = $this->attendance_model->get_attendance_student_amount(
             $student_id, 4, $filter_type, $date, $start_date, $end_date, $dateMoth, $start_date_yearly, $end_date_yearly
         );
     
@@ -325,7 +294,24 @@ class Attendance extends CI_Controller
             redirect(base_url(), 'refresh');
 
         $student_info = $this->crudStudent->get_student_info($student_id);
-       
+
+        $current_date = date('Y-m-d');
+        $attendance_data = $this->attendance_model->get_attendance_data_for_student($student_id);
+
+        $attendance_student_presente = $this->attendance_model->get_attendance_student_amount($student_id, 1, 'daily', $current_date);
+        $attendance_student_ausente = $this->attendance_model->get_attendance_student_amount($student_id, 2, 'daily', $current_date);
+        $attendance_student_tardanza = $this->attendance_model->get_attendance_student_amount($student_id, 3, 'daily', $current_date);
+        $attendance_student_ausencia_justificada = $this->attendance_model->get_attendance_student_amount($student_id, 4, 'daily', $current_date);
+
+        $total_attendance = $attendance_student_presente + $attendance_student_ausente + $attendance_student_tardanza + $attendance_student_ausencia_justificada;
+
+        $percentage_presente = $total_attendance > 0 ? number_format(($attendance_student_presente / $total_attendance) * 100, 2) : 0;
+        $percentage_ausente = $total_attendance > 0 ? number_format(($attendance_student_ausente / $total_attendance) * 100, 2) : 0;
+        $percentage_tardanza = $total_attendance > 0 ? number_format(($attendance_student_tardanza / $total_attendance) * 100, 2) : 0;
+        $percentage_justificados = $total_attendance > 0 ? number_format(($attendance_student_ausencia_justificada / $total_attendance) * 100, 2) : 0;
+
+        $count_attendance_data = count($attendance_data);
+
         $breadcrumb = array(
             array(
                 'text' => ucfirst(get_phrase('home')),
@@ -346,29 +332,44 @@ class Attendance extends CI_Controller
             )
         );
             
-        $page_data['breadcrumb'] = $breadcrumb;
-
-        $page_data['page_name']  = 'details_attendance_student';
-        $page_data['page_title'] 	= ucfirst(get_phrase('attendance_summary')). " - ". ucfirst(get_phrase('student_details'));
-        $page_data['student_id'] = $student_id;
-
-        $page_data['student_lastname_firstname'] 	= ucfirst($student_info[0]['lastname']) . ', ' . ucfirst($student_info[0]['firstname']);
-        $page_data['section_name'] 	= $this->crud_model->get_section_name($student_info[0]['section_id']);
+        $page_data = array(
+            'breadcrumb' => $breadcrumb,
+            'page_name' => 'details_attendance_student',
+            'page_title' => ucfirst(get_phrase('attendance_summary')) . " - " . ucfirst(get_phrase('student_details')),
+            'student_id' => $student_id,
+            'student_lastname_firstname' => ucfirst($student_info[0]['lastname']) . ', ' . ucfirst($student_info[0]['firstname']),
+            'section_name' => $this->crud_model->get_section_name($student_info[0]['section_id']),
+            'attendance_data' => $attendance_data,
+            'attendance_student_presente' => $attendance_student_presente,
+            'attendance_student_ausente' => $attendance_student_ausente,
+            'attendance_student_tardanza' => $attendance_student_tardanza,
+            'attendance_student_ausencia_justificada' => $attendance_student_ausencia_justificada,
+            'percentage_presente' => $percentage_presente,
+            'percentage_ausente' => $percentage_ausente,
+            'percentage_tardanza' => $percentage_tardanza,
+            'percentage_justificados' => $percentage_justificados,
+            'current_date' => $current_date,
+            'current_date_formatted' => date('d/m/Y'),
+            'current_week_start' => date('Y-m-d', strtotime($current_date . ' -6 days')),
+            'current_week_end' => $current_date,
+            'current_year' => date('Y'),
+            'current_month_number' => date('m'),
+            'current_month_name' => date('F'),
+            'current_month_start' => date('F', strtotime('first day of last month')),
+            'current_month_end' => date('F', strtotime('last day of this month')),
+            'count_attendance_data' => $count_attendance_data
+        );
 
         $this->load->view('backend/index', $page_data);    
     }
 
-    function edit_attendance_student($param1 = '', $param2 = '')
+    function edit_attendance_student($student_id = '', $date = '')
     {
-            $data['status']     = $this->input->post('status');
-            $data['date']       = $this->input->post('date');
-            $data['observation']       = $this->input->post('observation');
+            $status     = $this->input->post('status');
+            $date      = $this->input->post('date');
+            $observation       = $this->input->post('observation');
 
-            $this->db->where(array(
-                'student_id' => $param1,
-                'date' => $param2
-            ));
-            $this->db->update('attendance_student', $data);
+            $this->attendance_model->edit_attendance_student($student_id, $date, $status, $observation);
 
             $this->session->set_flashdata('flash_message', array(
                 'title' => 'Datos actualizados correctamente!',
@@ -380,7 +381,7 @@ class Attendance extends CI_Controller
                 'timer' => '10000',
                 'timerProgressBar' => 'true',
             ));
-            redirect(base_url() . 'index.php?admin/details_attendance_student/' . $param1, 'refresh');
+            redirect(base_url() . 'index.php?admin/details_attendance_student/' . $student_id, 'refresh');
     }
 
 
