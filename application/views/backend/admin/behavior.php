@@ -1,15 +1,4 @@
 
-
-<?php
-$this->db->from('student_details');
-$this->db->where('user_status_id', 1);
-$this->db->where('section_id', $section_id);
-
-$query = $this->db->get();
-$all_student_count = $query->num_rows();
-?>
-
-
 <div class="row selectContent">
     <div class="col-md-6">
         <div class="form-group">
@@ -49,7 +38,6 @@ $all_student_count = $query->num_rows();
         <ul class="nav nav-tabs bordered">
             <li class="active">
                 <a href="#home" data-toggle="tab">
-                    <!-- <i class="entypo-menu"></i>  -->
                     <?php echo ucfirst(get_phrase('all')); ?>
                     <span class="badge badge-success badge-nav-tabs-quantity">
                         <?php echo $all_student_count; ?>
@@ -84,7 +72,6 @@ $all_student_count = $query->num_rows();
                     </thead>
                     <tbody>
                         <?php 
-                                $count = 1;
                                 foreach($students as $row):
                                 ?>
                         <tr>
