@@ -8,7 +8,7 @@ class Attendance extends CI_Controller
 		parent::__construct();
 		$this->load->database();
         $this->load->library('session');
-
+        
         $this->load->model('attendance/attendance_model'); // Cargar el modelo de asistencia
         $this->load->library('Attendance_service'); // Cargar la librería de servicio de asistencia 
 

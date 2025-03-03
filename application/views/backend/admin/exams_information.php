@@ -1,14 +1,4 @@
 <?php
-$this->db->from('exam');
-$this->db->where('section_id', $section_id);
-$query = $this->db->get();
-$all_exams_count = $query->num_rows();
-?>
-
-
-
-
-<?php
 if (empty($subject_id)) {
     ?>
     <div class="row selectContent">
@@ -22,13 +12,7 @@ if (empty($subject_id)) {
             <div class="form-group">
                 <select id="class_select" class="form-control selectElement" onchange="location = this.value;">
                     <?php
-                    $active_academic_period = $this->db->get_where('academic_period', array('status_id' => 1))->row();
-
-                    if ($active_academic_period) {
-                        $this->db->where('academic_period_id', $active_academic_period->id);
-                        $sections = $this->db->get('section')->result_array();
-
-                        foreach ($sections as $row):
+                    foreach ($sections as $row):
                     ?>
                         <option id="actualSectionId" value="<?php echo base_url(); ?>index.php?admin/exams_information/<?php echo $row['section_id']; ?>"
                             <?php if ($section_id == $row['section_id']) echo 'selected="selected"'; ?>>
@@ -36,8 +20,6 @@ if (empty($subject_id)) {
                         </option>
                     <?php 
                         endforeach;
-                    } else {
-                    }
                     ?>
                 </select>
             </div>
@@ -94,33 +76,28 @@ if (empty($subject_id)) {
                     </thead>
                     <tbody>
                         <?php 
-                                if (!empty($subject_id)) {
-                                    $exams = $this->db->get_where('exam', array('subject_id' => $subject_id))->result_array();
-                                } else {
-                                    $exams = $this->db->get_where('exam', array('section_id' => $section_id))->result_array();
-                                }
-                                foreach($exams as $row):
-                                    $date = date("d/m/Y", strtotime($row['date']));
-                                
-                                    if ($row['status_id'] == 1) {
-                                        $status_label = '<span class="label label-status label-success">'. ucfirst(get_phrase('active')) .'</span>';
-                                    } else {
-                                        $status_label = '<span class="label label-status label-danger">'. ucfirst(get_phrase('inactive')) . '</span>';
-                                    }
-                                ?>
+                        foreach($exams as $row):
+                            $date = date("d/m/Y", strtotime($row['date']));
+                        
+                            if ($row['status_id'] == 1) {
+                                $status_label = '<span class="label label-status label-success">'. ucfirst(get_phrase('active')) .'</span>';
+                            } else {
+                                $status_label = '<span class="label label-status label-danger">'. ucfirst(get_phrase('inactive')) . '</span>';
+                            }
+                        ?>
                         <tr>
                             <td class="text-center"><?php echo $row['name'];?></td>
                             <td class="text-center"><?php echo $date; ?></td>
                             <td class="text-center">
                                 <?php 
-                                    $exam_type_name = $this->db->get_where('exam_type', array('id' => $row['exam_type_id']))->row()->name; 
+                                    $exam_type_name = $row['exam_type_name']; 
                                     echo ucfirst(get_phrase($exam_type_name)); 
                                 ?>
                             </td>
 
                             <td class="text-center">
                                 <?php if($row['subject_id'] != '' && $row['subject_id'] != 0):?>
-                                    <?php echo $this->db->get_where('subject' , array('subject_id' => $row['subject_id']))->row()->name;?>
+                                    <?php echo $row['subject_name'];?>
                                 <?php endif;?>
                             </td>
                           
