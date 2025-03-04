@@ -20,83 +20,12 @@ $current_month_name = date('F'); // January, February, ..., December
 $current_month_start = date('F', strtotime('first day of last month'));
 $current_month_end = date('F', strtotime('last day of this month'));
 
+$total_students = $student_amount;
 
-$this->db->from('student_details');
-$this->db->where('user_status_id', 1);
-$this->db->where('section_id', $section_id);
-
-$query = $this->db->get();
-$all_student_count = $query->num_rows();
-
-if ($all_student_count === 0) {
-    $this->db->from('academic_history');
-    $this->db->where('new_section_id', $section_id);
-
-    $query = $this->db->get();
-    $all_student_count = $query->num_rows();
-}
-
-$this->db->where('section_id', $section_id);
-$total_students = $this->db->count_all_results('student_details');
-
-if ($total_students === 0) {
-    $this->db->where('new_section_id', $section_id);
-    $total_students = $this->db->count_all_results('academic_history');
-}
-
-if (empty($attendance_student_presente)) {
-    $attendance_student_presente = $this->crudAttendance->get_attendance_student_section_amount($section_id, 1, 'daily', $current_date);
-}
-
-// Verifica y obtiene el valor de 'ausente'
-if (empty($attendance_student_ausente)) {
-    $attendance_student_ausente = $this->crudAttendance->get_attendance_student_section_amount($section_id, 2, 'daily', $current_date);
-}
-
-// Verifica y obtiene el valor de 'tardanza'
-if (empty($attendance_student_tardanza)) {
-    $attendance_student_tardanza = $this->crudAttendance->get_attendance_student_section_amount($section_id, 3, 'daily', $current_date);
-}
-
-// Verifica y obtiene el valor de 'ausencia justificada'
-if (empty($attendance_student_ausencia_justificada)) {
-    $attendance_student_ausencia_justificada = $this->crudAttendance->get_attendance_student_section_amount($section_id, 4, 'daily', $current_date);
-}
-
-$total_attendance = $attendance_student_presente + $attendance_student_ausente + $attendance_student_tardanza + $attendance_student_ausencia_justificada;
-
-if ($total_attendance > 0) {
-    $percentage_presente = number_format(($attendance_student_presente / $total_attendance) * 100, 2);
-    $percentage_ausente = number_format(($attendance_student_ausente / $total_attendance) * 100, 2);
-    $percentage_tardanza = number_format(($attendance_student_tardanza / $total_attendance) * 100, 2);
-    $percentage_justificados = number_format(($attendance_student_ausencia_justificada / $total_attendance) * 100, 2);
-} else {
-    $percentage_presente = 0;
-    $percentage_ausente = 0;
-    $percentage_tardanza = 0;
-    $percentage_justificados = 0;
-}
-
-if ($total_students > 0):
-    $this->db->where('section_id', $section_id);
-    $students = $this->db->get('student_details')->result_array();
-
-    // Obtener el nombre de la sección
-    $section_name = $this->crud_model->get_section_name2($section_id);
-else:
-    // Buscar en academic_history si no se encontraron estudiantes en student_details
-    $this->db->where('new_section_id', $section_id);
-    $academic_history_students = $this->db->get('academic_history')->result_array();
-
-        $student_ids = array_column($academic_history_students, 'student_id');
-
-        if (!empty($student_ids)) {
-            $this->db->where_in('student_id', $student_ids);
-            $students = $this->db->get('student_details')->result_array();
-        }
-
-        $section_name = $this->crud_model->get_section_name2($section_id);
-endif;
+$attendance_student_presente = isset($attendance_student_presente) ? $attendance_student_presente : 0;
+$attendance_student_ausente = isset($attendance_student_ausente) ? $attendance_student_ausente : 0;
+$attendance_student_tardanza = isset($attendance_student_tardanza) ? $attendance_student_tardanza : 0;
+$attendance_student_ausencia_justificada = isset($attendance_student_ausencia_justificada) ? $attendance_student_ausencia_justificada : 0;
 
 $titleEN = 'Student report - ' . $section_name . ' - ' . date('d-m-Y');
 $titleES = 'Reporte de Estudiantes - ' . $section_name . ' - ' . date('d-m-Y');
@@ -115,7 +44,6 @@ $titleES = 'Reporte de Estudiantes - ' . $section_name . ' - ' . date('d-m-Y');
             <div class="form-group">
                 <select id="academic_period_select" class="form-control selectElement" onchange="return get_sections(this.value)">
                     <?php
-                    $academic_periods = $this->db->get('academic_period')->result_array();
 
                     foreach ($academic_periods as $period):
                         // Verifica si $academic_period_id no está vacío y coincide con $period['id']
@@ -798,16 +726,6 @@ $titleES = 'Reporte de Estudiantes - ' . $section_name . ' - ' . date('d-m-Y');
 
         var day_data = <?php echo json_encode($day_data); ?>;
 
-        // Morris.Line({
-        //     element: 'chartAttendanceDays', // ID del elemento donde se mostrará el gráfico
-        //     data: day_data, // Datos para el gráfico
-        //     xkey: 'elapsed', // Clave para el eje x (días del mes de abril)
-        //     ykeys: ['presente', 'ausente', 'tardanza', 'justificado'], // Claves para las líneas del gráfico
-        //     labels: ['presente', 'ausente', 'tardanza', 'justificado'], // Etiquetas para las líneas del gráfico
-        //     parseTime: false, // No se requiere análisis de tiempo para el eje x
-        //     lineColors: ['#55FFA8', '#FF6C6C', '#FFBB5A', '#52BBFF'] // Colores de las líneas
-        // });
-
 
        
 
@@ -855,30 +773,43 @@ $titleES = 'Reporte de Estudiantes - ' . $section_name . ' - ' . date('d-m-Y');
                     viewTypeText = '<?php echo ucfirst(get_phrase('monthly'));?>'; 
                     const month = document.getElementById('monthly').value;
 
-                    if (month === 'January') {
-                        translatedMonth = '<?php echo ucfirst(get_phrase("january")); ?>';
-                    } else if (month === 'February') {
-                        translatedMonth = '<?php echo ucfirst(get_phrase("february")); ?>';
-                    } else if (month === 'March') {
-                        translatedMonth = '<?php echo ucfirst(get_phrase("march")); ?>';
-                    } else if (month === 'April') {
-                        translatedMonth = '<?php echo ucfirst(get_phrase("april")); ?>';
-                    } else if (month === 'May') {
-                        translatedMonth = '<?php echo ucfirst(get_phrase("may")); ?>';
-                    } else if (month === 'June') {
-                        translatedMonth = '<?php echo ucfirst(get_phrase("june")); ?>';
-                    } else if (month === 'July') {
-                        translatedMonth = '<?php echo ucfirst(get_phrase("july")); ?>';
-                    } else if (month === 'August') {
-                        translatedMonth = '<?php echo ucfirst(get_phrase("august")); ?>';
-                    } else if (month === 'September') {
-                        translatedMonth = '<?php echo ucfirst(get_phrase("september")); ?>';
-                    } else if (month === 'October') {
-                        translatedMonth = '<?php echo ucfirst(get_phrase("october")); ?>';
-                    } else if (month === 'November') {
-                        translatedMonth = '<?php echo ucfirst(get_phrase("november")); ?>';
-                    } else if (month === 'December') {
-                        translatedMonth = '<?php echo ucfirst(get_phrase("december")); ?>';
+                    switch (month) {
+                        case 'January':
+                            translatedMonth = '<?php echo ucfirst(get_phrase("january")); ?>';
+                            break;
+                        case 'February':
+                            translatedMonth = '<?php echo ucfirst(get_phrase("february")); ?>';
+                            break;
+                        case 'March':
+                            translatedMonth = '<?php echo ucfirst(get_phrase("march")); ?>';
+                            break;
+                        case 'April':
+                            translatedMonth = '<?php echo ucfirst(get_phrase("april")); ?>';
+                            break;
+                        case 'May':
+                            translatedMonth = '<?php echo ucfirst(get_phrase("may")); ?>';
+                            break;
+                        case 'June':
+                            translatedMonth = '<?php echo ucfirst(get_phrase("june")); ?>';
+                            break;
+                        case 'July':
+                            translatedMonth = '<?php echo ucfirst(get_phrase("july")); ?>';
+                            break;
+                        case 'August':
+                            translatedMonth = '<?php echo ucfirst(get_phrase("august")); ?>';
+                            break;
+                        case 'September':
+                            translatedMonth = '<?php echo ucfirst(get_phrase("september")); ?>';
+                            break;
+                        case 'October':
+                            translatedMonth = '<?php echo ucfirst(get_phrase("october")); ?>';
+                            break;
+                        case 'November':
+                            translatedMonth = '<?php echo ucfirst(get_phrase("november")); ?>';
+                            break;
+                        case 'December':
+                            translatedMonth = '<?php echo ucfirst(get_phrase("december")); ?>';
+                            break;
                     }
 
                     viewTypeDetails = `${translatedMonth}`;  // Solo 'from' porque se selecciona un mes
@@ -887,58 +818,83 @@ $titleES = 'Reporte de Estudiantes - ' . $section_name . ' - ' . date('d-m-Y');
                     const startMonth = document.getElementById('startDateYearly').value;
                     const endMonth = document.getElementById('endDateYearly').value;
 
-                    if (startMonth === 'January') {
+                    switch (startMonth) {
+                        case 'January':
                             translatedStartDate = '<?php echo ucfirst(get_phrase("january")); ?>';
-                        } else if (startMonth === 'February') {
-                            translatedStarMonth = '<?php echo ucfirst(get_phrase("february")); ?>';
-                        } else if (startMonth === 'March') {
-                            translatedStarMonth = '<?php echo ucfirst(get_phrase("march")); ?>';
-                        } else if (startMonth === 'April') {
-                            translatedStarMonth = '<?php echo ucfirst(get_phrase("april")); ?>';
-                        } else if (startMonth === 'May') {
-                            translatedStarMonth = '<?php echo ucfirst(get_phrase("may")); ?>';
-                        } else if (startMonth === 'June') {
-                            translatedStarMonth = '<?php echo ucfirst(get_phrase("june")); ?>';
-                        } else if (startMonth === 'July') {
-                            translatedStarMonth = '<?php echo ucfirst(get_phrase("july")); ?>';
-                        } else if (startMonth === 'August') {
-                            translatedStarMonth = '<?php echo ucfirst(get_phrase("august")); ?>';
-                        } else if (startMonth === 'September') {
-                            translatedStarMonth = '<?php echo ucfirst(get_phrase("september")); ?>';
-                        } else if (startMonth === 'October') {
-                            translatedStarMonth = '<?php echo ucfirst(get_phrase("october")); ?>';
-                        } else if (startMonth === 'November') {
-                            translatedStarMonth = '<?php echo ucfirst(get_phrase("november")); ?>';
-                        } else if (startMonth === 'December') {
-                            translatedStarMonth = '<?php echo ucfirst(get_phrase("december")); ?>';
-                        }
+                            break;
+                        case 'February':
+                            translatedStartDate = '<?php echo ucfirst(get_phrase("february")); ?>';
+                            break;
+                        case 'March':
+                            translatedStartDate = '<?php echo ucfirst(get_phrase("march")); ?>';
+                            break;
+                        case 'April':
+                            translatedStartDate = '<?php echo ucfirst(get_phrase("april")); ?>';
+                            break;
+                        case 'May':
+                            translatedStartDate = '<?php echo ucfirst(get_phrase("may")); ?>';
+                            break;
+                        case 'June':
+                            translatedStartDate = '<?php echo ucfirst(get_phrase("june")); ?>';
+                            break;
+                        case 'July':
+                            translatedStartDate = '<?php echo ucfirst(get_phrase("july")); ?>';
+                            break;
+                        case 'August':
+                            translatedStartDate = '<?php echo ucfirst(get_phrase("august")); ?>';
+                            break;
+                        case 'September':
+                            translatedStartDate = '<?php echo ucfirst(get_phrase("september")); ?>';
+                            break;
+                        case 'October':
+                            translatedStartDate = '<?php echo ucfirst(get_phrase("october")); ?>';
+                            break;
+                        case 'November':
+                            translatedStartDate = '<?php echo ucfirst(get_phrase("november")); ?>';
+                            break;
+                        case 'December':
+                            translatedStartDate = '<?php echo ucfirst(get_phrase("december")); ?>';
+                            break;
+                    }
 
-                        if (endMonth === 'January') {
+                    switch (endMonth) {
+                        case 'January':
                             translatedEndMonth = '<?php echo ucfirst(get_phrase("january")); ?>';
-                        } else if (endMonth === 'February') {
+                            break;
+                        case 'February':
                             translatedEndMonth = '<?php echo ucfirst(get_phrase("february")); ?>';
-                        } else if (endMonth === 'March') {
+                            break;
+                        case 'March':
                             translatedEndMonth = '<?php echo ucfirst(get_phrase("march")); ?>';
-                        } else if (endMonth === 'April') {
+                            break;
+                        case 'April':
                             translatedEndMonth = '<?php echo ucfirst(get_phrase("april")); ?>';
-                        } else if (endMonth === 'May') {
+                            break;
+                        case 'May':
                             translatedEndMonth = '<?php echo ucfirst(get_phrase("may")); ?>';
-                        } else if (endMonth === 'June') {
+                            break;
+                        case 'June':
                             translatedEndMonth = '<?php echo ucfirst(get_phrase("june")); ?>';
-                        } else if (endMonth === 'July') {
+                            break;
+                        case 'July':
                             translatedEndMonth = '<?php echo ucfirst(get_phrase("july")); ?>';
-                        } else if (endMonth === 'August') {
+                            break;
+                        case 'August':
                             translatedEndMonth = '<?php echo ucfirst(get_phrase("august")); ?>';
-                        } else if (endMonth === 'September') {
+                            break;
+                        case 'September':
                             translatedEndMonth = '<?php echo ucfirst(get_phrase("september")); ?>';
-                        } else if (endMonth === 'October') {
+                            break;
+                        case 'October':
                             translatedEndMonth = '<?php echo ucfirst(get_phrase("october")); ?>';
-                        } else if (endMonth === 'November') {
+                            break;
+                        case 'November':
                             translatedEndMonth = '<?php echo ucfirst(get_phrase("november")); ?>';
-                        } else if (endMonth === 'December') {
+                            break;
+                        case 'December':
                             translatedEndMonth = '<?php echo ucfirst(get_phrase("december")); ?>';
-                        }
-
+                            break;
+                    }
                     viewTypeDetails = `<?php echo ucfirst(get_phrase('from')); ?> ${translatedStarMonth} <?php echo get_phrase('to'); ?> ${translatedEndMonth}`;  // Usar las palabras "from" y "to" traducidas
                 }
 
@@ -1035,30 +991,43 @@ $titleES = 'Reporte de Estudiantes - ' . $section_name . ' - ' . date('d-m-Y');
                             viewTypeText = '<?php echo ucfirst(get_phrase('monthly'));?>'; 
                             const month = document.getElementById('monthly').value;
 
-                            if (month === 'January') {
-                                translatedMonth = '<?php echo ucfirst(get_phrase("january")); ?>';
-                            } else if (month === 'February') {
-                                translatedMonth = '<?php echo ucfirst(get_phrase("february")); ?>';
-                            } else if (month === 'March') {
-                                translatedMonth = '<?php echo ucfirst(get_phrase("march")); ?>';
-                            } else if (month === 'April') {
-                                translatedMonth = '<?php echo ucfirst(get_phrase("april")); ?>';
-                            } else if (month === 'May') {
-                                translatedMonth = '<?php echo ucfirst(get_phrase("may")); ?>';
-                            } else if (month === 'June') {
-                                translatedMonth = '<?php echo ucfirst(get_phrase("june")); ?>';
-                            } else if (month === 'July') {
-                                translatedMonth = '<?php echo ucfirst(get_phrase("july")); ?>';
-                            } else if (month === 'August') {
-                                translatedMonth = '<?php echo ucfirst(get_phrase("august")); ?>';
-                            } else if (month === 'September') {
-                                translatedMonth = '<?php echo ucfirst(get_phrase("september")); ?>';
-                            } else if (month === 'October') {
-                                translatedMonth = '<?php echo ucfirst(get_phrase("october")); ?>';
-                            } else if (month === 'November') {
-                                translatedMonth = '<?php echo ucfirst(get_phrase("november")); ?>';
-                            } else if (month === 'December') {
-                                translatedMonth = '<?php echo ucfirst(get_phrase("december")); ?>';
+                            switch (month) {
+                                case 'January':
+                                    translatedMonth = '<?php echo ucfirst(get_phrase("january")); ?>';
+                                    break;
+                                case 'February':
+                                    translatedMonth = '<?php echo ucfirst(get_phrase("february")); ?>';
+                                    break;
+                                case 'March':
+                                    translatedMonth = '<?php echo ucfirst(get_phrase("march")); ?>';
+                                    break;
+                                case 'April':
+                                    translatedMonth = '<?php echo ucfirst(get_phrase("april")); ?>';
+                                    break;
+                                case 'May':
+                                    translatedMonth = '<?php echo ucfirst(get_phrase("may")); ?>';
+                                    break;
+                                case 'June':
+                                    translatedMonth = '<?php echo ucfirst(get_phrase("june")); ?>';
+                                    break;
+                                case 'July':
+                                    translatedMonth = '<?php echo ucfirst(get_phrase("july")); ?>';
+                                    break;
+                                case 'August':
+                                    translatedMonth = '<?php echo ucfirst(get_phrase("august")); ?>';
+                                    break;
+                                case 'September':
+                                    translatedMonth = '<?php echo ucfirst(get_phrase("september")); ?>';
+                                    break;
+                                case 'October':
+                                    translatedMonth = '<?php echo ucfirst(get_phrase("october")); ?>';
+                                    break;
+                                case 'November':
+                                    translatedMonth = '<?php echo ucfirst(get_phrase("november")); ?>';
+                                    break;
+                                case 'December':
+                                    translatedMonth = '<?php echo ucfirst(get_phrase("december")); ?>';
+                                    break;
                             }
 
                             viewTypeDetails = `${translatedMonth}`;  // Solo 'from' porque se selecciona un mes
@@ -1067,57 +1036,83 @@ $titleES = 'Reporte de Estudiantes - ' . $section_name . ' - ' . date('d-m-Y');
                             const startMonth = document.getElementById('startDateYearly').value;
                             const endMonth = document.getElementById('endDateYearly').value;
 
-                            if (startMonth === 'January') {
+                            switch (startMonth) {
+                                case 'January':
                                     translatedStartDate = '<?php echo ucfirst(get_phrase("january")); ?>';
-                                } else if (startMonth === 'February') {
-                                    translatedStarMonth = '<?php echo ucfirst(get_phrase("february")); ?>';
-                                } else if (startMonth === 'March') {
-                                    translatedStarMonth = '<?php echo ucfirst(get_phrase("march")); ?>';
-                                } else if (startMonth === 'April') {
-                                    translatedStarMonth = '<?php echo ucfirst(get_phrase("april")); ?>';
-                                } else if (startMonth === 'May') {
-                                    translatedStarMonth = '<?php echo ucfirst(get_phrase("may")); ?>';
-                                } else if (startMonth === 'June') {
-                                    translatedStarMonth = '<?php echo ucfirst(get_phrase("june")); ?>';
-                                } else if (startMonth === 'July') {
-                                    translatedStarMonth = '<?php echo ucfirst(get_phrase("july")); ?>';
-                                } else if (startMonth === 'August') {
-                                    translatedStarMonth = '<?php echo ucfirst(get_phrase("august")); ?>';
-                                } else if (startMonth === 'September') {
-                                    translatedStarMonth = '<?php echo ucfirst(get_phrase("september")); ?>';
-                                } else if (startMonth === 'October') {
-                                    translatedStarMonth = '<?php echo ucfirst(get_phrase("october")); ?>';
-                                } else if (startMonth === 'November') {
-                                    translatedStarMonth = '<?php echo ucfirst(get_phrase("november")); ?>';
-                                } else if (startMonth === 'December') {
-                                    translatedStarMonth = '<?php echo ucfirst(get_phrase("december")); ?>';
-                                }
+                                    break;
+                                case 'February':
+                                    translatedStartDate = '<?php echo ucfirst(get_phrase("february")); ?>';
+                                    break;
+                                case 'March':
+                                    translatedStartDate = '<?php echo ucfirst(get_phrase("march")); ?>';
+                                    break;
+                                case 'April':
+                                    translatedStartDate = '<?php echo ucfirst(get_phrase("april")); ?>';
+                                    break;
+                                case 'May':
+                                    translatedStartDate = '<?php echo ucfirst(get_phrase("may")); ?>';
+                                    break;
+                                case 'June':
+                                    translatedStartDate = '<?php echo ucfirst(get_phrase("june")); ?>';
+                                    break;
+                                case 'July':
+                                    translatedStartDate = '<?php echo ucfirst(get_phrase("july")); ?>';
+                                    break;
+                                case 'August':
+                                    translatedStartDate = '<?php echo ucfirst(get_phrase("august")); ?>';
+                                    break;
+                                case 'September':
+                                    translatedStartDate = '<?php echo ucfirst(get_phrase("september")); ?>';
+                                    break;
+                                case 'October':
+                                    translatedStartDate = '<?php echo ucfirst(get_phrase("october")); ?>';
+                                    break;
+                                case 'November':
+                                    translatedStartDate = '<?php echo ucfirst(get_phrase("november")); ?>';
+                                    break;
+                                case 'December':
+                                    translatedStartDate = '<?php echo ucfirst(get_phrase("december")); ?>';
+                                    break;
+                            }
 
-                                if (endMonth === 'January') {
+                            switch (endMonth) {
+                                case 'January':
                                     translatedEndMonth = '<?php echo ucfirst(get_phrase("january")); ?>';
-                                } else if (endMonth === 'February') {
+                                    break;
+                                case 'February':
                                     translatedEndMonth = '<?php echo ucfirst(get_phrase("february")); ?>';
-                                } else if (endMonth === 'March') {
+                                    break;
+                                case 'March':
                                     translatedEndMonth = '<?php echo ucfirst(get_phrase("march")); ?>';
-                                } else if (endMonth === 'April') {
+                                    break;
+                                case 'April':
                                     translatedEndMonth = '<?php echo ucfirst(get_phrase("april")); ?>';
-                                } else if (endMonth === 'May') {
+                                    break;
+                                case 'May':
                                     translatedEndMonth = '<?php echo ucfirst(get_phrase("may")); ?>';
-                                } else if (endMonth === 'June') {
+                                    break;
+                                case 'June':
                                     translatedEndMonth = '<?php echo ucfirst(get_phrase("june")); ?>';
-                                } else if (endMonth === 'July') {
+                                    break;
+                                case 'July':
                                     translatedEndMonth = '<?php echo ucfirst(get_phrase("july")); ?>';
-                                } else if (endMonth === 'August') {
+                                    break;
+                                case 'August':
                                     translatedEndMonth = '<?php echo ucfirst(get_phrase("august")); ?>';
-                                } else if (endMonth === 'September') {
+                                    break;
+                                case 'September':
                                     translatedEndMonth = '<?php echo ucfirst(get_phrase("september")); ?>';
-                                } else if (endMonth === 'October') {
+                                    break;
+                                case 'October':
                                     translatedEndMonth = '<?php echo ucfirst(get_phrase("october")); ?>';
-                                } else if (endMonth === 'November') {
+                                    break;
+                                case 'November':
                                     translatedEndMonth = '<?php echo ucfirst(get_phrase("november")); ?>';
-                                } else if (endMonth === 'December') {
+                                    break;
+                                case 'December':
                                     translatedEndMonth = '<?php echo ucfirst(get_phrase("december")); ?>';
-                                }
+                                    break;
+                            }
 
                             viewTypeDetails = `<?php echo ucfirst(get_phrase('from')); ?> ${translatedStarMonth} <?php echo get_phrase('to'); ?> ${translatedEndMonth}`;  // Usar las palabras "from" y "to" traducidas
                         }
@@ -1196,30 +1191,43 @@ $titleES = 'Reporte de Estudiantes - ' . $section_name . ' - ' . date('d-m-Y');
                             viewTypeText = '<?php echo ucfirst(get_phrase('monthly'));?>'; 
                             const month = document.getElementById('monthly').value;
 
-                            if (month === 'January') {
-                                translatedMonth = '<?php echo ucfirst(get_phrase("january")); ?>';
-                            } else if (month === 'February') {
-                                translatedMonth = '<?php echo ucfirst(get_phrase("february")); ?>';
-                            } else if (month === 'March') {
-                                translatedMonth = '<?php echo ucfirst(get_phrase("march")); ?>';
-                            } else if (month === 'April') {
-                                translatedMonth = '<?php echo ucfirst(get_phrase("april")); ?>';
-                            } else if (month === 'May') {
-                                translatedMonth = '<?php echo ucfirst(get_phrase("may")); ?>';
-                            } else if (month === 'June') {
-                                translatedMonth = '<?php echo ucfirst(get_phrase("june")); ?>';
-                            } else if (month === 'July') {
-                                translatedMonth = '<?php echo ucfirst(get_phrase("july")); ?>';
-                            } else if (month === 'August') {
-                                translatedMonth = '<?php echo ucfirst(get_phrase("august")); ?>';
-                            } else if (month === 'September') {
-                                translatedMonth = '<?php echo ucfirst(get_phrase("september")); ?>';
-                            } else if (month === 'October') {
-                                translatedMonth = '<?php echo ucfirst(get_phrase("october")); ?>';
-                            } else if (month === 'November') {
-                                translatedMonth = '<?php echo ucfirst(get_phrase("november")); ?>';
-                            } else if (month === 'December') {
-                                translatedMonth = '<?php echo ucfirst(get_phrase("december")); ?>';
+                            switch (month) {
+                                case 'January':
+                                    translatedMonth = '<?php echo ucfirst(get_phrase("january")); ?>';
+                                    break;
+                                case 'February':
+                                    translatedMonth = '<?php echo ucfirst(get_phrase("february")); ?>';
+                                    break;
+                                case 'March':
+                                    translatedMonth = '<?php echo ucfirst(get_phrase("march")); ?>';
+                                    break;
+                                case 'April':
+                                    translatedMonth = '<?php echo ucfirst(get_phrase("april")); ?>';
+                                    break;
+                                case 'May':
+                                    translatedMonth = '<?php echo ucfirst(get_phrase("may")); ?>';
+                                    break;
+                                case 'June':
+                                    translatedMonth = '<?php echo ucfirst(get_phrase("june")); ?>';
+                                    break;
+                                case 'July':
+                                    translatedMonth = '<?php echo ucfirst(get_phrase("july")); ?>';
+                                    break;
+                                case 'August':
+                                    translatedMonth = '<?php echo ucfirst(get_phrase("august")); ?>';
+                                    break;
+                                case 'September':
+                                    translatedMonth = '<?php echo ucfirst(get_phrase("september")); ?>';
+                                    break;
+                                case 'October':
+                                    translatedMonth = '<?php echo ucfirst(get_phrase("october")); ?>';
+                                    break;
+                                case 'November':
+                                    translatedMonth = '<?php echo ucfirst(get_phrase("november")); ?>';
+                                    break;
+                                case 'December':
+                                    translatedMonth = '<?php echo ucfirst(get_phrase("december")); ?>';
+                                    break;
                             }
 
                             viewTypeDetails = `${translatedMonth}`;  // Solo 'from' porque se selecciona un mes
@@ -1228,58 +1236,83 @@ $titleES = 'Reporte de Estudiantes - ' . $section_name . ' - ' . date('d-m-Y');
                             const startMonth = document.getElementById('startDateYearly').value;
                             const endMonth = document.getElementById('endDateYearly').value;
 
-                            if (startMonth === 'January') {
+                            switch (startMonth) {
+                                case 'January':
                                     translatedStartDate = '<?php echo ucfirst(get_phrase("january")); ?>';
-                                } else if (startMonth === 'February') {
-                                    translatedStarMonth = '<?php echo ucfirst(get_phrase("february")); ?>';
-                                } else if (startMonth === 'March') {
-                                    translatedStarMonth = '<?php echo ucfirst(get_phrase("march")); ?>';
-                                } else if (startMonth === 'April') {
-                                    translatedStarMonth = '<?php echo ucfirst(get_phrase("april")); ?>';
-                                } else if (startMonth === 'May') {
-                                    translatedStarMonth = '<?php echo ucfirst(get_phrase("may")); ?>';
-                                } else if (startMonth === 'June') {
-                                    translatedStarMonth = '<?php echo ucfirst(get_phrase("june")); ?>';
-                                } else if (startMonth === 'July') {
-                                    translatedStarMonth = '<?php echo ucfirst(get_phrase("july")); ?>';
-                                } else if (startMonth === 'August') {
-                                    translatedStarMonth = '<?php echo ucfirst(get_phrase("august")); ?>';
-                                } else if (startMonth === 'September') {
-                                    translatedStarMonth = '<?php echo ucfirst(get_phrase("september")); ?>';
-                                } else if (startMonth === 'October') {
-                                    translatedStarMonth = '<?php echo ucfirst(get_phrase("october")); ?>';
-                                } else if (startMonth === 'November') {
-                                    translatedStarMonth = '<?php echo ucfirst(get_phrase("november")); ?>';
-                                } else if (startMonth === 'December') {
-                                    translatedStarMonth = '<?php echo ucfirst(get_phrase("december")); ?>';
-                                }
+                                    break;
+                                case 'February':
+                                    translatedStartDate = '<?php echo ucfirst(get_phrase("february")); ?>';
+                                    break;
+                                case 'March':
+                                    translatedStartDate = '<?php echo ucfirst(get_phrase("march")); ?>';
+                                    break;
+                                case 'April':
+                                    translatedStartDate = '<?php echo ucfirst(get_phrase("april")); ?>';
+                                    break;
+                                case 'May':
+                                    translatedStartDate = '<?php echo ucfirst(get_phrase("may")); ?>';
+                                    break;
+                                case 'June':
+                                    translatedStartDate = '<?php echo ucfirst(get_phrase("june")); ?>';
+                                    break;
+                                case 'July':
+                                    translatedStartDate = '<?php echo ucfirst(get_phrase("july")); ?>';
+                                    break;
+                                case 'August':
+                                    translatedStartDate = '<?php echo ucfirst(get_phrase("august")); ?>';
+                                    break;
+                                case 'September':
+                                    translatedStartDate = '<?php echo ucfirst(get_phrase("september")); ?>';
+                                    break;
+                                case 'October':
+                                    translatedStartDate = '<?php echo ucfirst(get_phrase("october")); ?>';
+                                    break;
+                                case 'November':
+                                    translatedStartDate = '<?php echo ucfirst(get_phrase("november")); ?>';
+                                    break;
+                                case 'December':
+                                    translatedStartDate = '<?php echo ucfirst(get_phrase("december")); ?>';
+                                    break;
+                            }
 
-                                if (endMonth === 'January') {
+                            switch (endMonth) {
+                                case 'January':
                                     translatedEndMonth = '<?php echo ucfirst(get_phrase("january")); ?>';
-                                } else if (endMonth === 'February') {
+                                    break;
+                                case 'February':
                                     translatedEndMonth = '<?php echo ucfirst(get_phrase("february")); ?>';
-                                } else if (endMonth === 'March') {
+                                    break;
+                                case 'March':
                                     translatedEndMonth = '<?php echo ucfirst(get_phrase("march")); ?>';
-                                } else if (endMonth === 'April') {
+                                    break;
+                                case 'April':
                                     translatedEndMonth = '<?php echo ucfirst(get_phrase("april")); ?>';
-                                } else if (endMonth === 'May') {
+                                    break;
+                                case 'May':
                                     translatedEndMonth = '<?php echo ucfirst(get_phrase("may")); ?>';
-                                } else if (endMonth === 'June') {
+                                    break;
+                                case 'June':
                                     translatedEndMonth = '<?php echo ucfirst(get_phrase("june")); ?>';
-                                } else if (endMonth === 'July') {
+                                    break;
+                                case 'July':
                                     translatedEndMonth = '<?php echo ucfirst(get_phrase("july")); ?>';
-                                } else if (endMonth === 'August') {
+                                    break;
+                                case 'August':
                                     translatedEndMonth = '<?php echo ucfirst(get_phrase("august")); ?>';
-                                } else if (endMonth === 'September') {
+                                    break;
+                                case 'September':
                                     translatedEndMonth = '<?php echo ucfirst(get_phrase("september")); ?>';
-                                } else if (endMonth === 'October') {
+                                    break;
+                                case 'October':
                                     translatedEndMonth = '<?php echo ucfirst(get_phrase("october")); ?>';
-                                } else if (endMonth === 'November') {
+                                    break;
+                                case 'November':
                                     translatedEndMonth = '<?php echo ucfirst(get_phrase("november")); ?>';
-                                } else if (endMonth === 'December') {
+                                    break;
+                                case 'December':
                                     translatedEndMonth = '<?php echo ucfirst(get_phrase("december")); ?>';
-                                }
-
+                                    break;
+                            }
                             viewTypeDetails = `<?php echo ucfirst(get_phrase('from')); ?> ${translatedStarMonth} <?php echo get_phrase('to'); ?> ${translatedEndMonth}`;  // Usar las palabras "from" y "to" traducidas
                         }
 
@@ -1359,30 +1392,43 @@ $titleES = 'Reporte de Estudiantes - ' . $section_name . ' - ' . date('d-m-Y');
                     viewTypeText = '<?php echo ucfirst(get_phrase('monthly'));?>'; 
                     const month = document.getElementById('monthly2').value;
 
-                    if (month === 'January') {
-                        translatedMonth = '<?php echo ucfirst(get_phrase("january")); ?>';
-                    } else if (month === 'February') {
-                        translatedMonth = '<?php echo ucfirst(get_phrase("february")); ?>';
-                    } else if (month === 'March') {
-                        translatedMonth = '<?php echo ucfirst(get_phrase("march")); ?>';
-                    } else if (month === 'April') {
-                        translatedMonth = '<?php echo ucfirst(get_phrase("april")); ?>';
-                    } else if (month === 'May') {
-                        translatedMonth = '<?php echo ucfirst(get_phrase("may")); ?>';
-                    } else if (month === 'June') {
-                        translatedMonth = '<?php echo ucfirst(get_phrase("june")); ?>';
-                    } else if (month === 'July') {
-                        translatedMonth = '<?php echo ucfirst(get_phrase("july")); ?>';
-                    } else if (month === 'August') {
-                        translatedMonth = '<?php echo ucfirst(get_phrase("august")); ?>';
-                    } else if (month === 'September') {
-                        translatedMonth = '<?php echo ucfirst(get_phrase("september")); ?>';
-                    } else if (month === 'October') {
-                        translatedMonth = '<?php echo ucfirst(get_phrase("october")); ?>';
-                    } else if (month === 'November') {
-                        translatedMonth = '<?php echo ucfirst(get_phrase("november")); ?>';
-                    } else if (month === 'December') {
-                        translatedMonth = '<?php echo ucfirst(get_phrase("december")); ?>';
+                    switch (month) {
+                        case 'January':
+                            translatedMonth = '<?php echo ucfirst(get_phrase("january")); ?>';
+                            break;
+                        case 'February':
+                            translatedMonth = '<?php echo ucfirst(get_phrase("february")); ?>';
+                            break;
+                        case 'March':
+                            translatedMonth = '<?php echo ucfirst(get_phrase("march")); ?>';
+                            break;
+                        case 'April':
+                            translatedMonth = '<?php echo ucfirst(get_phrase("april")); ?>';
+                            break;
+                        case 'May':
+                            translatedMonth = '<?php echo ucfirst(get_phrase("may")); ?>';
+                            break;
+                        case 'June':
+                            translatedMonth = '<?php echo ucfirst(get_phrase("june")); ?>';
+                            break;
+                        case 'July':
+                            translatedMonth = '<?php echo ucfirst(get_phrase("july")); ?>';
+                            break;
+                        case 'August':
+                            translatedMonth = '<?php echo ucfirst(get_phrase("august")); ?>';
+                            break;
+                        case 'September':
+                            translatedMonth = '<?php echo ucfirst(get_phrase("september")); ?>';
+                            break;
+                        case 'October':
+                            translatedMonth = '<?php echo ucfirst(get_phrase("october")); ?>';
+                            break;
+                        case 'November':
+                            translatedMonth = '<?php echo ucfirst(get_phrase("november")); ?>';
+                            break;
+                        case 'December':
+                            translatedMonth = '<?php echo ucfirst(get_phrase("december")); ?>';
+                            break;
                     }
 
                     viewTypeDetails = `${translatedMonth}`;  // Solo 'from' porque se selecciona un mes
@@ -1391,57 +1437,83 @@ $titleES = 'Reporte de Estudiantes - ' . $section_name . ' - ' . date('d-m-Y');
                     const startMonth = document.getElementById('startDateYearly2').value;
                     const endMonth = document.getElementById('endDateYearly2').value;
 
-                    if (startMonth === 'January') {
+                    switch (startMonth) {
+                        case 'January':
                             translatedStartDate = '<?php echo ucfirst(get_phrase("january")); ?>';
-                        } else if (startMonth === 'February') {
-                            translatedStarMonth = '<?php echo ucfirst(get_phrase("february")); ?>';
-                        } else if (startMonth === 'March') {
-                            translatedStarMonth = '<?php echo ucfirst(get_phrase("march")); ?>';
-                        } else if (startMonth === 'April') {
-                            translatedStarMonth = '<?php echo ucfirst(get_phrase("april")); ?>';
-                        } else if (startMonth === 'May') {
-                            translatedStarMonth = '<?php echo ucfirst(get_phrase("may")); ?>';
-                        } else if (startMonth === 'June') {
-                            translatedStarMonth = '<?php echo ucfirst(get_phrase("june")); ?>';
-                        } else if (startMonth === 'July') {
-                            translatedStarMonth = '<?php echo ucfirst(get_phrase("july")); ?>';
-                        } else if (startMonth === 'August') {
-                            translatedStarMonth = '<?php echo ucfirst(get_phrase("august")); ?>';
-                        } else if (startMonth === 'September') {
-                            translatedStarMonth = '<?php echo ucfirst(get_phrase("september")); ?>';
-                        } else if (startMonth === 'October') {
-                            translatedStarMonth = '<?php echo ucfirst(get_phrase("october")); ?>';
-                        } else if (startMonth === 'November') {
-                            translatedStarMonth = '<?php echo ucfirst(get_phrase("november")); ?>';
-                        } else if (startMonth === 'December') {
-                            translatedStarMonth = '<?php echo ucfirst(get_phrase("december")); ?>';
-                        }
+                            break;
+                        case 'February':
+                            translatedStartDate = '<?php echo ucfirst(get_phrase("february")); ?>';
+                            break;
+                        case 'March':
+                            translatedStartDate = '<?php echo ucfirst(get_phrase("march")); ?>';
+                            break;
+                        case 'April':
+                            translatedStartDate = '<?php echo ucfirst(get_phrase("april")); ?>';
+                            break;
+                        case 'May':
+                            translatedStartDate = '<?php echo ucfirst(get_phrase("may")); ?>';
+                            break;
+                        case 'June':
+                            translatedStartDate = '<?php echo ucfirst(get_phrase("june")); ?>';
+                            break;
+                        case 'July':
+                            translatedStartDate = '<?php echo ucfirst(get_phrase("july")); ?>';
+                            break;
+                        case 'August':
+                            translatedStartDate = '<?php echo ucfirst(get_phrase("august")); ?>';
+                            break;
+                        case 'September':
+                            translatedStartDate = '<?php echo ucfirst(get_phrase("september")); ?>';
+                            break;
+                        case 'October':
+                            translatedStartDate = '<?php echo ucfirst(get_phrase("october")); ?>';
+                            break;
+                        case 'November':
+                            translatedStartDate = '<?php echo ucfirst(get_phrase("november")); ?>';
+                            break;
+                        case 'December':
+                            translatedStartDate = '<?php echo ucfirst(get_phrase("december")); ?>';
+                            break;
+                    }
 
-                        if (endMonth === 'January') {
+                    switch (endMonth) {
+                        case 'January':
                             translatedEndMonth = '<?php echo ucfirst(get_phrase("january")); ?>';
-                        } else if (endMonth === 'February') {
+                            break;
+                        case 'February':
                             translatedEndMonth = '<?php echo ucfirst(get_phrase("february")); ?>';
-                        } else if (endMonth === 'March') {
+                            break;
+                        case 'March':
                             translatedEndMonth = '<?php echo ucfirst(get_phrase("march")); ?>';
-                        } else if (endMonth === 'April') {
+                            break;
+                        case 'April':
                             translatedEndMonth = '<?php echo ucfirst(get_phrase("april")); ?>';
-                        } else if (endMonth === 'May') {
+                            break;
+                        case 'May':
                             translatedEndMonth = '<?php echo ucfirst(get_phrase("may")); ?>';
-                        } else if (endMonth === 'June') {
+                            break;
+                        case 'June':
                             translatedEndMonth = '<?php echo ucfirst(get_phrase("june")); ?>';
-                        } else if (endMonth === 'July') {
+                            break;
+                        case 'July':
                             translatedEndMonth = '<?php echo ucfirst(get_phrase("july")); ?>';
-                        } else if (endMonth === 'August') {
+                            break;
+                        case 'August':
                             translatedEndMonth = '<?php echo ucfirst(get_phrase("august")); ?>';
-                        } else if (endMonth === 'September') {
+                            break;
+                        case 'September':
                             translatedEndMonth = '<?php echo ucfirst(get_phrase("september")); ?>';
-                        } else if (endMonth === 'October') {
+                            break;
+                        case 'October':
                             translatedEndMonth = '<?php echo ucfirst(get_phrase("october")); ?>';
-                        } else if (endMonth === 'November') {
+                            break;
+                        case 'November':
                             translatedEndMonth = '<?php echo ucfirst(get_phrase("november")); ?>';
-                        } else if (endMonth === 'December') {
+                            break;
+                        case 'December':
                             translatedEndMonth = '<?php echo ucfirst(get_phrase("december")); ?>';
-                        }
+                            break;
+                    }
 
                     viewTypeDetails = `<?php echo ucfirst(get_phrase('from')); ?> ${translatedStarMonth} <?php echo get_phrase('to'); ?> ${translatedEndMonth}`;  // Usar las palabras "from" y "to" traducidas
                 }
@@ -1542,30 +1614,43 @@ $titleES = 'Reporte de Estudiantes - ' . $section_name . ' - ' . date('d-m-Y');
                             viewTypeText = '<?php echo ucfirst(get_phrase('monthly'));?>'; 
                             const month = document.getElementById('monthly2').value;
 
-                            if (month === 'January') {
-                                translatedMonth = '<?php echo ucfirst(get_phrase("january")); ?>';
-                            } else if (month === 'February') {
-                                translatedMonth = '<?php echo ucfirst(get_phrase("february")); ?>';
-                            } else if (month === 'March') {
-                                translatedMonth = '<?php echo ucfirst(get_phrase("march")); ?>';
-                            } else if (month === 'April') {
-                                translatedMonth = '<?php echo ucfirst(get_phrase("april")); ?>';
-                            } else if (month === 'May') {
-                                translatedMonth = '<?php echo ucfirst(get_phrase("may")); ?>';
-                            } else if (month === 'June') {
-                                translatedMonth = '<?php echo ucfirst(get_phrase("june")); ?>';
-                            } else if (month === 'July') {
-                                translatedMonth = '<?php echo ucfirst(get_phrase("july")); ?>';
-                            } else if (month === 'August') {
-                                translatedMonth = '<?php echo ucfirst(get_phrase("august")); ?>';
-                            } else if (month === 'September') {
-                                translatedMonth = '<?php echo ucfirst(get_phrase("september")); ?>';
-                            } else if (month === 'October') {
-                                translatedMonth = '<?php echo ucfirst(get_phrase("october")); ?>';
-                            } else if (month === 'November') {
-                                translatedMonth = '<?php echo ucfirst(get_phrase("november")); ?>';
-                            } else if (month === 'December') {
-                                translatedMonth = '<?php echo ucfirst(get_phrase("december")); ?>';
+                            switch (month) {
+                                case 'January':
+                                    translatedMonth = '<?php echo ucfirst(get_phrase("january")); ?>';
+                                    break;
+                                case 'February':
+                                    translatedMonth = '<?php echo ucfirst(get_phrase("february")); ?>';
+                                    break;
+                                case 'March':
+                                    translatedMonth = '<?php echo ucfirst(get_phrase("march")); ?>';
+                                    break;
+                                case 'April':
+                                    translatedMonth = '<?php echo ucfirst(get_phrase("april")); ?>';
+                                    break;
+                                case 'May':
+                                    translatedMonth = '<?php echo ucfirst(get_phrase("may")); ?>';
+                                    break;
+                                case 'June':
+                                    translatedMonth = '<?php echo ucfirst(get_phrase("june")); ?>';
+                                    break;
+                                case 'July':
+                                    translatedMonth = '<?php echo ucfirst(get_phrase("july")); ?>';
+                                    break;
+                                case 'August':
+                                    translatedMonth = '<?php echo ucfirst(get_phrase("august")); ?>';
+                                    break;
+                                case 'September':
+                                    translatedMonth = '<?php echo ucfirst(get_phrase("september")); ?>';
+                                    break;
+                                case 'October':
+                                    translatedMonth = '<?php echo ucfirst(get_phrase("october")); ?>';
+                                    break;
+                                case 'November':
+                                    translatedMonth = '<?php echo ucfirst(get_phrase("november")); ?>';
+                                    break;
+                                case 'December':
+                                    translatedMonth = '<?php echo ucfirst(get_phrase("december")); ?>';
+                                    break;
                             }
 
                             viewTypeDetails = `${translatedMonth}`;  // Solo 'from' porque se selecciona un mes
@@ -1574,57 +1659,83 @@ $titleES = 'Reporte de Estudiantes - ' . $section_name . ' - ' . date('d-m-Y');
                             const startMonth = document.getElementById('startDateYearly2').value;
                             const endMonth = document.getElementById('endDateYearly2').value;
 
-                            if (startMonth === 'January') {
+                            switch (startMonth) {
+                                case 'January':
                                     translatedStartDate = '<?php echo ucfirst(get_phrase("january")); ?>';
-                                } else if (startMonth === 'February') {
-                                    translatedStarMonth = '<?php echo ucfirst(get_phrase("february")); ?>';
-                                } else if (startMonth === 'March') {
-                                    translatedStarMonth = '<?php echo ucfirst(get_phrase("march")); ?>';
-                                } else if (startMonth === 'April') {
-                                    translatedStarMonth = '<?php echo ucfirst(get_phrase("april")); ?>';
-                                } else if (startMonth === 'May') {
-                                    translatedStarMonth = '<?php echo ucfirst(get_phrase("may")); ?>';
-                                } else if (startMonth === 'June') {
-                                    translatedStarMonth = '<?php echo ucfirst(get_phrase("june")); ?>';
-                                } else if (startMonth === 'July') {
-                                    translatedStarMonth = '<?php echo ucfirst(get_phrase("july")); ?>';
-                                } else if (startMonth === 'August') {
-                                    translatedStarMonth = '<?php echo ucfirst(get_phrase("august")); ?>';
-                                } else if (startMonth === 'September') {
-                                    translatedStarMonth = '<?php echo ucfirst(get_phrase("september")); ?>';
-                                } else if (startMonth === 'October') {
-                                    translatedStarMonth = '<?php echo ucfirst(get_phrase("october")); ?>';
-                                } else if (startMonth === 'November') {
-                                    translatedStarMonth = '<?php echo ucfirst(get_phrase("november")); ?>';
-                                } else if (startMonth === 'December') {
-                                    translatedStarMonth = '<?php echo ucfirst(get_phrase("december")); ?>';
-                                }
+                                    break;
+                                case 'February':
+                                    translatedStartDate = '<?php echo ucfirst(get_phrase("february")); ?>';
+                                    break;
+                                case 'March':
+                                    translatedStartDate = '<?php echo ucfirst(get_phrase("march")); ?>';
+                                    break;
+                                case 'April':
+                                    translatedStartDate = '<?php echo ucfirst(get_phrase("april")); ?>';
+                                    break;
+                                case 'May':
+                                    translatedStartDate = '<?php echo ucfirst(get_phrase("may")); ?>';
+                                    break;
+                                case 'June':
+                                    translatedStartDate = '<?php echo ucfirst(get_phrase("june")); ?>';
+                                    break;
+                                case 'July':
+                                    translatedStartDate = '<?php echo ucfirst(get_phrase("july")); ?>';
+                                    break;
+                                case 'August':
+                                    translatedStartDate = '<?php echo ucfirst(get_phrase("august")); ?>';
+                                    break;
+                                case 'September':
+                                    translatedStartDate = '<?php echo ucfirst(get_phrase("september")); ?>';
+                                    break;
+                                case 'October':
+                                    translatedStartDate = '<?php echo ucfirst(get_phrase("october")); ?>';
+                                    break;
+                                case 'November':
+                                    translatedStartDate = '<?php echo ucfirst(get_phrase("november")); ?>';
+                                    break;
+                                case 'December':
+                                    translatedStartDate = '<?php echo ucfirst(get_phrase("december")); ?>';
+                                    break;
+                            }
 
-                                if (endMonth === 'January') {
+                            switch (endMonth) {
+                                case 'January':
                                     translatedEndMonth = '<?php echo ucfirst(get_phrase("january")); ?>';
-                                } else if (endMonth === 'February') {
+                                    break;
+                                case 'February':
                                     translatedEndMonth = '<?php echo ucfirst(get_phrase("february")); ?>';
-                                } else if (endMonth === 'March') {
+                                    break;
+                                case 'March':
                                     translatedEndMonth = '<?php echo ucfirst(get_phrase("march")); ?>';
-                                } else if (endMonth === 'April') {
+                                    break;
+                                case 'April':
                                     translatedEndMonth = '<?php echo ucfirst(get_phrase("april")); ?>';
-                                } else if (endMonth === 'May') {
+                                    break;
+                                case 'May':
                                     translatedEndMonth = '<?php echo ucfirst(get_phrase("may")); ?>';
-                                } else if (endMonth === 'June') {
+                                    break;
+                                case 'June':
                                     translatedEndMonth = '<?php echo ucfirst(get_phrase("june")); ?>';
-                                } else if (endMonth === 'July') {
+                                    break;
+                                case 'July':
                                     translatedEndMonth = '<?php echo ucfirst(get_phrase("july")); ?>';
-                                } else if (endMonth === 'August') {
+                                    break;
+                                case 'August':
                                     translatedEndMonth = '<?php echo ucfirst(get_phrase("august")); ?>';
-                                } else if (endMonth === 'September') {
+                                    break;
+                                case 'September':
                                     translatedEndMonth = '<?php echo ucfirst(get_phrase("september")); ?>';
-                                } else if (endMonth === 'October') {
+                                    break;
+                                case 'October':
                                     translatedEndMonth = '<?php echo ucfirst(get_phrase("october")); ?>';
-                                } else if (endMonth === 'November') {
+                                    break;
+                                case 'November':
                                     translatedEndMonth = '<?php echo ucfirst(get_phrase("november")); ?>';
-                                } else if (endMonth === 'December') {
+                                    break;
+                                case 'December':
                                     translatedEndMonth = '<?php echo ucfirst(get_phrase("december")); ?>';
-                                }
+                                    break;
+                            }
 
                             viewTypeDetails = `<?php echo ucfirst(get_phrase('from')); ?> ${translatedStarMonth} <?php echo get_phrase('to'); ?> ${translatedEndMonth}`;  // Usar las palabras "from" y "to" traducidas
                         }
@@ -1703,30 +1814,43 @@ $titleES = 'Reporte de Estudiantes - ' . $section_name . ' - ' . date('d-m-Y');
                             viewTypeText = '<?php echo ucfirst(get_phrase('monthly'));?>'; 
                             const month = document.getElementById('monthly2').value;
 
-                            if (month === 'January') {
-                                translatedMonth = '<?php echo ucfirst(get_phrase("january")); ?>';
-                            } else if (month === 'February') {
-                                translatedMonth = '<?php echo ucfirst(get_phrase("february")); ?>';
-                            } else if (month === 'March') {
-                                translatedMonth = '<?php echo ucfirst(get_phrase("march")); ?>';
-                            } else if (month === 'April') {
-                                translatedMonth = '<?php echo ucfirst(get_phrase("april")); ?>';
-                            } else if (month === 'May') {
-                                translatedMonth = '<?php echo ucfirst(get_phrase("may")); ?>';
-                            } else if (month === 'June') {
-                                translatedMonth = '<?php echo ucfirst(get_phrase("june")); ?>';
-                            } else if (month === 'July') {
-                                translatedMonth = '<?php echo ucfirst(get_phrase("july")); ?>';
-                            } else if (month === 'August') {
-                                translatedMonth = '<?php echo ucfirst(get_phrase("august")); ?>';
-                            } else if (month === 'September') {
-                                translatedMonth = '<?php echo ucfirst(get_phrase("september")); ?>';
-                            } else if (month === 'October') {
-                                translatedMonth = '<?php echo ucfirst(get_phrase("october")); ?>';
-                            } else if (month === 'November') {
-                                translatedMonth = '<?php echo ucfirst(get_phrase("november")); ?>';
-                            } else if (month === 'December') {
-                                translatedMonth = '<?php echo ucfirst(get_phrase("december")); ?>';
+                            switch (month) {
+                                case 'January':
+                                    translatedMonth = '<?php echo ucfirst(get_phrase("january")); ?>';
+                                    break;
+                                case 'February':
+                                    translatedMonth = '<?php echo ucfirst(get_phrase("february")); ?>';
+                                    break;
+                                case 'March':
+                                    translatedMonth = '<?php echo ucfirst(get_phrase("march")); ?>';
+                                    break;
+                                case 'April':
+                                    translatedMonth = '<?php echo ucfirst(get_phrase("april")); ?>';
+                                    break;
+                                case 'May':
+                                    translatedMonth = '<?php echo ucfirst(get_phrase("may")); ?>';
+                                    break;
+                                case 'June':
+                                    translatedMonth = '<?php echo ucfirst(get_phrase("june")); ?>';
+                                    break;
+                                case 'July':
+                                    translatedMonth = '<?php echo ucfirst(get_phrase("july")); ?>';
+                                    break;
+                                case 'August':
+                                    translatedMonth = '<?php echo ucfirst(get_phrase("august")); ?>';
+                                    break;
+                                case 'September':
+                                    translatedMonth = '<?php echo ucfirst(get_phrase("september")); ?>';
+                                    break;
+                                case 'October':
+                                    translatedMonth = '<?php echo ucfirst(get_phrase("october")); ?>';
+                                    break;
+                                case 'November':
+                                    translatedMonth = '<?php echo ucfirst(get_phrase("november")); ?>';
+                                    break;
+                                case 'December':
+                                    translatedMonth = '<?php echo ucfirst(get_phrase("december")); ?>';
+                                    break;
                             }
 
                             viewTypeDetails = `${translatedMonth}`;  // Solo 'from' porque se selecciona un mes
@@ -1735,57 +1859,83 @@ $titleES = 'Reporte de Estudiantes - ' . $section_name . ' - ' . date('d-m-Y');
                             const startMonth = document.getElementById('startDateYearly2').value;
                             const endMonth = document.getElementById('endDateYearly2').value;
 
-                            if (startMonth === 'January') {
+                            switch (startMonth) {
+                                case 'January':
                                     translatedStartDate = '<?php echo ucfirst(get_phrase("january")); ?>';
-                                } else if (startMonth === 'February') {
-                                    translatedStarMonth = '<?php echo ucfirst(get_phrase("february")); ?>';
-                                } else if (startMonth === 'March') {
-                                    translatedStarMonth = '<?php echo ucfirst(get_phrase("march")); ?>';
-                                } else if (startMonth === 'April') {
-                                    translatedStarMonth = '<?php echo ucfirst(get_phrase("april")); ?>';
-                                } else if (startMonth === 'May') {
-                                    translatedStarMonth = '<?php echo ucfirst(get_phrase("may")); ?>';
-                                } else if (startMonth === 'June') {
-                                    translatedStarMonth = '<?php echo ucfirst(get_phrase("june")); ?>';
-                                } else if (startMonth === 'July') {
-                                    translatedStarMonth = '<?php echo ucfirst(get_phrase("july")); ?>';
-                                } else if (startMonth === 'August') {
-                                    translatedStarMonth = '<?php echo ucfirst(get_phrase("august")); ?>';
-                                } else if (startMonth === 'September') {
-                                    translatedStarMonth = '<?php echo ucfirst(get_phrase("september")); ?>';
-                                } else if (startMonth === 'October') {
-                                    translatedStarMonth = '<?php echo ucfirst(get_phrase("october")); ?>';
-                                } else if (startMonth === 'November') {
-                                    translatedStarMonth = '<?php echo ucfirst(get_phrase("november")); ?>';
-                                } else if (startMonth === 'December') {
-                                    translatedStarMonth = '<?php echo ucfirst(get_phrase("december")); ?>';
-                                }
+                                    break;
+                                case 'February':
+                                    translatedStartDate = '<?php echo ucfirst(get_phrase("february")); ?>';
+                                    break;
+                                case 'March':
+                                    translatedStartDate = '<?php echo ucfirst(get_phrase("march")); ?>';
+                                    break;
+                                case 'April':
+                                    translatedStartDate = '<?php echo ucfirst(get_phrase("april")); ?>';
+                                    break;
+                                case 'May':
+                                    translatedStartDate = '<?php echo ucfirst(get_phrase("may")); ?>';
+                                    break;
+                                case 'June':
+                                    translatedStartDate = '<?php echo ucfirst(get_phrase("june")); ?>';
+                                    break;
+                                case 'July':
+                                    translatedStartDate = '<?php echo ucfirst(get_phrase("july")); ?>';
+                                    break;
+                                case 'August':
+                                    translatedStartDate = '<?php echo ucfirst(get_phrase("august")); ?>';
+                                    break;
+                                case 'September':
+                                    translatedStartDate = '<?php echo ucfirst(get_phrase("september")); ?>';
+                                    break;
+                                case 'October':
+                                    translatedStartDate = '<?php echo ucfirst(get_phrase("october")); ?>';
+                                    break;
+                                case 'November':
+                                    translatedStartDate = '<?php echo ucfirst(get_phrase("november")); ?>';
+                                    break;
+                                case 'December':
+                                    translatedStartDate = '<?php echo ucfirst(get_phrase("december")); ?>';
+                                    break;
+                            }
 
-                                if (endMonth === 'January') {
+                            switch (endMonth) {
+                                case 'January':
                                     translatedEndMonth = '<?php echo ucfirst(get_phrase("january")); ?>';
-                                } else if (endMonth === 'February') {
+                                    break;
+                                case 'February':
                                     translatedEndMonth = '<?php echo ucfirst(get_phrase("february")); ?>';
-                                } else if (endMonth === 'March') {
+                                    break;
+                                case 'March':
                                     translatedEndMonth = '<?php echo ucfirst(get_phrase("march")); ?>';
-                                } else if (endMonth === 'April') {
+                                    break;
+                                case 'April':
                                     translatedEndMonth = '<?php echo ucfirst(get_phrase("april")); ?>';
-                                } else if (endMonth === 'May') {
+                                    break;
+                                case 'May':
                                     translatedEndMonth = '<?php echo ucfirst(get_phrase("may")); ?>';
-                                } else if (endMonth === 'June') {
+                                    break;
+                                case 'June':
                                     translatedEndMonth = '<?php echo ucfirst(get_phrase("june")); ?>';
-                                } else if (endMonth === 'July') {
+                                    break;
+                                case 'July':
                                     translatedEndMonth = '<?php echo ucfirst(get_phrase("july")); ?>';
-                                } else if (endMonth === 'August') {
+                                    break;
+                                case 'August':
                                     translatedEndMonth = '<?php echo ucfirst(get_phrase("august")); ?>';
-                                } else if (endMonth === 'September') {
+                                    break;
+                                case 'September':
                                     translatedEndMonth = '<?php echo ucfirst(get_phrase("september")); ?>';
-                                } else if (endMonth === 'October') {
+                                    break;
+                                case 'October':
                                     translatedEndMonth = '<?php echo ucfirst(get_phrase("october")); ?>';
-                                } else if (endMonth === 'November') {
+                                    break;
+                                case 'November':
                                     translatedEndMonth = '<?php echo ucfirst(get_phrase("november")); ?>';
-                                } else if (endMonth === 'December') {
+                                    break;
+                                case 'December':
                                     translatedEndMonth = '<?php echo ucfirst(get_phrase("december")); ?>';
-                                }
+                                    break;
+                            }
 
                             viewTypeDetails = `<?php echo ucfirst(get_phrase('from')); ?> ${translatedStarMonth} <?php echo get_phrase('to'); ?> ${translatedEndMonth}`;  // Usar las palabras "from" y "to" traducidas
                         }
@@ -1843,19 +1993,23 @@ $titleES = 'Reporte de Estudiantes - ' . $section_name . ' - ' . date('d-m-Y');
 
             const viewTypeContainer = $('.viewType');
 
-            // Mostrar solo la vista seleccionada
-            if (selected === 'daily') {
-                $('.dailyView').fadeIn();
-                viewTypeContainer.removeClass('col-md-3 col-md-4').addClass('col-md-6');
-            } else if (selected === 'weekly') {
-                $('.weeklyView').fadeIn();
-                viewTypeContainer.removeClass('col-md-3 col-md-6').addClass('col-md-4');
-            } else if (selected === 'monthly') {
-                $('.monthlyView').fadeIn();
-                viewTypeContainer.removeClass('col-md-3 col-md-4').addClass('col-md-6');
-            } else if (selected === 'yearly') {
-                $('.yearlyView').fadeIn();
-                viewTypeContainer.removeClass('col-md-3 col-md-6').addClass('col-md-4');
+            switch (selected) {
+                case 'daily':
+                    $('.dailyView').fadeIn();
+                    viewTypeContainer.removeClass('col-md-3 col-md-4').addClass('col-md-6');
+                    break;
+                case 'weekly':
+                    $('.weeklyView').fadeIn();
+                    viewTypeContainer.removeClass('col-md-3 col-md-6').addClass('col-md-4');
+                    break;
+                case 'monthly':
+                    $('.monthlyView').fadeIn();
+                    viewTypeContainer.removeClass('col-md-3 col-md-4').addClass('col-md-6');
+                    break;
+                case 'yearly':
+                    $('.yearlyView').fadeIn();
+                    viewTypeContainer.removeClass('col-md-3 col-md-6').addClass('col-md-4');
+                    break;
             }
         });
 
@@ -1868,19 +2022,23 @@ $titleES = 'Reporte de Estudiantes - ' . $section_name . ' - ' . date('d-m-Y');
 
             const viewTypeContainer2 = $('.viewType2');
 
-            // Mostrar solo la vista seleccionada
-            if (selected === 'daily') {
-                $('.dailyView2').fadeIn();
-                viewTypeContainer2.removeClass('col-md-3 col-md-4').addClass('col-md-6');
-            } else if (selected === 'weekly') {
-                $('.weeklyView2').fadeIn();
-                viewTypeContainer2.removeClass('col-md-3 col-md-6').addClass('col-md-4');
-            } else if (selected === 'monthly') {
-                $('.monthlyView2').fadeIn();
-                viewTypeContainer2.removeClass('col-md-3 col-md-4').addClass('col-md-6');
-            } else if (selected === 'yearly') {
-                $('.yearlyView2').fadeIn();
-                viewTypeContainer2.removeClass('col-md-3 col-md-6').addClass('col-md-4');
+            switch (selected) {
+                case 'daily':
+                    $('.dailyView2').fadeIn();
+                    viewTypeContainer2.removeClass('col-md-3 col-md-4').addClass('col-md-6');
+                    break;
+                case 'weekly':
+                    $('.weeklyView2').fadeIn();
+                    viewTypeContainer2.removeClass('col-md-3 col-md-6').addClass('col-md-4');
+                    break;
+                case 'monthly':
+                    $('.monthlyView2').fadeIn();
+                    viewTypeContainer2.removeClass('col-md-3 col-md-4').addClass('col-md-6');
+                    break;
+                case 'yearly':
+                    $('.yearlyView2').fadeIn();
+                    viewTypeContainer2.removeClass('col-md-3 col-md-6').addClass('col-md-4');
+                    break;
             }
         });
 
@@ -1899,34 +2057,39 @@ $titleES = 'Reporte de Estudiantes - ' . $section_name . ' - ' . date('d-m-Y');
             let start_date_yearly = $('#startDateYearly').val();
             let end_date_yearly = $('#endDateYearly').val();
 
-            if (filter_type === 'daily') {
-                date = date || 'null';
-                start_date = 'null';
-                end_date = 'null';
-                dateMoth = 'null';
-                start_date_yearly = 'null';
-                end_date_yearly = 'null';
-            } else if (filter_type === 'weekly') {
-                date = 'null';
-                start_date = start_date || 'null';
-                end_date = end_date || 'null';
-                dateMoth = 'null';
-                start_date_yearly = 'null';
-                end_date_yearly = 'null';
-            } else if (filter_type === 'monthly') { 
-                date = 'null';
-                start_date = 'null';
-                end_date = 'null';
-                dateMoth = dateMoth || 'null';
-                start_date_yearly = 'null';
-                end_date_yearly = 'null';
-            } else if (filter_type === 'yearly') { 
-                date = 'null';
-                start_date = 'null';
-                end_date = 'null';
-                dateMoth = 'null';
-                start_date_yearly = start_date_yearly || 'null';
-                end_date_yearly = end_date_yearly || 'null';
+            switch (filter_type) {
+                case 'daily':
+                    date = date || 'null';
+                    start_date = 'null';
+                    end_date = 'null';
+                    dateMoth = 'null';
+                    start_date_yearly = 'null';
+                    end_date_yearly = 'null';
+                    break;
+                case 'weekly':
+                    date = 'null';
+                    start_date = start_date || 'null';
+                    end_date = end_date || 'null';
+                    dateMoth = 'null';
+                    start_date_yearly = 'null';
+                    end_date_yearly = 'null';
+                    break;
+                case 'monthly':
+                    date = 'null';
+                    start_date = 'null';
+                    end_date = 'null';
+                    dateMoth = dateMoth || 'null';
+                    start_date_yearly = 'null';
+                    end_date_yearly = 'null';
+                    break;
+                case 'yearly':
+                    date = 'null';
+                    start_date = 'null';
+                    end_date = 'null';
+                    dateMoth = 'null';
+                    start_date_yearly = start_date_yearly || 'null';
+                    end_date_yearly = end_date_yearly || 'null';
+                    break;
             }
 
             const url = `<?php echo base_url("index.php?admin/filter_attendance"); ?>/${section_id}/${filter_type}/${date}/${start_date}/${end_date}/${dateMoth}/${start_date_yearly}/${end_date_yearly}`;
@@ -1991,34 +2154,39 @@ $titleES = 'Reporte de Estudiantes - ' . $section_name . ' - ' . date('d-m-Y');
             let start_date_yearly = $('#startDateYearly2').val();
             let end_date_yearly = $('#endDateYearly2').val();
 
-            if (filter_type === 'daily') {
-                date = date || 'null';
-                start_date = 'null';
-                end_date = 'null';
-                dateMoth = 'null';
-                start_date_yearly = 'null';
-                end_date_yearly = 'null';
-            } else if (filter_type === 'weekly') {
-                date = 'null';
-                start_date = start_date || 'null';
-                end_date = end_date || 'null';
-                dateMoth = 'null';
-                start_date_yearly = 'null';
-                end_date_yearly = 'null';
-            } else if (filter_type === 'monthly') {
-                date = 'null';
-                start_date = 'null';
-                end_date = 'null';
-                dateMoth = dateMoth || 'null';
-                start_date_yearly = 'null';
-                end_date_yearly = 'null';
-            } else if (filter_type === 'yearly') { 
-                date = 'null';
-                start_date = 'null';
-                end_date = 'null';
-                dateMoth = 'null';
-                start_date_yearly = start_date_yearly || 'null';
-                end_date_yearly = end_date_yearly || 'null';
+            switch (filter_type) {
+                case 'daily':
+                    date = date || 'null';
+                    start_date = 'null';
+                    end_date = 'null';
+                    dateMoth = 'null';
+                    start_date_yearly = 'null';
+                    end_date_yearly = 'null';
+                    break;
+                case 'weekly':
+                    date = 'null';
+                    start_date = start_date || 'null';
+                    end_date = end_date || 'null';
+                    dateMoth = 'null';
+                    start_date_yearly = 'null';
+                    end_date_yearly = 'null';
+                    break;
+                case 'monthly':
+                    date = 'null';
+                    start_date = 'null';
+                    end_date = 'null';
+                    dateMoth = dateMoth || 'null';
+                    start_date_yearly = 'null';
+                    end_date_yearly = 'null';
+                    break;
+                case 'yearly':
+                    date = 'null';
+                    start_date = 'null';
+                    end_date = 'null';
+                    dateMoth = 'null';
+                    start_date_yearly = start_date_yearly || 'null';
+                    end_date_yearly = end_date_yearly || 'null';
+                    break;
             }
 
             const urlBase = `<?php echo base_url("index.php?admin/filter_attendance"); ?>/${section_id}`;
@@ -2228,56 +2396,82 @@ $titleES = 'Reporte de Estudiantes - ' . $section_name . ' - ' . date('d-m-Y');
                 let translatedStartDate = '';
                 let translatedEndDate = '';
 
-                if (start_date_yearly === 'January') {
-                    translatedStartDate = '<?php echo ucfirst(get_phrase("january")); ?>';
-                } else if (start_date_yearly === 'February') {
-                    translatedStartDate = '<?php echo ucfirst(get_phrase("february")); ?>';
-                } else if (start_date_yearly === 'March') {
-                    translatedStartDate = '<?php echo ucfirst(get_phrase("march")); ?>';
-                } else if (start_date_yearly === 'April') {
-                    translatedStartDate = '<?php echo ucfirst(get_phrase("april")); ?>';
-                } else if (start_date_yearly === 'May') {
-                    translatedStartDate = '<?php echo ucfirst(get_phrase("may")); ?>';
-                } else if (start_date_yearly === 'June') {
-                    translatedStartDate = '<?php echo ucfirst(get_phrase("june")); ?>';
-                } else if (start_date_yearly === 'July') {
-                    translatedStartDate = '<?php echo ucfirst(get_phrase("july")); ?>';
-                } else if (start_date_yearly === 'August') {
-                    translatedStartDate = '<?php echo ucfirst(get_phrase("august")); ?>';
-                } else if (start_date_yearly === 'September') {
-                    translatedStartDate = '<?php echo ucfirst(get_phrase("september")); ?>';
-                } else if (start_date_yearly === 'October') {
-                    translatedStartDate = '<?php echo ucfirst(get_phrase("october")); ?>';
-                } else if (start_date_yearly === 'November') {
-                    translatedStartDate = '<?php echo ucfirst(get_phrase("november")); ?>';
-                } else if (start_date_yearly === 'December') {
-                    translatedStartDate = '<?php echo ucfirst(get_phrase("december")); ?>';
+                switch (start_date_yearly) {
+                    case 'January':
+                        translatedStartDate = '<?php echo ucfirst(get_phrase("january")); ?>';
+                        break;
+                    case 'February':
+                        translatedStartDate = '<?php echo ucfirst(get_phrase("february")); ?>';
+                        break;
+                    case 'March':
+                        translatedStartDate = '<?php echo ucfirst(get_phrase("march")); ?>';
+                        break;
+                    case 'April':
+                        translatedStartDate = '<?php echo ucfirst(get_phrase("april")); ?>';
+                        break;
+                    case 'May':
+                        translatedStartDate = '<?php echo ucfirst(get_phrase("may")); ?>';
+                        break;
+                    case 'June':
+                        translatedStartDate = '<?php echo ucfirst(get_phrase("june")); ?>';
+                        break;
+                    case 'July':
+                        translatedStartDate = '<?php echo ucfirst(get_phrase("july")); ?>';
+                        break;
+                    case 'August':
+                        translatedStartDate = '<?php echo ucfirst(get_phrase("august")); ?>';
+                        break;
+                    case 'September':
+                        translatedStartDate = '<?php echo ucfirst(get_phrase("september")); ?>';
+                        break;
+                    case 'October':
+                        translatedStartDate = '<?php echo ucfirst(get_phrase("october")); ?>';
+                        break;
+                    case 'November':
+                        translatedStartDate = '<?php echo ucfirst(get_phrase("november")); ?>';
+                        break;
+                    case 'December':
+                        translatedStartDate = '<?php echo ucfirst(get_phrase("december")); ?>';
+                        break;
                 }
 
-                if (end_date_yearly === 'January') {
-                    translatedEndDate = '<?php echo ucfirst(get_phrase("january")); ?>';
-                } else if (end_date_yearly === 'February') {
-                    translatedEndDate = '<?php echo ucfirst(get_phrase("february")); ?>';
-                } else if (end_date_yearly === 'March') {
-                    translatedEndDate = '<?php echo ucfirst(get_phrase("march")); ?>';
-                } else if (end_date_yearly === 'April') {
-                    translatedEndDate = '<?php echo ucfirst(get_phrase("april")); ?>';
-                } else if (end_date_yearly === 'May') {
-                    translatedEndDate = '<?php echo ucfirst(get_phrase("may")); ?>';
-                } else if (end_date_yearly === 'June') {
-                    translatedEndDate = '<?php echo ucfirst(get_phrase("june")); ?>';
-                } else if (end_date_yearly === 'July') {
-                    translatedEndDate = '<?php echo ucfirst(get_phrase("july")); ?>';
-                } else if (end_date_yearly === 'August') {
-                    translatedEndDate = '<?php echo ucfirst(get_phrase("august")); ?>';
-                } else if (end_date_yearly === 'September') {
-                    translatedEndDate = '<?php echo ucfirst(get_phrase("september")); ?>';
-                } else if (end_date_yearly === 'October') {
-                    translatedEndDate = '<?php echo ucfirst(get_phrase("october")); ?>';
-                } else if (end_date_yearly === 'November') {
-                    translatedEndDate = '<?php echo ucfirst(get_phrase("november")); ?>';
-                } else if (end_date_yearly === 'December') {
-                    translatedEndDate = '<?php echo ucfirst(get_phrase("december")); ?>';
+                switch (end_date_yearly) {
+                    case 'January':
+                        translatedEndDate = '<?php echo ucfirst(get_phrase("january")); ?>';
+                        break;
+                    case 'February':
+                        translatedEndDate = '<?php echo ucfirst(get_phrase("february")); ?>';
+                        break;
+                    case 'March':
+                        translatedEndDate = '<?php echo ucfirst(get_phrase("march")); ?>';
+                        break;
+                    case 'April':
+                        translatedEndDate = '<?php echo ucfirst(get_phrase("april")); ?>';
+                        break;
+                    case 'May':
+                        translatedEndDate = '<?php echo ucfirst(get_phrase("may")); ?>';
+                        break;
+                    case 'June':
+                        translatedEndDate = '<?php echo ucfirst(get_phrase("june")); ?>';
+                        break;
+                    case 'July':
+                        translatedEndDate = '<?php echo ucfirst(get_phrase("july")); ?>';
+                        break;
+                    case 'August':
+                        translatedEndDate = '<?php echo ucfirst(get_phrase("august")); ?>';
+                        break;
+                    case 'September':
+                        translatedEndDate = '<?php echo ucfirst(get_phrase("september")); ?>';
+                        break;
+                    case 'October':
+                        translatedEndDate = '<?php echo ucfirst(get_phrase("october")); ?>';
+                        break;
+                    case 'November':
+                        translatedEndDate = '<?php echo ucfirst(get_phrase("november")); ?>';
+                        break;
+                    case 'December':
+                        translatedEndDate = '<?php echo ucfirst(get_phrase("december")); ?>';
+                        break;
                 }
 
                 const yearlyData = {

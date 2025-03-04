@@ -1,8 +1,14 @@
 <?php
-class CrudSubject extends CI_Model {
+class Subject_model extends CI_Model {
     function __construct() {
         parent::__construct();
     }
+
+    function get_subject($subject_id) {
+        $this->db->where('subject_id', $subject_id);
+        return $this->db->get('subject')->row_array();
+    }
+
     function get_subjects() {
         $query = $this->db->get('subject');
         return $query->result_array();

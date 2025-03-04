@@ -1,11 +1,8 @@
-
 <?php 
-// Obtenemos los datos de exam_type desde la base de datos
-$exam_types = $this->db->get('exam_type')->result_array();
+$exam_types = isset($exam_types) ? $exam_types : array();
+$edit_data = isset($edit_data) ? $edit_data : array();
 
-$edit_data = $this->db->get_where('exam', array('exam_id' => $param2))->result_array();
 foreach ($edit_data as $row):
-
 ?>
 
 <div class="row">

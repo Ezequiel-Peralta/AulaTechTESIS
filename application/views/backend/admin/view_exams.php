@@ -1,75 +1,44 @@
 <?php
-$this->db->from('exam');
-
-if (!empty($teacher_id)) {
-    $this->db->where('teacher_id', $teacher_id);
-} else {
-    $this->db->where('section_id', $section_id);
-    if (!empty($subject_id)) {
-        $this->db->where('subject_id', $subject_id);
-    }
-}
-$this->db->where('status_id', 1);
-$query = $this->db->get();
-$all_exams_count = $query->num_rows();
-
-if ($all_exams_count == 0) {
-    $this->db->from('exam_history');
-    
-    if (!empty($teacher_id)) {
-        $this->db->where('teacher_id', $teacher_id);
-    } else {
-        $this->db->where('section_id', $section_id);
-        if (!empty($subject_id)) {
-            $this->db->where('subject_id', $subject_id);
-        }
-    }
-
-    $this->db->where('status_id', 1);
-    
-    $query = $this->db->get();
-    $all_exams_count = $query->num_rows();
-}
-
+$all_exams_count = count($exams);
 ?>
 
-    <div class="row selectContent">
-        <div class="col-md-6">
-            <div class="form-group">
-                <label for="academic_period_select" class="labelSelect">
-                    <?php echo ucfirst(get_phrase('you_are_viewing')); ?>
-                </label> 
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="form-group">
-                <select id="academic_period_select" class="form-control selectElement" onchange="return get_sections(this.value)">
-                    <?php
-                    $academic_periods = $this->db->get('academic_period')->result_array();
-
-                    foreach ($academic_periods as $period):
-                        // Verifica si $academic_period_id no está vacío y coincide con $period['id']
-                        if (!empty($academic_period_id) && $academic_period_id == $period['id']) {
-                            $selected = 'selected="selected"';
-                        } elseif (empty($academic_period_id) && $period['status_id'] == 1) {
-                            // Marca por defecto el período académico con status_id = 1 si $academic_period_id está vacío
-                            $selected = 'selected="selected"';
-                        } else {
-                            $selected = '';
-                        }
-                    ?>
-                        <option value="<?php echo $period['id']; ?>" data-academic-period-id="<?php echo $period['id']; ?>" <?php echo $selected; ?>>
-                            <?php echo $period['name']; ?>
-                        </option>
-                    <?php endforeach; ?>
-                </select>
-            </div>
+<div class="row selectContent">
+    <div class="col-md-6">
+        <div class="form-group">
+            <label for="academic_period_select" class="labelSelect">
+                <?php echo ucfirst(get_phrase('you_are_viewing')); ?>
+            </label> 
         </div>
     </div>
+    <div class="col-md-6">
+        <div class="form-group">
+            <select id="academic_period_select" class="form-control selectElement" onchange="return get_sections(this.value)">
+                <?php
+                $academic_periods = $this->db->get('academic_period')->result_array();
 
-    <br>
+                foreach ($academic_periods as $period):
+                    // Verifica si $academic_period_id no está vacío y coincide con $period['id']
+                    if (!empty($academic_period_id) && $academic_period_id == $period['id']) {
+                        $selected = 'selected="selected"';
+                    } elseif (empty($academic_period_id) && $period['status_id'] == 1) {
+                        // Marca por defecto el período académico con status_id = 1 si $academic_period_id está vacío
+                        $selected = 'selected="selected"';
+                    } else {
+                        $selected = '';
+                    }
+                ?>
+                    <option value="<?php echo $period['id']; ?>" data-academic-period-id="<?php echo $period['id']; ?>" <?php echo $selected; ?>>
+                        <?php echo $period['name']; ?>
+                    </option>
+                <?php endforeach; ?>
+            </select>
+        </div>
+    </div>
+</div>
 
-    <div class="row selectContent">
+<br>
+
+<div class="row selectContent">
     <div class="col-md-6">
         <div class="form-group">
             <label for="class_select" class="labelSelect"><?php echo ucfirst(get_phrase('class')); ?>
@@ -123,7 +92,6 @@ if ($all_exams_count == 0) {
     </div>
 </div>
 
-
 <br>
 
 <div class="row selectContent">
@@ -158,7 +126,6 @@ if ($all_exams_count == 0) {
     </div>
 </div>
 
-
 <div class="row">
     <div class="col-md-12">
         
@@ -185,189 +152,154 @@ if ($all_exams_count == 0) {
                 </div>
                 <br>
                 
-                <?php
-                    $this->db->from('exam');
+                <div class="row">
+                    <?php foreach ($exams as $exam): ?>
+                        <div class="col-md-4 mb-4">
+                            <div class="card shadow-sm">
+                                <div class="card-img-top img-fluid collage-container" style="display: flex; justify-content: center; align-items: center; flex-wrap: wrap; gap: 10px;">
+                                    <?php
+                                    // Decodificar el JSON de archivos
+                                    $files = json_decode($exam['files'], true);
+                                    $file_count_by_extension = [];
 
-                    if (!empty($teacher_id)) {
-                        $this->db->where('teacher_id', $teacher_id);
-                    } else {
-                        $this->db->where('section_id', $section_id);
-                        if (!empty($subject_id)) {
-                            $this->db->where('subject_id', $subject_id);
-                        }
-                    }
-                    $this->db->where('status_id', 1);
-                    $this->db->order_by('date', 'DESC');
-                    $exams = $this->db->get()->result_array();
+                                    if (is_array($files) && !empty($files)) {
+                                        foreach ($files as $file) {
+                                            $extension = pathinfo($file, PATHINFO_EXTENSION);
+                                            if (!isset($file_count_by_extension[$extension])) {
+                                                $file_count_by_extension[$extension] = 0;
+                                            }
+                                            $file_count_by_extension[$extension]++;
+                                        }
 
-                    // Si no se encuentran registros en la tabla 'exam', buscar en 'exam_history'
-                    if (empty($exams)) {
-                        $this->db->from('exam_history');
+                                        // Definir las imágenes según las extensiones, sin repetir
+                                        $image_map = [
+                                            'xls' => 'assets/images/img-excel.jpg',
+                                            'xlsx' => 'assets/images/img-excel.jpg',
+                                            'csv' => 'assets/images/img-excel.jpg',
+                                            'doc' => 'assets/images/img-word.jpg',
+                                            'docx' => 'assets/images/img-word.jpg',
+                                            'pdf' => 'assets/images/img-pdf.jpg',
+                                            'jpg' => 'assets/images/img-img.jpg',
+                                            'jpeg' => 'assets/images/img-img.jpg',
+                                            'png' => 'assets/images/img-img.jpg',
+                                            'gif' => 'assets/images/img-img.jpg',
+                                            'txt' => 'assets/images/img-txt.jpg'
+                                        ];
 
-                        if (!empty($teacher_id)) {
-                            $this->db->where('teacher_id', $teacher_id);
-                        } else {
-                            $this->db->where('section_id', $section_id);
-                            if (!empty($subject_id)) {
-                                $this->db->where('subject_id', $subject_id);
-                            }
-                        }
-                        $this->db->where('status_id', 1);
-                        $this->db->order_by('date', 'DESC');
-                        $exams = $this->db->get()->result_array();
-                    }
-                ?>
+                                        $unique_extensions_displayed = [];
 
-
-<div class="row">
-    <?php foreach ($exams as $exam): ?>
-        <div class="col-md-4 mb-4">
-            <div class="card shadow-sm">
-                <div class="card-img-top img-fluid collage-container" style="display: flex; justify-content: center; align-items: center; flex-wrap: wrap; gap: 10px;">
-                    <?php
-                    // Decodificar el JSON de archivos
-                    $files = json_decode($exam['files'], true);
-                    $file_count_by_extension = [];
-
-                    if (is_array($files) && !empty($files)) {
-                        foreach ($files as $file) {
-                            $extension = pathinfo($file, PATHINFO_EXTENSION);
-                            if (!isset($file_count_by_extension[$extension])) {
-                                $file_count_by_extension[$extension] = 0;
-                            }
-                            $file_count_by_extension[$extension]++;
-                        }
-
-                        // Definir las imágenes según las extensiones, sin repetir
-                        $image_map = [
-                            'xls' => 'assets/images/img-excel.jpg',
-                            'xlsx' => 'assets/images/img-excel.jpg',
-                            'csv' => 'assets/images/img-excel.jpg',
-                            'doc' => 'assets/images/img-word.jpg',
-                            'docx' => 'assets/images/img-word.jpg',
-                            'pdf' => 'assets/images/img-pdf.jpg',
-                            'jpg' => 'assets/images/img-img.jpg',
-                            'jpeg' => 'assets/images/img-img.jpg',
-                            'png' => 'assets/images/img-img.jpg',
-                            'gif' => 'assets/images/img-img.jpg',
-                            'txt' => 'assets/images/img-txt.jpg'
-                        ];
-
-                        $unique_extensions_displayed = [];
-
-                        foreach ($file_count_by_extension as $extension => $count) {
-                            if (isset($image_map[$extension]) && !in_array($extension, $unique_extensions_displayed)) {
-                                $unique_extensions_displayed[] = $extension;
-                                $image_url = $image_map[$extension];
-                                ?>
-                                <div style="position: relative; display: inline-block; text-align: center;">
-                                    <img src="<?php echo $image_url; ?>" style="width: 50px; height: 50px; object-fit: cover;" alt="File Image">
-                                    <?php if ($count > 1): ?>
-                                        <span style="position: absolute; top: -10px; right: -14px; background-color: #265044; color: white; border-radius: 50%; padding: 2px 6px; font-size: 12px;">
-                                            <?php echo $count; ?>
-                                        </span>
-                                    <?php endif; ?>
+                                        foreach ($file_count_by_extension as $extension => $count) {
+                                            if (isset($image_map[$extension]) && !in_array($extension, $unique_extensions_displayed)) {
+                                                $unique_extensions_displayed[] = $extension;
+                                                $image_url = $image_map[$extension];
+                                                ?>
+                                                <div style="position: relative; display: inline-block; text-align: center;">
+                                                    <img src="<?php echo $image_url; ?>" style="width: 50px; height: 50px; object-fit: cover;" alt="File Image">
+                                                    <?php if ($count > 1): ?>
+                                                        <span style="position: absolute; top: -10px; right: -14px; background-color: #265044; color: white; border-radius: 50%; padding: 2px 6px; font-size: 12px;">
+                                                            <?php echo $count; ?>
+                                                        </span>
+                                                    <?php endif; ?>
+                                                </div>
+                                            <?php }
+                                        }
+                                    } else {
+                                        echo '<p style="color: #265044; font-size: 15px; font-weight: bold; text-align: center;">' . ucfirst(get_phrase('no_files_available')) . '</p>';
+                                    }
+                                    ?>
                                 </div>
-                            <?php }
-                        }
-                    } else {
-                        echo '<p style="color: #265044; font-size: 15px; font-weight: bold; text-align: center;">' . ucfirst(get_phrase('no_files_available')) . '</p>';
-                    }
-                    ?>
+
+                                <div class="card-body">
+                                    <h5 class="card-title text-center"><?php echo ucfirst($exam['name']); ?></h5>
+
+                                    <div class="d-flex justify-content-between">
+                                        <div>
+                                            <p class="mb-1"><i class="entypo-date"></i> <strong><?php echo ucfirst(get_phrase('date')); ?>:</strong></p>
+                                            <p class="mb-1"><i class="entypo-date"></i> <strong><?php echo ucfirst(get_phrase('type')); ?>:</strong></p>
+                                            <p class="mb-1"><i class="entypo-date"></i> <strong><?php echo ucfirst(get_phrase('subject')); ?>:</strong></p>
+                                            <p class="mb-1"><i class="entypo-date"></i> <strong><?php echo ucfirst(get_phrase('teacher')); ?>:</strong></p>
+                                        </div>
+                                        <div class="text-end">
+                                           
+                                            <p class="mb-1">
+                                                <?php echo date('d/m/Y', strtotime($exam['date'])); ?>
+                                            </p>
+                                            <p class="mb-1">
+                                                <?php
+                                                $this->db->select('name'); // Asumiendo que la columna que contiene el nombre es 'name'
+                                                $this->db->from('exam_type');
+                                                $this->db->where('id', $exam['exam_type_id']);
+                                                $exam_type = $this->db->get()->row_array();
+
+                                                echo ucfirst(get_phrase($exam_type['name']));
+                                                ?>
+                                            </p>
+                                            <?php
+                                                $this->db->from('subject');
+                                                $this->db->where('subject_id', $exam['subject_id']);
+                                                $subject = $this->db->get()->row();
+
+                                                if (empty($subject)) {
+                                                    $this->db->from('subject_history');
+                                                    $this->db->where('subject_id', $exam['subject_id']);
+                                                    $subject = $this->db->get()->row();
+                                                }
+
+                                                $subject_name = $subject ? $subject->name : '';
+
+                                                $this->db->from('teacher_details');
+                                                $this->db->where('teacher_id', $exam['teacher_id']);
+                                                $teacher = $this->db->get()->row(); 
+
+                                                $teacher_fullname = $teacher->lastname . ', ' . $teacher->firstname;
+
+                                            ?>
+                                            <p class="mb-1">
+                                                <?php echo ucfirst($subject_name); ?>
+                                            </p>
+                                            <p class="mb-1">
+                                                <?php echo ucfirst($teacher_fullname); ?>
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                    <p class="mb-1 text-center">
+                                        <strong><?php echo ucfirst(get_phrase('files_count')); ?>:</strong> <?php echo count($files); ?>
+                                    </p>
+
+                                    <?php if (!empty($exam['files'])): ?>
+                                        <div class="text-center">
+                                            <a id="downloadAllBtn-<?php echo $exam['exam_id']; ?>" href="javascript:void(0);" title="<?php echo ucfirst(get_phrase('download_all_files')); ?>" class="btn btn-primary-hover">
+                                                <i class="fa fa-download"></i> 
+                                            </a>
+                                        </div>
+
+                                        <div style="display: none;">
+                                            <?php
+                                             $folder = ($used_section_history || $used_subject_history) ? 'exams_history' : 'exams';
+
+                                            if (is_array($files) && !empty($files)) {
+                                                foreach ($files as $file) {
+                                                    $file_url = base_url() . 'uploads/' . $folder . '/' . $exam['exam_id'] . '/' . $file; 
+                                                    echo '<a class="file-link-' . $exam['exam_id'] . '" href="' . $file_url . '" download></a>';
+                                                }
+                                            }
+                                            ?>
+                                        </div>
+                                    <?php endif; ?>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
                 </div>
 
-                <div class="card-body">
-                    <h5 class="card-title text-center"><?php echo ucfirst($exam['name']); ?></h5>
-
-                    <div class="d-flex justify-content-between">
-                        <div>
-                            <p class="mb-1"><i class="entypo-date"></i> <strong><?php echo ucfirst(get_phrase('date')); ?>:</strong></p>
-                            <p class="mb-1"><i class="entypo-date"></i> <strong><?php echo ucfirst(get_phrase('type')); ?>:</strong></p>
-                            <p class="mb-1"><i class="entypo-date"></i> <strong><?php echo ucfirst(get_phrase('subject')); ?>:</strong></p>
-                            <p class="mb-1"><i class="entypo-date"></i> <strong><?php echo ucfirst(get_phrase('teacher')); ?>:</strong></p>
-                        </div>
-                        <div class="text-end">
-                           
-                            <p class="mb-1">
-                                <?php echo date('d/m/Y', strtotime($exam['date'])); ?>
-                            </p>
-                            <p class="mb-1">
-                                <?php
-                                $this->db->select('name'); // Asumiendo que la columna que contiene el nombre es 'name'
-                                $this->db->from('exam_type');
-                                $this->db->where('id', $exam['exam_type_id']);
-                                $exam_type = $this->db->get()->row_array();
-
-                                echo ucfirst(get_phrase($exam_type['name']));
-                                ?>
-                            </p>
-                            <?php
-                                $this->db->from('subject');
-                                $this->db->where('subject_id', $exam['subject_id']);
-                                $subject = $this->db->get()->row();
-
-                                if (empty($subject)) {
-                                    $this->db->from('subject_history');
-                                    $this->db->where('subject_id', $exam['subject_id']);
-                                    $subject = $this->db->get()->row();
-                                }
-
-                                $subject_name = $subject ? $subject->name : '';
-
-                                $this->db->from('teacher_details');
-                                $this->db->where('teacher_id', $exam['teacher_id']);
-                                $teacher = $this->db->get()->row(); 
-
-                                $teacher_fullname = $teacher->lastname . ', ' . $teacher->firstname;
-
-                            ?>
-                            <p class="mb-1">
-                                <?php echo ucfirst($subject_name); ?>
-                            </p>
-                            <p class="mb-1">
-                                <?php echo ucfirst($teacher_fullname); ?>
-                            </p>
-                        </div>
-                    </div>
-
-                    <p class="mb-1 text-center">
-                        <strong><?php echo ucfirst(get_phrase('files_count')); ?>:</strong> <?php echo count($files); ?>
-                    </p>
-
-                    <?php if (!empty($exam['files'])): ?>
-                        <div class="text-center">
-                            <a id="downloadAllBtn-<?php echo $exam['exam_id']; ?>" href="javascript:void(0);" title="<?php echo ucfirst(get_phrase('download_all_files')); ?>" class="btn btn-primary-hover">
-                                <i class="fa fa-download"></i> 
-                            </a>
-                        </div>
-
-                        <div style="display: none;">
-                            <?php
-                             $folder = ($used_section_history || $used_subject_history) ? 'exams_history' : 'exams';
-
-                            if (is_array($files) && !empty($files)) {
-                                foreach ($files as $file) {
-                                    $file_url = base_url() . 'uploads/' . $folder . '/' . $exam['exam_id'] . '/' . $file; 
-                                    echo '<a class="file-link-' . $exam['exam_id'] . '" href="' . $file_url . '" download></a>';
-                                }
-                            }
-                            ?>
-                        </div>
-                    <?php endif; ?>
-                    
-                </div>
-            </div>
-        </div>
-    <?php endforeach; ?>
-</div>
-
-<br>
+                <br>
    
             </div>
         </div>
     </div>
 </div>
-
 
 
 <script type="text/javascript">
