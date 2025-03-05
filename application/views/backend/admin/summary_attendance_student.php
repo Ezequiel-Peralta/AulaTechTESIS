@@ -33,89 +33,89 @@ $titleES = 'Reporte de Estudiantes - ' . $section_name . ' - ' . date('d-m-Y');
 
 
 <div class="row selectContent">
-        <div class="col-md-6">
-            <div class="form-group">
-                <label for="academic_period_select" class="labelSelect">
-                    <?php echo ucfirst(get_phrase('you_are_viewing')); ?>
-                </label> 
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="form-group">
-                <select id="academic_period_select" class="form-control selectElement" onchange="return get_sections(this.value)">
-                    <?php
-
-                    foreach ($academic_periods as $period):
-                        // Verifica si $academic_period_id no está vacío y coincide con $period['id']
-                        if (!empty($academic_period_id) && $academic_period_id == $period['id']) {
-                            $selected = 'selected="selected"';
-                        } elseif (empty($academic_period_id) && $period['status_id'] == 1) {
-                            // Marca por defecto el período académico con status_id = 1 si $academic_period_id está vacío
-                            $selected = 'selected="selected"';
-                        } else {
-                            $selected = '';
-                        }
-                    ?>
-                        <option value="<?php echo $period['id']; ?>" data-academic-period-id="<?php echo $period['id']; ?>" <?php echo $selected; ?>>
-                            <?php echo $period['name']; ?>
-                        </option>
-                    <?php endforeach; ?>
-                </select>
-            </div>
+    <div class="col-md-6">
+        <div class="form-group">
+            <label for="academic_period_select" class="labelSelect">
+                <?php echo ucfirst(get_phrase('you_are_viewing')); ?>
+            </label>
         </div>
     </div>
+    <div class="col-md-6">
+        <div class="form-group">
+            <select id="academic_period_select" class="form-control selectElement" onchange="return get_sections(this.value)">
+                <?php
 
-    <br>
+                foreach ($academic_periods as $period):
+                    // Verifica si $academic_period_id no está vacío y coincide con $period['id']
+                    if (!empty($academic_period_id) && $academic_period_id == $period['id']) {
+                        $selected = 'selected="selected"';
+                    } elseif (empty($academic_period_id) && $period['status_id'] == 1) {
+                        // Marca por defecto el período académico con status_id = 1 si $academic_period_id está vacío
+                        $selected = 'selected="selected"';
+                    } else {
+                        $selected = '';
+                    }
+                ?>
+                    <option value="<?php echo $period['id']; ?>" data-academic-period-id="<?php echo $period['id']; ?>" <?php echo $selected; ?>>
+                        <?php echo $period['name']; ?>
+                    </option>
+                <?php endforeach; ?>
+            </select>
+        </div>
+    </div>
+</div>
 
-    <div class="row selectContent">
+<br>
+
+<div class="row selectContent">
     <div class="col-md-6">
         <div class="form-group">
             <label for="class_select" class="labelSelect"><?php echo ucfirst(get_phrase('class')); ?>
-            </label> 
+            </label>
         </div>
     </div>
     <div class="col-md-6">
         <div class="form-group">
             <select id="class_select" class="form-control selectElement" onchange="location = this.value;">
                 <?php
-                    if (isset($academic_period_id) && !empty($academic_period_id)) {
-                        // Si $academic_period_id está definido y no está vacío, buscar por su ID
-                        $active_academic_period = $this->db->get_where('academic_period', array('id' => $academic_period_id))->row();
+                if (isset($academic_period_id) && !empty($academic_period_id)) {
+                    // Si $academic_period_id está definido y no está vacío, buscar por su ID
+                    $active_academic_period = $this->db->get_where('academic_period', array('id' => $academic_period_id))->row();
 
-                        if ($active_academic_period) { // Validar que el período existe
-                            $this->db->where('academic_period_id', $active_academic_period->id);
-                            $sections = $this->db->get('section_history')->result_array();
+                    if ($active_academic_period) { // Validar que el período existe
+                        $this->db->where('academic_period_id', $active_academic_period->id);
+                        $sections = $this->db->get('section_history')->result_array();
 
-                            foreach ($sections as $row):
-                    ?>
-                                <option id="actualSectionId" value="<?php echo base_url(); ?>index.php?admin/summary_attendance_student/<?php echo $row['section_id']; ?>"
-                                    <?php if ($section_id == $row['section_id'] && $academic_period_id == $row['academic_period_id']) echo 'selected="selected"'; ?>>
-                                    <?php echo $row['name']; ?>
-                                </option>
-                    <?php 
-                            endforeach;
-                        }
-                    } else {
-                        // Si $academic_period_id no está definido o está vacío, buscar por el período activo
-                        $active_academic_period = $this->db->get_where('academic_period', array('status_id' => 1))->row();
-
-                        if ($active_academic_period) { // Validar que el período existe
-                            $this->db->where('academic_period_id', $active_academic_period->id);
-                            $sections = $this->db->get('section')->result_array();
-
-                            foreach ($sections as $row):
-                    ?>
-                                <option id="actualSectionId" value="<?php echo base_url(); ?>index.php?admin/summary_attendance_student/<?php echo $row['section_id']; ?>"
-                                    <?php if ($section_id == $row['section_id']) echo 'selected="selected"'; ?>>
-                                    <?php echo $row['name']; ?>
-                                </option>
-                    <?php 
-                            endforeach;
-                        } else {
-                            echo '<option value="">No hay secciones disponibles</option>';
-                        }
+                        foreach ($sections as $row):
+                ?>
+                            <option id="actualSectionId" value="<?php echo base_url(); ?>index.php?admin/summary_attendance_student/<?php echo $row['section_id']; ?>"
+                                <?php if ($section_id == $row['section_id'] && $academic_period_id == $row['academic_period_id']) echo 'selected="selected"'; ?>>
+                                <?php echo $row['name']; ?>
+                            </option>
+                        <?php
+                        endforeach;
                     }
-                    ?>
+                } else {
+                    // Si $academic_period_id no está definido o está vacío, buscar por el período activo
+                    $active_academic_period = $this->db->get_where('academic_period', array('status_id' => 1))->row();
+
+                    if ($active_academic_period) { // Validar que el período existe
+                        $this->db->where('academic_period_id', $active_academic_period->id);
+                        $sections = $this->db->get('section')->result_array();
+
+                        foreach ($sections as $row):
+                        ?>
+                            <option id="actualSectionId" value="<?php echo base_url(); ?>index.php?admin/summary_attendance_student/<?php echo $row['section_id']; ?>"
+                                <?php if ($section_id == $row['section_id']) echo 'selected="selected"'; ?>>
+                                <?php echo $row['name']; ?>
+                            </option>
+                <?php
+                        endforeach;
+                    } else {
+                        echo '<option value="">No hay secciones disponibles</option>';
+                    }
+                }
+                ?>
             </select>
         </div>
     </div>
@@ -129,12 +129,12 @@ $titleES = 'Reporte de Estudiantes - ' . $section_name . ' - ' . date('d-m-Y');
                 <div class="sidebuttons text-right">
                     <?php if (!$used_section_history): ?>
                         <a class="btn btn-info" href="<?php echo base_url(); ?>index.php?admin/manage_attendance_student/<?php echo date("d"); ?>/<?php echo date("m"); ?>/<?php echo date("Y"); ?>/<?php echo $section_id; ?>">
-                            <i class="entypo-pencil"></i> <?php echo ucfirst(get_phrase('register_attendance')); ?> 
+                            <i class="entypo-pencil"></i> <?php echo ucfirst(get_phrase('register_attendance')); ?>
                         </a>
                     <?php endif; ?>
                 </div>
             </div>
-      
+
             <div class="row d-flex justify-content-center align-items-center" style="padding: 20px 50px 0px 50px;">
                 <div class="col-md-3 viewType">
                     <div class="form-group text-center">
@@ -166,7 +166,7 @@ $titleES = 'Reporte de Estudiantes - ' . $section_name . ' - ' . date('d-m-Y');
                         <select id="monthly" class="form-control text-center customSelect">
                             <?php
                             // Lista de meses en inglés
-                            
+
                             foreach (MONTHSENGLISH as $month) {
                                 $selected = ($month === $current_month_name) ? 'selected' : '';
                                 echo "<option value='{$month}' {$selected}>" . ucfirst(get_phrase($month)) . "</option>";
@@ -179,7 +179,7 @@ $titleES = 'Reporte de Estudiantes - ' . $section_name . ' - ' . date('d-m-Y');
                     <div class="form-group">
                         <select id="startDateYearly" class="form-control text-center customSelect">
                             <?php
-                           
+
                             foreach (MONTHSENGLISH as $month) {
                                 $selected = ($month === $current_month_start) ? 'selected' : '';
                                 echo "<option value='{$month}' {$selected}>" . ucfirst(get_phrase($month)) . "</option>";
@@ -192,7 +192,7 @@ $titleES = 'Reporte de Estudiantes - ' . $section_name . ' - ' . date('d-m-Y');
                     <div class="form-group">
                         <select id="endDateYearly" class="form-control text-center customSelect">
                             <?php
-                             
+
                             foreach (MONTHSENGLISH as $month) {
                                 $selected = ($month === $current_month_end) ? 'selected' : '';
                                 echo "<option value='{$month}' {$selected}>" . ucfirst(get_phrase($month)) . "</option>";
@@ -207,16 +207,16 @@ $titleES = 'Reporte de Estudiantes - ' . $section_name . ' - ' . date('d-m-Y');
 
 
             <div class="row" style="padding: 0px 0px 20px 0px;">
-             
-             
-    
-                
+
+
+
+
                 <div class="col-md-12 text-center">
                     <button id="applyFilters" class="btn btn-info">
                         <?php echo ucfirst(get_phrase('accept')); ?>
                     </button>
                 </div>
-              
+
             </div>
 
             <div class="button-container">
@@ -231,7 +231,7 @@ $titleES = 'Reporte de Estudiantes - ' . $section_name . ' - ' . date('d-m-Y');
                         <strong></strong>
                         <br />
                         <div id="chartContainer">
-                        <div id="chartAttendance" style="height: 250px"></div>
+                            <div id="chartAttendance" style="height: 250px"></div>
                         </div>
                     </td>
                 </tr>
@@ -260,7 +260,7 @@ $titleES = 'Reporte de Estudiantes - ' . $section_name . ' - ' . date('d-m-Y');
 
 
 
-    
+
     <div class="col-md-12">
         <div class="tile-stats tile-white title-info" style="margin-top: 20px; margin-bottom: 20px;">
             <div style="display: flex; justify-content: space-between; align-items: center; padding: 15px 15px; border: 1px solid #ebebeb; border-radius: 5px;">
@@ -268,12 +268,12 @@ $titleES = 'Reporte de Estudiantes - ' . $section_name . ' - ' . date('d-m-Y');
                 <div class="sidebuttons text-right">
                     <?php if (!$used_section_history): ?>
                         <a class="btn btn-info" href="<?php echo base_url(); ?>index.php?admin/manage_attendance_student/<?php echo date("d"); ?>/<?php echo date("m"); ?>/<?php echo date("Y"); ?>/<?php echo $section_id; ?>">
-                            <i class="entypo-pencil"></i> <?php echo ucfirst(get_phrase('register_attendance')); ?> 
+                            <i class="entypo-pencil"></i> <?php echo ucfirst(get_phrase('register_attendance')); ?>
                         </a>
-                    <?php endif; ?>  
+                    <?php endif; ?>
                 </div>
             </div>
-      
+
             <div class="row d-flex justify-content-center align-items-center" style="padding: 20px 50px 0px 50px;">
                 <div class="col-md-3 viewType2">
                     <div class="form-group text-center">
@@ -305,7 +305,7 @@ $titleES = 'Reporte de Estudiantes - ' . $section_name . ' - ' . date('d-m-Y');
                         <select id="monthly2" class="form-control text-center customSelect">
                             <?php
                             // Lista de meses en inglés
-                             
+
                             foreach (MONTHSENGLISH as $month) {
                                 $selected = ($month === $current_month_name) ? 'selected' : '';
                                 echo "<option value='{$month}' {$selected}>" . ucfirst(get_phrase($month)) . "</option>";
@@ -318,7 +318,7 @@ $titleES = 'Reporte de Estudiantes - ' . $section_name . ' - ' . date('d-m-Y');
                     <div class="form-group">
                         <select id="startDateYearly2" class="form-control text-center customSelect">
                             <?php
-                             
+
                             foreach (MONTHSENGLISH as $month) {
                                 $selected = ($month === $current_month_start) ? 'selected' : '';
                                 echo "<option value='{$month}' {$selected}>" . ucfirst(get_phrase($month)) . "</option>";
@@ -331,7 +331,7 @@ $titleES = 'Reporte de Estudiantes - ' . $section_name . ' - ' . date('d-m-Y');
                     <div class="form-group">
                         <select id="endDateYearly2" class="form-control text-center customSelect">
                             <?php
-                             
+
                             foreach (MONTHSENGLISH as $month) {
                                 $selected = ($month === $current_month_end) ? 'selected' : '';
                                 echo "<option value='{$month}' {$selected}>" . ucfirst(get_phrase($month)) . "</option>";
@@ -350,7 +350,7 @@ $titleES = 'Reporte de Estudiantes - ' . $section_name . ' - ' . date('d-m-Y');
                         <?php echo ucfirst(get_phrase('accept')); ?>
                     </button>
                 </div>
-              
+
             </div>
 
             <div class="button-container">
@@ -365,7 +365,7 @@ $titleES = 'Reporte de Estudiantes - ' . $section_name . ' - ' . date('d-m-Y');
                         <strong></strong>
                         <br />
                         <div id="chartContainer2">
-                        <div id="chartAttendance2" style="height: 250px"></div>
+                            <div id="chartAttendance2" style="height: 250px"></div>
                         </div>
                     </td>
                 </tr>
@@ -394,7 +394,7 @@ $titleES = 'Reporte de Estudiantes - ' . $section_name . ' - ' . date('d-m-Y');
 
 <div class="row">
     <div class="col-md-12">
-        
+
         <ul class="nav nav-tabs bordered">
             <li class="active">
                 <a href="#home" data-toggle="tab">
@@ -405,16 +405,16 @@ $titleES = 'Reporte de Estudiantes - ' . $section_name . ' - ' . date('d-m-Y');
                     </span>
                 </a>
             </li>
-      
+
         </ul>
-        
+
         <div class="tab-content">
             <div class="tab-pane active" id="home">
                 <br>
                 <div class="mt-2 mb-4">
                     <button type="button" onclick="reload_ajax()" class="btn btn-table btn-white btn-warning-hover" title="<?php echo ucfirst(get_phrase('reload')); ?>" style="padding: 6px 10px;"><i class="fa fa-refresh"></i></button>
-                    <div class="pull-right"> 
-                      
+                    <div class="pull-right">
+
                     </div>
                 </div>
                 <br>
@@ -422,20 +422,20 @@ $titleES = 'Reporte de Estudiantes - ' . $section_name . ' - ' . date('d-m-Y');
                     <thead>
                         <tr>
                             <th class="text-center"><?php echo ucfirst(get_phrase('students')); ?></th>
-                            <th class="text-center"  width="120" style="background-color: #55FFA8 !important; font-weight: 500 !important;  border-radius: 10px !important; color: black !important;">
-                                <span style="background-color: #00a651 !important; color: white !important; padding: 0px 10px 0 10px; border-radius: 10px !important; ">P</span> 
+                            <th class="text-center" width="120" style="background-color: #55FFA8 !important; font-weight: 500 !important;  border-radius: 10px !important; color: black !important;">
+                                <span style="background-color: #00a651 !important; color: white !important; padding: 0px 10px 0 10px; border-radius: 10px !important; ">P</span>
                                 <?php echo ucfirst(get_phrase('present')); ?>
                             </th>
                             <th class="text-center" width="120" style="background-color: #FF6C6C !important; padding: 0px 0px 8px 0px; font-weight: 500 !important;  border-radius: 10px !important; color: black !important;">
-                                <span style="background-color: #cc2424 !important; color: white !important; padding: 0px 10px 0 10px; border-radius: 10px !important; ">A</span>     
+                                <span style="background-color: #cc2424 !important; color: white !important; padding: 0px 10px 0 10px; border-radius: 10px !important; ">A</span>
                                 <?php echo ucfirst(get_phrase('absences')); ?>
                             </th>
                             <th class="text-center" width="120" style="background-color: #FFBB5A !important; padding: 0px 0px 8px 0px; font-weight: 500 !important;  border-radius: 10px !important; color: black !important;">
-                                <span style="background-color: #ff9600 !important; color: white !important; padding: 0px 10px 0 10px; border-radius: 10px !important; ">T</span> 
+                                <span style="background-color: #ff9600 !important; color: white !important; padding: 0px 10px 0 10px; border-radius: 10px !important; ">T</span>
                                 <?php echo ucfirst(get_phrase('tardies')); ?>
                             </th>
                             <th class="text-center" width="120" style="background-color: #52BBFF !important; padding: 0px 0px 8px 0px; font-weight: 500 !important;  border-radius: 10px !important; color: black !important;">
-                                <span style="background-color: #0072bc !important; color: white !important; padding: 0px 10px 0 10px; border-radius: 10px !important; ">AJ</span> 
+                                <span style="background-color: #0072bc !important; color: white !important; padding: 0px 10px 0 10px; border-radius: 10px !important; ">AJ</span>
                                 <?php echo ucfirst(get_phrase('justified_absences')); ?>
                             </th>
                             <th class="text-center"><?php echo ucfirst(get_phrase('total_absences')); ?></th>
@@ -443,26 +443,26 @@ $titleES = 'Reporte de Estudiantes - ' . $section_name . ' - ' . date('d-m-Y');
                         </tr>
                     </thead>
                     <tbody>
-                    <?php 
+                        <?php
                         $count = 1;
                         foreach ($students as $student):
                             $attendance_status = $this->db->select('status, COUNT(status) as count')
-                                                            ->where('student_id', $student['student_id'])
-                                                            ->group_by('status')
-                                                            ->get('attendance_student')
-                                                            ->result_array();
+                                ->where('student_id', $student['student_id'])
+                                ->group_by('status')
+                                ->get('attendance_student')
+                                ->result_array();
 
-                                                            if (empty($attendance_status)) {
-                                                                $attendance_status = $this->db->select('status, COUNT(status) as count')
-                                                                                              ->where('student_id', $student['student_id'])
-                                                                                              ->group_by('status')
-                                                                                              ->get('attendance_student_history')
-                                                                                              ->result_array();
-                                                            }
-                            
+                            if (empty($attendance_status)) {
+                                $attendance_status = $this->db->select('status, COUNT(status) as count')
+                                    ->where('student_id', $student['student_id'])
+                                    ->group_by('status')
+                                    ->get('attendance_student_history')
+                                    ->result_array();
+                            }
+
                             $present_count = $absent_count = $late_count = $justified_absent_count = 0;
-                            
-                            if (!empty($attendance_status)) { 
+
+                            if (!empty($attendance_status)) {
                                 foreach ($attendance_status as $status) {
                                     if ($status['status'] == '1') {
                                         $present_count = $status['count'];
@@ -476,66 +476,65 @@ $titleES = 'Reporte de Estudiantes - ' . $section_name . ' - ' . date('d-m-Y');
                                 }
                             }
                         ?>
-                        <tr>
-                            <td class="text-center"><?php echo $student['lastname'];?>, <?php echo $student['firstname'];?></td>
-                            <td class="text-center">
-                                <span style="background-color: #00a651 !important; font-weight: bold !important; color: white !important; padding: 5px 10px 5px 10px; border-radius: 10px !important; ">
-                                <?php echo $present_count;?></span>
-                            </td>
-                            <td class="text-center">
-                                <span style="background-color: #cc2424 !important; font-weight: bold !important; color: white !important; padding: 5px 10px 5px 10px; border-radius: 10px !important; ">
-                                <?php echo $absent_count;?></span>
-                            </td>
-                            <td class="text-center">
-                                <span style="background-color: #ff9600 !important; font-weight: bold !important; color: white !important; padding: 5px 10px 5px 10px; border-radius: 10px !important; ">
-                                <?php echo $late_count;?></span>
-                            </td>
-                            <td class="text-center" style=" width: 200px !important;">
-                                <span style="background-color: #0072bc !important; font-weight: bold !important; color: white !important; padding: 5px 10px 5px 10px; border-radius: 10px !important; ">
-                                <?php echo $justified_absent_count;?></span>
-                            </td>
-                            <td class="text-center">
-                                <span style="">
-                                    <?php 
+                            <tr>
+                                <td class="text-center"><?php echo $student['lastname']; ?>, <?php echo $student['firstname']; ?></td>
+                                <td class="text-center">
+                                    <span style="background-color: #00a651 !important; font-weight: bold !important; color: white !important; padding: 5px 10px 5px 10px; border-radius: 10px !important; ">
+                                        <?php echo $present_count; ?></span>
+                                </td>
+                                <td class="text-center">
+                                    <span style="background-color: #cc2424 !important; font-weight: bold !important; color: white !important; padding: 5px 10px 5px 10px; border-radius: 10px !important; ">
+                                        <?php echo $absent_count; ?></span>
+                                </td>
+                                <td class="text-center">
+                                    <span style="background-color: #ff9600 !important; font-weight: bold !important; color: white !important; padding: 5px 10px 5px 10px; border-radius: 10px !important; ">
+                                        <?php echo $late_count; ?></span>
+                                </td>
+                                <td class="text-center" style=" width: 200px !important;">
+                                    <span style="background-color: #0072bc !important; font-weight: bold !important; color: white !important; padding: 5px 10px 5px 10px; border-radius: 10px !important; ">
+                                        <?php echo $justified_absent_count; ?></span>
+                                </td>
+                                <td class="text-center">
+                                    <span style="">
+                                        <?php
                                         $total_absences = $absent_count + $justified_absent_count + ($late_count / 4);
                                         echo $total_absences;
-                                    ?>
-                                </span>
-                            </td>
-                            <td class="text-center">
-                                <a href="<?php echo base_url();?>index.php?admin/details_attendance_student/<?php echo $student['student_id'];?>" class="btn btn-table btn-white btn-info-hover" title="<?php echo ucfirst(get_phrase('view_attendance_details')); ?>">
-                                    <i class="entypo-eye"></i>
-                                </a>
-                            </td>
-                         
-                        </tr>
-                        <?php endforeach;?>
+                                        ?>
+                                    </span>
+                                </td>
+                                <td class="text-center">
+                                    <a href="<?php echo base_url(); ?>index.php?admin/details_attendance_student/<?php echo $student['student_id']; ?>" class="btn btn-table btn-white btn-info-hover" title="<?php echo ucfirst(get_phrase('view_attendance_details')); ?>">
+                                        <i class="entypo-eye"></i>
+                                    </a>
+                                </td>
+
+                            </tr>
+                        <?php endforeach; ?>
                     </tbody>
                 </table>
-                    
+
             </div>
-       
+
 
         </div>
-        
-        
+
+
     </div>
-   
+
 </div>
 
 
 <script type="text/javascript">
-        function get_sections(academic_period_id) {
-            $.ajax({
-                url: '<?php echo base_url();?>index.php?admin/get_section_content_by_academic_period/' + academic_period_id + '/summary_attendance_student',
-                success: function(response) {
-                    const emptyOption = '<option value="" selected disabled><?php echo ucfirst(get_phrase('select')); ?></option>';
-                    jQuery('#class_select').html(emptyOption + response);
-                }
-            });
+    function get_sections(academic_period_id) {
+        $.ajax({
+            url: '<?php echo base_url(); ?>index.php?admin/get_section_content_by_academic_period/' + academic_period_id + '/summary_attendance_student',
+            success: function(response) {
+                const emptyOption = '<option value="" selected disabled><?php echo ucfirst(get_phrase('select')); ?></option>';
+                jQuery('#class_select').html(emptyOption + response);
+            }
+        });
 
-        }
-   
+    }
 </script>
 
 
@@ -543,17 +542,20 @@ $titleES = 'Reporte de Estudiantes - ' . $section_name . ' - ' . date('d-m-Y');
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
 <script type="text/javascript">
-	jQuery(document).ready(function($) {
+    jQuery(document).ready(function($) {
         var languagePreference = '<?php echo $this->session->userdata('language_preference'); ?>';
 
         var $allStudentDataTable = jQuery("#all_student_table");
 
         var rowCount = $('#all_student_table tbody tr').length;
-        var scrollYValue = rowCount >= 11 ? "500px" : ""; 
+        var scrollYValue = rowCount >= 11 ? "500px" : "";
 
         if (languagePreference === 'english') {
             var allStudentDataTable = $allStudentDataTable.DataTable({
-                "order": [[1, "asc"], [2, "asc"]],
+                "order": [
+                    [1, "asc"],
+                    [2, "asc"]
+                ],
                 "language": {
                     "search": "",
                     "lengthMenu": "Show _MENU_ entries per page",
@@ -573,53 +575,58 @@ $titleES = 'Reporte de Estudiantes - ' . $section_name . ' - ' . date('d-m-Y');
                     }
                 },
                 "scrollX": $(window).width() <= 767,
-                "scrollY": scrollYValue, 
+                "scrollY": scrollYValue,
                 "scrollCollapse": $(window).width() <= 767 ? true : "",
                 "fixedHeader": $(window).width() <= 767 ? true : "",
                 "autoWidth": false,
-                "aLengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+                "aLengthMenu": [
+                    [10, 25, 50, -1],
+                    [10, 25, 50, "All"]
+                ],
                 dom: "<'row'<'col-sm-3'l><'col-sm-6 text-center'B><'col-sm-3'f>>" +
                     "<'row'<'col-sm-12'tr>>" +
                     "<'row'<'col-sm-5'i><'col-sm-7'p>>",
-                buttons: [
-                    {
+                buttons: [{
                         extend: 'copyHtml5',
                         text: '<i class="fa fa-file-text-o"></i> Copy',
                         className: 'btn btn-white btn-sm btn-info-hover',
                         title: null,
                         exportOptions: {
-                            columns: ':not(:eq(0)):not(:eq(6)):not(:eq(15))' 
+                            columns: ':not(:eq(0)):not(:eq(6)):not(:eq(15))'
                         }
                     },
                     {
                         extend: 'excelHtml5',
                         text: '<i class="fa fa-file-excel-o"></i> Excel',
                         className: 'btn btn-white btn-sm btn-green-hover',
-                        filename: '<?php echo $titleEN; ?>', 
-                        title: null, 
+                        filename: '<?php echo $titleEN; ?>',
+                        title: null,
                         exportOptions: {
-                            columns: ':not(:eq(0)):not(:eq(6)):not(:eq(15))' 
+                            columns: ':not(:eq(0)):not(:eq(6)):not(:eq(15))'
                         }
                     },
                     {
                         text: '<i class="fa fa-print"></i> Print / <i class="fa fa-file-pdf-o"></i> PDF',
                         className: 'btn buttons-html5 btn-white btn-sm btn-danger-hover',
-                        action: function (e, dt, node, config) {
-                            window.location.href = '<?php echo base_url(); ?>index.php?admin/printStudentTableEN/<?php echo $section_id;?>';
+                        action: function(e, dt, node, config) {
+                            window.location.href = '<?php echo base_url(); ?>index.php?admin/printStudentTableEN/<?php echo $section_id; ?>';
                         }
                     }
                 ],
-                colReorder: true, 
+                colReorder: true,
                 initComplete: function() {
                     $('#all_student_table_filter input[type="search"]').attr('placeholder', 'Search');
                 }
             });
 
         } else if (languagePreference === 'spanish') {
-    var allStudentDataTable = $allStudentDataTable.DataTable({
-        "order": [[1, "asc"], [2, "asc"]],
-        "language": {
-                    "search": "", 
+            var allStudentDataTable = $allStudentDataTable.DataTable({
+                "order": [
+                    [1, "asc"],
+                    [2, "asc"]
+                ],
+                "language": {
+                    "search": "",
                     "lengthMenu": "Mostrar _MENU_ registros por página",
                     "info": "Mostrando _START_ a _END_ de _TOTAL_ registros",
                     "infoEmpty": "Mostrando 0 a 0 de 0 registros",
@@ -637,50 +644,52 @@ $titleES = 'Reporte de Estudiantes - ' . $section_name . ' - ' . date('d-m-Y');
                     }
                 },
                 "scrollX": $(window).width() <= 767,
-                "scrollY": scrollYValue, 
+                "scrollY": scrollYValue,
                 "scrollCollapse": $(window).width() <= 767 ? true : "",
                 "fixedHeader": $(window).width() <= 767 ? true : "",
                 "autoWidth": false,
-                "aLengthMenu": [[10, 25, 50, -1], [10, 25, 50, "Todos"]],
+                "aLengthMenu": [
+                    [10, 25, 50, -1],
+                    [10, 25, 50, "Todos"]
+                ],
                 dom: "<'row'<'col-sm-3'l><'col-sm-6 text-center'B><'col-sm-3'f>>" +
                     "<'row'<'col-sm-12'tr>>" +
                     "<'row'<'col-sm-5'i><'col-sm-7'p>>",
-                buttons: [
-                    {
+                buttons: [{
                         extend: 'copyHtml5',
                         text: '<i class="fa fa-file-text-o"></i> Copiar',
                         className: 'btn btn-white btn-sm btn-info-hover',
                         title: null,
                         exportOptions: {
-                            columns: ':not(:eq(0)):not(:eq(6)):not(:eq(15))' 
+                            columns: ':not(:eq(0)):not(:eq(6)):not(:eq(15))'
                         }
                     },
                     {
                         extend: 'excelHtml5',
                         text: '<i class="fa fa-file-excel-o"></i> Excel',
                         className: 'btn btn-white btn-sm btn-green-hover',
-                        filename: '<?php echo $titleES; ?>', 
-                        title: null, 
+                        filename: '<?php echo $titleES; ?>',
+                        title: null,
                         exportOptions: {
-                            columns: ':not(:eq(0)):not(:eq(6)):not(:eq(15))' 
+                            columns: ':not(:eq(0)):not(:eq(6)):not(:eq(15))'
                         }
                     },
                     {
                         text: '<i class="fa fa-print"></i> Imprimir / <i class="fa fa-file-pdf-o"></i> PDF',
                         className: 'btn buttons-html5 btn-white btn-sm btn-danger-hover',
-                        action: function (e, dt, node, config) {
-                            window.location.href = '<?php echo base_url(); ?>index.php?admin/printStudentTableES/<?php echo $section_id;?>';
+                        action: function(e, dt, node, config) {
+                            window.location.href = '<?php echo base_url(); ?>index.php?admin/printStudentTableES/<?php echo $section_id; ?>';
                         }
                     }
                 ],
-                colReorder: true, 
+                colReorder: true,
                 initComplete: function() {
                     $('#all_student_table_filter input[type="search"]').attr('placeholder', 'Buscar');
                 }
             });
 
-    
-}
+
+        }
 
         $allStudentDataTable.closest('.dataTables_wrapper').find('select').select2({
             minimumResultsForSearch: -1
@@ -695,1299 +704,238 @@ $titleES = 'Reporte de Estudiantes - ' . $section_name . ' - ' . date('d-m-Y');
             });
         }
 
-     
-
-         Morris.Donut({
-             element: 'chartAttendance', 
-             data: [
-                 {value: '<?php echo $attendance_student_presente;?>', label: '<?php echo ucfirst(get_phrase('students_present'));?>', formatted: '<?php echo $percentage_presente;?>%' },
-                 {value: '<?php echo $attendance_student_ausente;?>', label: '<?php echo ucfirst(get_phrase('absences'));?>', formatted: '<?php echo $percentage_ausente;?>%' },
-                 {value: '<?php echo $attendance_student_tardanza;?>', label: '<?php echo ucfirst(get_phrase('tardies'));?>', formatted: '<?php echo $percentage_tardanza;?>%' },
-                 {value: '<?php echo $attendance_student_ausencia_justificada;?>', label: '<?php echo ucfirst(get_phrase('justified_absences'));?>', formatted: '<?php echo $percentage_justificados;?>%' }
-             ],
-             formatter: function (x, data) { return data.formatted; },
-             labelColor: 'black', 
-             colors: ['#55FFA8', '#FF6C6C', '#FFBB5A', '#52BBFF'] 
-         });
 
 
-         Morris.Bar({
-				element: 'chartAttendance2',
-				axes: true,
-				data: [
-					{x: '<?php echo $current_date_formatted;?>', y: <?php echo $attendance_student_presente;?>, z: <?php echo $attendance_student_ausente;?>, a: <?php echo $attendance_student_tardanza;?>, e: <?php echo $attendance_student_ausencia_justificada;?>},
-				],
-				xkey: 'x',
-				ykeys: ['y', 'z', 'a', 'e'],
-                labels: ['<?php echo ucfirst(get_phrase('present'));?>', '<?php echo ucfirst(get_phrase('absent'));?>', '<?php echo ucfirst(get_phrase('tardy'));?>', '<?php echo ucfirst(get_phrase('justified_absence'));?>'],
-				barColors: ['#55FFA8', '#FF6C6C', '#FFBB5A', '#52BBFF'] 
-			});
+        Morris.Donut({
+            element: 'chartAttendance',
+            data: [{
+                    value: '<?php echo $attendance_student_presente; ?>',
+                    label: '<?php echo ucfirst(get_phrase('students_present')); ?>',
+                    formatted: '<?php echo $percentage_presente; ?>%'
+                },
+                {
+                    value: '<?php echo $attendance_student_ausente; ?>',
+                    label: '<?php echo ucfirst(get_phrase('absences')); ?>',
+                    formatted: '<?php echo $percentage_ausente; ?>%'
+                },
+                {
+                    value: '<?php echo $attendance_student_tardanza; ?>',
+                    label: '<?php echo ucfirst(get_phrase('tardies')); ?>',
+                    formatted: '<?php echo $percentage_tardanza; ?>%'
+                },
+                {
+                    value: '<?php echo $attendance_student_ausencia_justificada; ?>',
+                    label: '<?php echo ucfirst(get_phrase('justified_absences')); ?>',
+                    formatted: '<?php echo $percentage_justificados; ?>%'
+                }
+            ],
+            formatter: function(x, data) {
+                return data.formatted;
+            },
+            labelColor: 'black',
+            colors: ['#55FFA8', '#FF6C6C', '#FFBB5A', '#52BBFF']
+        });
+
+
+        Morris.Bar({
+            element: 'chartAttendance2',
+            axes: true,
+            data: [{
+                x: '<?php echo $current_date_formatted; ?>',
+                y: <?php echo $attendance_student_presente; ?>,
+                z: <?php echo $attendance_student_ausente; ?>,
+                a: <?php echo $attendance_student_tardanza; ?>,
+                e: <?php echo $attendance_student_ausencia_justificada; ?>
+            }, ],
+            xkey: 'x',
+            ykeys: ['y', 'z', 'a', 'e'],
+            labels: ['<?php echo ucfirst(get_phrase('present')); ?>', '<?php echo ucfirst(get_phrase('absent')); ?>', '<?php echo ucfirst(get_phrase('tardy')); ?>', '<?php echo ucfirst(get_phrase('justified_absence')); ?>'],
+            barColors: ['#55FFA8', '#FF6C6C', '#FFBB5A', '#52BBFF']
+        });
 
 
         var day_data = <?php echo json_encode($day_data); ?>;
 
 
-       
 
-	});
 
-		
+    });
 </script>
 
 <script type="text/javascript">
-    
+    function downloadChart(format, chartContainerId, viewTypeId, dataSuffix) {
+    setTimeout(() => {
+        const chartContainer = document.getElementById(chartContainerId);
+        const viewType = document.getElementById(viewTypeId).value;
+
+        const data = {
+            daily: document.getElementById(`daily${dataSuffix}`).value,
+            startDate: document.getElementById(`startDate${dataSuffix}`).value,
+            endDate: document.getElementById(`endDate${dataSuffix}`).value,
+            monthly: document.getElementById(`monthly${dataSuffix}`).value,
+            startDateYearly: document.getElementById(`startDateYearly${dataSuffix}`).value,
+            endDateYearly: document.getElementById(`endDateYearly${dataSuffix}`).value
+        };
+
+        const { viewTypeText, viewTypeDetails } = getViewTypeDetails(viewType, data);
+
+        // Obtener los valores de los spans
+        const presentesCount = parseInt(document.getElementById(`presentes-count${dataSuffix}`).textContent, 10);
+        const ausentesCount = parseInt(document.getElementById(`ausentes-count${dataSuffix}`).textContent, 10);
+        const tardanzasCount = parseInt(document.getElementById(`tardanzas-count${dataSuffix}`).textContent, 10);
+        const justificadosCount = parseInt(document.getElementById(`justificados-count${dataSuffix}`).textContent, 10);
+
+        const totalCount = presentesCount + ausentesCount + tardanzasCount + justificadosCount;
+
+        // Calcular los porcentajes
+        const presentesPercent = ((presentesCount / totalCount) * 100).toFixed(2);
+        const ausentesPercent = ((ausentesCount / totalCount) * 100).toFixed(2);
+        const tardanzasPercent = ((tardanzasCount / totalCount) * 100).toFixed(2);
+        const justificadosPercent = ((justificadosCount / totalCount) * 100).toFixed(2);
+
+        if (chartContainer) {
+            html2canvas(chartContainer).then(canvas => {
+                const imgData = canvas.toDataURL(`image/${format}`);
+
+                const textCanvas = document.createElement('canvas');
+                const ctx = textCanvas.getContext('2d');
+                textCanvas.width = canvas.width;
+                textCanvas.height = canvas.height + 160; // Más espacio para texto (ajusta según sea necesario)
+                ctx.drawImage(canvas, 0, 0);
+
+                ctx.font = "16px Helvetica";
+                ctx.fillText("<?php echo ucfirst(get_phrase('class_attendance')); ?> <?php echo $section_name; ?> - <?php echo ucfirst(get_phrase('percentage_graph')); ?>", 10, canvas.height + 20);
+                ctx.font = "12px Helvetica";
+                ctx.fillText(`<?php echo ucfirst(get_phrase('view_type')); ?>: ${viewTypeText}`, 10, canvas.height + 40);
+                ctx.fillText(`<?php echo ucfirst(get_phrase('details')); ?>: ${viewTypeDetails}`, 10, canvas.height + 60);
+                ctx.fillText(`<?php echo ucfirst(get_phrase('students_present')); ?>: ${presentesCount} (${presentesPercent}%)`, 10, canvas.height + 80);
+                ctx.fillText(`<?php echo ucfirst(get_phrase('absences')); ?>: ${ausentesCount} (${ausentesPercent}%)`, 10, canvas.height + 100);
+                ctx.fillText(`<?php echo ucfirst(get_phrase('tardies')); ?>: ${tardanzasCount} (${tardanzasPercent}%)`, 10, canvas.height + 120);
+                ctx.fillText(`<?php echo ucfirst(get_phrase('justified_absences')); ?>: ${justificadosCount} (${justificadosPercent}%)`, 10, canvas.height + 140);
+
+                const finalImgData = textCanvas.toDataURL(`image/${format}`);
+
+                if (format === 'pdf') {
+                    const { jsPDF } = window.jspdf;
+                    const pdf = new jsPDF();
+                    const pdfWidth = pdf.internal.pageSize.getWidth();
+                    const pdfHeight = (textCanvas.height * pdfWidth) / textCanvas.width;
+
+                    pdf.addImage(finalImgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+                    pdf.save(`<?php echo ucfirst(get_phrase('class_attendance')); ?> <?php echo $section_name; ?> - <?php echo ucfirst(get_phrase('percentage_graph')); ?> - <?php echo $current_date_formatted; ?>.pdf`);
+                } else {
+                    const link = document.createElement('a');
+                    link.href = finalImgData;
+                    link.download = `<?php echo ucfirst(get_phrase('class_attendance')); ?> <?php echo $section_name; ?> - <?php echo ucfirst(get_phrase('percentage_graph')); ?> - <?php echo $current_date_formatted; ?>.${format}`;
+                    link.click();
+                }
+            });
+        }
+    }, 500);
+}
+    const monthTranslations = {
+        'January': '<?php echo ucfirst(get_phrase("january")); ?>',
+        'February': '<?php echo ucfirst(get_phrase("february")); ?>',
+        'March': '<?php echo ucfirst(get_phrase("march")); ?>',
+        'April': '<?php echo ucfirst(get_phrase("april")); ?>',
+        'May': '<?php echo ucfirst(get_phrase("may")); ?>',
+        'June': '<?php echo ucfirst(get_phrase("june")); ?>',
+        'July': '<?php echo ucfirst(get_phrase("july")); ?>',
+        'August': '<?php echo ucfirst(get_phrase("august")); ?>',
+        'September': '<?php echo ucfirst(get_phrase("september")); ?>',
+        'October': '<?php echo ucfirst(get_phrase("october")); ?>',
+        'November': '<?php echo ucfirst(get_phrase("november")); ?>',
+        'December': '<?php echo ucfirst(get_phrase("december")); ?>'
+    };
+
+
     function reload_ajax() {
-        location.reload(); 
+        location.reload();
     }
 
-    $(document).ready(function () {
+    function getViewTypeDetails(viewType, data) {
+        let viewTypeText = "";
+        let viewTypeDetails = "";
 
-        document.getElementById('downloadPdf').addEventListener('click', function () {
-            // Esperar a que el gráfico esté completamente renderizado
-            setTimeout(() => {
-                const chartContainer = document.getElementById('chartContainer');
-                const viewType = document.getElementById('viewType').value;
+        switch (viewType) {
+            case 'daily':
+                viewTypeText = '<?php echo ucfirst(get_phrase('daily')); ?>';
+                let dailyDate = data.daily;
+                let dateParts = dailyDate.split('-');
+                let formattedDate = `${dateParts[2]}/${dateParts[1]}/${dateParts[0]}`;
+                viewTypeDetails = formattedDate;
+                break;
 
-                let viewTypeText = "";
-                let viewTypeDetails = "";
+            case 'weekly':
+                viewTypeText = '<?php echo ucfirst(get_phrase('weekly')); ?>';
+                const startDate = data.startDate;
+                const endDate = data.endDate;
 
-                if (viewType === 'daily') {
-                    viewTypeText = '<?php echo ucfirst(get_phrase('daily'));?>';
-                    let dailyDate = document.getElementById('daily').value; 
-                    let dateParts = dailyDate.split('-'); 
-                    let formattedDate = `${dateParts[2]}/${dateParts[1]}/${dateParts[0]}`; 
-                    viewTypeDetails = formattedDate;
-                } else if (viewType === 'weekly') {
-                    viewTypeText = '<?php echo ucfirst(get_phrase('weekly'));?>';  
-                    const startDate = document.getElementById('startDate').value;
-                    const endDate = document.getElementById('endDate').value;
-                    
-                    let startDateParts = startDate.split('-'); 
-                    let formattedStartDate = `${startDateParts[2]}/${startDateParts[1]}/${startDateParts[0]}`;
-                    
-                    let endDateParts = endDate.split('-'); 
-                    let formattedEndDate = `${endDateParts[2]}/${endDateParts[1]}/${endDateParts[0]}`; 
-                    
-                    viewTypeDetails = `<?php echo ucfirst(get_phrase('from')); ?> ${formattedStartDate} <?php echo get_phrase('to'); ?> ${formattedEndDate}`;  
-                } else if (viewType === 'monthly') {
-                    viewTypeText = '<?php echo ucfirst(get_phrase('monthly'));?>'; 
-                    const month = document.getElementById('monthly').value;
+                let startDateParts = startDate.split('-');
+                let formattedStartDate = `${startDateParts[2]}/${startDateParts[1]}/${startDateParts[0]}`;
 
-                    switch (month) {
-                        case 'January':
-                            translatedMonth = '<?php echo ucfirst(get_phrase("january")); ?>';
-                            break;
-                        case 'February':
-                            translatedMonth = '<?php echo ucfirst(get_phrase("february")); ?>';
-                            break;
-                        case 'March':
-                            translatedMonth = '<?php echo ucfirst(get_phrase("march")); ?>';
-                            break;
-                        case 'April':
-                            translatedMonth = '<?php echo ucfirst(get_phrase("april")); ?>';
-                            break;
-                        case 'May':
-                            translatedMonth = '<?php echo ucfirst(get_phrase("may")); ?>';
-                            break;
-                        case 'June':
-                            translatedMonth = '<?php echo ucfirst(get_phrase("june")); ?>';
-                            break;
-                        case 'July':
-                            translatedMonth = '<?php echo ucfirst(get_phrase("july")); ?>';
-                            break;
-                        case 'August':
-                            translatedMonth = '<?php echo ucfirst(get_phrase("august")); ?>';
-                            break;
-                        case 'September':
-                            translatedMonth = '<?php echo ucfirst(get_phrase("september")); ?>';
-                            break;
-                        case 'October':
-                            translatedMonth = '<?php echo ucfirst(get_phrase("october")); ?>';
-                            break;
-                        case 'November':
-                            translatedMonth = '<?php echo ucfirst(get_phrase("november")); ?>';
-                            break;
-                        case 'December':
-                            translatedMonth = '<?php echo ucfirst(get_phrase("december")); ?>';
-                            break;
-                    }
+                let endDateParts = endDate.split('-');
+                let formattedEndDate = `${endDateParts[2]}/${endDateParts[1]}/${endDateParts[0]}`;
 
-                    viewTypeDetails = `${translatedMonth}`;  // Solo 'from' porque se selecciona un mes
-                } else if (viewType === 'yearly') {
-                    viewTypeText = '<?php echo ucfirst(get_phrase('yearly'));?>';  // Usar traducción para 'yearly'
-                    const startMonth = document.getElementById('startDateYearly').value;
-                    const endMonth = document.getElementById('endDateYearly').value;
+                viewTypeDetails = `<?php echo ucfirst(get_phrase('from')); ?> ${formattedStartDate} <?php echo get_phrase('to'); ?> ${formattedEndDate}`;
+                break;
 
-                    switch (startMonth) {
-                        case 'January':
-                            translatedStartDate = '<?php echo ucfirst(get_phrase("january")); ?>';
-                            break;
-                        case 'February':
-                            translatedStartDate = '<?php echo ucfirst(get_phrase("february")); ?>';
-                            break;
-                        case 'March':
-                            translatedStartDate = '<?php echo ucfirst(get_phrase("march")); ?>';
-                            break;
-                        case 'April':
-                            translatedStartDate = '<?php echo ucfirst(get_phrase("april")); ?>';
-                            break;
-                        case 'May':
-                            translatedStartDate = '<?php echo ucfirst(get_phrase("may")); ?>';
-                            break;
-                        case 'June':
-                            translatedStartDate = '<?php echo ucfirst(get_phrase("june")); ?>';
-                            break;
-                        case 'July':
-                            translatedStartDate = '<?php echo ucfirst(get_phrase("july")); ?>';
-                            break;
-                        case 'August':
-                            translatedStartDate = '<?php echo ucfirst(get_phrase("august")); ?>';
-                            break;
-                        case 'September':
-                            translatedStartDate = '<?php echo ucfirst(get_phrase("september")); ?>';
-                            break;
-                        case 'October':
-                            translatedStartDate = '<?php echo ucfirst(get_phrase("october")); ?>';
-                            break;
-                        case 'November':
-                            translatedStartDate = '<?php echo ucfirst(get_phrase("november")); ?>';
-                            break;
-                        case 'December':
-                            translatedStartDate = '<?php echo ucfirst(get_phrase("december")); ?>';
-                            break;
-                    }
+            case 'monthly':
+                viewTypeText = '<?php echo ucfirst(get_phrase('monthly')); ?>';
+                const month = data.monthly;
 
-                    switch (endMonth) {
-                        case 'January':
-                            translatedEndMonth = '<?php echo ucfirst(get_phrase("january")); ?>';
-                            break;
-                        case 'February':
-                            translatedEndMonth = '<?php echo ucfirst(get_phrase("february")); ?>';
-                            break;
-                        case 'March':
-                            translatedEndMonth = '<?php echo ucfirst(get_phrase("march")); ?>';
-                            break;
-                        case 'April':
-                            translatedEndMonth = '<?php echo ucfirst(get_phrase("april")); ?>';
-                            break;
-                        case 'May':
-                            translatedEndMonth = '<?php echo ucfirst(get_phrase("may")); ?>';
-                            break;
-                        case 'June':
-                            translatedEndMonth = '<?php echo ucfirst(get_phrase("june")); ?>';
-                            break;
-                        case 'July':
-                            translatedEndMonth = '<?php echo ucfirst(get_phrase("july")); ?>';
-                            break;
-                        case 'August':
-                            translatedEndMonth = '<?php echo ucfirst(get_phrase("august")); ?>';
-                            break;
-                        case 'September':
-                            translatedEndMonth = '<?php echo ucfirst(get_phrase("september")); ?>';
-                            break;
-                        case 'October':
-                            translatedEndMonth = '<?php echo ucfirst(get_phrase("october")); ?>';
-                            break;
-                        case 'November':
-                            translatedEndMonth = '<?php echo ucfirst(get_phrase("november")); ?>';
-                            break;
-                        case 'December':
-                            translatedEndMonth = '<?php echo ucfirst(get_phrase("december")); ?>';
-                            break;
-                    }
-                    viewTypeDetails = `<?php echo ucfirst(get_phrase('from')); ?> ${translatedStarMonth} <?php echo get_phrase('to'); ?> ${translatedEndMonth}`;  // Usar las palabras "from" y "to" traducidas
-                }
+                let translatedMonth = monthTranslations[month] || month;
+                viewTypeDetails = `${translatedMonth}`; // Solo 'from' porque se selecciona un mes
+                break;
 
-                // Obtener los valores de los spans
-                const presentesCount = parseInt(document.getElementById('presentes-count').textContent, 10);
-                const ausentesCount = parseInt(document.getElementById('ausentes-count').textContent, 10);
-                const tardanzasCount = parseInt(document.getElementById('tardanzas-count').textContent, 10);
-                const justificadosCount = parseInt(document.getElementById('justificados-count').textContent, 10);
+            case 'yearly':
+                viewTypeText = '<?php echo ucfirst(get_phrase('yearly')); ?>'; // Usar traducción para 'yearly'
+                const startMonth = data.startDateYearly;
+                const endMonth = data.endDateYearly;
 
-                const totalCount = presentesCount + ausentesCount + tardanzasCount + justificadosCount;
+                let translatedStartDate = monthTranslations[startMonth] || startMonth;
+                let translatedEndMonth = monthTranslations[endMonth] || endMonth;
 
-                // Calcular los porcentajes
-                const presentesPercent = ((presentesCount / totalCount) * 100).toFixed(2);
-                const ausentesPercent = ((ausentesCount / totalCount) * 100).toFixed(2);
-                const tardanzasPercent = ((tardanzasCount / totalCount) * 100).toFixed(2);
-                const justificadosPercent = ((justificadosCount / totalCount) * 100).toFixed(2);
+                viewTypeDetails = `<?php echo ucfirst(get_phrase('from')); ?> ${translatedStartDate} <?php echo get_phrase('to'); ?> ${translatedEndMonth}`; // Usar las palabras "from" y "to" traducidas
+                break;
+        }
 
-                if (chartContainer) {
-                    html2canvas(chartContainer).then(canvas => {
-                        // Convertir a PDF
-            const { jsPDF } = window.jspdf;
-            const pdf = new jsPDF();
-            const imgData = canvas.toDataURL('image/png');
+        return {
+            viewTypeText,
+            viewTypeDetails
+        };
+    }
 
-            // Hacer el gráfico más grande ajustando las dimensiones
-            const pdfWidth = pdf.internal.pageSize.getWidth();
-            const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+    $(document).ready(function() {
 
-            const scaleFactor = 1.2; // Aumenta el valor si quieres hacerlo más grande
-            const scaledPdfHeight = pdfHeight * scaleFactor;
-            const scaledPdfWidth = pdfWidth * scaleFactor;
-
-            // Añadir el título al PDF
-            pdf.setFont("helvetica", "bold");
-            pdf.setFontSize(16);
-            pdf.text("<?php echo ucfirst(get_phrase('class_attendance')); ?> <?php echo $section_name; ?> - <?php echo ucfirst(get_phrase('percentage_graph')); ?>", 10, 20);
-
-            const chartYPosition = 30; // Cambia este valor para bajar el gráfico
-
-            // Agregar la imagen del gráfico al PDF
-            pdf.addImage(imgData, 'PNG', 0, chartYPosition, pdfWidth, pdfHeight );
-
-            // Añadir texto debajo del gráfico
-            const textYPosition = chartYPosition + pdfHeight + 10; // Ajustar la posición para que esté después del gráfico
-
-            pdf.setFont("helvetica", "normal");
-            pdf.setFontSize(12);
-
-            pdf.text(`<?php echo ucfirst(get_phrase('view_type')); ?>: ${viewTypeText}`, 10, textYPosition);
-            pdf.text(`<?php echo ucfirst(get_phrase('details')); ?>: ${viewTypeDetails}`, 10, textYPosition + 10);
-
-            // Mostrar los conteos y porcentajes para cada categoría
-            pdf.text(`<?php echo ucfirst(get_phrase('students_present')); ?>: ${presentesCount} (${presentesPercent}%)`, 10, textYPosition + 20);
-            pdf.text(`<?php echo ucfirst(get_phrase('absences')); ?>: ${ausentesCount} (${ausentesPercent}%)`, 10, textYPosition + 30);
-            pdf.text(`<?php echo ucfirst(get_phrase('tardies')); ?>: ${tardanzasCount} (${tardanzasPercent}%)`, 10, textYPosition + 40);
-            pdf.text(`<?php echo ucfirst(get_phrase('justified_absences')); ?>: ${justificadosCount} (${justificadosPercent}%)`, 10, textYPosition + 50);
-
-            // Guardar el PDF
-            pdf.save("<?php echo ucfirst(get_phrase('class_attendance')); ?> <?php echo $section_name; ?> - <?php echo ucfirst(get_phrase('percentage_graph')); ?> - <?php echo $current_date_formatted; ?>.pdf");
-                    });
-                } else {
-                    console.error('El contenedor del gráfico no se encontró.');
-                }
-            }, 500); // 500ms para garantizar que el gráfico esté listo
+        document.getElementById('downloadPdf').addEventListener('click', function() {
+            downloadChart('pdf', 'chartContainer', 'viewType', '');
         });
 
-        document.getElementById('downloadPng').addEventListener('click', function () {
-            setTimeout(() => {
-                const chartContainer = document.getElementById('chartContainer');
-                        const viewType = document.getElementById('viewType').value;
-
-                        let viewTypeText = "";
-                        let viewTypeDetails = "";
-
-                        if (viewType === 'daily') {
-                            viewTypeText = '<?php echo ucfirst(get_phrase('daily'));?>';
-                            let dailyDate = document.getElementById('daily').value; 
-                            let dateParts = dailyDate.split('-'); 
-                            let formattedDate = `${dateParts[2]}/${dateParts[1]}/${dateParts[0]}`; 
-                            viewTypeDetails = formattedDate;
-                        } else if (viewType === 'weekly') {
-                            viewTypeText = '<?php echo ucfirst(get_phrase('weekly'));?>';  
-                            const startDate = document.getElementById('startDate').value;
-                            const endDate = document.getElementById('endDate').value;
-                            
-                            let startDateParts = startDate.split('-'); 
-                            let formattedStartDate = `${startDateParts[2]}/${startDateParts[1]}/${startDateParts[0]}`;
-                            
-                            let endDateParts = endDate.split('-'); 
-                            let formattedEndDate = `${endDateParts[2]}/${endDateParts[1]}/${endDateParts[0]}`; 
-                            
-                            viewTypeDetails = `<?php echo ucfirst(get_phrase('from')); ?> ${formattedStartDate} <?php echo get_phrase('to'); ?> ${formattedEndDate}`;  
-                        } else if (viewType === 'monthly') {
-                            viewTypeText = '<?php echo ucfirst(get_phrase('monthly'));?>'; 
-                            const month = document.getElementById('monthly').value;
-
-                            switch (month) {
-                                case 'January':
-                                    translatedMonth = '<?php echo ucfirst(get_phrase("january")); ?>';
-                                    break;
-                                case 'February':
-                                    translatedMonth = '<?php echo ucfirst(get_phrase("february")); ?>';
-                                    break;
-                                case 'March':
-                                    translatedMonth = '<?php echo ucfirst(get_phrase("march")); ?>';
-                                    break;
-                                case 'April':
-                                    translatedMonth = '<?php echo ucfirst(get_phrase("april")); ?>';
-                                    break;
-                                case 'May':
-                                    translatedMonth = '<?php echo ucfirst(get_phrase("may")); ?>';
-                                    break;
-                                case 'June':
-                                    translatedMonth = '<?php echo ucfirst(get_phrase("june")); ?>';
-                                    break;
-                                case 'July':
-                                    translatedMonth = '<?php echo ucfirst(get_phrase("july")); ?>';
-                                    break;
-                                case 'August':
-                                    translatedMonth = '<?php echo ucfirst(get_phrase("august")); ?>';
-                                    break;
-                                case 'September':
-                                    translatedMonth = '<?php echo ucfirst(get_phrase("september")); ?>';
-                                    break;
-                                case 'October':
-                                    translatedMonth = '<?php echo ucfirst(get_phrase("october")); ?>';
-                                    break;
-                                case 'November':
-                                    translatedMonth = '<?php echo ucfirst(get_phrase("november")); ?>';
-                                    break;
-                                case 'December':
-                                    translatedMonth = '<?php echo ucfirst(get_phrase("december")); ?>';
-                                    break;
-                            }
-
-                            viewTypeDetails = `${translatedMonth}`;  // Solo 'from' porque se selecciona un mes
-                        } else if (viewType === 'yearly') {
-                            viewTypeText = '<?php echo ucfirst(get_phrase('yearly'));?>';  // Usar traducción para 'yearly'
-                            const startMonth = document.getElementById('startDateYearly').value;
-                            const endMonth = document.getElementById('endDateYearly').value;
-
-                            switch (startMonth) {
-                                case 'January':
-                                    translatedStartDate = '<?php echo ucfirst(get_phrase("january")); ?>';
-                                    break;
-                                case 'February':
-                                    translatedStartDate = '<?php echo ucfirst(get_phrase("february")); ?>';
-                                    break;
-                                case 'March':
-                                    translatedStartDate = '<?php echo ucfirst(get_phrase("march")); ?>';
-                                    break;
-                                case 'April':
-                                    translatedStartDate = '<?php echo ucfirst(get_phrase("april")); ?>';
-                                    break;
-                                case 'May':
-                                    translatedStartDate = '<?php echo ucfirst(get_phrase("may")); ?>';
-                                    break;
-                                case 'June':
-                                    translatedStartDate = '<?php echo ucfirst(get_phrase("june")); ?>';
-                                    break;
-                                case 'July':
-                                    translatedStartDate = '<?php echo ucfirst(get_phrase("july")); ?>';
-                                    break;
-                                case 'August':
-                                    translatedStartDate = '<?php echo ucfirst(get_phrase("august")); ?>';
-                                    break;
-                                case 'September':
-                                    translatedStartDate = '<?php echo ucfirst(get_phrase("september")); ?>';
-                                    break;
-                                case 'October':
-                                    translatedStartDate = '<?php echo ucfirst(get_phrase("october")); ?>';
-                                    break;
-                                case 'November':
-                                    translatedStartDate = '<?php echo ucfirst(get_phrase("november")); ?>';
-                                    break;
-                                case 'December':
-                                    translatedStartDate = '<?php echo ucfirst(get_phrase("december")); ?>';
-                                    break;
-                            }
-
-                            switch (endMonth) {
-                                case 'January':
-                                    translatedEndMonth = '<?php echo ucfirst(get_phrase("january")); ?>';
-                                    break;
-                                case 'February':
-                                    translatedEndMonth = '<?php echo ucfirst(get_phrase("february")); ?>';
-                                    break;
-                                case 'March':
-                                    translatedEndMonth = '<?php echo ucfirst(get_phrase("march")); ?>';
-                                    break;
-                                case 'April':
-                                    translatedEndMonth = '<?php echo ucfirst(get_phrase("april")); ?>';
-                                    break;
-                                case 'May':
-                                    translatedEndMonth = '<?php echo ucfirst(get_phrase("may")); ?>';
-                                    break;
-                                case 'June':
-                                    translatedEndMonth = '<?php echo ucfirst(get_phrase("june")); ?>';
-                                    break;
-                                case 'July':
-                                    translatedEndMonth = '<?php echo ucfirst(get_phrase("july")); ?>';
-                                    break;
-                                case 'August':
-                                    translatedEndMonth = '<?php echo ucfirst(get_phrase("august")); ?>';
-                                    break;
-                                case 'September':
-                                    translatedEndMonth = '<?php echo ucfirst(get_phrase("september")); ?>';
-                                    break;
-                                case 'October':
-                                    translatedEndMonth = '<?php echo ucfirst(get_phrase("october")); ?>';
-                                    break;
-                                case 'November':
-                                    translatedEndMonth = '<?php echo ucfirst(get_phrase("november")); ?>';
-                                    break;
-                                case 'December':
-                                    translatedEndMonth = '<?php echo ucfirst(get_phrase("december")); ?>';
-                                    break;
-                            }
-
-                            viewTypeDetails = `<?php echo ucfirst(get_phrase('from')); ?> ${translatedStarMonth} <?php echo get_phrase('to'); ?> ${translatedEndMonth}`;  // Usar las palabras "from" y "to" traducidas
-                        }
-
-                        // Obtener los valores de los spans
-                        const presentesCount = parseInt(document.getElementById('presentes-count').textContent, 10);
-                        const ausentesCount = parseInt(document.getElementById('ausentes-count').textContent, 10);
-                        const tardanzasCount = parseInt(document.getElementById('tardanzas-count').textContent, 10);
-                        const justificadosCount = parseInt(document.getElementById('justificados-count').textContent, 10);
-
-                        const totalCount = presentesCount + ausentesCount + tardanzasCount + justificadosCount;
-
-                        // Calcular los porcentajes
-                        const presentesPercent = ((presentesCount / totalCount) * 100).toFixed(2);
-                        const ausentesPercent = ((ausentesCount / totalCount) * 100).toFixed(2);
-                        const tardanzasPercent = ((tardanzasCount / totalCount) * 100).toFixed(2);
-                        const justificadosPercent = ((justificadosCount / totalCount) * 100).toFixed(2);
-
-                if (chartContainer) {
-                    html2canvas(chartContainer).then(canvas => {
-                        const imgData = canvas.toDataURL('image/png');
-                        
-                        const textCanvas = document.createElement('canvas');
-                        const ctx = textCanvas.getContext('2d');
-                        textCanvas.width = canvas.width;
-                        textCanvas.height = canvas.height + 0;// Más espacio para texto (ajusta según sea necesario)
-                        ctx.drawImage(canvas, 0, 0);
-
-                        ctx.font = "16px Helvetica";
-                        ctx.fillText("<?php echo ucfirst(get_phrase('class_attendance')); ?> <?php echo $section_name; ?> - <?php echo ucfirst(get_phrase('percentage_graph')); ?>", 10, 20);
-                        ctx.font = "12px Helvetica";
-                        ctx.fillText(`<?php echo ucfirst(get_phrase('view_type')); ?>: ${viewTypeText}`, 10, 40);
-                        ctx.fillText(`<?php echo ucfirst(get_phrase('details')); ?>: ${viewTypeDetails}`,10, 60);
-                        ctx.fillText(`<?php echo ucfirst(get_phrase('students_present')); ?>: ${presentesCount} (${presentesPercent}%)`, 10, 80);
-                        ctx.fillText(`<?php echo ucfirst(get_phrase('absences')); ?>: ${ausentesCount} (${ausentesPercent}%)`, 10, 100);
-                        ctx.fillText(`<?php echo ucfirst(get_phrase('tardies')); ?>: ${tardanzasCount} (${tardanzasPercent}%)`, 10, 120);
-                        ctx.fillText(`<?php echo ucfirst(get_phrase('justified_absences')); ?>: ${justificadosCount} (${justificadosPercent}%)`, 10, 140);
-
-                        const finalImgData = textCanvas.toDataURL('image/png');
-                        const link = document.createElement('a');
-                        link.href = finalImgData;
-                        link.download = "<?php echo ucfirst(get_phrase('class_attendance')); ?> <?php echo $section_name; ?> - <?php echo ucfirst(get_phrase('percentage_graph')); ?> - <?php echo $current_date_formatted; ?>.png";
-                        link.click();
-                    });
-                }
-            }, 500);
+        document.getElementById('downloadPng').addEventListener('click', function() {
+            downloadChart('png', 'chartContainer', 'viewType', '');
         });
 
-        document.getElementById('downloadJpeg').addEventListener('click', function () {
-            setTimeout(() => {
-                const chartContainer = document.getElementById('chartContainer');
-                        const viewType = document.getElementById('viewType').value;
-
-                        let viewTypeText = "";
-                        let viewTypeDetails = "";
-
-                        if (viewType === 'daily') {
-                            viewTypeText = '<?php echo ucfirst(get_phrase('daily'));?>';
-                            let dailyDate = document.getElementById('daily').value; 
-                            let dateParts = dailyDate.split('-'); 
-                            let formattedDate = `${dateParts[2]}/${dateParts[1]}/${dateParts[0]}`; 
-                            viewTypeDetails = formattedDate;
-                        } else if (viewType === 'weekly') {
-                            viewTypeText = '<?php echo ucfirst(get_phrase('weekly'));?>';  
-                            const startDate = document.getElementById('startDate').value;
-                            const endDate = document.getElementById('endDate').value;
-                            
-                            let startDateParts = startDate.split('-'); 
-                            let formattedStartDate = `${startDateParts[2]}/${startDateParts[1]}/${startDateParts[0]}`;
-                            
-                            let endDateParts = endDate.split('-'); 
-                            let formattedEndDate = `${endDateParts[2]}/${endDateParts[1]}/${endDateParts[0]}`; 
-                            
-                            viewTypeDetails = `<?php echo ucfirst(get_phrase('from')); ?> ${formattedStartDate} <?php echo get_phrase('to'); ?> ${formattedEndDate}`;  
-                        } else if (viewType === 'monthly') {
-                            viewTypeText = '<?php echo ucfirst(get_phrase('monthly'));?>'; 
-                            const month = document.getElementById('monthly').value;
-
-                            switch (month) {
-                                case 'January':
-                                    translatedMonth = '<?php echo ucfirst(get_phrase("january")); ?>';
-                                    break;
-                                case 'February':
-                                    translatedMonth = '<?php echo ucfirst(get_phrase("february")); ?>';
-                                    break;
-                                case 'March':
-                                    translatedMonth = '<?php echo ucfirst(get_phrase("march")); ?>';
-                                    break;
-                                case 'April':
-                                    translatedMonth = '<?php echo ucfirst(get_phrase("april")); ?>';
-                                    break;
-                                case 'May':
-                                    translatedMonth = '<?php echo ucfirst(get_phrase("may")); ?>';
-                                    break;
-                                case 'June':
-                                    translatedMonth = '<?php echo ucfirst(get_phrase("june")); ?>';
-                                    break;
-                                case 'July':
-                                    translatedMonth = '<?php echo ucfirst(get_phrase("july")); ?>';
-                                    break;
-                                case 'August':
-                                    translatedMonth = '<?php echo ucfirst(get_phrase("august")); ?>';
-                                    break;
-                                case 'September':
-                                    translatedMonth = '<?php echo ucfirst(get_phrase("september")); ?>';
-                                    break;
-                                case 'October':
-                                    translatedMonth = '<?php echo ucfirst(get_phrase("october")); ?>';
-                                    break;
-                                case 'November':
-                                    translatedMonth = '<?php echo ucfirst(get_phrase("november")); ?>';
-                                    break;
-                                case 'December':
-                                    translatedMonth = '<?php echo ucfirst(get_phrase("december")); ?>';
-                                    break;
-                            }
-
-                            viewTypeDetails = `${translatedMonth}`;  // Solo 'from' porque se selecciona un mes
-                        } else if (viewType === 'yearly') {
-                            viewTypeText = '<?php echo ucfirst(get_phrase('yearly'));?>';  // Usar traducción para 'yearly'
-                            const startMonth = document.getElementById('startDateYearly').value;
-                            const endMonth = document.getElementById('endDateYearly').value;
-
-                            switch (startMonth) {
-                                case 'January':
-                                    translatedStartDate = '<?php echo ucfirst(get_phrase("january")); ?>';
-                                    break;
-                                case 'February':
-                                    translatedStartDate = '<?php echo ucfirst(get_phrase("february")); ?>';
-                                    break;
-                                case 'March':
-                                    translatedStartDate = '<?php echo ucfirst(get_phrase("march")); ?>';
-                                    break;
-                                case 'April':
-                                    translatedStartDate = '<?php echo ucfirst(get_phrase("april")); ?>';
-                                    break;
-                                case 'May':
-                                    translatedStartDate = '<?php echo ucfirst(get_phrase("may")); ?>';
-                                    break;
-                                case 'June':
-                                    translatedStartDate = '<?php echo ucfirst(get_phrase("june")); ?>';
-                                    break;
-                                case 'July':
-                                    translatedStartDate = '<?php echo ucfirst(get_phrase("july")); ?>';
-                                    break;
-                                case 'August':
-                                    translatedStartDate = '<?php echo ucfirst(get_phrase("august")); ?>';
-                                    break;
-                                case 'September':
-                                    translatedStartDate = '<?php echo ucfirst(get_phrase("september")); ?>';
-                                    break;
-                                case 'October':
-                                    translatedStartDate = '<?php echo ucfirst(get_phrase("october")); ?>';
-                                    break;
-                                case 'November':
-                                    translatedStartDate = '<?php echo ucfirst(get_phrase("november")); ?>';
-                                    break;
-                                case 'December':
-                                    translatedStartDate = '<?php echo ucfirst(get_phrase("december")); ?>';
-                                    break;
-                            }
-
-                            switch (endMonth) {
-                                case 'January':
-                                    translatedEndMonth = '<?php echo ucfirst(get_phrase("january")); ?>';
-                                    break;
-                                case 'February':
-                                    translatedEndMonth = '<?php echo ucfirst(get_phrase("february")); ?>';
-                                    break;
-                                case 'March':
-                                    translatedEndMonth = '<?php echo ucfirst(get_phrase("march")); ?>';
-                                    break;
-                                case 'April':
-                                    translatedEndMonth = '<?php echo ucfirst(get_phrase("april")); ?>';
-                                    break;
-                                case 'May':
-                                    translatedEndMonth = '<?php echo ucfirst(get_phrase("may")); ?>';
-                                    break;
-                                case 'June':
-                                    translatedEndMonth = '<?php echo ucfirst(get_phrase("june")); ?>';
-                                    break;
-                                case 'July':
-                                    translatedEndMonth = '<?php echo ucfirst(get_phrase("july")); ?>';
-                                    break;
-                                case 'August':
-                                    translatedEndMonth = '<?php echo ucfirst(get_phrase("august")); ?>';
-                                    break;
-                                case 'September':
-                                    translatedEndMonth = '<?php echo ucfirst(get_phrase("september")); ?>';
-                                    break;
-                                case 'October':
-                                    translatedEndMonth = '<?php echo ucfirst(get_phrase("october")); ?>';
-                                    break;
-                                case 'November':
-                                    translatedEndMonth = '<?php echo ucfirst(get_phrase("november")); ?>';
-                                    break;
-                                case 'December':
-                                    translatedEndMonth = '<?php echo ucfirst(get_phrase("december")); ?>';
-                                    break;
-                            }
-                            viewTypeDetails = `<?php echo ucfirst(get_phrase('from')); ?> ${translatedStarMonth} <?php echo get_phrase('to'); ?> ${translatedEndMonth}`;  // Usar las palabras "from" y "to" traducidas
-                        }
-
-                        // Obtener los valores de los spans
-                        const presentesCount = parseInt(document.getElementById('presentes-count').textContent, 10);
-                        const ausentesCount = parseInt(document.getElementById('ausentes-count').textContent, 10);
-                        const tardanzasCount = parseInt(document.getElementById('tardanzas-count').textContent, 10);
-                        const justificadosCount = parseInt(document.getElementById('justificados-count').textContent, 10);
-
-                        const totalCount = presentesCount + ausentesCount + tardanzasCount + justificadosCount;
-
-                        // Calcular los porcentajes
-                        const presentesPercent = ((presentesCount / totalCount) * 100).toFixed(2);
-                        const ausentesPercent = ((ausentesCount / totalCount) * 100).toFixed(2);
-                        const tardanzasPercent = ((tardanzasCount / totalCount) * 100).toFixed(2);
-                        const justificadosPercent = ((justificadosCount / totalCount) * 100).toFixed(2);
-
-                if (chartContainer) {
-                    html2canvas(chartContainer).then(canvas => {
-                        const imgData = canvas.toDataURL('image/jpeg');
-                        
-                        const textCanvas = document.createElement('canvas');
-                        const ctx = textCanvas.getContext('2d');
-                        textCanvas.width = canvas.width;
-                        textCanvas.height = canvas.height + 0; // Más espacio para texto (ajusta según sea necesario)
-                        ctx.drawImage(canvas, 0, 0);
-
-                        ctx.font = "16px Helvetica";
-                        ctx.fillText("<?php echo ucfirst(get_phrase('class_attendance')); ?> <?php echo $section_name; ?> - <?php echo ucfirst(get_phrase('percentage_graph')); ?>", 10, 20);
-                        ctx.font = "12px Helvetica";
-                        ctx.fillText(`<?php echo ucfirst(get_phrase('view_type')); ?>: ${viewTypeText}`, 10, 40);
-                        ctx.fillText(`<?php echo ucfirst(get_phrase('details')); ?>: ${viewTypeDetails}`,10, 60);
-                        ctx.fillText(`<?php echo ucfirst(get_phrase('students_present')); ?>: ${presentesCount} (${presentesPercent}%)`, 10, 80);
-                        ctx.fillText(`<?php echo ucfirst(get_phrase('absences')); ?>: ${ausentesCount} (${ausentesPercent}%)`, 10, 100);
-                        ctx.fillText(`<?php echo ucfirst(get_phrase('tardies')); ?>: ${tardanzasCount} (${tardanzasPercent}%)`, 10, 120);
-                        ctx.fillText(`<?php echo ucfirst(get_phrase('justified_absences')); ?>: ${justificadosCount} (${justificadosPercent}%)`, 10, 140);
-
-                        const finalImgData = textCanvas.toDataURL('image/jpeg');
-                        const link = document.createElement('a');
-                        link.href = finalImgData;
-                        link.download = "<?php echo ucfirst(get_phrase('class_attendance')); ?> <?php echo $section_name; ?> - <?php echo ucfirst(get_phrase('percentage_graph')); ?> - <?php echo $current_date_formatted; ?>.jpeg";
-                        link.click();
-                    });
-                }
-            }, 500);
+        document.getElementById('downloadJpeg').addEventListener('click', function() {
+            downloadChart('jpeg', 'chartContainer', 'viewType', '');
         });
 
+        document.getElementById('downloadPdf2').addEventListener('click', function() {
+            downloadChart('pdf', 'chartContainer2', 'viewType2', '2');
+        });
 
-        document.getElementById('downloadPdf2').addEventListener('click', function () {
-            // Esperar a que el gráfico esté completamente renderizado
-            setTimeout(() => {
-                const chartContainer = document.getElementById('chartContainer2');
-                const viewType = document.getElementById('viewType2').value;
+        document.getElementById('downloadPng2').addEventListener('click', function() {
+            downloadChart('png', 'chartContainer2', 'viewType2', '2');
+        });
 
-                let viewTypeText = "";
-                let viewTypeDetails = "";
-
-                if (viewType === 'daily') {
-                    viewTypeText = '<?php echo ucfirst(get_phrase('daily'));?>';
-                    let dailyDate = document.getElementById('daily2').value; 
-                    let dateParts = dailyDate.split('-'); 
-                    let formattedDate = `${dateParts[2]}/${dateParts[1]}/${dateParts[0]}`; 
-                    viewTypeDetails = formattedDate;
-                } else if (viewType === 'weekly') {
-                    viewTypeText = '<?php echo ucfirst(get_phrase('weekly'));?>';  
-                    const startDate = document.getElementById('startDate2').value;
-                    const endDate = document.getElementById('endDate2').value;
-                    
-                    let startDateParts = startDate.split('-'); 
-                    let formattedStartDate = `${startDateParts[2]}/${startDateParts[1]}/${startDateParts[0]}`;
-                    
-                    let endDateParts = endDate.split('-'); 
-                    let formattedEndDate = `${endDateParts[2]}/${endDateParts[1]}/${endDateParts[0]}`; 
-                    
-                    viewTypeDetails = `<?php echo ucfirst(get_phrase('from')); ?> ${formattedStartDate} <?php echo get_phrase('to'); ?> ${formattedEndDate}`;  
-                } else if (viewType === 'monthly') {
-                    viewTypeText = '<?php echo ucfirst(get_phrase('monthly'));?>'; 
-                    const month = document.getElementById('monthly2').value;
-
-                    switch (month) {
-                        case 'January':
-                            translatedMonth = '<?php echo ucfirst(get_phrase("january")); ?>';
-                            break;
-                        case 'February':
-                            translatedMonth = '<?php echo ucfirst(get_phrase("february")); ?>';
-                            break;
-                        case 'March':
-                            translatedMonth = '<?php echo ucfirst(get_phrase("march")); ?>';
-                            break;
-                        case 'April':
-                            translatedMonth = '<?php echo ucfirst(get_phrase("april")); ?>';
-                            break;
-                        case 'May':
-                            translatedMonth = '<?php echo ucfirst(get_phrase("may")); ?>';
-                            break;
-                        case 'June':
-                            translatedMonth = '<?php echo ucfirst(get_phrase("june")); ?>';
-                            break;
-                        case 'July':
-                            translatedMonth = '<?php echo ucfirst(get_phrase("july")); ?>';
-                            break;
-                        case 'August':
-                            translatedMonth = '<?php echo ucfirst(get_phrase("august")); ?>';
-                            break;
-                        case 'September':
-                            translatedMonth = '<?php echo ucfirst(get_phrase("september")); ?>';
-                            break;
-                        case 'October':
-                            translatedMonth = '<?php echo ucfirst(get_phrase("october")); ?>';
-                            break;
-                        case 'November':
-                            translatedMonth = '<?php echo ucfirst(get_phrase("november")); ?>';
-                            break;
-                        case 'December':
-                            translatedMonth = '<?php echo ucfirst(get_phrase("december")); ?>';
-                            break;
-                    }
-
-                    viewTypeDetails = `${translatedMonth}`;  // Solo 'from' porque se selecciona un mes
-                } else if (viewType === 'yearly') {
-                    viewTypeText = '<?php echo ucfirst(get_phrase('yearly'));?>';  // Usar traducción para 'yearly'
-                    const startMonth = document.getElementById('startDateYearly2').value;
-                    const endMonth = document.getElementById('endDateYearly2').value;
-
-                    switch (startMonth) {
-                        case 'January':
-                            translatedStartDate = '<?php echo ucfirst(get_phrase("january")); ?>';
-                            break;
-                        case 'February':
-                            translatedStartDate = '<?php echo ucfirst(get_phrase("february")); ?>';
-                            break;
-                        case 'March':
-                            translatedStartDate = '<?php echo ucfirst(get_phrase("march")); ?>';
-                            break;
-                        case 'April':
-                            translatedStartDate = '<?php echo ucfirst(get_phrase("april")); ?>';
-                            break;
-                        case 'May':
-                            translatedStartDate = '<?php echo ucfirst(get_phrase("may")); ?>';
-                            break;
-                        case 'June':
-                            translatedStartDate = '<?php echo ucfirst(get_phrase("june")); ?>';
-                            break;
-                        case 'July':
-                            translatedStartDate = '<?php echo ucfirst(get_phrase("july")); ?>';
-                            break;
-                        case 'August':
-                            translatedStartDate = '<?php echo ucfirst(get_phrase("august")); ?>';
-                            break;
-                        case 'September':
-                            translatedStartDate = '<?php echo ucfirst(get_phrase("september")); ?>';
-                            break;
-                        case 'October':
-                            translatedStartDate = '<?php echo ucfirst(get_phrase("october")); ?>';
-                            break;
-                        case 'November':
-                            translatedStartDate = '<?php echo ucfirst(get_phrase("november")); ?>';
-                            break;
-                        case 'December':
-                            translatedStartDate = '<?php echo ucfirst(get_phrase("december")); ?>';
-                            break;
-                    }
-
-                    switch (endMonth) {
-                        case 'January':
-                            translatedEndMonth = '<?php echo ucfirst(get_phrase("january")); ?>';
-                            break;
-                        case 'February':
-                            translatedEndMonth = '<?php echo ucfirst(get_phrase("february")); ?>';
-                            break;
-                        case 'March':
-                            translatedEndMonth = '<?php echo ucfirst(get_phrase("march")); ?>';
-                            break;
-                        case 'April':
-                            translatedEndMonth = '<?php echo ucfirst(get_phrase("april")); ?>';
-                            break;
-                        case 'May':
-                            translatedEndMonth = '<?php echo ucfirst(get_phrase("may")); ?>';
-                            break;
-                        case 'June':
-                            translatedEndMonth = '<?php echo ucfirst(get_phrase("june")); ?>';
-                            break;
-                        case 'July':
-                            translatedEndMonth = '<?php echo ucfirst(get_phrase("july")); ?>';
-                            break;
-                        case 'August':
-                            translatedEndMonth = '<?php echo ucfirst(get_phrase("august")); ?>';
-                            break;
-                        case 'September':
-                            translatedEndMonth = '<?php echo ucfirst(get_phrase("september")); ?>';
-                            break;
-                        case 'October':
-                            translatedEndMonth = '<?php echo ucfirst(get_phrase("october")); ?>';
-                            break;
-                        case 'November':
-                            translatedEndMonth = '<?php echo ucfirst(get_phrase("november")); ?>';
-                            break;
-                        case 'December':
-                            translatedEndMonth = '<?php echo ucfirst(get_phrase("december")); ?>';
-                            break;
-                    }
-
-                    viewTypeDetails = `<?php echo ucfirst(get_phrase('from')); ?> ${translatedStarMonth} <?php echo get_phrase('to'); ?> ${translatedEndMonth}`;  // Usar las palabras "from" y "to" traducidas
-                }
-
-                // Obtener los valores de los spans
-                const presentesCount = parseInt(document.getElementById('presentes-count2').textContent, 10);
-                const ausentesCount = parseInt(document.getElementById('ausentes-count2').textContent, 10);
-                const tardanzasCount = parseInt(document.getElementById('tardanzas-count2').textContent, 10);
-                const justificadosCount = parseInt(document.getElementById('justificados-count2').textContent, 10);
-
-                const totalCount = presentesCount + ausentesCount + tardanzasCount + justificadosCount;
-
-                // Calcular los porcentajes
-                const presentesPercent = ((presentesCount / totalCount) * 100).toFixed(2);
-                const ausentesPercent = ((ausentesCount / totalCount) * 100).toFixed(2);
-                const tardanzasPercent = ((tardanzasCount / totalCount) * 100).toFixed(2);
-                const justificadosPercent = ((justificadosCount / totalCount) * 100).toFixed(2);
-
-                if (chartContainer) {
-                    html2canvas(chartContainer).then(canvas => {
-                        // Convertir a PDF
-            const { jsPDF } = window.jspdf;
-            const pdf = new jsPDF();
-            const imgData = canvas.toDataURL('image/png');
-
-            // Hacer el gráfico más grande ajustando las dimensiones
-            const pdfWidth = pdf.internal.pageSize.getWidth();
-            const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
-
-            const scaleFactor = 1.2; // Aumenta el valor si quieres hacerlo más grande
-            const scaledPdfHeight = pdfHeight * scaleFactor;
-            const scaledPdfWidth = pdfWidth * scaleFactor;
-
-            // Añadir el título al PDF
-            pdf.setFont("helvetica", "bold");
-            pdf.setFontSize(16);
-            pdf.text("<?php echo ucfirst(get_phrase('class_attendance')); ?> <?php echo $section_name; ?> - <?php echo ucfirst(get_phrase('quantity_graph')); ?>", 10, 20);
-
-            const chartYPosition = 30; // Cambia este valor para bajar el gráfico
-
-            // Agregar la imagen del gráfico al PDF
-            pdf.addImage(imgData, 'PNG', 0, chartYPosition, pdfWidth, pdfHeight );
-
-            // Añadir texto debajo del gráfico
-            const textYPosition = chartYPosition + pdfHeight + 10; // Ajustar la posición para que esté después del gráfico
-
-            pdf.setFont("helvetica", "normal");
-            pdf.setFontSize(12);
-
-            pdf.text(`<?php echo ucfirst(get_phrase('view_type')); ?>: ${viewTypeText}`, 10, textYPosition);
-            pdf.text(`<?php echo ucfirst(get_phrase('details')); ?>: ${viewTypeDetails}`, 10, textYPosition + 10);
-
-            // Mostrar los conteos y porcentajes para cada categoría
-            pdf.text(`<?php echo ucfirst(get_phrase('students_present')); ?>: ${presentesCount} (${presentesPercent}%)`, 10, textYPosition + 20);
-            pdf.text(`<?php echo ucfirst(get_phrase('absences')); ?>: ${ausentesCount} (${ausentesPercent}%)`, 10, textYPosition + 30);
-            pdf.text(`<?php echo ucfirst(get_phrase('tardies')); ?>: ${tardanzasCount} (${tardanzasPercent}%)`, 10, textYPosition + 40);
-            pdf.text(`<?php echo ucfirst(get_phrase('justified_absences')); ?>: ${justificadosCount} (${justificadosPercent}%)`, 10, textYPosition + 50);
-
-            // Guardar el PDF
-            pdf.save("<?php echo ucfirst(get_phrase('class_attendance')); ?> <?php echo $section_name; ?> - <?php echo ucfirst(get_phrase('quantity_graph')); ?> - <?php echo $current_date_formatted; ?>.pdf");
-                    });
-                } else {
-                    console.error('El contenedor del gráfico no se encontró.');
-                }
-            }, 500); // 500ms para garantizar que el gráfico esté listo
+        document.getElementById('downloadJpeg2').addEventListener('click', function() {
+            downloadChart('jpeg', 'chartContainer2', 'viewType2', '2');
         });
 
 
 
 
-        document.getElementById('downloadPng2').addEventListener('click', function () {
-            setTimeout(() => {
-                const chartContainer = document.getElementById('chartContainer2');
-                        const viewType = document.getElementById('viewType2').value;
-
-                        let viewTypeText = "";
-                        let viewTypeDetails = "";
-
-                        if (viewType === 'daily') {
-                            viewTypeText = '<?php echo ucfirst(get_phrase('daily'));?>';
-                            let dailyDate = document.getElementById('daily2').value; 
-                            let dateParts = dailyDate.split('-'); 
-                            let formattedDate = `${dateParts[2]}/${dateParts[1]}/${dateParts[0]}`; 
-                            viewTypeDetails = formattedDate;
-                        } else if (viewType === 'weekly') {
-                            viewTypeText = '<?php echo ucfirst(get_phrase('weekly'));?>';  
-                            const startDate = document.getElementById('startDate2').value;
-                            const endDate = document.getElementById('endDate2').value;
-                            
-                            let startDateParts = startDate.split('-'); 
-                            let formattedStartDate = `${startDateParts[2]}/${startDateParts[1]}/${startDateParts[0]}`;
-                            
-                            let endDateParts = endDate.split('-'); 
-                            let formattedEndDate = `${endDateParts[2]}/${endDateParts[1]}/${endDateParts[0]}`; 
-                            
-                            viewTypeDetails = `<?php echo ucfirst(get_phrase('from')); ?> ${formattedStartDate} <?php echo get_phrase('to'); ?> ${formattedEndDate}`;  
-                        } else if (viewType === 'monthly') {
-                            viewTypeText = '<?php echo ucfirst(get_phrase('monthly'));?>'; 
-                            const month = document.getElementById('monthly2').value;
-
-                            switch (month) {
-                                case 'January':
-                                    translatedMonth = '<?php echo ucfirst(get_phrase("january")); ?>';
-                                    break;
-                                case 'February':
-                                    translatedMonth = '<?php echo ucfirst(get_phrase("february")); ?>';
-                                    break;
-                                case 'March':
-                                    translatedMonth = '<?php echo ucfirst(get_phrase("march")); ?>';
-                                    break;
-                                case 'April':
-                                    translatedMonth = '<?php echo ucfirst(get_phrase("april")); ?>';
-                                    break;
-                                case 'May':
-                                    translatedMonth = '<?php echo ucfirst(get_phrase("may")); ?>';
-                                    break;
-                                case 'June':
-                                    translatedMonth = '<?php echo ucfirst(get_phrase("june")); ?>';
-                                    break;
-                                case 'July':
-                                    translatedMonth = '<?php echo ucfirst(get_phrase("july")); ?>';
-                                    break;
-                                case 'August':
-                                    translatedMonth = '<?php echo ucfirst(get_phrase("august")); ?>';
-                                    break;
-                                case 'September':
-                                    translatedMonth = '<?php echo ucfirst(get_phrase("september")); ?>';
-                                    break;
-                                case 'October':
-                                    translatedMonth = '<?php echo ucfirst(get_phrase("october")); ?>';
-                                    break;
-                                case 'November':
-                                    translatedMonth = '<?php echo ucfirst(get_phrase("november")); ?>';
-                                    break;
-                                case 'December':
-                                    translatedMonth = '<?php echo ucfirst(get_phrase("december")); ?>';
-                                    break;
-                            }
-
-                            viewTypeDetails = `${translatedMonth}`;  // Solo 'from' porque se selecciona un mes
-                        } else if (viewType === 'yearly') {
-                            viewTypeText = '<?php echo ucfirst(get_phrase('yearly'));?>';  // Usar traducción para 'yearly'
-                            const startMonth = document.getElementById('startDateYearly2').value;
-                            const endMonth = document.getElementById('endDateYearly2').value;
-
-                            switch (startMonth) {
-                                case 'January':
-                                    translatedStartDate = '<?php echo ucfirst(get_phrase("january")); ?>';
-                                    break;
-                                case 'February':
-                                    translatedStartDate = '<?php echo ucfirst(get_phrase("february")); ?>';
-                                    break;
-                                case 'March':
-                                    translatedStartDate = '<?php echo ucfirst(get_phrase("march")); ?>';
-                                    break;
-                                case 'April':
-                                    translatedStartDate = '<?php echo ucfirst(get_phrase("april")); ?>';
-                                    break;
-                                case 'May':
-                                    translatedStartDate = '<?php echo ucfirst(get_phrase("may")); ?>';
-                                    break;
-                                case 'June':
-                                    translatedStartDate = '<?php echo ucfirst(get_phrase("june")); ?>';
-                                    break;
-                                case 'July':
-                                    translatedStartDate = '<?php echo ucfirst(get_phrase("july")); ?>';
-                                    break;
-                                case 'August':
-                                    translatedStartDate = '<?php echo ucfirst(get_phrase("august")); ?>';
-                                    break;
-                                case 'September':
-                                    translatedStartDate = '<?php echo ucfirst(get_phrase("september")); ?>';
-                                    break;
-                                case 'October':
-                                    translatedStartDate = '<?php echo ucfirst(get_phrase("october")); ?>';
-                                    break;
-                                case 'November':
-                                    translatedStartDate = '<?php echo ucfirst(get_phrase("november")); ?>';
-                                    break;
-                                case 'December':
-                                    translatedStartDate = '<?php echo ucfirst(get_phrase("december")); ?>';
-                                    break;
-                            }
-
-                            switch (endMonth) {
-                                case 'January':
-                                    translatedEndMonth = '<?php echo ucfirst(get_phrase("january")); ?>';
-                                    break;
-                                case 'February':
-                                    translatedEndMonth = '<?php echo ucfirst(get_phrase("february")); ?>';
-                                    break;
-                                case 'March':
-                                    translatedEndMonth = '<?php echo ucfirst(get_phrase("march")); ?>';
-                                    break;
-                                case 'April':
-                                    translatedEndMonth = '<?php echo ucfirst(get_phrase("april")); ?>';
-                                    break;
-                                case 'May':
-                                    translatedEndMonth = '<?php echo ucfirst(get_phrase("may")); ?>';
-                                    break;
-                                case 'June':
-                                    translatedEndMonth = '<?php echo ucfirst(get_phrase("june")); ?>';
-                                    break;
-                                case 'July':
-                                    translatedEndMonth = '<?php echo ucfirst(get_phrase("july")); ?>';
-                                    break;
-                                case 'August':
-                                    translatedEndMonth = '<?php echo ucfirst(get_phrase("august")); ?>';
-                                    break;
-                                case 'September':
-                                    translatedEndMonth = '<?php echo ucfirst(get_phrase("september")); ?>';
-                                    break;
-                                case 'October':
-                                    translatedEndMonth = '<?php echo ucfirst(get_phrase("october")); ?>';
-                                    break;
-                                case 'November':
-                                    translatedEndMonth = '<?php echo ucfirst(get_phrase("november")); ?>';
-                                    break;
-                                case 'December':
-                                    translatedEndMonth = '<?php echo ucfirst(get_phrase("december")); ?>';
-                                    break;
-                            }
-
-                            viewTypeDetails = `<?php echo ucfirst(get_phrase('from')); ?> ${translatedStarMonth} <?php echo get_phrase('to'); ?> ${translatedEndMonth}`;  // Usar las palabras "from" y "to" traducidas
-                        }
-
-                        // Obtener los valores de los spans
-                        const presentesCount = parseInt(document.getElementById('presentes-count2').textContent, 10);
-                        const ausentesCount = parseInt(document.getElementById('ausentes-count2').textContent, 10);
-                        const tardanzasCount = parseInt(document.getElementById('tardanzas-count2').textContent, 10);
-                        const justificadosCount = parseInt(document.getElementById('justificados-count2').textContent, 10);
-
-                        const totalCount = presentesCount + ausentesCount + tardanzasCount + justificadosCount;
-
-                        // Calcular los porcentajes
-                        const presentesPercent = ((presentesCount / totalCount) * 100).toFixed(2);
-                        const ausentesPercent = ((ausentesCount / totalCount) * 100).toFixed(2);
-                        const tardanzasPercent = ((tardanzasCount / totalCount) * 100).toFixed(2);
-                        const justificadosPercent = ((justificadosCount / totalCount) * 100).toFixed(2);
-
-                if (chartContainer) {
-                    html2canvas(chartContainer).then(canvas => {
-                        const imgData = canvas.toDataURL('image/png');
-                        
-                        const textCanvas = document.createElement('canvas');
-                        const ctx = textCanvas.getContext('2d');
-                        textCanvas.width = canvas.width;
-                        textCanvas.height = canvas.height + 0;// Más espacio para texto (ajusta según sea necesario)
-                        ctx.drawImage(canvas, 0, 0);
-
-                        ctx.font = "16px Helvetica";
-                        ctx.fillText("<?php echo ucfirst(get_phrase('class_attendance')); ?> <?php echo $section_name; ?> - <?php echo ucfirst(get_phrase('quantity_graph')); ?>", 10, 20);
-                        ctx.font = "12px Helvetica";
-                        ctx.fillText(`<?php echo ucfirst(get_phrase('view_type')); ?>: ${viewTypeText}`, 10, 40);
-                        ctx.fillText(`<?php echo ucfirst(get_phrase('details')); ?>: ${viewTypeDetails}`,10, 60);
-                        ctx.fillText(`<?php echo ucfirst(get_phrase('students_present')); ?>: ${presentesCount} (${presentesPercent}%)`, 10, 80);
-                        ctx.fillText(`<?php echo ucfirst(get_phrase('absences')); ?>: ${ausentesCount} (${ausentesPercent}%)`, 10, 100);
-                        ctx.fillText(`<?php echo ucfirst(get_phrase('tardies')); ?>: ${tardanzasCount} (${tardanzasPercent}%)`, 10, 120);
-                        ctx.fillText(`<?php echo ucfirst(get_phrase('justified_absences')); ?>: ${justificadosCount} (${justificadosPercent}%)`, 10, 140);
-
-                        const finalImgData = textCanvas.toDataURL('image/png');
-                        const link = document.createElement('a');
-                        link.href = finalImgData;
-                        link.download = "<?php echo ucfirst(get_phrase('class_attendance')); ?> <?php echo $section_name; ?> - <?php echo ucfirst(get_phrase('quantity_graph')); ?> - <?php echo $current_date_formatted; ?>.png";
-                        link.click();
-                    });
-                }
-            }, 500);
-        });
-
-        document.getElementById('downloadJpeg2').addEventListener('click', function () {
-            setTimeout(() => {
-                const chartContainer = document.getElementById('chartContainer2');
-                        const viewType = document.getElementById('viewType2').value;
-
-                        let viewTypeText = "";
-                        let viewTypeDetails = "";
-
-                        if (viewType === 'daily') {
-                            viewTypeText = '<?php echo ucfirst(get_phrase('daily'));?>';
-                            let dailyDate = document.getElementById('daily2').value; 
-                            let dateParts = dailyDate.split('-'); 
-                            let formattedDate = `${dateParts[2]}/${dateParts[1]}/${dateParts[0]}`; 
-                            viewTypeDetails = formattedDate;
-                        } else if (viewType === 'weekly') {
-                            viewTypeText = '<?php echo ucfirst(get_phrase('weekly'));?>';  
-                            const startDate = document.getElementById('startDate2').value;
-                            const endDate = document.getElementById('endDate2').value;
-                            
-                            let startDateParts = startDate.split('-'); 
-                            let formattedStartDate = `${startDateParts[2]}/${startDateParts[1]}/${startDateParts[0]}`;
-                            
-                            let endDateParts = endDate.split('-'); 
-                            let formattedEndDate = `${endDateParts[2]}/${endDateParts[1]}/${endDateParts[0]}`; 
-                            
-                            viewTypeDetails = `<?php echo ucfirst(get_phrase('from')); ?> ${formattedStartDate} <?php echo get_phrase('to'); ?> ${formattedEndDate}`;  
-                        } else if (viewType === 'monthly') {
-                            viewTypeText = '<?php echo ucfirst(get_phrase('monthly'));?>'; 
-                            const month = document.getElementById('monthly2').value;
-
-                            switch (month) {
-                                case 'January':
-                                    translatedMonth = '<?php echo ucfirst(get_phrase("january")); ?>';
-                                    break;
-                                case 'February':
-                                    translatedMonth = '<?php echo ucfirst(get_phrase("february")); ?>';
-                                    break;
-                                case 'March':
-                                    translatedMonth = '<?php echo ucfirst(get_phrase("march")); ?>';
-                                    break;
-                                case 'April':
-                                    translatedMonth = '<?php echo ucfirst(get_phrase("april")); ?>';
-                                    break;
-                                case 'May':
-                                    translatedMonth = '<?php echo ucfirst(get_phrase("may")); ?>';
-                                    break;
-                                case 'June':
-                                    translatedMonth = '<?php echo ucfirst(get_phrase("june")); ?>';
-                                    break;
-                                case 'July':
-                                    translatedMonth = '<?php echo ucfirst(get_phrase("july")); ?>';
-                                    break;
-                                case 'August':
-                                    translatedMonth = '<?php echo ucfirst(get_phrase("august")); ?>';
-                                    break;
-                                case 'September':
-                                    translatedMonth = '<?php echo ucfirst(get_phrase("september")); ?>';
-                                    break;
-                                case 'October':
-                                    translatedMonth = '<?php echo ucfirst(get_phrase("october")); ?>';
-                                    break;
-                                case 'November':
-                                    translatedMonth = '<?php echo ucfirst(get_phrase("november")); ?>';
-                                    break;
-                                case 'December':
-                                    translatedMonth = '<?php echo ucfirst(get_phrase("december")); ?>';
-                                    break;
-                            }
-
-                            viewTypeDetails = `${translatedMonth}`;  // Solo 'from' porque se selecciona un mes
-                        } else if (viewType === 'yearly') {
-                            viewTypeText = '<?php echo ucfirst(get_phrase('yearly'));?>';  // Usar traducción para 'yearly'
-                            const startMonth = document.getElementById('startDateYearly2').value;
-                            const endMonth = document.getElementById('endDateYearly2').value;
-
-                            switch (startMonth) {
-                                case 'January':
-                                    translatedStartDate = '<?php echo ucfirst(get_phrase("january")); ?>';
-                                    break;
-                                case 'February':
-                                    translatedStartDate = '<?php echo ucfirst(get_phrase("february")); ?>';
-                                    break;
-                                case 'March':
-                                    translatedStartDate = '<?php echo ucfirst(get_phrase("march")); ?>';
-                                    break;
-                                case 'April':
-                                    translatedStartDate = '<?php echo ucfirst(get_phrase("april")); ?>';
-                                    break;
-                                case 'May':
-                                    translatedStartDate = '<?php echo ucfirst(get_phrase("may")); ?>';
-                                    break;
-                                case 'June':
-                                    translatedStartDate = '<?php echo ucfirst(get_phrase("june")); ?>';
-                                    break;
-                                case 'July':
-                                    translatedStartDate = '<?php echo ucfirst(get_phrase("july")); ?>';
-                                    break;
-                                case 'August':
-                                    translatedStartDate = '<?php echo ucfirst(get_phrase("august")); ?>';
-                                    break;
-                                case 'September':
-                                    translatedStartDate = '<?php echo ucfirst(get_phrase("september")); ?>';
-                                    break;
-                                case 'October':
-                                    translatedStartDate = '<?php echo ucfirst(get_phrase("october")); ?>';
-                                    break;
-                                case 'November':
-                                    translatedStartDate = '<?php echo ucfirst(get_phrase("november")); ?>';
-                                    break;
-                                case 'December':
-                                    translatedStartDate = '<?php echo ucfirst(get_phrase("december")); ?>';
-                                    break;
-                            }
-
-                            switch (endMonth) {
-                                case 'January':
-                                    translatedEndMonth = '<?php echo ucfirst(get_phrase("january")); ?>';
-                                    break;
-                                case 'February':
-                                    translatedEndMonth = '<?php echo ucfirst(get_phrase("february")); ?>';
-                                    break;
-                                case 'March':
-                                    translatedEndMonth = '<?php echo ucfirst(get_phrase("march")); ?>';
-                                    break;
-                                case 'April':
-                                    translatedEndMonth = '<?php echo ucfirst(get_phrase("april")); ?>';
-                                    break;
-                                case 'May':
-                                    translatedEndMonth = '<?php echo ucfirst(get_phrase("may")); ?>';
-                                    break;
-                                case 'June':
-                                    translatedEndMonth = '<?php echo ucfirst(get_phrase("june")); ?>';
-                                    break;
-                                case 'July':
-                                    translatedEndMonth = '<?php echo ucfirst(get_phrase("july")); ?>';
-                                    break;
-                                case 'August':
-                                    translatedEndMonth = '<?php echo ucfirst(get_phrase("august")); ?>';
-                                    break;
-                                case 'September':
-                                    translatedEndMonth = '<?php echo ucfirst(get_phrase("september")); ?>';
-                                    break;
-                                case 'October':
-                                    translatedEndMonth = '<?php echo ucfirst(get_phrase("october")); ?>';
-                                    break;
-                                case 'November':
-                                    translatedEndMonth = '<?php echo ucfirst(get_phrase("november")); ?>';
-                                    break;
-                                case 'December':
-                                    translatedEndMonth = '<?php echo ucfirst(get_phrase("december")); ?>';
-                                    break;
-                            }
-
-                            viewTypeDetails = `<?php echo ucfirst(get_phrase('from')); ?> ${translatedStarMonth} <?php echo get_phrase('to'); ?> ${translatedEndMonth}`;  // Usar las palabras "from" y "to" traducidas
-                        }
-
-                        // Obtener los valores de los spans
-                        const presentesCount = parseInt(document.getElementById('presentes-count2').textContent, 10);
-                        const ausentesCount = parseInt(document.getElementById('ausentes-count2').textContent, 10);
-                        const tardanzasCount = parseInt(document.getElementById('tardanzas-count2').textContent, 10);
-                        const justificadosCount = parseInt(document.getElementById('justificados-count2').textContent, 10);
-
-                        const totalCount = presentesCount + ausentesCount + tardanzasCount + justificadosCount;
-
-                        // Calcular los porcentajes
-                        const presentesPercent = ((presentesCount / totalCount) * 100).toFixed(2);
-                        const ausentesPercent = ((ausentesCount / totalCount) * 100).toFixed(2);
-                        const tardanzasPercent = ((tardanzasCount / totalCount) * 100).toFixed(2);
-                        const justificadosPercent = ((justificadosCount / totalCount) * 100).toFixed(2);
-
-                if (chartContainer) {
-                    html2canvas(chartContainer).then(canvas => {
-                        const imgData = canvas.toDataURL('image/jpeg');
-                        
-                        const textCanvas = document.createElement('canvas');
-                        const ctx = textCanvas.getContext('2d');
-                        textCanvas.width = canvas.width;
-                        textCanvas.height = canvas.height + 0; // Más espacio para texto (ajusta según sea necesario)
-                        ctx.drawImage(canvas, 0, 0);
-
-                        ctx.font = "16px Helvetica";
-                        ctx.fillText("<?php echo ucfirst(get_phrase('class_attendance')); ?> <?php echo $section_name; ?> - <?php echo ucfirst(get_phrase('quantity_graph')); ?>", 10, 20);
-                        ctx.font = "12px Helvetica";
-                        ctx.fillText(`<?php echo ucfirst(get_phrase('view_type')); ?>: ${viewTypeText}`, 10, 40);
-                        ctx.fillText(`<?php echo ucfirst(get_phrase('details')); ?>: ${viewTypeDetails}`,10, 60);
-                        ctx.fillText(`<?php echo ucfirst(get_phrase('students_present')); ?>: ${presentesCount} (${presentesPercent}%)`, 10, 80);
-                        ctx.fillText(`<?php echo ucfirst(get_phrase('absences')); ?>: ${ausentesCount} (${ausentesPercent}%)`, 10, 100);
-                        ctx.fillText(`<?php echo ucfirst(get_phrase('tardies')); ?>: ${tardanzasCount} (${tardanzasPercent}%)`, 10, 120);
-                        ctx.fillText(`<?php echo ucfirst(get_phrase('justified_absences')); ?>: ${justificadosCount} (${justificadosPercent}%)`, 10, 140);
-
-                        const finalImgData = textCanvas.toDataURL('image/jpeg');
-                        const link = document.createElement('a');
-                        link.href = finalImgData;
-                        link.download = "<?php echo ucfirst(get_phrase('class_attendance')); ?> <?php echo $section_name; ?> - <?php echo ucfirst(get_phrase('quantity_graph')); ?> - <?php echo $current_date_formatted; ?>.jpeg";
-                        link.click();
-                    });
-                }
-            }, 500);
-        });
-
-
-
-
-        $('#viewType').on('change', function () {
+        $('#viewType').on('change', function() {
             const selected = $(this).val();
             $('.dailyView, .weeklyView, .monthlyView, .yearlyView').hide(); // Ocultar todas las vistas
 
@@ -2016,7 +964,7 @@ $titleES = 'Reporte de Estudiantes - ' . $section_name . ' - ' . date('d-m-Y');
         // Mostrar la vista diaria por defecto
         $('#viewType').trigger('change');
 
-        $('#viewType2').on('change', function () {
+        $('#viewType2').on('change', function() {
             const selected = $(this).val();
             $('.dailyView2, .weeklyView2, .monthlyView2, .yearlyView2').hide(); // Ocultar todas las vistas
 
@@ -2046,7 +994,7 @@ $titleES = 'Reporte de Estudiantes - ' . $section_name . ' - ' . date('d-m-Y');
         $('#viewType2').trigger('change');
 
 
-        $('#applyFilters').on('click', function () {
+        $('#applyFilters').on('click', function() {
             console.log("Click en apply filters");
             const section_id = <?php echo $section_id; ?>;
             const filter_type = $('#viewType').val();
@@ -2099,7 +1047,7 @@ $titleES = 'Reporte de Estudiantes - ' . $section_name . ' - ' . date('d-m-Y');
                 url: url,
                 method: 'GET',
                 dataType: 'json', // Especificar que esperamos datos JSON
-                success: function (response) {
+                success: function(response) {
                     console.log(response); // Mostrar los datos recibidos en la consola para depuración
 
                     // Asignar valores predeterminados en caso de que los datos estén vacíos o nulos
@@ -2124,18 +1072,35 @@ $titleES = 'Reporte de Estudiantes - ' . $section_name . ' - ' . date('d-m-Y');
                     // Crear el gráfico Morris Donut con los datos recibidos
                     Morris.Donut({
                         element: 'chartAttendance',
-                        data: [
-                            {value: attendance_presente, label: '<?php echo ucfirst(get_phrase('students_present'));?>', formatted: percentage_presente + '%' },
-                            {value: attendance_ausente, label: '<?php echo ucfirst(get_phrase('absences'));?>', formatted: percentage_ausente + '%' },
-                            {value: attendance_tardanza, label: '<?php echo ucfirst(get_phrase('tardies'));?>', formatted: percentage_tardanza + '%' },
-                            {value: attendance_ausencia_justificada, label: '<?php echo ucfirst(get_phrase('justified_absences'));?>', formatted: percentage_justificados + '%' }
+                        data: [{
+                                value: attendance_presente,
+                                label: '<?php echo ucfirst(get_phrase('students_present')); ?>',
+                                formatted: percentage_presente + '%'
+                            },
+                            {
+                                value: attendance_ausente,
+                                label: '<?php echo ucfirst(get_phrase('absences')); ?>',
+                                formatted: percentage_ausente + '%'
+                            },
+                            {
+                                value: attendance_tardanza,
+                                label: '<?php echo ucfirst(get_phrase('tardies')); ?>',
+                                formatted: percentage_tardanza + '%'
+                            },
+                            {
+                                value: attendance_ausencia_justificada,
+                                label: '<?php echo ucfirst(get_phrase('justified_absences')); ?>',
+                                formatted: percentage_justificados + '%'
+                            }
                         ],
-                        formatter: function (x, data) { return data.formatted; },
+                        formatter: function(x, data) {
+                            return data.formatted;
+                        },
                         labelColor: 'black',
                         colors: ['#55FFA8', '#FF6C6C', '#FFBB5A', '#52BBFF']
                     });
                 },
-                error: function (xhr, status, error) {
+                error: function(xhr, status, error) {
                     console.error('Error al cargar datos:', error);
                 }
             });
@@ -2143,7 +1108,7 @@ $titleES = 'Reporte de Estudiantes - ' . $section_name . ' - ' . date('d-m-Y');
         });
 
 
-        $('#applyFilters2').on('click', function () {
+        $('#applyFilters2').on('click', function() {
             console.log("Click en apply filters 2");
             const section_id = <?php echo $section_id; ?>;
             const filter_type = $('#viewType2').val();
@@ -2202,12 +1167,22 @@ $titleES = 'Reporte de Estudiantes - ' . $section_name . ' - ' . date('d-m-Y');
                         url: url,
                         method: 'GET',
                         dataType: 'json',
-                        success: function (response) {
+                        success: function(response) {
                             console.log(response);
-                            resolve(response || { attendance_student_presente: 0, attendance_student_ausente: 0, attendance_student_tardanza: 0, attendance_student_ausencia_justificada: 0 });
+                            resolve(response || {
+                                attendance_student_presente: 0,
+                                attendance_student_ausente: 0,
+                                attendance_student_tardanza: 0,
+                                attendance_student_ausencia_justificada: 0
+                            });
                         },
-                        error: function (xhr, status, error) {
-                            resolve({ attendance_student_presente: 0, attendance_student_ausente: 0, attendance_student_tardanza: 0, attendance_student_ausencia_justificada: 0 });
+                        error: function(xhr, status, error) {
+                            resolve({
+                                attendance_student_presente: 0,
+                                attendance_student_ausente: 0,
+                                attendance_student_tardanza: 0,
+                                attendance_student_ausencia_justificada: 0
+                            });
                         }
                     });
                 });
@@ -2223,7 +1198,7 @@ $titleES = 'Reporte de Estudiantes - ' . $section_name . ' - ' . date('d-m-Y');
 
                     // Consultar datos solo una vez por día para todos los tipos de asistencia
                     const response = await fetchAttendanceByType('daily', formattedDate, 'null', 'null');
-                    
+
                     chartData.push({
                         x: formattedDate,
                         y: parseInt(response.attendance_student_presente) || 0,
@@ -2271,7 +1246,7 @@ $titleES = 'Reporte de Estudiantes - ' . $section_name . ' - ' . date('d-m-Y');
                         data: chartData,
                         xkey: 'x',
                         ykeys: ['y', 'z', 'a', 'e'],
-                        labels: ['<?php echo ucfirst(get_phrase('present'));?>', '<?php echo ucfirst(get_phrase('absent'));?>', '<?php echo ucfirst(get_phrase('tardy'));?>', '<?php echo ucfirst(get_phrase('justified_absence'));?>'],
+                        labels: ['<?php echo ucfirst(get_phrase('present')); ?>', '<?php echo ucfirst(get_phrase('absent')); ?>', '<?php echo ucfirst(get_phrase('tardy')); ?>', '<?php echo ucfirst(get_phrase('justified_absence')); ?>'],
                         barColors: ['#55FFA8', '#FF6C6C', '#FFBB5A', '#52BBFF']
                     });
                 });
@@ -2290,7 +1265,7 @@ $titleES = 'Reporte de Estudiantes - ' . $section_name . ' - ' . date('d-m-Y');
                     url: `${urlBase}/daily/${date}/null/null`, // Consulta para el filtro diario
                     method: 'GET',
                     dataType: 'json',
-                    success: function (response) {
+                    success: function(response) {
                         console.log("Datos recibidos:", response);
 
                         // Actualizar los valores de dailyData con la respuesta obtenida
@@ -2311,13 +1286,13 @@ $titleES = 'Reporte de Estudiantes - ' . $section_name . ' - ' . date('d-m-Y');
                             data: [dailyData], // Aquí pasamos los datos directamente
                             xkey: 'x',
                             ykeys: ['y', 'z', 'a', 'e'],
-                            labels: ['<?php echo ucfirst(get_phrase('present'));?>', '<?php echo ucfirst(get_phrase('absent'));?>', '<?php echo ucfirst(get_phrase('tardy'));?>', '<?php echo ucfirst(get_phrase('justified_absence'));?>'],
+                            labels: ['<?php echo ucfirst(get_phrase('present')); ?>', '<?php echo ucfirst(get_phrase('absent')); ?>', '<?php echo ucfirst(get_phrase('tardy')); ?>', '<?php echo ucfirst(get_phrase('justified_absence')); ?>'],
                             barColors: ['#55FFA8', '#FF6C6C', '#FFBB5A', '#52BBFF']
                         });
 
                         console.log("Gráfico actualizado con los datos diarios:", dailyData);
                     },
-                    error: function (xhr, status, error) {
+                    error: function(xhr, status, error) {
                         console.error("Error al obtener los datos:", error);
 
                         // En caso de error, mostrar valores predeterminados
@@ -2327,7 +1302,7 @@ $titleES = 'Reporte de Estudiantes - ' . $section_name . ' - ' . date('d-m-Y');
                             data: [dailyData], // Pasamos los datos predeterminados en caso de error
                             xkey: 'x',
                             ykeys: ['y', 'z', 'a', 'e'],
-                            labels: ['<?php echo ucfirst(get_phrase('present'));?>', '<?php echo ucfirst(get_phrase('absent'));?>', '<?php echo ucfirst(get_phrase('tardy'));?>', '<?php echo ucfirst(get_phrase('justified_absence'));?>'],
+                            labels: ['<?php echo ucfirst(get_phrase('present')); ?>', '<?php echo ucfirst(get_phrase('absent')); ?>', '<?php echo ucfirst(get_phrase('tardy')); ?>', '<?php echo ucfirst(get_phrase('justified_absence')); ?>'],
                             barColors: ['#55FFA8', '#FF6C6C', '#FFBB5A', '#52BBFF']
                         });
                     }
@@ -2347,7 +1322,7 @@ $titleES = 'Reporte de Estudiantes - ' . $section_name . ' - ' . date('d-m-Y');
                     url: `${urlBase}/monthly/null/null/null/${dateMoth}`, // Consulta para el filtro diario
                     method: 'GET',
                     dataType: 'json',
-                    success: function (response) {
+                    success: function(response) {
                         console.log("Datos recibidos:", response);
 
                         // Actualizar los valores de dailyData con la respuesta obtenida
@@ -2368,13 +1343,13 @@ $titleES = 'Reporte de Estudiantes - ' . $section_name . ' - ' . date('d-m-Y');
                             data: [monthlyData], // Aquí pasamos los datos directamente
                             xkey: 'x',
                             ykeys: ['y', 'z', 'a', 'e'],
-                            labels: ['<?php echo ucfirst(get_phrase('present'));?>', '<?php echo ucfirst(get_phrase('absent'));?>', '<?php echo ucfirst(get_phrase('tardy'));?>', '<?php echo ucfirst(get_phrase('justified_absence'));?>'],
+                            labels: ['<?php echo ucfirst(get_phrase('present')); ?>', '<?php echo ucfirst(get_phrase('absent')); ?>', '<?php echo ucfirst(get_phrase('tardy')); ?>', '<?php echo ucfirst(get_phrase('justified_absence')); ?>'],
                             barColors: ['#55FFA8', '#FF6C6C', '#FFBB5A', '#52BBFF']
                         });
 
                         console.log("Gráfico actualizado con los datos diarios:", monthlyData);
                     },
-                    error: function (xhr, status, error) {
+                    error: function(xhr, status, error) {
                         console.error("Error al obtener los datos:", error);
 
                         // En caso de error, mostrar valores predeterminados
@@ -2384,95 +1359,16 @@ $titleES = 'Reporte de Estudiantes - ' . $section_name . ' - ' . date('d-m-Y');
                             data: [monthlyData], // Pasamos los datos predeterminados en caso de error
                             xkey: 'x',
                             ykeys: ['y', 'z', 'a', 'e'],
-                            labels: ['<?php echo ucfirst(get_phrase('present'));?>', '<?php echo ucfirst(get_phrase('absent'));?>', '<?php echo ucfirst(get_phrase('tardy'));?>', '<?php echo ucfirst(get_phrase('justified_absence'));?>'],
+                            labels: ['<?php echo ucfirst(get_phrase('present')); ?>', '<?php echo ucfirst(get_phrase('absent')); ?>', '<?php echo ucfirst(get_phrase('tardy')); ?>', '<?php echo ucfirst(get_phrase('justified_absence')); ?>'],
                             barColors: ['#55FFA8', '#FF6C6C', '#FFBB5A', '#52BBFF']
                         });
                     }
                 });
-            } 
+            }
             if (filter_type === 'yearly') {
-                
 
-                let translatedStartDate = '';
-                let translatedEndDate = '';
-
-                switch (start_date_yearly) {
-                    case 'January':
-                        translatedStartDate = '<?php echo ucfirst(get_phrase("january")); ?>';
-                        break;
-                    case 'February':
-                        translatedStartDate = '<?php echo ucfirst(get_phrase("february")); ?>';
-                        break;
-                    case 'March':
-                        translatedStartDate = '<?php echo ucfirst(get_phrase("march")); ?>';
-                        break;
-                    case 'April':
-                        translatedStartDate = '<?php echo ucfirst(get_phrase("april")); ?>';
-                        break;
-                    case 'May':
-                        translatedStartDate = '<?php echo ucfirst(get_phrase("may")); ?>';
-                        break;
-                    case 'June':
-                        translatedStartDate = '<?php echo ucfirst(get_phrase("june")); ?>';
-                        break;
-                    case 'July':
-                        translatedStartDate = '<?php echo ucfirst(get_phrase("july")); ?>';
-                        break;
-                    case 'August':
-                        translatedStartDate = '<?php echo ucfirst(get_phrase("august")); ?>';
-                        break;
-                    case 'September':
-                        translatedStartDate = '<?php echo ucfirst(get_phrase("september")); ?>';
-                        break;
-                    case 'October':
-                        translatedStartDate = '<?php echo ucfirst(get_phrase("october")); ?>';
-                        break;
-                    case 'November':
-                        translatedStartDate = '<?php echo ucfirst(get_phrase("november")); ?>';
-                        break;
-                    case 'December':
-                        translatedStartDate = '<?php echo ucfirst(get_phrase("december")); ?>';
-                        break;
-                }
-
-                switch (end_date_yearly) {
-                    case 'January':
-                        translatedEndDate = '<?php echo ucfirst(get_phrase("january")); ?>';
-                        break;
-                    case 'February':
-                        translatedEndDate = '<?php echo ucfirst(get_phrase("february")); ?>';
-                        break;
-                    case 'March':
-                        translatedEndDate = '<?php echo ucfirst(get_phrase("march")); ?>';
-                        break;
-                    case 'April':
-                        translatedEndDate = '<?php echo ucfirst(get_phrase("april")); ?>';
-                        break;
-                    case 'May':
-                        translatedEndDate = '<?php echo ucfirst(get_phrase("may")); ?>';
-                        break;
-                    case 'June':
-                        translatedEndDate = '<?php echo ucfirst(get_phrase("june")); ?>';
-                        break;
-                    case 'July':
-                        translatedEndDate = '<?php echo ucfirst(get_phrase("july")); ?>';
-                        break;
-                    case 'August':
-                        translatedEndDate = '<?php echo ucfirst(get_phrase("august")); ?>';
-                        break;
-                    case 'September':
-                        translatedEndDate = '<?php echo ucfirst(get_phrase("september")); ?>';
-                        break;
-                    case 'October':
-                        translatedEndDate = '<?php echo ucfirst(get_phrase("october")); ?>';
-                        break;
-                    case 'November':
-                        translatedEndDate = '<?php echo ucfirst(get_phrase("november")); ?>';
-                        break;
-                    case 'December':
-                        translatedEndDate = '<?php echo ucfirst(get_phrase("december")); ?>';
-                        break;
-                }
+                let translatedStartDate = monthTranslations[start_date_yearly] || start_date_yearly;
+                let translatedEndDate = monthTranslations[end_date_yearly] || end_date_yearly;
 
                 const yearlyData = {
                     x: translatedStartDate + ' <?php echo get_phrase("to"); ?> ' + translatedEndDate,
@@ -2486,7 +1382,7 @@ $titleES = 'Reporte de Estudiantes - ' . $section_name . ' - ' . date('d-m-Y');
                     url: `${urlBase}/yearly/null/null/null/null/${start_date_yearly}/${end_date_yearly}`, // Consulta para el filtro diario
                     method: 'GET',
                     dataType: 'json',
-                    success: function (response) {
+                    success: function(response) {
                         console.log("Datos recibidos:", response);
 
                         // Actualizar los valores de dailyData con la respuesta obtenida
@@ -2507,13 +1403,13 @@ $titleES = 'Reporte de Estudiantes - ' . $section_name . ' - ' . date('d-m-Y');
                             data: [yearlyData], // Aquí pasamos los datos directamente
                             xkey: 'x',
                             ykeys: ['y', 'z', 'a', 'e'],
-                            labels: ['<?php echo ucfirst(get_phrase('present'));?>', '<?php echo ucfirst(get_phrase('absent'));?>', '<?php echo ucfirst(get_phrase('tardy'));?>', '<?php echo ucfirst(get_phrase('justified_absence'));?>'],
+                            labels: ['<?php echo ucfirst(get_phrase('present')); ?>', '<?php echo ucfirst(get_phrase('absent')); ?>', '<?php echo ucfirst(get_phrase('tardy')); ?>', '<?php echo ucfirst(get_phrase('justified_absence')); ?>'],
                             barColors: ['#55FFA8', '#FF6C6C', '#FFBB5A', '#52BBFF']
                         });
 
                         console.log("Gráfico actualizado con los datos diarios:", yearlyData);
                     },
-                    error: function (xhr, status, error) {
+                    error: function(xhr, status, error) {
                         console.error("Error al obtener los datos:", error);
 
                         // En caso de error, mostrar valores predeterminados
@@ -2523,7 +1419,7 @@ $titleES = 'Reporte de Estudiantes - ' . $section_name . ' - ' . date('d-m-Y');
                             data: [yearlyData], // Pasamos los datos predeterminados en caso de error
                             xkey: 'x',
                             ykeys: ['y', 'z', 'a', 'e'],
-                            labels: ['<?php echo ucfirst(get_phrase('present'));?>', '<?php echo ucfirst(get_phrase('absent'));?>', '<?php echo ucfirst(get_phrase('tardy'));?>', '<?php echo ucfirst(get_phrase('justified_absence'));?>'],
+                            labels: ['<?php echo ucfirst(get_phrase('present')); ?>', '<?php echo ucfirst(get_phrase('absent')); ?>', '<?php echo ucfirst(get_phrase('tardy')); ?>', '<?php echo ucfirst(get_phrase('justified_absence')); ?>'],
                             barColors: ['#55FFA8', '#FF6C6C', '#FFBB5A', '#52BBFF']
                         });
                     }
@@ -2536,44 +1432,48 @@ $titleES = 'Reporte de Estudiantes - ' . $section_name . ' - ' . date('d-m-Y');
 
 
     });
-
-
-</script> 
+</script>
 
 
 <style>
     .button-container {
         display: flex;
-        justify-content: center; 
-        align-items: center;   
-        gap: 10px;            
-        margin: -5px 0px 20px 0px;            
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+        margin: -5px 0px 20px 0px;
     }
 
-    .customInput, .customSelect {
-        background-color: var(--color-forty) !important; 
-        color: var(--color-primary)  !important;
-        border: 2px solid var(--color-secondary) !important; 
-        padding: 0px !important; 
-        border-radius: 5px !important; 
-        transition: all 0.3s ease !important; ; 
+    .customInput,
+    .customSelect {
+        background-color: var(--color-forty) !important;
+        color: var(--color-primary) !important;
+        border: 2px solid var(--color-secondary) !important;
+        padding: 0px !important;
+        border-radius: 5px !important;
+        transition: all 0.3s ease !important;
+        ;
     }
 
-    .customInput:focus, .customSelect:focus {
-        background-color: var(--color-white) !important; 
-        border-color: var(--color-terciary) !important;  
-        outline: none !important; 
-    }   .customInput:hover, .customSelect:hover {
-        background-color: var(--color-white) !important; 
-        border-color: var(--color-terciary) !important;  
-        outline: none !important; 
+    .customInput:focus,
+    .customSelect:focus {
+        background-color: var(--color-white) !important;
+        border-color: var(--color-terciary) !important;
+        outline: none !important;
     }
 
-     .profile-container {
+    .customInput:hover,
+    .customSelect:hover {
+        background-color: var(--color-white) !important;
+        border-color: var(--color-terciary) !important;
+        outline: none !important;
+    }
+
+    .profile-container {
         display: flex;
         flex-wrap: wrap;
-        justify-content: center; 
-        gap: 20px; 
+        justify-content: center;
+        gap: 20px;
     }
 
     .profile-card {
@@ -2581,16 +1481,18 @@ $titleES = 'Reporte de Estudiantes - ' . $section_name . ' - ' . date('d-m-Y');
         border-radius: 10px;
         padding: 15px;
         text-align: center;
-        width: 200px; 
+        width: 200px;
         box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         transition: background-color 0.3s ease;
-    }  .profile-card:hover {
+    }
+
+    .profile-card:hover {
         background-color: #B0DFCC;
         transform: scale(1.05);
     }
 
     .profile-card-subject {
-        height: 160px; 
+        height: 160px;
 
     }
 
@@ -2598,10 +1500,12 @@ $titleES = 'Reporte de Estudiantes - ' . $section_name . ' - ' . date('d-m-Y');
         font-weight: 600;
         text-align: center;
         font-size: 16px;
-        margin: 0; /* Eliminar márgenes adicionales */
+        margin: 0;
+        /* Eliminar márgenes adicionales */
         overflow: hidden;
         text-overflow: ellipsis;
-        white-space: nowrap; /* Evita que el texto se desborde */
+        white-space: nowrap;
+        /* Evita que el texto se desborde */
     }
 
     .profile-card img {
@@ -2620,19 +1524,19 @@ $titleES = 'Reporte de Estudiantes - ' . $section_name . ' - ' . date('d-m-Y');
     }
 
     .status-dot.online {
-        background-color: #4CAF50; 
+        background-color: #4CAF50;
     }
 
     .status-dot.offline {
-        background-color: #F44336; 
+        background-color: #F44336;
     }
 
     .status-dot.away {
-        background-color: #FFC107; 
+        background-color: #FFC107;
     }
 
     .status-dot.busy {
-        background-color: #FF5722; 
+        background-color: #FF5722;
     }
 
     .card-body-guardian {
@@ -2646,20 +1550,22 @@ $titleES = 'Reporte de Estudiantes - ' . $section_name . ' - ' . date('d-m-Y');
         position: relative;
         border-radius: 15px;
     }
+
     .profile-header img.img-fluid {
         border-radius: 50%;
         margin-top: -77px;
         border: 7px solid white;
     }
+
     .profile-header .cover-photo {
         width: 100%;
         height: 180px;
         object-fit: cover;
-        object-position: 10% 30%; 
+        object-position: 10% 30%;
         border-radius: 15px;
-        
+
     }
-    
+
 
 
     .col-md-12 .tile-stats {
@@ -2684,25 +1590,30 @@ $titleES = 'Reporte de Estudiantes - ' . $section_name . ' - ' . date('d-m-Y');
 
     #all_student_table_filter {
         margin-top: 5px !important;
-        
-    }  #all_student_table_filter input {
+
+    }
+
+    #all_student_table_filter input {
         border: 1px solid #9A9A9A !important;
         border-radius: 10px !important;
     }
 
     .selectContent {
-		background-color: #B0DFCC !important;
-		border-radius: 5px;
-		font-weight: bold;
+        background-color: #B0DFCC !important;
+        border-radius: 5px;
+        font-weight: bold;
         margin-right: 0px;
         margin-left: 0px;
         color: #265044;
-    } .selectContent .labelSelect {
+    }
+
+    .selectContent .labelSelect {
         font-size: 20px;
         margin-top: 12px;
-    } .selectContent .selectElement {
+    }
+
+    .selectContent .selectElement {
         margin-top: 12px;
         background-color: #fff;
     }
-
-</style> 
+</style>

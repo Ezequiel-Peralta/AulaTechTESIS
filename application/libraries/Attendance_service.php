@@ -6,10 +6,6 @@ class Attendance_service extends CI_Model {
         $this->load->model('attendance/Attendance_model');
     }
 
-    
-
-   
-
     public function get_attendance_data_for_chart($section_id) {
         try {
             $student_ids = $this->Attendance_model->get_student_ids($section_id);

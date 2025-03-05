@@ -10,7 +10,7 @@ class Attendance extends CI_Controller
         $this->load->library('session');
         
         $this->load->model('attendance/attendance_model'); // Cargar el modelo de asistencia
-        $this->load->library('Attendance_service'); // Cargar la librería de servicio de asistencia 
+        $this->load->library('attendance_service'); // Cargar la librería de servicio de asistencia 
 
         date_default_timezone_set('America/Argentina/Buenos_Aires');
 		
@@ -64,7 +64,7 @@ class Attendance extends CI_Controller
                 ];
             }
 
-            $this->Attendance_service->update_attendance($section_id, $this->input->post('date'), $attendance_data);
+            $this->attendance_service->update_attendance($section_id, $this->input->post('date'), $attendance_data);
 
             $this->session->set_flashdata('flash_message', array(
                 'title' => 'Asistencia actualizada correctamente!',
