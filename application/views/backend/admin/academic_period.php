@@ -1,49 +1,39 @@
-<?php
-$this->db->select('id');
-$this->db->from('academic_period');
-$query = $this->db->get();
-$period_count = $query->num_rows();
-?>
 
 <div class="row">
-	<div class="col-md-12">
-    
-		<ul class="nav nav-tabs bordered">
-			<li class="active">
-            	<a href="#list" data-toggle="tab"><i class="entypo-menu"></i> 
+    <div class="col-md-12">
+        <ul class="nav nav-tabs bordered">
+            <li class="active">
+                <a href="#list" data-toggle="tab"><i class="entypo-menu"></i> 
                     <?php echo ucfirst(get_phrase('list')); ?>
                     <span class="badge badge-success badge-nav-tabs-quantity" style="">
                         <?php echo $period_count; ?>
                     </span>
                 </a>
             </li>
-		</ul>
+        </ul>
         
-		<div class="tab-content">
+        <div class="tab-content">
             <div class="tab-pane box active" id="list">
-            <br>
-            <div class="mt-2 mb-4">
-                <a href="javascript:;" onclick="confirm_academic_period_sweet_modal('<?php echo base_url();?>index.php?admin/academic_period_add');" class="btn btn-table btn-white btn-green-hover" title="<?php echo ucfirst(get_phrase('add')); ?>"><i class="fa fa-plus"></i></a>
-                <button type="button" onclick="reload_ajax()" class="btn btn-table btn-white btn-warning-hover" title="<?php echo ucfirst(get_phrase('reload')); ?>" style=""><i class="fa fa-refresh"></i></button>
-                <div class="pull-right tab-side-elements">
-                   
+                <br>
+                <div class="mt-2 mb-4">
+                    <a href="javascript:;" onclick="confirm_academic_period_sweet_modal('<?php echo base_url();?>index.php?admin/academic_period_add');" class="btn btn-table btn-white btn-green-hover" title="<?php echo ucfirst(get_phrase('add')); ?>"><i class="fa fa-plus"></i></a>
+                    <button type="button" onclick="reload_ajax()" class="btn btn-table btn-white btn-warning-hover" title="<?php echo ucfirst(get_phrase('reload')); ?>" style=""><i class="fa fa-refresh"></i></button>
+                    <div class="pull-right tab-side-elements">
+                    </div>
                 </div>
-            </div>
-            <br>
+                <br>
                 <table class="table table-bordered datatable table-hover table-striped" id="table_academic_period">
-                	<thead>
-                		<tr>
+                    <thead>
+                        <tr>
                             <th class="text-center"><?php echo ucfirst(get_phrase('period')); ?></th>
                             <th class="text-center"><?php echo ucfirst(get_phrase('date_start')); ?></th>
                             <th class="text-center"><?php echo ucfirst(get_phrase('date_end')); ?></th>
                             <th class="text-center"><?php echo ucfirst(get_phrase('status')); ?></th>
-                            <th class="text-center"  width="120"><?php echo ucfirst(get_phrase('action')); ?></th>
-                           
-						</tr>
-					</thead>
+                            <th class="text-center" width="120"><?php echo ucfirst(get_phrase('action')); ?></th>
+                        </tr>
+                    </thead>
                     <tbody>
-                    	<?php 
-                            $count = 1;
+                        <?php 
                             foreach($academic_period as $row):
 
                             if ($row['status_id'] == 1) {
@@ -53,38 +43,36 @@ $period_count = $query->num_rows();
                             }
                         ?>
                         <tr>
-							<td class="text-center"><?php echo $row['name'];?></td>
-							<td class="text-center">
+                            <td class="text-center"><?php echo $row['name'];?></td>
+                            <td class="text-center">
                                 <?php echo date('d/m/Y', strtotime($row['start_date']));?>
                             </td>
-							<td class="text-center">
+                            <td class="text-center">
                                 <?php echo date('d/m/Y', strtotime($row['end_date']));?>
                             </td>
                             <td class="text-center"><?php echo $status_label; ?></td>
                             <td class="text-center">
-                                <a  href="javascript:;" onclick="showAjaxModal('<?php echo base_url();?>index.php?modal/popup/modal_edit_academic_period/<?php echo $row['id'];?>');" class="btn btn-table btn-white btn-orange-hover" title="<?php echo ucfirst(get_phrase('edit')); ?>">
+                                <a href="javascript:;" onclick="showAjaxModal('<?php echo base_url();?>index.php?modal/popup/modal_edit_academic_period/<?php echo $row['id'];?>');" class="btn btn-table btn-white btn-orange-hover" title="<?php echo ucfirst(get_phrase('edit')); ?>">
                                     <i class="entypo-pencil"></i>
                                 </a>
                                 <?php if ($row['status_id'] == 1): ?>
-                                                                    <a href="javascript:;" onclick="confirm_disable_sweet_modal('<?php echo base_url();?>index.php?admin/academic_period/disable_academic_period/<?php echo $row['id'];?>/');" class="btn btn-table btn-white btn-danger-hover" title="<?php echo ucfirst(get_phrase('disable')); ?>">
-                                                                        <i class="entypo-block"></i>
-                                                                    </a>
-                                                                <?php elseif ($row['status_id'] == 0): ?>
-                                                                    <a href="javascript:;" onclick="confirm_enable_sweet_modal('<?php echo base_url();?>index.php?admin/academic_period/enable_academic_period/<?php echo $row['id'];?>');" class="btn btn-table btn-white btn-green-hover" title="<?php echo ucfirst(get_phrase('enable')); ?>">
-                                                                        <i class="fa fa-check-circle-o"></i>
-                                                                    </a>
-                                                                <?php endif; ?>
+                                    <a href="javascript:;" onclick="confirm_disable_sweet_modal('<?php echo base_url();?>index.php?admin/academic_period/disable_academic_period/<?php echo $row['id'];?>/');" class="btn btn-table btn-white btn-danger-hover" title="<?php echo ucfirst(get_phrase('disable')); ?>">
+                                        <i class="entypo-block"></i>
+                                    </a>
+                                <?php elseif ($row['status_id'] == 0): ?>
+                                    <a href="javascript:;" onclick="confirm_enable_sweet_modal('<?php echo base_url();?>index.php?admin/academic_period/enable_academic_period/<?php echo $row['id'];?>');" class="btn btn-table btn-white btn-green-hover" title="<?php echo ucfirst(get_phrase('enable')); ?>">
+                                        <i class="fa fa-check-circle-o"></i>
+                                    </a>
+                                <?php endif; ?>
                             </td>
-                           
                         </tr>
                         <?php endforeach;?>
                     </tbody>
                 </table>
-			</div>
-		</div>
-	</div>
-</di>
-
+            </div>
+        </div>
+    </div>
+</div>
 
 
 <script type="text/javascript">

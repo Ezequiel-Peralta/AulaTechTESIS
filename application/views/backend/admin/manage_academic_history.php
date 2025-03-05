@@ -1,15 +1,4 @@
 <?php
-// Primero, obtenemos las secciones que están activas y tienen un periodo académico activo
-$this->db->select('section.class_id'); // Seleccionamos el class_id de las secciones
-$this->db->from('section'); // Usamos la tabla section
-$this->db->join('academic_period', 'section.academic_period_id = academic_period.id'); // Unimos con la tabla academic_period
-$this->db->where('academic_period.status_id', 1); // Filtramos solo las secciones con periodo académico activo
-$active_sections = $this->db->get()->result_array(); // Obtenemos los resultados
-
-// Ahora, extraemos los class_id de las secciones activas
-$class_ids = array_column($active_sections, 'class_id'); // Extraemos los class_id
-
-$all_classes_count = count($active_sections);
 
 $filenameExcelAll = ucfirst(get_phrase('student_report')) . ' ' . date('d-m-Y') . '.xlsx';
 
@@ -23,24 +12,18 @@ $filenameExcelClass = ucfirst(get_phrase('student_report')) . ' ' . date('d-m-Y'
                 <a href="#home" data-toggle="tab">
                     <?php echo ucfirst(get_phrase('all')); ?>
                     <span class="badge badge-success badge-nav-tabs-quantity">
-                        <?php echo $all_classes_count; ?>
+                        <?php echo count($active_sections); ?>
                     </span>
                 </a>
             </li>
-            <?php foreach ($classes as $class): 
-                    $this->db->select('section.*'); 
-                    $this->db->from('section'); 
-                    $this->db->join('academic_period', 'section.academic_period_id = academic_period.id'); 
-                    $this->db->where('section.class_id', $class['class_id']); 
-                    $this->db->where('academic_period.status_id', 1); 
-                    $query = $this->db->get(); 
-                    $section_class_count = $query->num_rows(); 
-                ?>
+            <?php foreach ($classes as $class): ?>
             <li>
                 <a href="#class_<?php echo $class['class_id'];?>" data-toggle="tab">
                     <?php echo $class['name'];?>°
                     <span class="badge badge-success badge-nav-tabs-quantity">
-                        <?php echo $section_class_count; ?>
+                        <?php echo count(array_filter($active_sections, function($section) use ($class) {
+                            return $section['class_id'] == $class['class_id'];
+                        })); ?>
                     </span>
                 </a>
             </li>
@@ -61,44 +44,29 @@ $filenameExcelClass = ucfirst(get_phrase('student_report')) . ' ' . date('d-m-Y'
                             <th class="text-center" width="50"><?php echo ucfirst(get_phrase('section')); ?></th>
                             <th class="text-center"><?php echo ucfirst(get_phrase('shift')); ?></th>
                             <th class="text-center" width="120"><?php echo ucfirst(get_phrase('action')); ?></th>
-                          
                         </tr>
                     </thead>
                     <tbody>
-                        <?php 
-                            foreach ($classes as $class):
-                                $this->db->select('section.*'); 
-                                $this->db->from('section'); 
-                                $this->db->join('academic_period', 'section.academic_period_id = academic_period.id'); 
-                                $this->db->where('section.class_id', $class['class_id']); 
-                                $this->db->where('academic_period.status_id', 1); 
-                                $sections = $this->db->get()->result_array(); 
-
-                                foreach ($sections as $section):
-                            ?>
+                        <?php foreach ($active_sections as $section): ?>
                         <tr>
-                            <td class="text-center"><?php echo $class['name'];?>°</td>
+                            <td class="text-center"><?php echo $section['class_name'];?>°</td>
                             <td class="text-center"><?php echo $section['letter_name']; ?></td>
                             <td class="text-center">
                                 <?php 
-								if ($section['shift_id'] == 1) {
-									echo '<span class="label label-status label-warning style="background-color: #FFFF99 !important;"><i class="fa fa-sun-o" aria-hidden="true"></i> '. ucfirst(get_phrase('morning')) .'</span>';
-								} else {
-									echo '<span class="label label-status label-info style="background-color: #FFA07A !important;"><i class="fa fa-sun-o" aria-hidden="true"></i> '. ucfirst(get_phrase('afternoon')) .'</span>';
-								}
-								?>
+                                if ($section['shift_id'] == 1) {
+                                    echo '<span class="label label-status label-warning style="background-color: #FFFF99 !important;"><i class="fa fa-sun-o" aria-hidden="true"></i> '. ucfirst(get_phrase('morning')) .'</span>';
+                                } else {
+                                    echo '<span class="label label-status label-info style="background-color: #FFA07A !important;"><i class="fa fa-sun-o" aria-hidden="true"></i> '. ucfirst(get_phrase('afternoon')) .'</span>';
+                                }
+                                ?>
                             </td>
                             <td class="text-center">
                                 <a href="<?php echo base_url(); ?>index.php?admin/academic_history/<?php echo $section['section_id']; ?>" class="btn btn-table btn-white btn-info-hover" title="<?php echo ucfirst(get_phrase('view')); ?>">
                                     <i class="entypo-eye"></i>
                                 </a>
                             </td>
-                           
                         </tr>
-                        <?php 
-                            endforeach;
-                        endforeach; 
-                        ?>
+                        <?php endforeach; ?>
                     </tbody>
                 </table>
             </div>
@@ -120,27 +88,19 @@ $filenameExcelClass = ucfirst(get_phrase('student_report')) . ' ' . date('d-m-Y'
                         </tr>
                     </thead>
                     <tbody>
-                        <?php 
-                                $this->db->select('section.*'); 
-                                $this->db->from('section'); 
-                                $this->db->join('academic_period', 'section.academic_period_id = academic_period.id'); 
-                                $this->db->where('section.class_id', $class['class_id']); 
-                                $this->db->where('academic_period.status_id', 1); 
-                                $sections = $this->db->get()->result_array(); 
-
-                                foreach ($sections as $section):
-                            ?>
+                        <?php foreach ($active_sections as $section): ?>
+                        <?php if ($section['class_id'] == $class['class_id']): ?>
                         <tr>
-                            <td class="text-center"><?php echo $class['name'];?></td>
+                            <td class="text-center"><?php echo $section['class_name'];?></td>
                             <td class="text-center"><?php echo $section['letter_name']; ?></td>
                             <td class="text-center">
                                 <?php 
-								if ($section['shift_id'] == 1) {
-									echo '<span class="label label-status label-warning style="background-color: #FFFF99 !important;"><i class="fa fa-sun-o" aria-hidden="true"></i> '. ucfirst(get_phrase('morning')) .'</span>';
-								} else {
-									echo '<span class="label label-status label-info style="background-color: #FFA07A !important;"><i class="fa fa-sun-o" aria-hidden="true"></i> '. ucfirst(get_phrase('afternoon')) .'</span>';
-								}
-								?>
+                                if ($section['shift_id'] == 1) {
+                                    echo '<span class="label label-status label-warning style="background-color: #FFFF99 !important;"><i class="fa fa-sun-o" aria-hidden="true"></i> '. ucfirst(get_phrase('morning')) .'</span>';
+                                } else {
+                                    echo '<span class="label label-status label-info style="background-color: #FFA07A !important;"><i class="fa fa-sun-o" aria-hidden="true"></i> '. ucfirst(get_phrase('afternoon')) .'</span>';
+                                }
+                                ?>
                             </td>
                             <td class="text-center">
                                 <a href="<?php echo base_url(); ?>index.php?admin/academic_history/<?php echo $section['section_id']; ?>" class="btn btn-table btn-white btn-info-hover" title="<?php echo ucfirst(get_phrase('view')); ?>">
@@ -148,6 +108,7 @@ $filenameExcelClass = ucfirst(get_phrase('student_report')) . ' ' . date('d-m-Y'
                                 </a>
                             </td>
                         </tr>
+                        <?php endif; ?>
                         <?php endforeach; ?>
                     </tbody>
                 </table>

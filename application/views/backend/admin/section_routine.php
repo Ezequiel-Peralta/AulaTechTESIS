@@ -80,7 +80,7 @@
 														?>
 														<div class="btn-group">
 															<button class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-                                                            	<?php echo $this->crudSubject->get_subject_name_by_id($row2['subject_id']);?>
+                                                            	<?php echo $this->Subject_model->get_subject_name_by_id($row2['subject_id']);?>
 																<?php echo '('.$row2['time_start'].':00 a '.$row2['time_end'].':00)';?>
                                                             	<span class="caret"></span>
                                                             </button>

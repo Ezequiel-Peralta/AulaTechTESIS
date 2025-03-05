@@ -2,26 +2,27 @@
 
 class Subject extends CI_Controller
 {
-    
-	function __construct()
-	{
-		parent::__construct();
-		$this->load->database();
+    function __construct()
+    {
+        parent::__construct();
+        $this->load->database();
         $this->load->library('session');
 
+        $this->load->model('subject/Subject_model');
+        $this->load->library('Subject_service');
+
         date_default_timezone_set('America/Argentina/Buenos_Aires');
-		
-       /*cache control*/
-		$this->output->set_header('Cache-Control: no-store, no-cache, must-revalidate, post-check=0, pre-check=0');
-		$this->output->set_header('Pragma: no-cache');
-		
+
+        /*cache control*/
+        $this->output->set_header('Cache-Control: no-store, no-cache, must-revalidate, post-check=0, pre-check=0');
+        $this->output->set_header('Pragma: no-cache');
     }
 
     function subject_profile($subject_id = '')
     {
         if ($this->session->userdata('admin_login') != 1)
             redirect('login', 'refresh');
-            
+
         $breadcrumb = array(
             array(
                 'text' => ucfirst(get_phrase('home')),
@@ -32,34 +33,38 @@ class Subject extends CI_Controller
                 'url' => base_url('index.php?admin/subject_profile/')
             )
         );
-                    
-        $page_data['breadcrumb'] = $breadcrumb;
 
-        $page_data['page_name']   = 'subject_profile';
-        $page_data['page_title']  = ucfirst(get_phrase('subject_profile'));
-        $page_data['subject_id']  = $subject_id;
-        
+        $subject_info = $this->Subject_model->get_subject_info($subject_id);
+
+        $page_data['breadcrumb'] = $breadcrumb;
+        $page_data['page_name'] = 'subject_profile';
+        $page_data['page_title'] = ucfirst(get_phrase('subject_profile'));
+        $page_data['subject_info'] = $subject_info;
+        $page_data['subject_id'] = $subject_id;
+
         $this->load->view('backend/index', $page_data);
     }
 
-    function subjects($param1 = '', $param2 = '' , $param3 = '')
+    function subjects($param1 = '', $param2 = '', $param3 = '')
     {
         if ($this->session->userdata('admin_login') != 1)
             redirect(base_url(), 'refresh');
-        if ($param1 == 'create') {
-            $data['name'] = $this->input->post('name');
-            $data['class_id'] = $this->input->post('class_id');
-            $data['section_id'] = $this->input->post('section_id');
-            $data['teacher_id'] = $this->input->post('teacher_id');
-            $data['status_id'] = 1;
 
-            $section = $this->db->get_where('section', array('section_id' => $data['section_id']))->row();
+        if ($param1 == 'create') {
+            $data = array(
+                'name' => $this->input->post('name'),
+                'class_id' => $this->input->post('class_id'),
+                'section_id' => $this->input->post('section_id'),
+                'teacher_id' => $this->input->post('teacher_id'),
+                'status_id' => 1
+            );
+
+            $section = $this->Subject_model->get_section($data['section_id']);
             if ($section) {
                 $data['teacher_aide_id'] = $section->teacher_aide_id;
             }
 
-            $this->db->insert('subject', $data);
-            $createdSubjectId = $this->db->insert_id(); 
+            $createdSubjectId = $this->Subject_model->create_subject($data);
 
             // Manejar la imagen
             if (!empty($_FILES['userfile']['name'])) {
@@ -67,12 +72,10 @@ class Subject extends CI_Controller
                 $file_path = 'uploads/subject_image/' . $file_name;
                 move_uploaded_file($_FILES['userfile']['tmp_name'], $file_path);
 
-                $this->db->where('subject_id', $createdSubjectId);
-                $this->db->update('subject', ['image' => $file_name]);
+                $this->Subject_model->update_subject_image($createdSubjectId, $file_name);
             } else {
                 $default_image = 'assets/images/default-subject-img.jpg';
-                $this->db->where('subject_id', $createdSubjectId);
-                $this->db->update('subject', ['image' => $default_image]);
+                $this->Subject_model->update_subject_image($createdSubjectId, $default_image);
             }
 
             $this->session->set_flashdata('flash_message', array(
@@ -88,27 +91,29 @@ class Subject extends CI_Controller
 
             redirect(base_url() . 'index.php?admin/subjects_information/' . $data['section_id'], 'refresh');
         }
+
         if ($param1 == 'update') {
-            $subject_id = $param2; 
+            $subject_id = $param2;
 
-            $current_subject_data = $this->db->get_where('subject', array('subject_id' => $subject_id))->row_array();
+            $current_subject_data = $this->Subject_model->get_subject($subject_id);
 
-            $data['name']       = $this->input->post('name');
-            $data['class_id']   = $this->input->post('class_id');
-            $data['section_id']   = $this->input->post('section_id');
-            $data['teacher_id'] = $this->input->post('teacher_id');
+            $data = array(
+                'name' => $this->input->post('name'),
+                'class_id' => $this->input->post('class_id'),
+                'section_id' => $this->input->post('section_id'),
+                'teacher_id' => $this->input->post('teacher_id')
+            );
 
-            $section = $this->db->get_where('section', array('section_id' => $data['section_id']))->row();
+            $section = $this->Subject_model->get_section($data['section_id']);
             if ($section) {
                 $data['teacher_aide_id'] = $section->teacher_aide_id;
             }
-            
 
             if (!empty($_FILES['userfile']['name'])) {
                 if (!empty($current_subject_data['image']) && file_exists($current_subject_data['image'])) {
                     unlink($current_subject_data['image']);
                 }
-        
+
                 $file_name = 'subject id - ' . $subject_id . '.jpg';
                 $file_path = 'uploads/subject_image/' . $file_name;
                 $data['image'] = $file_name;
@@ -116,10 +121,8 @@ class Subject extends CI_Controller
             } else {
                 $data['image'] = $current_subject_data['image'];
             }
-        
 
-            $this->db->where('subject_id', $param2);
-            $this->db->update('subject', $data);
+            $this->Subject_model->update_subject($subject_id, $data);
 
             $this->session->set_flashdata('flash_message', array(
                 'title' => ucfirst(get_phrase('subject_updated_successfully')),
@@ -131,18 +134,15 @@ class Subject extends CI_Controller
                 'timer' => '10000',
                 'timerProgressBar' => 'true',
             ));
-            redirect(base_url() . 'index.php?admin/subjects_information/'.$data['section_id'], 'refresh');
-        } 
+            redirect(base_url() . 'index.php?admin/subjects_information/' . $data['section_id'], 'refresh');
+        }
 
         if ($param1 == 'disable_subject') {
-            $subject_id = $param2;  
-    
+            $subject_id = $param2;
+
             if ($subject_id) {
-                $this->db->where('subject_id', $subject_id);
-                $this->db->update('subject', array(
-                    'status_id' => 0 
-                ));
-    
+                $this->Subject_model->update_subject_status($subject_id, 0);
+
                 $this->session->set_flashdata('flash_message', array(
                     'title' => ucfirst(get_phrase('subject_disabled_successfully')),
                     'text' => '',
@@ -165,18 +165,16 @@ class Subject extends CI_Controller
                     'timerProgressBar' => 'true',
                 ));
             }
-    
+
             redirect(base_url() . 'index.php?admin/subjects_information/' . $param3, 'refresh');
         }
+
         if ($param1 == 'enable_subject') {
-            $subject_id = $param2;  
-    
+            $subject_id = $param2;
+
             if ($subject_id) {
-                $this->db->where('subject_id', $subject_id);
-                $this->db->update('subject', array(
-                    'status_id' => 1 
-                ));
-    
+                $this->Subject_model->update_subject_status($subject_id, 1);
+
                 $this->session->set_flashdata('flash_message', array(
                     'title' => ucfirst(get_phrase('subject_enabled_successfully')),
                     'text' => '',
@@ -199,19 +197,14 @@ class Subject extends CI_Controller
                     'timerProgressBar' => 'true',
                 ));
             }
-    
+
             redirect(base_url() . 'index.php?admin/subjects_information/' . $param3, 'refresh');
         }
-       
     }
-    
 
-    
     function get_class_subject($class_id)
     {
-        $subjects = $this->db->get_where('subject' , array(
-            'class_id' => $class_id
-        ))->result_array();
+        $subjects = $this->Subject_model->get_subjects_by_class($class_id);
         foreach ($subjects as $row) {
             echo '<option value="' . $row['subject_id'] . '">' . $row['name'] . '</option>';
         }
@@ -219,17 +212,15 @@ class Subject extends CI_Controller
 
     function get_section_subjects($section_id)
     {
-        $subjects = $this->db->get_where('subject' , array(
-            'section_id' => $section_id
-        ))->result_array();
+        $subjects = $this->Subject_model->get_subjects_by_section($section_id);
         foreach ($subjects as $row) {
             echo '<option value="' . $row['subject_id'] . '">' . $row['name'] . '</option>';
         }
     }
 
     function manage_subjects()
-	{
-		if ($this->session->userdata('admin_login') != 1)
+    {
+        if ($this->session->userdata('admin_login') != 1)
             redirect('login', 'refresh');
 
         $breadcrumb = array(
@@ -242,58 +233,61 @@ class Subject extends CI_Controller
                 'url' => base_url('index.php?admin/manage_subjects/')
             )
         );
-                
-        $page_data['breadcrumb'] = $breadcrumb;
-			
-		$page_data['page_name']  = 'manage_subjects';
-		$page_data['page_title'] 	= ucfirst(get_phrase('manage_subjects'));
-		$this->load->view('backend/index', $page_data);
-	}
 
+        $active_sections = $this->Subject_model->get_active_sections();
+        $class_ids = array_column($active_sections, 'class_id');
+        $all_classes_count = count($active_sections);
+
+        $classes = $this->Subject_model->get_classes_by_ids($class_ids);
+
+        $page_data = array(
+            'breadcrumb' => $breadcrumb,
+            'page_name' => 'manage_subjects',
+            'page_title' => ucfirst(get_phrase('manage_subjects')),
+            'active_sections' => $active_sections,
+            'all_classes_count' => $all_classes_count,
+            'classes' => $classes
+        );
+
+        $this->load->view('backend/index', $page_data);
+    }
 
     function view_subjects($section_id = '', $teacher_id = '')
     {
         if ($this->session->userdata('admin_login') != 1) {
             redirect('login', 'refresh');
         }
-    
+
         if (empty($section_id)) {
-            $active_academic_period = $this->db->get_where('academic_period', array('status_id' => 1))->row();
-    
+            $active_academic_period = $this->Subject_model->get_active_academic_period();
+
             if ($active_academic_period) {
                 $active_academic_period_id = $active_academic_period->id;
-    
-                $this->db->where('academic_period_id', $active_academic_period_id);
-                $this->db->order_by('section_id', 'ASC');
-                $section = $this->db->get('section')->row();
-    
+
+                $section = $this->Subject_model->get_first_section($active_academic_period_id);
+
                 if ($section) {
-                    $section_id = $section->section_id; 
+                    $section_id = $section->section_id;
                 }
             }
         }
 
         $used_section_history = false;
 
-        $this->db->where('section_id', $section_id);
-        $section_data = $this->db->get('section')->row_array(); 
+        $section_data = $this->Subject_model->get_section_data($section_id);
 
         if (empty($section_data)) {
-            // Si está vacío, buscar en la tabla section_history
-            $this->db->where('section_id', $section_id);
-            $section_data = $this->db->get('section_history')->row_array();
+            $section_data = $this->Subject_model->get_section_history_data($section_id);
             $used_section_history = true;
         }
 
         $academic_period_name = '';
         if ($used_section_history == true) {
             $academic_period_name = $this->crud_model->get_academic_period_name_per_section2($section_id);
-            $page_data['academic_period_id'] = $section_data['academic_period_id']; 
-
+            $page_data['academic_period_id'] = $section_data['academic_period_id'];
         }
 
-        $this->db->where('teacher_id', $teacher_id);
-        $teacher_data = $this->db->get('teacher_details')->row_array(); 
+        $teacher_data = $this->Subject_model->get_teacher_data($teacher_id);
 
         if (!empty($teacher_id)) {
             $breadcrumb = array(
@@ -326,10 +320,10 @@ class Subject extends CI_Controller
                 array(
                     'text' => ucfirst(get_phrase('view_subjects')) .  '&nbsp;&nbsp;/&nbsp;&nbsp;' . $section_data['name'],
                     'url' => base_url('index.php?admin/view_subjects/' . $section_id)
-                ) 
+                )
             );
         }
-    
+
         $page_data['breadcrumb'] = $breadcrumb;
         $page_data['section_id'] = $section_id;
         $page_data['teacher_id'] = $teacher_id;
@@ -340,8 +334,8 @@ class Subject extends CI_Controller
     }
 
     function subjects_information($section_id = '')
-	{
-		if ($this->session->userdata('admin_login') != 1)
+    {
+        if ($this->session->userdata('admin_login') != 1)
             redirect('login', 'refresh');
 
         $breadcrumb = array(
@@ -354,19 +348,25 @@ class Subject extends CI_Controller
                 'url' => base_url('index.php?admin/subjects_information/' . $section_id)
             )
         );
-                
+
+        $section_data = $this->Subject_model->get_section_data($section_id);
+
+        $all_subjects_count = $this->Subject_model->get_section_subject_count($section_id);
+
+        $page_data['section_data'] = $section_data;
+        $page_data['all_subjects_count'] = $all_subjects_count;
         $page_data['breadcrumb'] = $breadcrumb;
         $page_data['section_id'] = $section_id;
-		$page_data['page_name']  = 'subjects_information';
-		$page_data['page_title'] 	= ucfirst(get_phrase('subjects_information'));
-		$this->load->view('backend/index', $page_data);
-	}
+        $page_data['page_name'] = 'subjects_information';
+        $page_data['page_title'] = ucfirst(get_phrase('subjects_information'));
+        $this->load->view('backend/index', $page_data);
+    }
 
     function add_subject()
-	{
-		if ($this->session->userdata('admin_login') != 1)
+    {
+        if ($this->session->userdata('admin_login') != 1)
             redirect(base_url(), 'refresh');
-			
+
         $breadcrumb = array(
             array(
                 'text' => ucfirst(get_phrase('home')),
@@ -377,66 +377,18 @@ class Subject extends CI_Controller
                 'url' => base_url('index.php?admin/subject_add')
             )
         );
-                
-        $page_data['breadcrumb'] = $breadcrumb;
 
-		$page_data['page_name']  = 'add_subject';
-		$page_data['page_title'] = ucfirst(get_phrase('add_subject'));
-		$this->load->view('backend/index', $page_data);
-	}
+        $page_data['breadcrumb'] = $breadcrumb;
+        $page_data['page_name'] = 'add_subject';
+        $page_data['page_title'] = ucfirst(get_phrase('add_subject'));
+        $this->load->view('backend/index', $page_data);
+    }
 
     function edit_subject($subject_id)
-	{
-		if ($this->session->userdata('admin_login') != 1)
+    {
+        if ($this->session->userdata('admin_login') != 1)
             redirect(base_url(), 'refresh');
 
-            $page_complete_name = 'edit_subject'; // Nombre de la página
-            $user_id = $this->session->userdata('login_user_id'); // ID del usuario actual
-            $user_group = $this->session->userdata('login_type'); // Grupo del usuario actual
-            $element_id = $subject_id; // ID del elemento específico (ej. curso o sección)
-
-            // Buscar registros para este page_name y element_id
-            $this->db->where('page_name', $page_complete_name);
-            $this->db->where('element_id', $element_id);
-            $tracking = $this->db->get('page_tracking')->row_array();
-
-            if (!empty($tracking)) {
-                // Verificar si el registro está siendo utilizado por otro usuario
-                if ($tracking['user_id'] !== NULL && $tracking['user_group'] !== NULL && ($tracking['user_id'] !== $user_id || $tracking['user_group'] !== $user_group)) {
-                    // Si otro usuario está accediendo a este elemento, redirige con un mensaje
-                    $this->session->set_flashdata('flash_message', array(
-                        'title' => '¡' . ucfirst(get_phrase('this_page_is_being_used_by_another_user')) . '!',
-                        'text' => '',
-                        'icon' => 'error',
-                        'showCloseButton' => 'true',
-                        'confirmButtonText' => ucfirst(get_phrase('accept')),
-                        'confirmButtonColor' => '#1a92c4',
-                        'timer' => '10000',
-                        'timerProgressBar' => 'true',
-                    ));
-                    redirect(base_url() . 'index.php?admin/dashboard/', 'refresh');
-                } else {
-                    // Si el usuario actual ya tiene acceso al elemento, actualiza el registro
-                    $dataTracking = array(
-                        'user_id' => $user_id,
-                        'user_group' => $user_group
-                    );
-                    $this->db->where('page_tracking_id', $tracking['page_tracking_id']);
-                    $this->db->update('page_tracking', $dataTracking);
-                }
-            } else {
-                // Si no existe un registro con este element_id, se inserta uno nuevo
-                $dataTracking = array(
-                    'page_name' => $page_complete_name,
-                    'element_id' => $element_id,
-                    'user_id' => $user_id,
-                    'user_group' => $user_group
-                );
-                $this->db->insert('page_tracking', $dataTracking);
-            }
-
-			
-			
         $breadcrumb = array(
             array(
                 'text' => ucfirst(get_phrase('home')),
@@ -444,34 +396,18 @@ class Subject extends CI_Controller
             ),
             array(
                 'text' => ucfirst(get_phrase('edit_subject')),
-                'url' => base_url('index.php?admin/edit_subject')
+                'url' => base_url('index.php?admin/edit_subject/' . $subject_id)
             )
         );
-                
+
+        $subject_info = $this->Subject_model->get_subject_info($subject_id);
+
         $page_data['breadcrumb'] = $breadcrumb;
-        $page_data['subject_id']  = $subject_id;
-		$page_data['page_name']  = 'edit_subject';
-		$page_data['page_title'] = ucfirst(get_phrase('edit_subject'));
-		$this->load->view('backend/index', $page_data);
-	}
+        $page_data['page_name'] = 'edit_subject';
+        $page_data['page_title'] = ucfirst(get_phrase('edit_subject'));
+        $page_data['subject_info'] = $subject_info;
+        $page_data['subject_id'] = $subject_id;
 
-    function get_subject_exams($subject_id)
-    {
-        $exams = $this->db->get_where('exam' , array(
-            'subject_id' => $subject_id
-        ))->result_array();
-        foreach ($exams as $row) {
-            echo '<option value="' . $row['exam_id'] . '">' . $row['name'] . '</option>';
-        }
+        $this->load->view('backend/index', $page_data);
     }
-
-
-
-
-
-
-
-
-
-
 }

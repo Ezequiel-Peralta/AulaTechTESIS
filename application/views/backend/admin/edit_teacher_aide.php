@@ -1,6 +1,6 @@
 <?php 
 
-$edit_data = $this->crudTeacher->get_teacher_aide_info($teacher_aide_id);
+$edit_data = $this->Teacher_model->get_teacher_aide_info($teacher_aide_id);
 foreach ($edit_data as $row):
 
 ?>

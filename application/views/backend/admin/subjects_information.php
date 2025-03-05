@@ -1,10 +1,3 @@
-<?php
-$this->db->from('subject');
-$this->db->where('section_id', $section_id);
-$query = $this->db->get();
-$all_subjects_count = $query->num_rows();
-?>
-
 <div class="row selectContent">
     <div class="col-md-6">
         <div class="form-group">

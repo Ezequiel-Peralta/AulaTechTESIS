@@ -1,15 +1,7 @@
 <?php
-// Primero, obtenemos las secciones que están activas y tienen un periodo académico activo
-$this->db->select('section.class_id'); // Seleccionamos el class_id de las secciones
-$this->db->from('section'); // Usamos la tabla section
-$this->db->join('academic_period', 'section.academic_period_id = academic_period.id'); // Unimos con la tabla academic_period
-$this->db->where('academic_period.status_id', 1); // Filtramos solo las secciones con periodo académico activo
-$active_sections = $this->db->get()->result_array(); // Obtenemos los resultados
-
-// Ahora, extraemos los class_id de las secciones activas
-$class_ids = array_column($active_sections, 'class_id'); // Extraemos los class_id
-
-$all_classes_count = count($active_sections);
+  $all_classes_count = isset($all_classes_count) ? $all_classes_count : 0;
+  $active_sections = isset($active_sections) ? $active_sections : array();
+  $classes = isset($classes) ? $classes : array();
 ?>
 
 <div class="row">

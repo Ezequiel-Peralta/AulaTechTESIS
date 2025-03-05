@@ -1,8 +1,5 @@
 
 <?php 
-    $news_types = $this->db->get('news_types')->result_array();
-
-    $edit_data = $this->db->get_where('news', array('news_id' => $param2))->result_array();
     foreach ($edit_data as $row):
 
 ?>
