@@ -1,5 +1,5 @@
 <?php
-$guardian_info = $this->crudGuardian->get_guardian_info($param2);
+$guardian_info = $this->Guardian_model->get_guardian_info($param2);
 foreach($guardian_info as $row):?>
 
     <div class="profile-header" style="border-radius: 15px;">

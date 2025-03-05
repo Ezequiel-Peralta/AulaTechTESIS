@@ -1,5 +1,5 @@
 <?php 
-$edit_data		=	$this->crudGuardian->get_guardian_info($param2);
+$edit_data		=	$this->Guardian_model->get_guardian_info($param2);
 foreach ( $edit_data as $row):
 ?>
 

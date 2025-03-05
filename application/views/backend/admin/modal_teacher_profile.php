@@ -1,7 +1,7 @@
 
 
 <?php
-$teacher_info = $this->crudTeacher->get_teacher_info($param2);
+$teacher_info = $this->Teacher_model->get_teacher_info($param2);
 foreach($teacher_info as $row):?>
 
 <div class="modal-header text-center">
@@ -10,7 +10,7 @@ foreach($teacher_info as $row):?>
     <i class="entypo-user"></i>
     <?php
         if ($param4 == 'student') {
-            $info = $this->crudStudent->get_student_info($param3);
+            $info = $this->Student_model->get_student_info($param3);
             foreach($info as $row9):
     ?>
                 <a href="javascript:;" onclick="showAjaxModal('<?php echo base_url();?>index.php?modal/popup/modal_student_profile/<?php echo $row9['student_id'];?>');" class="breadcrumb-link">
@@ -30,7 +30,7 @@ foreach($teacher_info as $row):?>
     <?php
             endforeach;
         } elseif ($param4 == 'teacher_aide') {
-            $info = $this->crudTeacher->get_teacher_aide_info($param3);
+            $info = $this->Teacher_model->get_teacher_aide_info($param3);
             foreach($info as $row9):
     ?>
                 <a href="javascript:;" onclick="showAjaxModal('<?php echo base_url();?>index.php?modal/popup/modal_teacher_aide_profile/<?php echo $row9['teacher_aide_id'];?>');" class="breadcrumb-link">
@@ -51,7 +51,7 @@ foreach($teacher_info as $row):?>
             endforeach;
         } elseif ($param4 == 'subject') {
             // Obtener información del sujeto
-            $info = $this->crudSubject->get_student_info_per_section2($param3);
+            $info = $this->Subject_model->get_student_info_per_section2($param3);
             // Imprimir solo el nombre
             foreach($info as $row9):
                 ?>
@@ -184,7 +184,7 @@ foreach($teacher_info as $row):?>
                                     <br>
                                     <div class="teacher-aide-avatars">
                                         <?php
-                                        $teacher_aide_info = $this->crudTeacher->get_teacher_aide_info_per_section($section['section_id']);
+                                        $teacher_aide_info = $this->Teacher_model->get_teacher_aide_info_per_section($section['section_id']);
                                         foreach($teacher_aide_info as $teacher_aide):
                                             // Determina el color del borde basado en
                                             $border_color = $teacher_aide['gender_id'] == 0 ? 'border-blue' : 'border-pink';
@@ -217,7 +217,7 @@ foreach($teacher_info as $row):?>
                                     </div>
                                     <div class="student-avatars">
                                         <?php 
-                                        $student_info = $this->crudStudent->get_student_info_per_section($section['section_id']);
+                                        $student_info = $this->Student_model->get_student_info_per_section($section['section_id']);
                                         foreach($student_info as $student): 
                                             // Determina el color del borde basado en el gender_id
                                             $border_color = $student['gender_id'] == 0 ? 'border-blue' : 'border-pink';

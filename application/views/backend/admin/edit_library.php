@@ -2,7 +2,6 @@
     date_default_timezone_set('America/Argentina/Buenos_Aires');
     $current_date = date('Y-m-d'); 
 
-    $edit_data		=	$this->crud_model->get_file_library($library_id);
     foreach ( $edit_data as $file):
 ?>
 
@@ -58,7 +57,6 @@
 												onchange="return get_class_sections(this.value)">
 											<option value="" selected disabled><?php echo ucfirst(get_phrase('select')); ?></option>
 											<?php 
-												$classes = $this->db->get('class')->result_array();
 												foreach($classes as $row3):
 													?>
                                                     <option value="<?php echo $row3['class_id'];?>"
@@ -103,7 +101,6 @@
                                                     <?php echo ucfirst(get_phrase(empty($file['section_id']) ? 'first_select_the_class_and_section' : 'select')); ?>
                                                 </option>
                                             <?php 
-											$subjects = $this->crudSubject->get_subjects_by_section($file['section_id']);
 											foreach ($subjects as $subject):
 												$selected = ($subject['subject_id'] == $file['subject_id']) ? 'selected' : '';
 											?>

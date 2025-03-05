@@ -293,7 +293,7 @@ class Attendance extends CI_Controller
         if ($this->session->userdata('admin_login') != 1)
             redirect(base_url(), 'refresh');
 
-        $student_info = $this->crudStudent->get_student_info($student_id);
+        $student_info = $this->Student_model->get_student_info($student_id);
 
         $current_date = date('Y-m-d');
         $attendance_data = $this->attendance_model->get_attendance_data_for_student($student_id);

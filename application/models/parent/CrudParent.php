@@ -1,5 +1,5 @@
 <?php
-class CrudParent extends CI_Model {
+class Guardian_model extends CI_Model {
     function __construct() {
         parent::__construct();
     }

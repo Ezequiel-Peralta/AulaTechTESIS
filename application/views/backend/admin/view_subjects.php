@@ -195,7 +195,7 @@ if (empty($subjects)) {
                             <div class="text-end">
                                 <p class="mb-1">
                                     <?php 
-                                    $teacher_details = $this->crudTeacher->get_teachers_info($subject['teacher_id']);
+                                    $teacher_details = $this->Teacher_model->get_teachers_info($subject['teacher_id']);
                                     echo $teacher_details['lastname'] . ', ' . $teacher_details['firstname'];
                                     ?>
                                 </p>

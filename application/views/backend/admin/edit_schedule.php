@@ -1,6 +1,5 @@
 
 <?php 
-    $edit_data = $this->db->get_where('schedule', array('schedule_id' => $schedule_id))->result_array();
     foreach ($edit_data as $row):
 ?>
 

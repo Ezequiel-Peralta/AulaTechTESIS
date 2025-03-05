@@ -2,26 +2,27 @@
 
 class Secretary extends CI_Controller
 {
-    
-	function __construct()
-	{
-		parent::__construct();
-		$this->load->database();
+    function __construct()
+    {
+        parent::__construct();
+        $this->load->database();
         $this->load->library('session');
 
+        $this->load->model('secretary/Secretary_model');
+        $this->load->library('Secretary_service');
+
         date_default_timezone_set('America/Argentina/Buenos_Aires');
-		
-       /*cache control*/
-		$this->output->set_header('Cache-Control: no-store, no-cache, must-revalidate, post-check=0, pre-check=0');
-		$this->output->set_header('Pragma: no-cache');
-		
+
+        /*cache control*/
+        $this->output->set_header('Cache-Control: no-store, no-cache, must-revalidate, post-check=0, pre-check=0');
+        $this->output->set_header('Pragma: no-cache');
     }
 
     function secretaries_information()
     {
         if ($this->session->userdata('admin_login') != 1)
             redirect('login', 'refresh');
-            
+
         $breadcrumb = array(
             array(
                 'text' => ucfirst(get_phrase('home')),
@@ -32,19 +33,12 @@ class Secretary extends CI_Controller
                 'url' => base_url('index.php?admin/secretaries_information/')
             )
         );
-                    
+
         $page_data['breadcrumb'] = $breadcrumb;
+        $page_data['secretaries'] = $this->Secretary_model->get_all_secretaries();
+        $page_data['page_name'] = 'secretaries_information';
+        $page_data['page_title'] = ucfirst(get_phrase('manage_secretaries'));
 
-        $this->db->select('secretary.secretary_id, secretary.email, secretary.username, secretary_details.firstname, secretary_details.lastname, secretary_details.dni, secretary_details.photo, secretary_details.user_status_id');
-        $this->db->from('secretary');
-        $this->db->join('secretary_details', 'secretary.secretary_id = secretary_details.secretary_id');
-        $this->db->order_by('secretary_details.lastname', 'ASC');
-        $query = $this->db->get();
-        $page_data['secretaries']  = $query->result_array();
-
-        $page_data['page_name']   = 'secretaries_information';
-        $page_data['page_title']  = ucfirst(get_phrase('manage_secretaries'));
-        
         $this->load->view('backend/index', $page_data);
     }
 
@@ -52,7 +46,7 @@ class Secretary extends CI_Controller
     {
         if ($this->session->userdata('admin_login') != 1)
             redirect('login', 'refresh');
-            
+
         $breadcrumb = array(
             array(
                 'text' => ucfirst(get_phrase('home')),
@@ -63,13 +57,12 @@ class Secretary extends CI_Controller
                 'url' => base_url('index.php?admin/secretary_profile/' . $secretary_id)
             )
         );
-                    
-        $page_data['breadcrumb'] = $breadcrumb;
 
-        $page_data['page_name']   = 'secretary_profile';
-        $page_data['page_title']  = ucfirst(get_phrase('view_profile'));
-        $page_data['param2']  = $secretary_id;
-        
+        $page_data['breadcrumb'] = $breadcrumb;
+        $page_data['page_name'] = 'secretary_profile';
+        $page_data['page_title'] = ucfirst(get_phrase('view_profile'));
+        $page_data['secretary_info'] = $this->Secretary_model->get_secretary_info($secretary_id);
+
         $this->load->view('backend/index', $page_data);
     }
 
@@ -77,13 +70,13 @@ class Secretary extends CI_Controller
     {
         if ($this->session->userdata('admin_login') != 1)
             redirect(base_url(), 'refresh');
-        if ($param1 == 'create') {
-            $data['email']       			= $this->input->post('email');
-            $data['username']    			= $this->input->post('username');
-            $data['password']    			= $this->input->post('password');
 
-            $this->db->insert('secretary', $data);
-            $insertedSecretaryId = $this->db->insert_id();
+        if ($param1 == 'create') {
+            $data['email'] = $this->input->post('email');
+            $data['username'] = $this->input->post('username');
+            $data['password'] = $this->input->post('password');
+
+            $insertedSecretaryId = $this->Secretary_model->insert_secretary($data);
 
             $dataAddress['state'] = $this->input->post('state');
             $dataAddress['postalcode'] = $this->input->post('postalcode');
@@ -92,20 +85,19 @@ class Secretary extends CI_Controller
             $dataAddress['address'] = $this->input->post('address');
             $dataAddress['address_line'] = $this->input->post('address_line');
 
-            $this->db->insert('address', $dataAddress);
-            $insertedAddressId = $this->db->insert_id();
-            
+            $insertedAddressId = $this->Secretary_model->insert_address($dataAddress);
+
             $dataDetails['secretary_id'] = $insertedSecretaryId;
             $dataDetails['address_id'] = $insertedAddressId;
-            $dataDetails['user_group_id']        			= '5';
-            $dataDetails['firstname']        			= $this->input->post('firstname');
-            $dataDetails['lastname']        			= $this->input->post('lastname');
-            $dataDetails['dni']        			= $this->input->post('dni');
-            $dataDetails['birthday']        			= $this->input->post('birthday');
-            $dataDetails['phone_cel']       			= $this->input->post('phone_cel');
-            $dataDetails['phone_fij']       			= $this->input->post('phone_fij');
-            $dataDetails['gender_id']  			= $this->input->post('gender_id');
-            $dataDetails['user_status_id']  	 = 1;
+            $dataDetails['user_group_id'] = '5';
+            $dataDetails['firstname'] = $this->input->post('firstname');
+            $dataDetails['lastname'] = $this->input->post('lastname');
+            $dataDetails['dni'] = $this->input->post('dni');
+            $dataDetails['birthday'] = $this->input->post('birthday');
+            $dataDetails['phone_cel'] = $this->input->post('phone_cel');
+            $dataDetails['phone_fij'] = $this->input->post('phone_fij');
+            $dataDetails['gender_id'] = $this->input->post('gender_id');
+            $dataDetails['user_status_id'] = 1;
 
             if (!empty($_FILES['userfile']['name'])) {
                 $file_name = 'secretary id - ' . $insertedSecretaryId . '.jpg';
@@ -116,7 +108,7 @@ class Secretary extends CI_Controller
                 $dataDetails['photo'] = 'assets/images/default-user-img.jpg';
             }
 
-            $this->db->insert('secretary_details', $dataDetails);
+            $this->Secretary_model->insert_secretary_details($dataDetails);
 
             $this->session->set_flashdata('flash_message', array(
                 'title' => ucfirst(get_phrase('secretary_added_successfully')),
@@ -130,28 +122,27 @@ class Secretary extends CI_Controller
             ));
             redirect(base_url() . 'index.php?admin/secretaries_information/', 'refresh');
         }
+
         if ($param1 == 'update') {
-            $secretary_id = $param2; 
-            $secretary_details = $this->db->get_where('secretary_details', array('secretary_id' => $secretary_id))->row_array();
+            $secretary_id = $param2;
+            $secretary_details = $this->Secretary_model->get_secretary_details($secretary_id);
             $address_id = $secretary_details['address_id'];
-        
+
             $data['email'] = $this->input->post('email');
             $data['username'] = $this->input->post('username');
             $data['password'] = $this->input->post('password');
-        
-            $this->db->where('secretary_id', $secretary_id);
-            $this->db->update('secretary', $data);
-        
+
+            $this->Secretary_model->update_secretary($secretary_id, $data);
+
             $dataAddress['state'] = $this->input->post('state');
             $dataAddress['postalcode'] = $this->input->post('postalcode');
             $dataAddress['locality'] = $this->input->post('locality');
             $dataAddress['neighborhood'] = $this->input->post('neighborhood');
             $dataAddress['address'] = $this->input->post('address');
             $dataAddress['address_line'] = $this->input->post('address_line');
-        
-            $this->db->where('address_id', $address_id);
-            $this->db->update('address', $dataAddress);
-        
+
+            $this->Secretary_model->update_address($address_id, $dataAddress);
+
             $dataDetails['firstname'] = $this->input->post('firstname');
             $dataDetails['lastname'] = $this->input->post('lastname');
             $dataDetails['dni'] = $this->input->post('dni');
@@ -159,7 +150,7 @@ class Secretary extends CI_Controller
             $dataDetails['phone_cel'] = $this->input->post('phone_cel');
             $dataDetails['phone_fij'] = $this->input->post('phone_fij');
             $dataDetails['gender_id'] = $this->input->post('gender_id');
-        
+
             if (!empty($_FILES['userfile']['name'])) {
                 if (!empty($secretary_details['photo']) && file_exists($secretary_details['photo'])) {
                     unlink($secretary_details['photo']);
@@ -171,11 +162,9 @@ class Secretary extends CI_Controller
             } else {
                 $dataDetails['photo'] = $secretary_details['photo'];
             }
-        
-            $this->db->where('secretary_id', $secretary_id);
-            $this->db->update('secretary_details', $dataDetails);
-        
-        
+
+            $this->Secretary_model->update_secretary_details($secretary_id, $dataDetails);
+
             $this->session->set_flashdata('flash_message', array(
                 'title' => ucfirst(get_phrase('secretary_updated_successfully')),
                 'text' => '',
@@ -186,19 +175,16 @@ class Secretary extends CI_Controller
                 'timer' => '10000',
                 'timerProgressBar' => 'true',
             ));
-        
+
             redirect(base_url() . 'index.php?admin/secretaries_information/', 'refresh');
         }
 
         if ($param1 == 'disable_secretary') {
-            $secretary_id = $param2;  
-    
+            $secretary_id = $param2;
+
             if ($secretary_id) {
-                $this->db->where('secretary_id', $secretary_id);
-                $this->db->update('secretary_details', array(
-                    'user_status_id' => 0
-                ));
-    
+                $this->Secretary_model->update_secretary_status($secretary_id, 0);
+
                 $this->session->set_flashdata('flash_message', array(
                     'title' => ucfirst(get_phrase('secretary_disabled_successfully')),
                     'text' => '',
@@ -221,19 +207,16 @@ class Secretary extends CI_Controller
                     'timerProgressBar' => 'true',
                 ));
             }
-    
+
             redirect(base_url() . 'index.php?admin/secretaries_information/', 'refresh');
         }
 
         if ($param1 == 'enable_secretary') {
-            $secretary_id = $param2;  
-    
+            $secretary_id = $param2;
+
             if ($secretary_id) {
-                $this->db->where('secretary_id', $secretary_id);
-                $this->db->update('secretary_details', array(
-                    'user_status_id' => 1
-                ));
-    
+                $this->Secretary_model->update_secretary_status($secretary_id, 1);
+
                 $this->session->set_flashdata('flash_message', array(
                     'title' => ucfirst(get_phrase('secretary_enabled_successfully')),
                     'text' => '',
@@ -256,17 +239,16 @@ class Secretary extends CI_Controller
                     'timerProgressBar' => 'true',
                 ));
             }
-    
+
             redirect(base_url() . 'index.php?admin/secretaries_information/', 'refresh');
         }
-        
     }
 
     function add_secretary()
-	{
-		if ($this->session->userdata('admin_login') != 1)
+    {
+        if ($this->session->userdata('admin_login') != 1)
             redirect(base_url(), 'refresh');
-			
+
         $breadcrumb = array(
             array(
                 'text' => ucfirst(get_phrase('home')),
@@ -277,64 +259,18 @@ class Secretary extends CI_Controller
                 'url' => base_url('index.php?admin/add_secretary')
             )
         );
-                
-        $page_data['breadcrumb'] = $breadcrumb;
 
-		$page_data['page_name']  = 'add_secretary';
-		$page_data['page_title'] = ucfirst(get_phrase('add_secretary'));
-		$this->load->view('backend/index', $page_data);
-	}
+        $page_data['breadcrumb'] = $breadcrumb;
+        $page_data['page_name'] = 'add_secretary';
+        $page_data['page_title'] = ucfirst(get_phrase('add_secretary'));
+
+        $this->load->view('backend/index', $page_data);
+    }
 
     function edit_secretary($secretary_id = '')
-	{
-		if ($this->session->userdata('admin_login') != 1)
+    {
+        if ($this->session->userdata('admin_login') != 1)
             redirect('login', 'refresh');
-
-            $page_complete_name = 'edit_secretary'; // Nombre de la página
-            $user_id = $this->session->userdata('login_user_id'); // ID del usuario actual
-            $user_group = $this->session->userdata('login_type'); // Grupo del usuario actual
-            $element_id = $secretary_id; // ID del elemento específico (ej. curso o sección)
-
-            // Buscar registros para este page_name y element_id
-            $this->db->where('page_name', $page_complete_name);
-            $this->db->where('element_id', $element_id);
-            $tracking = $this->db->get('page_tracking')->row_array();
-
-            if (!empty($tracking)) {
-                // Verificar si el registro está siendo utilizado por otro usuario
-                if ($tracking['user_id'] !== NULL && $tracking['user_group'] !== NULL && ($tracking['user_id'] !== $user_id || $tracking['user_group'] !== $user_group)) {
-                    // Si otro usuario está accediendo a este elemento, redirige con un mensaje
-                    $this->session->set_flashdata('flash_message', array(
-                        'title' => '¡' . ucfirst(get_phrase('this_page_is_being_used_by_another_user')) . '!',
-                        'text' => '',
-                        'icon' => 'error',
-                        'showCloseButton' => 'true',
-                        'confirmButtonText' => ucfirst(get_phrase('accept')),
-                        'confirmButtonColor' => '#1a92c4',
-                        'timer' => '10000',
-                        'timerProgressBar' => 'true',
-                    ));
-                    redirect(base_url() . 'index.php?admin/dashboard/', 'refresh');
-                } else {
-                    // Si el usuario actual ya tiene acceso al elemento, actualiza el registro
-                    $dataTracking = array(
-                        'user_id' => $user_id,
-                        'user_group' => $user_group
-                    );
-                    $this->db->where('page_tracking_id', $tracking['page_tracking_id']);
-                    $this->db->update('page_tracking', $dataTracking);
-                }
-            } else {
-                // Si no existe un registro con este element_id, se inserta uno nuevo
-                $dataTracking = array(
-                    'page_name' => $page_complete_name,
-                    'element_id' => $element_id,
-                    'user_id' => $user_id,
-                    'user_group' => $user_group
-                );
-                $this->db->insert('page_tracking', $dataTracking);
-            }
-
 
         $breadcrumb = array(
             array(
@@ -347,15 +283,11 @@ class Secretary extends CI_Controller
             )
         );
 
-
         $page_data['breadcrumb'] = $breadcrumb;
-			
-		$page_data['page_name']  = 'edit_secretary';
-		$page_data['page_title'] 	= 'edit_secretary';
-		$page_data['secretary_id'] 	= $secretary_id;
-		$this->load->view('backend/index', $page_data);
-	}
+        $page_data['page_name'] = 'edit_secretary';
+        $page_data['page_title'] = 'edit_secretary';
+        $page_data['secretary_id'] = $secretary_id;
 
-
-
+        $this->load->view('backend/index', $page_data);
+    }
 }

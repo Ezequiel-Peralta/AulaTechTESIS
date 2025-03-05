@@ -1,19 +1,7 @@
-
-
 <?php
-$this->db->from('student_details');
-$this->db->where('user_status_id', 1);
-$this->db->where('section_id', $section_id);
-
-$query = $this->db->get();
-$all_student_count = $query->num_rows();
-
-$section_name = $this->crud_model->get_section_name($section_id);
-
 $titleEN = 'Student report - ' . $section_name . ' - ' . date('d-m-Y');
 $titleES = 'Reporte de Estudiantes - ' . $section_name . ' - ' . date('d-m-Y');
 ?>
-
 
 <div class="row selectContent">
     <div class="col-md-6">
@@ -25,23 +13,14 @@ $titleES = 'Reporte de Estudiantes - ' . $section_name . ' - ' . date('d-m-Y');
         <div class="form-group">
             <select id="class_select" class="form-control selectElement" onchange="location = this.value;">
                 <?php
-                $active_academic_period = $this->db->get_where('academic_period', array('status_id' => 1))->row();
-
-                if ($active_academic_period) {
-                    $this->db->where('academic_period_id', $active_academic_period->id);
-                    $sections = $this->db->get('section')->result_array();
-                
                 foreach ($sections as $row):
                 ?>
                     <option id="actualSectionId" value="<?php echo base_url(); ?>index.php?admin/academic_history/<?php echo $row['section_id']; ?>"
                         <?php if ($section_id == $row['section_id']) echo 'selected="selected"'; ?>>
                         <?php echo $row['name']; ?>
                     </option>
-                    <?php 
-                    endforeach;
-                } else {
-                    // echo '<li><span>No hay periodos activos disponibles</span></li>';
-                }
+                <?php 
+                endforeach;
                 ?>
             </select>
         </div>
@@ -60,7 +39,6 @@ $titleES = 'Reporte de Estudiantes - ' . $section_name . ' - ' . date('d-m-Y');
                     </span>
                 </a>
             </li>
-      
         </ul>
         
         <div class="tab-content">
@@ -69,7 +47,6 @@ $titleES = 'Reporte de Estudiantes - ' . $section_name . ' - ' . date('d-m-Y');
                 <div class="mt-2 mb-4">
                     <button type="button" onclick="reload_ajax()" class="btn btn-table btn-white btn-warning-hover" title="<?php echo ucfirst(get_phrase('reload')); ?>" style="padding: 6px 10px;"><i class="fa fa-refresh"></i></button>
                     <div class="pull-right"> 
-                      
                     </div>
                 </div>
                 <br>
@@ -79,75 +56,68 @@ $titleES = 'Reporte de Estudiantes - ' . $section_name . ' - ' . date('d-m-Y');
                             <th class="text-center" width="50"><?php echo ucfirst(get_phrase('photo')); ?></th>
                             <th class="text-center"><?php echo ucfirst(get_phrase('lastname')); ?></th>
                             <th class="text-center"><?php echo ucfirst(get_phrase('firstname')); ?></th>
-                            <th class="text-center display-column"><?php echo ucfirst(get_phrase('gender')); ?></th> <!-- Nueva columna -->
+                            <th class="text-center display-column"><?php echo ucfirst(get_phrase('gender')); ?></th>
                             <th class="text-center"><?php echo ucfirst(get_phrase('dni')); ?></th>
                             <th class="text-center"><?php echo ucfirst(get_phrase('enrollment')); ?></th>
                             <th class="text-center"><?php echo ucfirst(get_phrase('email')); ?></th>
                             <th class="text-center"><?php echo ucfirst(get_phrase('status')); ?></th>
-                            <th class="text-center display-column"><?php echo ucfirst(get_phrase('birthday')); ?></th> <!-- Nueva columna -->
-                            <th class="text-center display-column"><?php echo ucfirst(get_phrase('cell_phone')); ?></th> <!-- Nueva columna -->
-                            <th class="text-center display-column"><?php echo ucfirst(get_phrase('landline')); ?></th> <!-- Nueva columna -->
-                            <th class="text-center display-column"><?php echo ucfirst(get_phrase('state')); ?></th> 
+                            <th class="text-center display-column"><?php echo ucfirst(get_phrase('birthday')); ?></th>
+                            <th class="text-center display-column"><?php echo ucfirst(get_phrase('cell_phone')); ?></th>
+                            <th class="text-center display-column"><?php echo ucfirst(get_phrase('landline')); ?></th>
+                            <th class="text-center display-column"><?php echo ucfirst(get_phrase('state')); ?></th>
                             <th class="text-center display-column"><?php echo ucfirst(get_phrase('postalcode')); ?></th>
                             <th class="text-center display-column"><?php echo ucfirst(get_phrase('locality')); ?></th>
                             <th class="text-center display-column"><?php echo ucfirst(get_phrase('neighborhood')); ?></th>
                             <th class="text-center display-column"><?php echo ucfirst(get_phrase('address')); ?></th>
-                            <th class="text-center display-column"><?php echo ucfirst(get_phrase('address_line')); ?></th><!-- Nueva columna -->
+                            <th class="text-center display-column"><?php echo ucfirst(get_phrase('address_line')); ?></th>
                             <th class="text-center" width="120"><?php echo ucfirst(get_phrase('action')); ?></th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php 
-                                foreach($students as $row):
-                                    if ($row['user_status_id'] == 1) {
-                                        $status_label = '<span class="label label-status label-success">'. ucfirst(get_phrase('active')) .'</span>';
-                                    } else {
-                                        $status_label = '<span class="label label-status label-danger">'. ucfirst(get_phrase('inactive')) . '</span>';
-                                    }
-                                    if ($row['gender_id'] == 0) {
-                                        $gender = ucfirst(get_phrase('male'));
-                                    } else if ($row['gender_id'] == 1) {
-                                        $gender = ucfirst(get_phrase('female'));
-                                    } else if ($row['gender_id'] == 2) {
-                                        $gender = ucfirst(get_phrase('other'));
-                                    }
-
-                                ?>
+                        foreach($students as $row):
+                            if ($row['user_status_id'] == 1) {
+                                $status_label = '<span class="label label-status label-success">'. ucfirst(get_phrase('active')) .'</span>';
+                            } else {
+                                $status_label = '<span class="label label-status label-danger">'. ucfirst(get_phrase('inactive')) . '</span>';
+                            }
+                            if ($row['gender_id'] == 0) {
+                                $gender = ucfirst(get_phrase('male'));
+                            } else if ($row['gender_id'] == 1) {
+                                $gender = ucfirst(get_phrase('female'));
+                            } else if ($row['gender_id'] == 2) {
+                                $gender = ucfirst(get_phrase('other'));
+                            }
+                        ?>
                         <tr>
                             <td class="text-center"><img src="<?php echo $row['photo'];?>" class="img-circle" width="30" height="30"/></td>
                             <td class="text-center"><?php echo $row['lastname'];?></td>
                             <td class="text-center"><?php echo $row['firstname'];?></td>
-                            <td class="text-center display-column"><?php echo $gender; ?></td> 
+                            <td class="text-center display-column"><?php echo $gender; ?></td>
                             <td class="text-center"><?php echo $row['dni'];?></td>
                             <td class="text-center"><?php echo $row['enrollment'];?></td>
                             <td class="text-center"><?php echo $row['email'];?></td>
                             <td class="text-center"><?php echo $status_label; ?></td>
-                            <td class="text-center display-column"><?php echo $row['birthday']; ?></td> 
-                            <td class="text-center display-column"><?php echo $row['phone_cel']; ?></td> 
-                            <td class="text-center display-column"><?php echo $row['phone_fij']; ?></td> 
-                            <td class="text-center display-column"><?php echo $row['state']; ?></td> 
-                            <td class="text-center display-column"><?php echo $row['postalcode']; ?></td> 
-                            <td class="text-center display-column"><?php echo $row['locality']; ?></td> 
-                            <td class="text-center display-column"><?php echo $row['neighborhood']; ?></td> 
-                            <td class="text-center display-column"><?php echo $row['address']; ?></td> 
-                            <td class="text-center display-column"><?php echo $row['address_line']; ?></td> 
+                            <td class="text-center display-column"><?php echo $row['birthday']; ?></td>
+                            <td class="text-center display-column"><?php echo $row['phone_cel']; ?></td>
+                            <td class="text-center display-column"><?php echo $row['phone_fij']; ?></td>
+                            <td class="text-center display-column"><?php echo $row['state']; ?></td>
+                            <td class="text-center display-column"><?php echo $row['postalcode']; ?></td>
+                            <td class="text-center display-column"><?php echo $row['locality']; ?></td>
+                            <td class="text-center display-column"><?php echo $row['neighborhood']; ?></td>
+                            <td class="text-center display-column"><?php echo $row['address']; ?></td>
+                            <td class="text-center display-column"><?php echo $row['address_line']; ?></td>
                             <td class="text-center">
                                 <a href="<?php echo base_url();?>index.php?admin/view_student_academic_history/<?php echo $row['student_id'];?>" class="btn btn-table btn-white btn-info-hover" title="<?php echo ucfirst(get_phrase('view_profile')); ?>">
                                     <i class="entypo-eye"></i>
                                 </a>
                             </td>
-                         
                         </tr>
                         <?php endforeach;?>
                     </tbody>
                 </table>
-                    
             </div>
-       
-
         </div>
-        
-        
     </div>
 </div>
 

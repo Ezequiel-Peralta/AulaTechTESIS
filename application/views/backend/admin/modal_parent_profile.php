@@ -1,5 +1,5 @@
 <?php
-$parent_info	=	$this->crudParent->get_parent_info($param2);
+$parent_info	=	$this->Guardian_model->get_parent_info($param2);
 foreach($parent_info as $row):?>
 
 <div class="profile-env">
