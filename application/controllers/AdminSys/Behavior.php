@@ -139,18 +139,33 @@ class Behavior extends CI_Controller
                 'status_id' => 1
             );
 
-            $this->Behavior_model->create_behavior($data);
+            $success = $this->Behavior_model->create_behavior($data);
 
-            $this->session->set_flashdata('flash_message', array(
-                'title' => ucfirst(get_phrase('student_behavior_added_successfully')),
-                'text' => '',
-                'icon' => 'success',
-                'showCloseButton' => 'true',
-                'confirmButtonText' => ucfirst(get_phrase('accept')),
-                'confirmButtonColor' => '#1a92c4',
-                'timer' => '10000',
-                'timerProgressBar' => 'true',
-            ));
+            if ($success) {
+                // Mensaje de exito
+                $this->session->set_flashdata('flash_message', array(
+                    'title' => ucfirst(get_phrase('student_behavior_added_successfully')),
+                    'text' => '',
+                    'icon' => 'success',
+                    'showCloseButton' => 'true',
+                    'confirmButtonText' => ucfirst(get_phrase('accept')),
+                    'confirmButtonColor' => '#1a92c4',
+                    'timer' => '10000',
+                    'timerProgressBar' => 'true',
+                ));
+            } else {
+                // Mensaje de error
+                $this->session->set_flashdata('flash_message', array(
+                    'title' => ucfirst(get_phrase('error_adding_behavior')),
+                    'text' => '',
+                    'icon' => 'error',
+                    'showCloseButton' => 'true',
+                    'confirmButtonText' => ucfirst(get_phrase('accept')),
+                    'confirmButtonColor' => '#d9534f',
+                    'timer' => '10000',
+                    'timerProgressBar' => 'true',
+                ));
+            }
             redirect(base_url() . 'index.php?admin/student_behavior/' . $data['student_id'], 'refresh');
         }
 

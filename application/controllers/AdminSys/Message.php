@@ -9,6 +9,9 @@ class Message extends CI_Controller
 		$this->load->database();
         $this->load->library('session');
 
+        $this->load->model('message/Message_model');
+        $this->load->library('message_service');
+
         date_default_timezone_set('America/Argentina/Buenos_Aires');
 		
        /*cache control*/
@@ -24,137 +27,13 @@ class Message extends CI_Controller
     
         $user_id = $this->session->userdata('login_user_id');
         $user_group = $this->session->userdata('login_type');
-        
-        $this->db->select('COUNT(*) as unread_count');
-        $this->db->from('message_thread');
-
-        // Realizar un INNER JOIN con user_message_thread_status usando el message_thread_code
-        $this->db->join('user_message_thread_status', 'message_thread.message_thread_code = user_message_thread_status.message_thread_code', 'inner');
-        $this->db->join('user_message_status', 'message_thread.message_thread_code = user_message_status.message_thread_code', 'inner');
-
-        // Agrupar las condiciones relacionadas con el usuario
-        $this->db->group_start();
-        $this->db->where('message_thread.sender_id', $user_id);
-        $this->db->where('message_thread.sender_group', $user_group);
-        $this->db->or_where('message_thread.receiver_id', $user_id);
-        $this->db->where('message_thread.receiver_group', $user_group);
-
-        // Comprobar si el usuario está en cc (LIKE para buscar en el JSON almacenado como string)
-        $this->db->or_where('message_thread.cc_users_ids LIKE \'%"' . $user_id . '"%\'');
-        $this->db->or_where('message_thread.cc_groups LIKE \'%"' . $user_group . '"%\'');
-
-        // Comprobar si el usuario está en bcc
-        $this->db->or_where('message_thread.bcc_users_ids LIKE \'%"' . $user_id . '"%\'');
-        $this->db->or_where('message_thread.bcc_groups LIKE \'%"' . $user_group . '"%\'');
-
-        $this->db->group_end();
-
-        // Agregar condiciones para el estado del mensaje
-        $this->db->where('user_message_thread_status.user_id', $user_id);
-        $this->db->where('user_message_thread_status.user_group', $user_group);
-
-        // Asegúrate de que los mensajes no estén en la papelera o como borradores
-        $this->db->where('user_message_thread_status.is_trash', 0);
-        $this->db->where('user_message_thread_status.is_draft', 0);
-
-        $this->db->where('user_message_status.user_id', $user_id);
-        $this->db->where('user_message_status.user_group', $user_group);
-        // Filtrar por mensajes no leídos
-        $this->db->where('user_message_status.new_messages_count >', 0);
-
-        // Ejecutar la consulta
-        $unread_count_query = $this->db->get();
-        $unread_count_result = $unread_count_query->row_array();
-        $unread_count = isset($unread_count_result['unread_count']) ? $unread_count_result['unread_count'] : 0;
- 
-         $this->db->select('COUNT(*) as received_count');
-         $this->db->from('message_thread');
-         
-         // Realizar un INNER JOIN con user_message_thread_status
-         $this->db->join('user_message_thread_status', 'message_thread.message_thread_code = user_message_thread_status.message_thread_code', 'inner');
-         
-         $this->db->where('message_thread.is_trash', 0);
-
-         $this->db->group_start();
-         $this->db->where('message_thread.sender_id', $user_id);
-         $this->db->where('message_thread.sender_group', $user_group);
-         $this->db->or_where('message_thread.receiver_id', $user_id);
-         $this->db->where('message_thread.receiver_group', $user_group);
-         
-         // Comprobar si el usuario está en cc (LIKE para buscar en el JSON almacenado como string)
-         $this->db->or_where('message_thread.cc_users_ids LIKE \'%"' . $user_id . '"%\'');
-         $this->db->where('message_thread.cc_groups LIKE \'%"' . $user_group . '"%\'');
-         
-         // Comprobar si el usuario está en bcc
-         $this->db->or_where('message_thread.bcc_users_ids LIKE \'%"' . $user_id . '"%\'');
-         $this->db->where('message_thread.bcc_groups LIKE \'%"' . $user_group . '"%\'');
-         $this->db->group_end();
-         
-         // Agregar condiciones para is_trash e is_draft
-         $this->db->where('user_message_thread_status.user_id', $user_id);
-         $this->db->where('user_message_thread_status.user_group', $user_group);
-         $this->db->where('user_message_thread_status.is_trash', 0);
-         $this->db->where('user_message_thread_status.is_draft', 0);
-         $this->db->where('(user_message_thread_status.is_trash_by_user_id = 0 OR user_message_thread_status.is_trash_by_user_id IS NULL)');
-         
-         $received_count_query = $this->db->get();
-         $received_count_result = $received_count_query->row_array();
-         $received_count = isset($received_count_result['received_count']) ? $received_count_result['received_count'] : 0;
-
-         $this->db->select('COUNT(*) as sent_count');
-         $this->db->from('message_thread');
-         $this->db->join('user_message_thread_status', 'message_thread.message_thread_code = user_message_thread_status.message_thread_code', 'inner');
-         
-         $this->db->where('message_thread.sender_id', $user_id);
-         $this->db->where('message_thread.sender_group', $user_group);
-
-         $this->db->where('(user_message_thread_status.is_trash_by_user_id = 0 OR user_message_thread_status.is_trash_by_user_id IS NULL)');
-         $this->db->where('user_message_thread_status.user_id', $user_id);
-         $this->db->where('user_message_thread_status.user_group', $user_group);
-         $this->db->where('user_message_thread_status.is_trash', 0);
-         $this->db->where('user_message_thread_status.is_draft', 0);
-         
-         $sent_count_query = $this->db->get();
-         $sent_count_result = $sent_count_query->row_array();
-         $sent_count = isset($sent_count_result['sent_count']) ? $sent_count_result['sent_count'] : 0;
- 
-           // Contar los borradores (draft_count)
-         $this->db->select('COUNT(*) as draft_count');
-         $this->db->from('user_message_thread_status');
-         
-         $this->db->where('user_id', $user_id);
-         $this->db->where('user_group', $user_group);
-         $this->db->where('is_draft', 1);
- 
-         // Ejecutar la consulta
-         $draft_count_query = $this->db->get();
-         $draft_count_result = $draft_count_query->row_array();
-         $draft_count = isset($draft_count_result['draft_count']) ? $draft_count_result['draft_count'] : 0;
- 
-         $this->db->select('COUNT(*) as trash_count');
-         $this->db->from('user_message_thread_status');
-         
-         $this->db->where('user_id', $user_id);
-         $this->db->where('user_group', $user_group);
-         $this->db->where('is_trash', 1);
- 
-         // Ejecutar la consulta
-         $trash_count_query = $this->db->get();
-         $trash_count_result = $trash_count_query->row_array();
-         $trash_count = isset($trash_count_result['trash_count']) ? $trash_count_result['trash_count'] : 0;
- 
- 
-         $this->db->select('COUNT(*) as favorite_count');
-         $this->db->from('user_message_thread_status');
-         
-         $this->db->where('user_id', $user_id);
-         $this->db->where('user_group', $user_group);
-         $this->db->where('is_favorite', 1);
- 
-         // Ejecutar la consulta
-         $favorite_count_query = $this->db->get();
-         $favorite_count_result = $favorite_count_query->row_array();
-         $favorite_count = isset($favorite_count_result['favorite_count']) ? $favorite_count_result['favorite_count'] : 0;
+       
+        $unread_count = $this->Message_model->get_unread_count($user_id, $user_group);
+        $received_count = $this->Message_model->get_received_count($user_id, $user_group);
+        $sent_count = $this->Message_model->get_sent_count($user_id, $user_group);
+        $draft_count = $this->Message_model->get_draft_count($user_id, $user_group);
+        $trash_count = $this->Message_model->get_trash_count($user_id, $user_group);
+        $favorite_count = $this->Message_model->get_favorite_count($user_id, $user_group);
 
          $message_counts = [
             'urgent' => 0,
@@ -424,110 +303,12 @@ class Message extends CI_Controller
         $user_id = $this->session->userdata('login_user_id');
         $user_group = $this->session->userdata('login_type');
         
-    
-         // Contar los mensajes no leídos (new_messages_count > 0)
-         $this->db->select('COUNT(*) as unread_count');
-         $this->db->from('user_message_status');
-         $this->db->where('user_id', $user_id);
-         $this->db->where('user_group', $user_group);
-         $this->db->where('new_messages_count >', 0);
-         
-         $unread_count_query = $this->db->get();
-         $unread_count_result = $unread_count_query->row_array();
-         $unread_count = isset($unread_count_result['unread_count']) ? $unread_count_result['unread_count'] : 0;
- 
-         $this->db->select('COUNT(*) as received_count');
-         $this->db->from('message_thread');
-         
-         // Realizar un INNER JOIN con user_message_thread_status
-         $this->db->join('user_message_thread_status', 'message_thread.message_thread_code = user_message_thread_status.message_thread_code', 'inner');
-         
-         $this->db->group_start();
-         $this->db->where('message_thread.sender_id', $user_id);
-         $this->db->where('message_thread.sender_group', $user_group);
-         $this->db->or_where('message_thread.receiver_id', $user_id);
-         $this->db->where('message_thread.receiver_group', $user_group);
-         
-         // Comprobar si el usuario está en cc (LIKE para buscar en el JSON almacenado como string)
-         $this->db->or_where('message_thread.cc_users_ids LIKE \'%"' . $user_id . '"%\'');
-         $this->db->or_where('message_thread.cc_groups LIKE \'%"' . $user_group . '"%\'');
-         
-         // Comprobar si el usuario está en bcc
-         $this->db->or_where('message_thread.bcc_users_ids LIKE \'%"' . $user_id . '"%\'');
-         $this->db->or_where('message_thread.bcc_groups LIKE \'%"' . $user_group . '"%\'');
-         $this->db->group_end();
-         
-         // Agregar condiciones para is_trash e is_draft
-         $this->db->where('user_message_thread_status.user_id', $user_id);
-         $this->db->where('user_message_thread_status.user_group', $user_group);
-         $this->db->where('user_message_thread_status.is_trash', 0);
-         $this->db->where('user_message_thread_status.is_draft', 0);
-         
-         $received_count_query = $this->db->get();
-         $received_count_result = $received_count_query->row_array();
-         $received_count = isset($received_count_result['received_count']) ? $received_count_result['received_count'] : 0;
-
-         $this->db->select('COUNT(*) as sent_count');
-         $this->db->from('message_thread');
-         $this->db->join('user_message_thread_status', 'message_thread.message_thread_code = user_message_thread_status.message_thread_code', 'inner');
-         $this->db->where('message_thread.sender_id', $user_id);
-         $this->db->where('message_thread.sender_group', $user_group);
-         $this->db->where('user_message_thread_status.user_id', $user_id);
-         $this->db->where('user_message_thread_status.user_group', $user_group);
-         $this->db->where('user_message_thread_status.is_trash', 0);
-         $this->db->where('user_message_thread_status.is_draft', 0);
-         
-         $sent_count_query = $this->db->get();
-         $sent_count_result = $sent_count_query->row_array();
-         $sent_count = isset($sent_count_result['sent_count']) ? $sent_count_result['sent_count'] : 0;
- 
-           // Contar los borradores (draft_count)
-         $this->db->select('COUNT(*) as draft_count');
-         $this->db->from('user_message_thread_status');
-         
-         $this->db->where('user_id', $user_id);
-         $this->db->where('user_group', $user_group);
-         $this->db->where('is_draft', 1);
- 
-         // Ejecutar la consulta
-         $draft_count_query = $this->db->get();
-         $draft_count_result = $draft_count_query->row_array();
-         $draft_count = isset($draft_count_result['draft_count']) ? $draft_count_result['draft_count'] : 0;
- 
-         $this->db->select('COUNT(*) as trash_count');
-         $this->db->from('user_message_thread_status');
-         
-         $this->db->where('user_id', $user_id);
-         $this->db->where('user_group', $user_group);
-         $this->db->where('is_trash', 1);
- 
-         // Ejecutar la consulta
-         $trash_count_query = $this->db->get();
-         $trash_count_result = $trash_count_query->row_array();
-         $trash_count = isset($trash_count_result['trash_count']) ? $trash_count_result['trash_count'] : 0;
- 
- 
-        $this->db->select('COUNT(*) as favorite_count');
-        $this->db->from('message_thread');
-
-        // Unir con la tabla user_message_thread_status
-        $this->db->join('user_message_thread_status', 'message_thread.message_thread_code = user_message_thread_status.message_thread_code', 'inner');
-
-        // Filtrar por usuario, grupo y hilos marcados como favoritos
-        $this->db->where('user_message_thread_status.user_id', $user_id);
-        $this->db->where('user_message_thread_status.user_group', $user_group);
-        $this->db->where('user_message_thread_status.is_favorite', 1);
-
-        // Filtrar por mensajes que no están en la papelera o como borradores
-        $this->db->where('user_message_thread_status.is_trash', 0);
-        $this->db->where('user_message_thread_status.is_draft', 0);
-        $this->db->where('(user_message_thread_status.is_trash_by_user_id = 0 OR user_message_thread_status.is_trash_by_user_id IS NULL)');
-
-        // Ejecutar la consulta
-        $favorite_count_query = $this->db->get();
-        $favorite_count_result = $favorite_count_query->row_array();
-        $favorite_count = isset($favorite_count_result['favorite_count']) ? $favorite_count_result['favorite_count'] : 0;
-
+        $unread_count = $this->Message_model->get_unread_count($user_id, $user_group);
+        $received_count = $this->Message_model->get_received_count($user_id, $user_group);
+        $sent_count = $this->Message_model->get_sent_count($user_id, $user_group);
+        $draft_count = $this->Message_model->get_draft_count($user_id, $user_group);
+        $trash_count = $this->Message_model->get_trash_count($user_id, $user_group);
+        $favorite_count = $this->Message_model->get_favorite_count($user_id, $user_group);
 
         $message_counts = [
             'urgent' => 0,
@@ -788,139 +569,14 @@ class Message extends CI_Controller
     
         $user_id = $this->session->userdata('login_user_id');
         $user_group = $this->session->userdata('login_type');
+
+        $unread_count = $this->Message_model->get_unread_count($user_id, $user_group);
+        $received_count = $this->Message_model->get_received_count($user_id, $user_group);
+        $sent_count = $this->Message_model->get_sent_count($user_id, $user_group);
+        $draft_count = $this->Message_model->get_draft_count($user_id, $user_group);
+        $trash_count = $this->Message_model->get_trash_count($user_id, $user_group);
+        $favorite_count = $this->Message_model->get_favorite_count($user_id, $user_group);
         
-        $this->db->select('COUNT(*) as unread_count');
-        $this->db->from('message_thread');
-
-        // Realizar un INNER JOIN con user_message_thread_status usando el message_thread_code
-        $this->db->join('user_message_thread_status', 'message_thread.message_thread_code = user_message_thread_status.message_thread_code', 'inner');
-        $this->db->join('user_message_status', 'message_thread.message_thread_code = user_message_status.message_thread_code', 'inner');
-
-        // Agrupar las condiciones relacionadas con el usuario
-        $this->db->group_start();
-        $this->db->where('message_thread.sender_id', $user_id);
-        $this->db->where('message_thread.sender_group', $user_group);
-        $this->db->or_where('message_thread.receiver_id', $user_id);
-        $this->db->where('message_thread.receiver_group', $user_group);
-
-        // Comprobar si el usuario está en cc (LIKE para buscar en el JSON almacenado como string)
-        $this->db->or_where('message_thread.cc_users_ids LIKE \'%"' . $user_id . '"%\'');
-        $this->db->or_where('message_thread.cc_groups LIKE \'%"' . $user_group . '"%\'');
-
-        // Comprobar si el usuario está en bcc
-        $this->db->or_where('message_thread.bcc_users_ids LIKE \'%"' . $user_id . '"%\'');
-        $this->db->or_where('message_thread.bcc_groups LIKE \'%"' . $user_group . '"%\'');
-
-        $this->db->group_end();
-
-        // Agregar condiciones para el estado del mensaje
-        $this->db->where('user_message_thread_status.user_id', $user_id);
-        $this->db->where('user_message_thread_status.user_group', $user_group);
-
-        // Asegúrate de que los mensajes no estén en la papelera o como borradores
-        $this->db->where('user_message_thread_status.is_trash', 0);
-        $this->db->where('user_message_thread_status.is_draft', 0);
-
-        $this->db->where('user_message_status.user_id', $user_id);
-        $this->db->where('user_message_status.user_group', $user_group);
-        // Filtrar por mensajes no leídos
-        $this->db->where('user_message_status.new_messages_count >', 0);
-
-        // Ejecutar la consulta
-        $unread_count_query = $this->db->get();
-        $unread_count_result = $unread_count_query->row_array();
-        $unread_count = isset($unread_count_result['unread_count']) ? $unread_count_result['unread_count'] : 0;
- 
-         $this->db->select('COUNT(*) as received_count');
-         $this->db->from('message_thread');
-         
-         // Realizar un INNER JOIN con user_message_thread_status
-         $this->db->join('user_message_thread_status', 'message_thread.message_thread_code = user_message_thread_status.message_thread_code', 'inner');
-         
-         $this->db->where('message_thread.is_trash', 0);
-
-         $this->db->group_start();
-         $this->db->where('message_thread.sender_id', $user_id);
-         $this->db->where('message_thread.sender_group', $user_group);
-         $this->db->or_where('message_thread.receiver_id', $user_id);
-         $this->db->where('message_thread.receiver_group', $user_group);
-         
-         // Comprobar si el usuario está en cc (LIKE para buscar en el JSON almacenado como string)
-         $this->db->or_where('message_thread.cc_users_ids LIKE \'%"' . $user_id . '"%\'');
-         $this->db->where('message_thread.cc_groups LIKE \'%"' . $user_group . '"%\'');
-         
-         // Comprobar si el usuario está en bcc
-         $this->db->or_where('message_thread.bcc_users_ids LIKE \'%"' . $user_id . '"%\'');
-         $this->db->where('message_thread.bcc_groups LIKE \'%"' . $user_group . '"%\'');
-         $this->db->group_end();
-         
-         // Agregar condiciones para is_trash e is_draft
-         $this->db->where('user_message_thread_status.user_id', $user_id);
-         $this->db->where('user_message_thread_status.user_group', $user_group);
-         $this->db->where('user_message_thread_status.is_trash', 0);
-         $this->db->where('user_message_thread_status.is_draft', 0);
-         $this->db->where('(user_message_thread_status.is_trash_by_user_id = 0 OR user_message_thread_status.is_trash_by_user_id IS NULL)');
-         
-         $received_count_query = $this->db->get();
-         $received_count_result = $received_count_query->row_array();
-         $received_count = isset($received_count_result['received_count']) ? $received_count_result['received_count'] : 0;
-
-         $this->db->select('COUNT(*) as sent_count');
-         $this->db->from('message_thread');
-         $this->db->join('user_message_thread_status', 'message_thread.message_thread_code = user_message_thread_status.message_thread_code', 'inner');
-         
-         $this->db->where('message_thread.sender_id', $user_id);
-         $this->db->where('message_thread.sender_group', $user_group);
-
-         $this->db->where('(user_message_thread_status.is_trash_by_user_id = 0 OR user_message_thread_status.is_trash_by_user_id IS NULL)');
-         $this->db->where('user_message_thread_status.user_id', $user_id);
-         $this->db->where('user_message_thread_status.user_group', $user_group);
-         $this->db->where('user_message_thread_status.is_trash', 0);
-         $this->db->where('user_message_thread_status.is_draft', 0);
-         
-         $sent_count_query = $this->db->get();
-         $sent_count_result = $sent_count_query->row_array();
-         $sent_count = isset($sent_count_result['sent_count']) ? $sent_count_result['sent_count'] : 0;
- 
-           // Contar los borradores (draft_count)
-         $this->db->select('COUNT(*) as draft_count');
-         $this->db->from('user_message_thread_status');
-         
-         $this->db->where('user_id', $user_id);
-         $this->db->where('user_group', $user_group);
-         $this->db->where('is_draft', 1);
- 
-         // Ejecutar la consulta
-         $draft_count_query = $this->db->get();
-         $draft_count_result = $draft_count_query->row_array();
-         $draft_count = isset($draft_count_result['draft_count']) ? $draft_count_result['draft_count'] : 0;
- 
-         $this->db->select('COUNT(*) as trash_count');
-         $this->db->from('user_message_thread_status');
-         
-         $this->db->where('user_id', $user_id);
-         $this->db->where('user_group', $user_group);
-         $this->db->where('is_trash', 1);
- 
-         // Ejecutar la consulta
-         $trash_count_query = $this->db->get();
-         $trash_count_result = $trash_count_query->row_array();
-         $trash_count = isset($trash_count_result['trash_count']) ? $trash_count_result['trash_count'] : 0;
- 
- 
-         $this->db->select('COUNT(*) as favorite_count');
-         $this->db->from('user_message_thread_status');
-         
-         $this->db->where('user_id', $user_id);
-         $this->db->where('user_group', $user_group);
-         $this->db->where('is_favorite', 1);
- 
-         // Ejecutar la consulta
-         $favorite_count_query = $this->db->get();
-         $favorite_count_result = $favorite_count_query->row_array();
-         $favorite_count = isset($favorite_count_result['favorite_count']) ? $favorite_count_result['favorite_count'] : 0;
-
-
          $message_counts = [
             'urgent' => 0,
             'homework' => 0,
@@ -1210,118 +866,13 @@ class Message extends CI_Controller
     
         $user_id = $this->session->userdata('login_user_id');
         $user_group = $this->session->userdata('login_type');
-        
     
-         // Contar los mensajes no leídos (new_messages_count > 0)
-         $this->db->select('COUNT(*) as unread_count');
-         $this->db->from('user_message_status');
-         $this->db->where('user_id', $user_id);
-         $this->db->where('user_group', $user_group);
-         $this->db->where('new_messages_count >', 0);
-         
-         $unread_count_query = $this->db->get();
-         $unread_count_result = $unread_count_query->row_array();
-         $unread_count = isset($unread_count_result['unread_count']) ? $unread_count_result['unread_count'] : 0;
- 
-         $this->db->select('COUNT(*) as received_count');
-         $this->db->from('message_thread');
-         
-         // Realizar un INNER JOIN con user_message_thread_status
-         $this->db->join('user_message_thread_status', 'message_thread.message_thread_code = user_message_thread_status.message_thread_code', 'inner');
-         
-         $this->db->group_start();
-         $this->db->where('message_thread.sender_id', $user_id);
-         $this->db->where('message_thread.sender_group', $user_group);
-         $this->db->or_where('message_thread.receiver_id', $user_id);
-         $this->db->where('message_thread.receiver_group', $user_group);
-         
-         // Comprobar si el usuario está en cc (LIKE para buscar en el JSON almacenado como string)
-         $this->db->or_where('message_thread.cc_users_ids LIKE \'%"' . $user_id . '"%\'');
-         $this->db->or_where('message_thread.cc_groups LIKE \'%"' . $user_group . '"%\'');
-         
-         // Comprobar si el usuario está en bcc
-         $this->db->or_where('message_thread.bcc_users_ids LIKE \'%"' . $user_id . '"%\'');
-         $this->db->or_where('message_thread.bcc_groups LIKE \'%"' . $user_group . '"%\'');
-         $this->db->group_end();
-         
-         // Agregar condiciones para is_trash e is_draft
-         $this->db->where('user_message_thread_status.user_id', $user_id);
-         $this->db->where('user_message_thread_status.user_group', $user_group);
-         $this->db->where('user_message_thread_status.is_trash', 0);
-         $this->db->where('user_message_thread_status.is_draft', 0);
-         
-         $received_count_query = $this->db->get();
-         $received_count_result = $received_count_query->row_array();
-         $received_count = isset($received_count_result['received_count']) ? $received_count_result['received_count'] : 0;
-
-         $this->db->select('COUNT(*) as sent_count');
-         $this->db->from('message_thread');
-         $this->db->join('user_message_thread_status', 'message_thread.message_thread_code = user_message_thread_status.message_thread_code', 'inner');
-         $this->db->where('message_thread.sender_id', $user_id);
-         $this->db->where('message_thread.sender_group', $user_group);
-         $this->db->where('user_message_thread_status.user_id', $user_id);
-         $this->db->where('user_message_thread_status.user_group', $user_group);
-         $this->db->where('user_message_thread_status.is_trash', 0);
-         $this->db->where('user_message_thread_status.is_draft', 0);
-         
-         $sent_count_query = $this->db->get();
-         $sent_count_result = $sent_count_query->row_array();
-         $sent_count = isset($sent_count_result['sent_count']) ? $sent_count_result['sent_count'] : 0;
- 
-         $this->db->select('COUNT(*) as draft_count');
-        $this->db->from('message_thread');
-
-        // Unir con la tabla user_message_thread_status
-        $this->db->join('user_message_thread_status', 'message_thread.message_thread_code = user_message_thread_status.message_thread_code', 'inner');
-
-        // Filtrar por usuario, grupo y hilos marcados como borradores
-        $this->db->where('user_message_thread_status.user_id', $user_id);
-        $this->db->where('user_message_thread_status.user_group', $user_group);
-        $this->db->where('user_message_thread_status.is_draft', 1);
-
-        // Filtrar por mensajes que no están en la papelera
-        $this->db->where('user_message_thread_status.is_trash', 0);
-        $this->db->where('(user_message_thread_status.is_trash_by_user_id = 0 OR user_message_thread_status.is_trash_by_user_id IS NULL)');
-
-        // Ejecutar la consulta
-        $draft_count_query = $this->db->get();
-        $draft_count_result = $draft_count_query->row_array();
-        $draft_count = isset($draft_count_result['draft_count']) ? $draft_count_result['draft_count'] : 0;
-
- 
-        $this->db->select('COUNT(*) as trash_count');
-        $this->db->from('message_thread');
-
-        // Unir con la tabla user_message_thread_status
-        $this->db->join('user_message_thread_status', 'message_thread.message_thread_code = user_message_thread_status.message_thread_code', 'inner');
-
-        // Filtrar por usuario, grupo y hilos que están en la papelera
-        $this->db->where('user_message_thread_status.user_id', $user_id);
-        $this->db->where('user_message_thread_status.user_group', $user_group);
-        $this->db->where('user_message_thread_status.is_trash', 1);
-        $this->db->where('user_message_thread_status.is_draft', 0);
-
-        // Ejecutar la consulta
-        $trash_count_query = $this->db->get();
-        $trash_count_result = $trash_count_query->row_array();
-        $trash_count = isset($trash_count_result['trash_count']) ? $trash_count_result['trash_count'] : 0;
-
- 
- 
-         $this->db->select('COUNT(*) as favorite_count');
-         $this->db->from('user_message_thread_status');
-         
-         $this->db->where('user_id', $user_id);
-         $this->db->where('user_group', $user_group);
-         $this->db->where('is_favorite', 1);
-         $this->db->where('is_trash', 0);
-         $this->db->where('is_draft', 0);
- 
-         // Ejecutar la consulta
-         $favorite_count_query = $this->db->get();
-         $favorite_count_result = $favorite_count_query->row_array();
-         $favorite_count = isset($favorite_count_result['favorite_count']) ? $favorite_count_result['favorite_count'] : 0;
-
+        $unread_count = $this->Message_model->get_unread_count($user_id, $user_group);
+        $received_count = $this->Message_model->get_received_count($user_id, $user_group);
+        $sent_count = $this->Message_model->get_sent_count($user_id, $user_group);
+        $draft_count = $this->Message_model->get_draft_count($user_id, $user_group);
+        $trash_count = $this->Message_model->get_trash_count($user_id, $user_group);
+        $favorite_count = $this->Message_model->get_favorite_count($user_id, $user_group);
 
          $message_counts = [
             'urgent' => 0,
@@ -1583,107 +1134,13 @@ class Message extends CI_Controller
         $user_id = $this->session->userdata('login_user_id');
         $user_group = $this->session->userdata('login_type');
         
+        $unread_count = $this->Message_model->get_unread_count($user_id, $user_group);
+        $received_count = $this->Message_model->get_received_count($user_id, $user_group);
+        $sent_count = $this->Message_model->get_sent_count($user_id, $user_group);
+        $draft_count = $this->Message_model->get_draft_count($user_id, $user_group);
+        $trash_count = $this->Message_model->get_trash_count($user_id, $user_group);
+        $favorite_count = $this->Message_model->get_favorite_count($user_id, $user_group);
     
-         // Contar los mensajes no leídos (new_messages_count > 0)
-         $this->db->select('COUNT(*) as unread_count');
-         $this->db->from('user_message_status');
-         $this->db->where('user_id', $user_id);
-         $this->db->where('user_group', $user_group);
-         $this->db->where('new_messages_count >', 0);
-         
-         $unread_count_query = $this->db->get();
-         $unread_count_result = $unread_count_query->row_array();
-         $unread_count = isset($unread_count_result['unread_count']) ? $unread_count_result['unread_count'] : 0;
- 
-         $this->db->select('COUNT(*) as received_count');
-         $this->db->from('message_thread');
-         
-         // Realizar un INNER JOIN con user_message_thread_status
-         $this->db->join('user_message_thread_status', 'message_thread.message_thread_code = user_message_thread_status.message_thread_code', 'inner');
-         
-         $this->db->group_start();
-         $this->db->where('message_thread.sender_id', $user_id);
-         $this->db->where('message_thread.sender_group', $user_group);
-         $this->db->or_where('message_thread.receiver_id', $user_id);
-         $this->db->where('message_thread.receiver_group', $user_group);
-         
-         // Comprobar si el usuario está en cc (LIKE para buscar en el JSON almacenado como string)
-         $this->db->or_where('message_thread.cc_users_ids LIKE \'%"' . $user_id . '"%\'');
-         $this->db->or_where('message_thread.cc_groups LIKE \'%"' . $user_group . '"%\'');
-         
-         // Comprobar si el usuario está en bcc
-         $this->db->or_where('message_thread.bcc_users_ids LIKE \'%"' . $user_id . '"%\'');
-         $this->db->or_where('message_thread.bcc_groups LIKE \'%"' . $user_group . '"%\'');
-         $this->db->group_end();
-         
-         // Agregar condiciones para is_trash e is_draft
-         $this->db->where('user_message_thread_status.user_id', $user_id);
-         $this->db->where('user_message_thread_status.user_group', $user_group);
-         $this->db->where('user_message_thread_status.is_trash', 0);
-         $this->db->where('user_message_thread_status.is_draft', 0);
-         
-         $received_count_query = $this->db->get();
-         $received_count_result = $received_count_query->row_array();
-         $received_count = isset($received_count_result['received_count']) ? $received_count_result['received_count'] : 0;
-
-         $this->db->select('COUNT(*) as sent_count');
-         $this->db->from('message_thread');
-         $this->db->join('user_message_thread_status', 'message_thread.message_thread_code = user_message_thread_status.message_thread_code', 'inner');
-         $this->db->where('message_thread.sender_id', $user_id);
-         $this->db->where('message_thread.sender_group', $user_group);
-         $this->db->where('user_message_thread_status.user_id', $user_id);
-         $this->db->where('user_message_thread_status.user_group', $user_group);
-         $this->db->where('user_message_thread_status.is_trash', 0);
-         $this->db->where('user_message_thread_status.is_draft', 0);
-         
-         $sent_count_query = $this->db->get();
-         $sent_count_result = $sent_count_query->row_array();
-         $sent_count = isset($sent_count_result['sent_count']) ? $sent_count_result['sent_count'] : 0;
- 
-           // Contar los borradores (draft_count)
-         $this->db->select('COUNT(*) as draft_count');
-         $this->db->from('user_message_thread_status');
-         
-         $this->db->where('user_id', $user_id);
-         $this->db->where('user_group', $user_group);
-         $this->db->where('is_draft', 1);
- 
-         // Ejecutar la consulta
-         $draft_count_query = $this->db->get();
-         $draft_count_result = $draft_count_query->row_array();
-         $draft_count = isset($draft_count_result['draft_count']) ? $draft_count_result['draft_count'] : 0;
- 
-         $this->db->select('COUNT(*) as trash_count');
-         $this->db->from('user_message_thread_status');
-         
-         // Filtrar por usuario, grupo y mensajes en papelera
-         $this->db->where('user_id', $user_id);
-         $this->db->where('user_group', $user_group);
-         $this->db->where('is_trash', 1);
-         
-         // Excluir mensajes que están como borradores
-         $this->db->where('is_draft', 0);
-         
-         // Ejecutar la consulta
-         $trash_count_query = $this->db->get();
-         $trash_count_result = $trash_count_query->row_array();
-         $trash_count = isset($trash_count_result['trash_count']) ? $trash_count_result['trash_count'] : 0;
-         
- 
- 
-         $this->db->select('COUNT(*) as favorite_count');
-         $this->db->from('user_message_thread_status');
-         
-         $this->db->where('user_id', $user_id);
-         $this->db->where('user_group', $user_group);
-         $this->db->where('is_favorite', 1);
- 
-         // Ejecutar la consulta
-         $favorite_count_query = $this->db->get();
-         $favorite_count_result = $favorite_count_query->row_array();
-         $favorite_count = isset($favorite_count_result['favorite_count']) ? $favorite_count_result['favorite_count'] : 0;
-
-
          $message_counts = [
             'urgent' => 0,
             'homework' => 0,
@@ -1950,122 +1407,14 @@ class Message extends CI_Controller
         $user_id = $this->session->userdata('login_user_id');
         $user_group = $this->session->userdata('login_type');
 
-        // Contar los mensajes no leídos (new_messages_count > 0)
-        $this->db->select('COUNT(*) as unread_count');
-        $this->db->from('user_message_status');
-        $this->db->where('user_id', $user_id);
-        $this->db->where('user_group', $user_group);
-        $this->db->where('new_messages_count >', 0);
         
-        $unread_count_query = $this->db->get();
-        $unread_count_result = $unread_count_query->row_array();
-        $unread_count = isset($unread_count_result['unread_count']) ? $unread_count_result['unread_count'] : 0;
+        $unread_count = $this->Message_model->get_unread_count($user_id, $user_group);
+        $received_count = $this->Message_model->get_received_count($user_id, $user_group);
+        $sent_count = $this->Message_model->get_sent_count($user_id, $user_group);
+        $draft_count = $this->Message_model->get_draft_count($user_id, $user_group);
+        $trash_count = $this->Message_model->get_trash_count($user_id, $user_group);
+        $favorite_count = $this->Message_model->get_favorite_count($user_id, $user_group);
 
-        $this->db->select('COUNT(*) as received_count');
-        $this->db->from('message_thread');
-        
-        // Realizar un INNER JOIN con user_message_thread_status
-        $this->db->join('user_message_thread_status', 'message_thread.message_thread_code = user_message_thread_status.message_thread_code', 'inner');
-        
-        $this->db->group_start();
-        $this->db->where('message_thread.sender_id', $user_id);
-        $this->db->where('message_thread.sender_group', $user_group);
-        $this->db->or_where('message_thread.receiver_id', $user_id);
-        $this->db->where('message_thread.receiver_group', $user_group);
-        
-        // Comprobar si el usuario está en cc (LIKE para buscar en el JSON almacenado como string)
-        $this->db->or_where('message_thread.cc_users_ids LIKE \'%"' . $user_id . '"%\'');
-        $this->db->or_where('message_thread.cc_groups LIKE \'%"' . $user_group . '"%\'');
-        
-        // Comprobar si el usuario está en bcc
-        $this->db->or_where('message_thread.bcc_users_ids LIKE \'%"' . $user_id . '"%\'');
-        $this->db->or_where('message_thread.bcc_groups LIKE \'%"' . $user_group . '"%\'');
-        $this->db->group_end();
-        
-        // Agregar condiciones para is_trash e is_draft
-        $this->db->where('user_message_thread_status.user_id', $user_id);
-        $this->db->where('user_message_thread_status.user_group', $user_group);
-        $this->db->where('user_message_thread_status.is_trash', 0);
-        $this->db->where('user_message_thread_status.is_draft', 0);
-        
-        $received_count_query = $this->db->get();
-        $received_count_result = $received_count_query->row_array();
-        $received_count = isset($received_count_result['received_count']) ? $received_count_result['received_count'] : 0;
-
-
-        $this->db->select('COUNT(*) as sent_count');
-        $this->db->from('message_thread');
-        $this->db->join('user_message_thread_status', 'message_thread.message_thread_code = user_message_thread_status.message_thread_code', 'inner');
-        $this->db->where('message_thread.sender_id', $user_id);
-        $this->db->where('message_thread.sender_group', $user_group);
-        $this->db->where('user_message_thread_status.user_id', $user_id);
-        $this->db->where('user_message_thread_status.user_group', $user_group);
-        $this->db->where('user_message_thread_status.is_trash', 0);
-        $this->db->where('user_message_thread_status.is_draft', 0);
-        
-        $sent_count_query = $this->db->get();
-        $sent_count_result = $sent_count_query->row_array();
-        $sent_count = isset($sent_count_result['sent_count']) ? $sent_count_result['sent_count'] : 0;
-
-          // Contar los borradores (draft_count)
-        $this->db->select('COUNT(*) as draft_count');
-        $this->db->from('user_message_thread_status');
-        
-        $this->db->where('user_id', $user_id);
-        $this->db->where('user_group', $user_group);
-        $this->db->where('message_thread_code', $message_thread_code);
-        $this->db->where('is_draft', 1);
-
-        // Ejecutar la consulta
-        $draft_count_query = $this->db->get();
-        $draft_count_result = $draft_count_query->row_array();
-        $draft_count = isset($draft_count_result['draft_count']) ? $draft_count_result['draft_count'] : 0;
-
-        $this->db->select('COUNT(*) as trash_count');
-        $this->db->from('user_message_thread_status');
-        
-        $this->db->where('user_id', $user_id);
-        $this->db->where('user_group', $user_group);
-        $this->db->where('message_thread_code', $message_thread_code);
-        $this->db->where('is_trash', 1);
-
-        // Ejecutar la consulta
-        $trash_count_query = $this->db->get();
-        $trash_count_result = $trash_count_query->row_array();
-        $trash_count = isset($trash_count_result['trash_count']) ? $trash_count_result['trash_count'] : 0;
-
-
-
-        $this->db->select('COUNT(*) as favorite_count');
-        $this->db->from('user_message_thread_status');
-        
-        $this->db->where('user_id', $user_id);
-        $this->db->where('user_group', $user_group);
-        $this->db->where('message_thread_code', $message_thread_code);
-        $this->db->where('is_favorite', 1);
-
-        // Ejecutar la consulta
-        $favorite_count_query = $this->db->get();
-        $favorite_count_result = $favorite_count_query->row_array();
-        $favorite_count = isset($favorite_count_result['favorite_count']) ? $favorite_count_result['favorite_count'] : 0;
-
-
-
-        $this->db->select('is_favorite, is_trash, is_draft, trash_timestamp');
-        $this->db->from('user_message_thread_status');
-        $this->db->where('user_id', $user_id);
-        $this->db->where('user_group', $user_group);
-        $this->db->where('message_thread_code', $message_thread_code);
-        
-        // Ejecutar la consulta
-        $user_message_thread_status_query = $this->db->get();
-        $user_message_thread_status_result = $user_message_thread_status_query->row();
-        
-        $is_favorite = $user_message_thread_status_result->is_favorite; 
-        $is_trash = $user_message_thread_status_result->is_trash; 
-        $trash_timestamp = $user_message_thread_status_result->trash_timestamp;       
-        $is_draft = $user_message_thread_status_result->is_draft; 
-        
 
         $this->db->select('name, badge, label');
         $this->db->from('message_tag');
@@ -2398,138 +1747,13 @@ class Message extends CI_Controller
             $user_id = $this->session->userdata('login_user_id');
             $user_group = $this->session->userdata('login_type');
 
-            $this->db->select('COUNT(*) as unread_count');
-            $this->db->from('message_thread');
-    
-            // Realizar un INNER JOIN con user_message_thread_status usando el message_thread_code
-            $this->db->join('user_message_thread_status', 'message_thread.message_thread_code = user_message_thread_status.message_thread_code', 'inner');
-            $this->db->join('user_message_status', 'message_thread.message_thread_code = user_message_status.message_thread_code', 'inner');
-    
-            // Agrupar las condiciones relacionadas con el usuario
-            $this->db->group_start();
-            $this->db->where('message_thread.sender_id', $user_id);
-            $this->db->where('message_thread.sender_group', $user_group);
-            $this->db->or_where('message_thread.receiver_id', $user_id);
-            $this->db->where('message_thread.receiver_group', $user_group);
-    
-            // Comprobar si el usuario está en cc (LIKE para buscar en el JSON almacenado como string)
-            $this->db->or_where('message_thread.cc_users_ids LIKE \'%"' . $user_id . '"%\'');
-            $this->db->or_where('message_thread.cc_groups LIKE \'%"' . $user_group . '"%\'');
-    
-            // Comprobar si el usuario está en bcc
-            $this->db->or_where('message_thread.bcc_users_ids LIKE \'%"' . $user_id . '"%\'');
-            $this->db->or_where('message_thread.bcc_groups LIKE \'%"' . $user_group . '"%\'');
-    
-            $this->db->group_end();
-    
-            // Agregar condiciones para el estado del mensaje
-            $this->db->where('user_message_thread_status.user_id', $user_id);
-            $this->db->where('user_message_thread_status.user_group', $user_group);
-    
-            // Asegúrate de que los mensajes no estén en la papelera o como borradores
-            $this->db->where('user_message_thread_status.is_trash', 0);
-            $this->db->where('user_message_thread_status.is_draft', 0);
-    
-            $this->db->where('user_message_status.user_id', $user_id);
-            $this->db->where('user_message_status.user_group', $user_group);
-            // Filtrar por mensajes no leídos
-            $this->db->where('user_message_status.new_messages_count >', 0);
-    
-            // Ejecutar la consulta
-            $unread_count_query = $this->db->get();
-            $unread_count_result = $unread_count_query->row_array();
-            $unread_count = isset($unread_count_result['unread_count']) ? $unread_count_result['unread_count'] : 0;
-    
-
-            $this->db->select('COUNT(*) as received_count');
-            $this->db->from('message_thread');
-            
-            // Realizar un INNER JOIN con user_message_thread_status
-            $this->db->join('user_message_thread_status', 'message_thread.message_thread_code = user_message_thread_status.message_thread_code', 'inner');
-            
-            $this->db->where('message_thread.is_trash', 0);
-   
-            $this->db->group_start();
-            $this->db->where('message_thread.sender_id', $user_id);
-            $this->db->where('message_thread.sender_group', $user_group);
-            $this->db->or_where('message_thread.receiver_id', $user_id);
-            $this->db->where('message_thread.receiver_group', $user_group);
-            
-            // Comprobar si el usuario está en cc (LIKE para buscar en el JSON almacenado como string)
-            $this->db->or_where('message_thread.cc_users_ids LIKE \'%"' . $user_id . '"%\'');
-            $this->db->where('message_thread.cc_groups LIKE \'%"' . $user_group . '"%\'');
-            
-            // Comprobar si el usuario está en bcc
-            $this->db->or_where('message_thread.bcc_users_ids LIKE \'%"' . $user_id . '"%\'');
-            $this->db->where('message_thread.bcc_groups LIKE \'%"' . $user_group . '"%\'');
-            $this->db->group_end();
-            
-            // Agregar condiciones para is_trash e is_draft
-            $this->db->where('user_message_thread_status.user_id', $user_id);
-            $this->db->where('user_message_thread_status.user_group', $user_group);
-            $this->db->where('user_message_thread_status.is_trash', 0);
-            $this->db->where('user_message_thread_status.is_draft', 0);
-            $this->db->where('(user_message_thread_status.is_trash_by_user_id = 0 OR user_message_thread_status.is_trash_by_user_id IS NULL)');
-            
-            $received_count_query = $this->db->get();
-            $received_count_result = $received_count_query->row_array();
-            $received_count = isset($received_count_result['received_count']) ? $received_count_result['received_count'] : 0;
-   
-            $this->db->select('COUNT(*) as sent_count');
-            $this->db->from('message_thread');
-            $this->db->join('user_message_thread_status', 'message_thread.message_thread_code = user_message_thread_status.message_thread_code', 'inner');
-            
-            $this->db->where('message_thread.sender_id', $user_id);
-            $this->db->where('message_thread.sender_group', $user_group);
-   
-            $this->db->where('(user_message_thread_status.is_trash_by_user_id = 0 OR user_message_thread_status.is_trash_by_user_id IS NULL)');
-            $this->db->where('user_message_thread_status.user_id', $user_id);
-            $this->db->where('user_message_thread_status.user_group', $user_group);
-            $this->db->where('user_message_thread_status.is_trash', 0);
-            $this->db->where('user_message_thread_status.is_draft', 0);
-            
-            $sent_count_query = $this->db->get();
-            $sent_count_result = $sent_count_query->row_array();
-            $sent_count = isset($sent_count_result['sent_count']) ? $sent_count_result['sent_count'] : 0;
-    
-              // Contar los borradores (draft_count)
-            $this->db->select('COUNT(*) as draft_count');
-            $this->db->from('user_message_thread_status');
-            
-            $this->db->where('user_id', $user_id);
-            $this->db->where('user_group', $user_group);
-            $this->db->where('is_draft', 1);
-    
-            // Ejecutar la consulta
-            $draft_count_query = $this->db->get();
-            $draft_count_result = $draft_count_query->row_array();
-            $draft_count = isset($draft_count_result['draft_count']) ? $draft_count_result['draft_count'] : 0;
-    
-            $this->db->select('COUNT(*) as trash_count');
-            $this->db->from('user_message_thread_status');
-            
-            $this->db->where('user_id', $user_id);
-            $this->db->where('user_group', $user_group);
-            $this->db->where('is_trash', 1);
-    
-            // Ejecutar la consulta
-            $trash_count_query = $this->db->get();
-            $trash_count_result = $trash_count_query->row_array();
-            $trash_count = isset($trash_count_result['trash_count']) ? $trash_count_result['trash_count'] : 0;
-    
-    
-            $this->db->select('COUNT(*) as favorite_count');
-            $this->db->from('user_message_thread_status');
-            
-            $this->db->where('user_id', $user_id);
-            $this->db->where('user_group', $user_group);
-            $this->db->where('is_favorite', 1);
-    
-            // Ejecutar la consulta
-            $favorite_count_query = $this->db->get();
-            $favorite_count_result = $favorite_count_query->row_array();
-            $favorite_count = isset($favorite_count_result['favorite_count']) ? $favorite_count_result['favorite_count'] : 0;
-   
+            $unread_count = $this->Message_model->get_unread_count($user_id, $user_group);
+            $received_count = $this->Message_model->get_received_count($user_id, $user_group);
+            $sent_count = $this->Message_model->get_sent_count($user_id, $user_group);
+            $draft_count = $this->Message_model->get_draft_count($user_id, $user_group);
+            $trash_count = $this->Message_model->get_trash_count($user_id, $user_group);
+            $favorite_count = $this->Message_model->get_favorite_count($user_id, $user_group);
+          
             $message_counts = [
                'urgent' => 0,
                'homework' => 0,
@@ -3068,19 +2292,6 @@ class Message extends CI_Controller
                 }
             }
 
-    
-            // Mensaje de confirmación
-            // $this->session->set_flashdata('flash_message', array(
-            //     'title' => 'Mensaje enviado!',
-            //     'text' => '',
-            //     'icon' => 'success',
-            //     'showCloseButton' => 'true',
-            //     'confirmButtonText' => 'Aceptar',
-            //     'confirmButtonColor' => '#1a92c4',
-            //     'timer' => '10000',
-            //     'timerProgressBar' => 'true',
-            // ));
-    
             redirect(base_url() . 'index.php?admin/message_read/' . $message_thread_code, 'refresh');
         }
     
@@ -3119,138 +2330,14 @@ class Message extends CI_Controller
         $user_id = $this->session->userdata('login_user_id');
         $user_group = $this->session->userdata('login_type');
         
-    
-         // Contar los mensajes no leídos (new_messages_count > 0)
-        $this->db->select('COUNT(*) as unread_count');
-        $this->db->from('user_message_status');
-
-        // Unir la tabla message_thread a la consulta
-        $this->db->join('message_thread', 'message_thread.message_thread_code = user_message_status.message_thread_code', 'inner');
-
-        // Unir la tabla user_message_thread_status a la consulta
-        $this->db->join('user_message_thread_status', 'user_message_status.message_thread_code = user_message_thread_status.message_thread_code', 'inner');
-
-        // Filtrar por mensajes del usuario como sender o receiver
-        $this->db->group_start();
-        $this->db->where('message_thread.sender_id', $user_id);
-        $this->db->where('message_thread.sender_group', $user_group);
-        $this->db->or_where('message_thread.receiver_id', $user_id);
-        $this->db->where('message_thread.receiver_group', $user_group);
-
-        // Comprobar si el usuario está en cc (LIKE para buscar en el JSON almacenado como string)
-        $this->db->or_where('message_thread.cc_users_ids LIKE \'%"' . $user_id . '"%\'');
-        $this->db->or_where('message_thread.cc_groups LIKE \'%"' . $user_group . '"%\'');
-
-        // Comprobar si el usuario está en bcc
-        $this->db->or_where('message_thread.bcc_users_ids LIKE \'%"' . $user_id . '"%\'');
-        $this->db->or_where('message_thread.bcc_groups LIKE \'%"' . $user_group . '"%\'');
-
-        // Finalizar grupo de condiciones
-        $this->db->group_end();
-
-        // Agregar condiciones para is_trash e is_draft
-        $this->db->where('user_message_thread_status.user_id', $user_id);
-        $this->db->where('user_message_thread_status.user_group', $user_group);
-        $this->db->where('user_message_thread_status.is_trash', 0);
-        $this->db->where('user_message_thread_status.is_draft', 0);
-        $this->db->where('(user_message_thread_status.is_trash_by_user_id = 0 OR user_message_thread_status.is_trash_by_user_id IS NULL)');
-
-        // Condiciones adicionales para mensajes no leídos
-        $this->db->where('user_message_status.user_id', $user_id);
-        $this->db->where('user_message_status.user_group', $user_group);
-        $this->db->where('new_messages_count >', 0);
-
-        // Ejecutar la consulta
-        $unread_count_query = $this->db->get();
-        $unread_count_result = $unread_count_query->row_array();
-        $unread_count = isset($unread_count_result['unread_count']) ? $unread_count_result['unread_count'] : 0;
-
- 
-         $this->db->select('COUNT(*) as received_count');
-         $this->db->from('message_thread');
-         
-         // Realizar un INNER JOIN con user_message_thread_status
-         $this->db->join('user_message_thread_status', 'message_thread.message_thread_code = user_message_thread_status.message_thread_code', 'inner');
-         
-         $this->db->group_start();
-         $this->db->where('message_thread.sender_id', $user_id);
-         $this->db->where('message_thread.sender_group', $user_group);
-         $this->db->or_where('message_thread.receiver_id', $user_id);
-         $this->db->where('message_thread.receiver_group', $user_group);
-         
-         // Comprobar si el usuario está en cc (LIKE para buscar en el JSON almacenado como string)
-         $this->db->or_where('message_thread.cc_users_ids LIKE \'%"' . $user_id . '"%\'');
-         $this->db->or_where('message_thread.cc_groups LIKE \'%"' . $user_group . '"%\'');
-         
-         // Comprobar si el usuario está en bcc
-         $this->db->or_where('message_thread.bcc_users_ids LIKE \'%"' . $user_id . '"%\'');
-         $this->db->or_where('message_thread.bcc_groups LIKE \'%"' . $user_group . '"%\'');
-         $this->db->group_end();
-         
-         // Agregar condiciones para is_trash e is_draft
-         $this->db->where('user_message_thread_status.user_id', $user_id);
-         $this->db->where('user_message_thread_status.user_group', $user_group);
-         $this->db->where('user_message_thread_status.is_trash', 0);
-         $this->db->where('user_message_thread_status.is_draft', 0);
-         $this->db->where('(user_message_thread_status.is_trash_by_user_id = 0 OR user_message_thread_status.is_trash_by_user_id IS NULL)');
-         
-         $received_count_query = $this->db->get();
-         $received_count_result = $received_count_query->row_array();
-         $received_count = isset($received_count_result['received_count']) ? $received_count_result['received_count'] : 0;
-
-         $this->db->select('COUNT(*) as sent_count');
-         $this->db->from('message_thread');
-         $this->db->join('user_message_thread_status', 'message_thread.message_thread_code = user_message_thread_status.message_thread_code', 'inner');
-         $this->db->where('(user_message_thread_status.is_trash_by_user_id = 0 OR user_message_thread_status.is_trash_by_user_id IS NULL)');
-         $this->db->where('message_thread.sender_id', $user_id);
-         $this->db->where('message_thread.sender_group', $user_group);
-         $this->db->where('user_message_thread_status.user_id', $user_id);
-         $this->db->where('user_message_thread_status.user_group', $user_group);
-         $this->db->where('user_message_thread_status.is_trash', 0);
-         $this->db->where('user_message_thread_status.is_draft', 0);
-         
-         $sent_count_query = $this->db->get();
-         $sent_count_result = $sent_count_query->row_array();
-         $sent_count = isset($sent_count_result['sent_count']) ? $sent_count_result['sent_count'] : 0;
- 
-           // Contar los borradores (draft_count)
-         $this->db->select('COUNT(*) as draft_count');
-         $this->db->from('user_message_thread_status');
-         
-         $this->db->where('user_id', $user_id);
-         $this->db->where('user_group', $user_group);
-         $this->db->where('is_draft', 1);
- 
-         // Ejecutar la consulta
-         $draft_count_query = $this->db->get();
-         $draft_count_result = $draft_count_query->row_array();
-         $draft_count = isset($draft_count_result['draft_count']) ? $draft_count_result['draft_count'] : 0;
- 
-         $this->db->select('COUNT(*) as trash_count');
-         $this->db->from('user_message_thread_status');
-         
-         $this->db->where('user_id', $user_id);
-         $this->db->where('user_group', $user_group);
-         $this->db->where('is_trash', 1);
- 
-         // Ejecutar la consulta
-         $trash_count_query = $this->db->get();
-         $trash_count_result = $trash_count_query->row_array();
-         $trash_count = isset($trash_count_result['trash_count']) ? $trash_count_result['trash_count'] : 0;
- 
- 
-         $this->db->select('COUNT(*) as favorite_count');
-         $this->db->from('user_message_thread_status');
-         
-         $this->db->where('user_id', $user_id);
-         $this->db->where('user_group', $user_group);
-         $this->db->where('is_favorite', 1);
- 
-         // Ejecutar la consulta
-         $favorite_count_query = $this->db->get();
-         $favorite_count_result = $favorite_count_query->row_array();
-         $favorite_count = isset($favorite_count_result['favorite_count']) ? $favorite_count_result['favorite_count'] : 0;
-
+        
+        $unread_count = $this->Message_model->get_unread_count($user_id, $user_group);
+        $received_count = $this->Message_model->get_received_count($user_id, $user_group);
+        $sent_count = $this->Message_model->get_sent_count($user_id, $user_group);
+        $draft_count = $this->Message_model->get_draft_count($user_id, $user_group);
+        $trash_count = $this->Message_model->get_trash_count($user_id, $user_group);
+        $favorite_count = $this->Message_model->get_favorite_count($user_id, $user_group);
+        
          $message_counts = [
             'urgent' => 0,
             'homework' => 0,
@@ -3480,239 +2567,108 @@ class Message extends CI_Controller
         // Verificar que el usuario esté logueado
         if ($this->session->userdata('admin_login') != 1)
             redirect(base_url(), 'refresh');
-
+    
         $user_id = $this->session->userdata('login_user_id');
         $user_group = $this->session->userdata('login_type');
         
         if ($param1 == 'favorite') {
             if ($param4 == 'add') {
-                $this->db->where('message_thread_code', $param3);
-                $this->db->where('user_id', $user_id);
-                $this->db->where('user_group', $user_group);
-                $this->db->update('user_message_thread_status', array(
-                    'is_favorite' => 1,
-                    'favorite_timestamp' => date('Y-m-d H:i:s') 
-                ));
+                $this->Message_model->add_favorite($param3, $user_id, $user_group);
             } elseif ($param4 == 'remove') {
-                $this->db->where('message_thread_code', $param3);
-                $this->db->where('user_id', $user_id);
-                $this->db->where('user_group', $user_group);
-                $this->db->update('user_message_thread_status', array(
-                    'is_favorite' => 0,
-                    'favorite_timestamp' => null 
-                ));
+                $this->Message_model->remove_favorite($param3, $user_id, $user_group);
             }
-            if ($param2 == 'message_read') {
-                redirect(base_url() . 'index.php?admin/' . $param2 . '/' . $param3, 'refresh');
-            } else if ($param2 == 'message') {
-                redirect(base_url() . 'index.php?admin/' . $param2, 'refresh');
+            switch ($param2) {
+                case 'message_read':
+                    redirect(base_url() . 'index.php?admin/' . $param2 . '/' . $param3, 'refresh');
+                    break;
+                case 'message':
+                    redirect(base_url() . 'index.php?admin/' . $param2, 'refresh');
+                    break;
             }
         }
-
+    
         if ($param1 == 'draft') {
             if ($param4 == 'add') {
-                $this->db->where('message_thread_code', $param3);
-                $this->db->where('user_id', $user_id);
-                $this->db->where('user_group', $user_group);
-                $this->db->update('user_message_thread_status', array(
-                    'is_draft' => 1,
-                    'draft_timestamp' => date('Y-m-d H:i:s') 
-                ));
+                $this->Message_model->add_draft($param3, $user_id, $user_group);
                 redirect(base_url() . 'index.php?admin/message_draft/', 'refresh');
             } elseif ($param4 == 'remove') {
-                $this->db->where('message_thread_code', $param3);
-                $this->db->where('user_id', $user_id);
-                $this->db->where('user_group', $user_group);
-                $this->db->update('user_message_thread_status', array(
-                    'is_draft' => 0,
-                    'draft_timestamp' => null
-                ));
+                $this->Message_model->remove_draft($param3, $user_id, $user_group);
                 redirect(base_url() . 'index.php?admin/message/', 'refresh');
             }
-          
         }
-
+    
         if ($param1 == 'trash') {
             if ($param4 == 'add') {
-                $this->db->where('message_thread_code', $param3);
-                $this->db->where('user_id', $user_id);
-                $this->db->where('user_group', $user_group);
-                $this->db->update('user_message_thread_status', array(
-                    'is_trash' => 1,
-                    'trash_timestamp' => date('Y-m-d H:i:s') 
-                ));
+                $this->Message_model->add_trash($param3, $user_id, $user_group);
                 redirect(base_url() . 'index.php?admin/message_trash/', 'refresh');
             } elseif ($param4 == 'remove') {
-                $this->db->where('message_thread_code', $param3);
-                $this->db->where('user_id', $user_id);
-                $this->db->where('user_group', $user_group);
-                $this->db->update('user_message_thread_status', array(
-                    'is_trash' => 0,
-                    'trash_timestamp' => null
-                ));
+                $this->Message_model->remove_trash($param3, $user_id, $user_group);
                 redirect(base_url() . 'index.php?admin/message/', 'refresh');
             }
         }
         if ($param3 == 'trash_for_user_message_thread') {
             if ($param2 == 'add') {
-                $this->db->where('message_thread_code', $param1);
-                $this->db->where('user_id', $user_id);
-                $this->db->where('user_group', $user_group);
-                $this->db->update('user_message_thread_status', array(
-                    'is_trash' => 1,
-                    'is_draft' => 0,
-                    'is_favorite' => 0,
-                    'trash_timestamp' => date('Y-m-d H:i:s'),
-                    'draft_timestamp' => null,
-                    'favorite_timestamp' => null,
-                ));
+                $this->Message_model->add_trash_for_user($param1, $user_id, $user_group);
                 redirect(base_url() . 'index.php?admin/message_trash/', 'refresh');
             } elseif ($param2 == 'remove') {
-                $this->db->where('message_thread_code', $param1);
-                $this->db->where('user_id', $user_id);
-                $this->db->where('user_group', $user_group);
-                $this->db->update('user_message_thread_status', array(
-                    'is_trash' => 0,
-                    'is_draft' => 0,
-                    'is_favorite' => 0,
-                    'trash_timestamp' => null,
-                    'draft_timestamp' => null,
-                    'favorite_timestamp' => null,
-                ));
+                $this->Message_model->remove_trash_for_user($param1, $user_id, $user_group);
                 redirect(base_url() . 'index.php?admin/message/', 'refresh');
             }
         }
         if ($param3 == 'trash_for_all_user_message_thread_owner') {
             if ($param2 == 'add') {
-                // Actualizar la tabla message_thread
-                $this->db->where('message_thread_code', $param1);
-                $this->db->update('message_thread', array(
-                    'is_trash' => 1,
-                    'trash_timestamp' => date('Y-m-d H:i:s')
-                ));
-        
-                // Actualizar la tabla user_message_thread_status
-                $this->db->where('message_thread_code', $param1);
-                $this->db->update('user_message_thread_status', array(
-                    'is_trash' => 1,
-                    'is_favorite' => 0,
-                    'trash_timestamp' => date('Y-m-d H:i:s'),
-                    'favorite_timestamp' => null,
-                    'is_trash_by_user_id' => $user_id,
-                    'is_trash_by_user_group' => $user_group
-                ));
-
-                // redirect(base_url() . 'index.php?admin/message_read/' . $param1, 'refresh');
+                $this->Message_model->add_trash_for_all($param1, $user_id, $user_group);
                 redirect(base_url() . 'index.php?admin/message_trash/', 'refresh');
             } elseif ($param2 == 'remove') {
-                // Actualizar la tabla message_thread
-                $this->db->where('message_thread_code', $param1);
-                $this->db->update('message_thread', array(
-                    'is_trash' => 0,
-                    'trash_timestamp' => null
-                ));
-        
-                // Actualizar la tabla user_message_thread_status
-                $this->db->where('message_thread_code', $param1);
-                $this->db->update('user_message_thread_status', array(
-                    'is_trash' => 0,
-                    'is_favorite' => 0,
-                    'trash_timestamp' => null,
-                    'favorite_timestamp' => null,
-                    'is_trash_by_user_id' => null,
-                    'is_trash_by_user_group' => null
-                ));
-
-                 // redirect(base_url() . 'index.php?admin/message_read/' . $param1, 'refresh');
-                 redirect(base_url() . 'index.php?admin/message/', 'refresh');
+                $this->Message_model->remove_trash_for_all($param1, $user_id, $user_group);
+                redirect(base_url() . 'index.php?admin/message/', 'refresh');
             }
         }
         
         if($param1 == 'user_message_status') {
             if ($param3 == 'read') {
-                $this->db->where('message_thread_code', $param2);
-                $this->db->where('user_id', $user_id);
-                $this->db->where('user_group', $user_group);
-                $this->db->update('user_message_status', array(
-                    'new_messages_count' => 0,
-                    'last_seen_timestamp' => date('Y-m-d H:i:s') 
-                ));
+                $this->Message_model->mark_as_read($param2, $user_id, $user_group);
             } elseif ($param3 == 'unread') {
-                $this->db->where('message_thread_code', $param2);
-                $this->db->where('user_id', $user_id);
-                $this->db->where('user_group', $user_group);
-                $this->db->update('user_message_status', array(
-                    'new_messages_count' => 1,
-                    'last_seen_timestamp' => null 
-                ));
+                $this->Message_model->mark_as_unread($param2, $user_id, $user_group);
             }
             redirect(base_url() . 'index.php?admin/'.$param4, 'refresh');
         }
-
+    
         if ($param1 == 'move_to') {
-            if ($param3 == 'draft') {
-                $this->db->where('message_thread_code', $param2);
-                $this->db->where('user_id', $user_id);
-                $this->db->where('user_group', $user_group);
-                $this->db->update('user_message_thread_status', array(
-                    'is_draft' => 1,
-                    'draft_timestamp' => date('Y-m-d H:i:s'),
-                    'is_trash' => 0,
-                    'trash_timestamp' => null
-                ));
-            } elseif ($param3 == 'trash') {
-                $this->db->where('message_thread_code', $param2);
-                $this->db->where('user_id', $user_id);
-                $this->db->where('user_group', $user_group);
-                $this->db->update('user_message_thread_status', array(
-                    'is_trash' => 1,
-                    'trash_timestamp' => date('Y-m-d H:i:s'),
-                    'is_favorite' => 0,
-                    'favorite_timestamp' => null,
-                    'is_draft' => 0,
-                    'draft_timestamp' => null
-                ));
-            } elseif ($param3 == 'inbox') {
-                $this->db->where('message_thread_code', $param2);
-                $this->db->where('user_id', $user_id);
-                $this->db->where('user_group', $user_group);
-                $this->db->update('user_message_thread_status', array(
-                    'is_trash' => 0,
-                    'is_draft' => 0,
-                    'trash_timestamp' => null,
-                    'favorite_timestamp' => null,
-                    'draft_timestamp' => null,
-                    'is_favorite' => 0,
-                ));
+            switch ($param3) {
+                case 'draft':
+                    $this->Message_model->move_to_draft($param2, $user_id, $user_group);
+                    break;
+                case 'trash':
+                    $this->Message_model->move_to_trash($param2, $user_id, $user_group);
+                    break;
+                case 'inbox':
+                    $this->Message_model->move_to_inbox($param2, $user_id, $user_group);
+                    break;
             }
-            if ($param4 == 'message_read') {
-                redirect(base_url() . 'index.php?admin/' . $param4 . '/' . $param2, 'refresh');
-            } else if ($param4 == 'message') {
-                redirect(base_url() . 'index.php?admin/' . $param4, 'refresh');
-            } else if ($param4 == 'message_trash') {
-                redirect(base_url() . 'index.php?admin/' . $param4, 'refresh');
-            } else if ($param4 == 'message_draft') {
-                redirect(base_url() . 'index.php?admin/' . $param4, 'refresh');
-            } 
+            switch ($param4) {
+                case 'message_read':
+                    redirect(base_url() . 'index.php?admin/' . $param4 . '/' . $param2, 'refresh');
+                    break;
+                case 'message':
+                    redirect(base_url() . 'index.php?admin/' . $param4, 'refresh');
+                    break;
+                case 'message_trash':
+                    redirect(base_url() . 'index.php?admin/' . $param4, 'refresh');
+                    break;
+                case 'message_draft':
+                    redirect(base_url() . 'index.php?admin/' . $param4, 'refresh');
+                    break;
+            }
         }
-
+    
         if ($param1 == 'delete_message_thread_bulk') {
             $message_thread_codes = explode('-', $param3); 
         
             foreach ($message_thread_codes as $message_thread_code) {
-                $this->db->where('message_thread_code', $message_thread_code);
-                $this->db->where('user_id', $user_id);
-                $this->db->where('user_group', $user_group);
-                $this->db->update('user_message_thread_status', array(
-                    'is_trash' => 1,
-                    'trash_timestamp' => date('Y-m-d H:i:s'),
-                    'is_draft' => 0,
-                    'draft_timestamp' => null,
-                    'is_favorite' => 0,
-                    'favorite_timestamp' => null
-                ));
+                $this->Message_model->delete_message_thread($message_thread_code, $user_id, $user_group);
             }
-
+    
             $this->session->set_flashdata('flash_message', array(
                 'title' => 'Conversaciones enviadas a la papelera!',
                 'text' => '',
@@ -3726,22 +2682,14 @@ class Message extends CI_Controller
         
             redirect(base_url() . 'index.php?admin/' . $param2 . '/', 'refresh');
         }
-
+    
         if ($param1 == 'draft_message_thread_bulk') {
             $message_thread_codes = explode('-', $param3); 
         
             foreach ($message_thread_codes as $message_thread_code) {
-                $this->db->where('message_thread_code', $message_thread_code);
-                $this->db->where('user_id', $user_id);
-                $this->db->where('user_group', $user_group);
-                $this->db->update('user_message_thread_status', array(
-                    'is_draft' => 1,
-                    'draft_timestamp' => date('Y-m-d H:i:s'),
-                    'is_trash' => 0,
-                    'trash_timestamp' => null
-                ));
+                $this->Message_model->draft_message_thread($message_thread_code, $user_id, $user_group);
             }
-
+    
             $this->session->set_flashdata('flash_message', array(
                 'title' => 'Conversaciones archivadas correctamente!',
                 'text' => '',
@@ -3755,20 +2703,14 @@ class Message extends CI_Controller
         
             redirect(base_url() . 'index.php?admin/' . $param2 . '/', 'refresh');
         }
-
+    
         if ($param1 == 'read_message_thread_bulk') {
             $message_thread_codes = explode('-', $param3); 
         
             foreach ($message_thread_codes as $message_thread_code) {
-                $this->db->where('message_thread_code', $message_thread_code);
-                $this->db->where('user_id', $user_id);
-                $this->db->where('user_group', $user_group);
-                $this->db->update('user_message_status', array(
-                    'new_messages_count' => 0,
-                    'last_seen_timestamp' => date('Y-m-d H:i:s') 
-                ));
+                $this->Message_model->read_message_thread($message_thread_code, $user_id, $user_group);
             }
-
+    
             $this->session->set_flashdata('flash_message', array(
                 'title' => 'Conversaciones marcadas como vistas correctamente!',
                 'text' => '',
@@ -3782,20 +2724,14 @@ class Message extends CI_Controller
         
             redirect(base_url() . 'index.php?admin/' . $param2 . '/', 'refresh');
         }
-
+    
         if ($param1 == 'unread_message_thread_bulk') {
             $message_thread_codes = explode('-', $param3); 
         
             foreach ($message_thread_codes as $message_thread_code) {
-                $this->db->where('message_thread_code', $message_thread_code);
-                $this->db->where('user_id', $user_id);
-                $this->db->where('user_group', $user_group);
-                $this->db->update('user_message_status', array(
-                    'new_messages_count' => 1,
-                    'last_seen_timestamp' => null
-                ));
+                $this->Message_model->unread_message_thread($message_thread_code, $user_id, $user_group);
             }
-
+    
             $this->session->set_flashdata('flash_message', array(
                 'title' => 'Conversaciones marcadas como no vistas correctamente!',
                 'text' => '',
@@ -3809,20 +2745,14 @@ class Message extends CI_Controller
         
             redirect(base_url() . 'index.php?admin/' . $param2 . '/', 'refresh');
         }
-
+    
         if ($param1 == 'add_favorite_message_thread_bulk') {
             $message_thread_codes = explode('-', $param3); 
         
             foreach ($message_thread_codes as $message_thread_code) {
-                $this->db->where('message_thread_code', $message_thread_code);
-                $this->db->where('user_id', $user_id);
-                $this->db->where('user_group', $user_group);
-                $this->db->update('user_message_thread_status', array(
-                    'is_favorite' => 1,
-                    'favorite_timestamp' => null
-                ));
+                $this->Message_model->add_favorite_message_thread($message_thread_code, $user_id, $user_group);
             }
-
+    
             $this->session->set_flashdata('flash_message', array(
                 'title' => 'Conversaciones marcadas como favorito correctamente!',
                 'text' => '',
@@ -3836,20 +2766,14 @@ class Message extends CI_Controller
         
             redirect(base_url() . 'index.php?admin/' . $param2 . '/', 'refresh');
         }
-
+    
         if ($param1 == 'remove_favorite_message_thread_bulk') {
             $message_thread_codes = explode('-', $param3); 
         
             foreach ($message_thread_codes as $message_thread_code) {
-                $this->db->where('message_thread_code', $message_thread_code);
-                $this->db->where('user_id', $user_id);
-                $this->db->where('user_group', $user_group);
-                $this->db->update('user_message_thread_status', array(
-                    'is_favorite' => 0,
-                    'favorite_timestamp' => null
-                ));
+                $this->Message_model->remove_favorite_message_thread($message_thread_code, $user_id, $user_group);
             }
-
+    
             $this->session->set_flashdata('flash_message', array(
                 'title' => 'Conversaciones marcadas como no favorito correctamente!',
                 'text' => '',
@@ -3863,7 +2787,6 @@ class Message extends CI_Controller
         
             redirect(base_url() . 'index.php?admin/' . $param2 . '/', 'refresh');
         }
-    
     }
 
 }

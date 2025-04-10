@@ -62,30 +62,6 @@ class Student_model extends CI_Model
     }
 
 
-
-    function get_student_info($student_id){
-        // Selecciona todas las columnas necesarias de ambas tablas
-        $this->db->select('student.student_id, student.email, student.username, student.password, student_details.enrollment, student_details.firstname, student_details.lastname, student_details.dni, student_details.photo, student_details.medical_record, student_details.section_id, student_details.about, student_details.class_id, student_details.phone_cel, student_details.phone_fij, student_details.birthday, student_details.gender_id, student_details.enrollment, address.locality, address.neighborhood, address.address, address.address_line, address.postalcode');
-
-        // Indica que la tabla principal es student
-        $this->db->from('student');
-
-        // Realiza un JOIN con student_details utilizando el campo student_id
-        $this->db->join('student_details', 'student.student_id = student_details.student_id');
-
-        // Realiza un JOIN con la tabla address utilizando el campo address_id de student_details
-        $this->db->join('address', 'student_details.address_id = address.address_id');
-
-        // Agrega la condición para el student_id
-        $this->db->where('student.student_id', $student_id);
-
-        // Ejecuta la consulta y almacena los resultados en una variable
-        $query = $this->db->get();
-
-        // Devuelve los resultados como un array
-        return $query->result_array();
-    }
-
     function get_student_info2($student_id){
         // Selecciona todas las columnas necesarias de ambas tablas
         $this->db->select('student.student_id, student.email, student.username, student.password, student_details.enrollment, student_details.firstname, student_details.lastname, student_details.dni, student_details.photo, student_details.medical_record, student_details.section_id, student_details.about, student_details.class_id, student_details.phone_cel, student_details.phone_fij, student_details.birthday, student_details.gender_id, student_details.enrollment, address.locality, address.neighborhood, address.address, address.address_line, address.postalcode');
@@ -254,7 +230,6 @@ class Student_model extends CI_Model
         }
     }
 
-
     function get_student_info_per_section2($section_id) {
         // Selecciona las columnas necesarias de las tablas student, student_details y address
         $this->db->select('student.student_id, student.email, student.username, 
@@ -312,6 +287,93 @@ class Student_model extends CI_Model
             return $query->result_array();
         } else {
             return array(); // Devuelve un array vacío si no hay resultados
+        }
+    }
+
+    function get_students_by_section($section_id)
+    {
+        $this->db->select('student_details.firstname, student_details.lastname, student_details.enrollment, student_details.dni, student_details.gender_id, student_details.phone_cel, student_details.phone_fij, student_details.class_id, student_details.section_id, student_details.birthday, student.email, student.username, address.state, address.postalcode, address.locality, address.neighborhood, address.address, address.address_line');
+        $this->db->from('student_details');
+        $this->db->join('student', 'student.student_id = student_details.student_id');
+        $this->db->join('address', 'address.address_id = student_details.address_id');
+        $this->db->where('student_details.section_id', $section_id);
+        $query = $this->db->get();
+
+        return $query->result_array();
+    }
+
+    function get_student_info($student_id)
+    {
+        $this->db->select('student.student_id, student.email, student.username, student.password, student_details.enrollment, student_details.firstname, student_details.lastname, student_details.dni, student_details.photo, student_details.medical_record, student_details.section_id, student_details.about, student_details.class_id, student_details.phone_cel, student_details.phone_fij, student_details.birthday, student_details.gender_id, student_details.enrollment, address.locality, address.neighborhood, address.address, address.address_line, address.postalcode');
+        $this->db->from('student');
+        $this->db->join('student_details', 'student.student_id = student_details.student_id');
+        $this->db->join('address', 'student_details.address_id = address.address_id');
+        $this->db->where('student.student_id', $student_id);
+        $query = $this->db->get();
+
+        return $query->result_array();
+    }
+
+    function create_student($student_data, $address_data, $student_details_data)
+    {
+        try {
+            $this->db->insert('address', $address_data);
+            $student_details_data['address_id'] = $this->db->insert_id();
+
+            $this->db->insert('student', $student_data);
+            $student_details_data['student_id'] = $this->db->insert_id();
+
+            $this->db->insert('student_details', $student_details_data);
+
+            return true;
+        } catch (Exception $e) {
+            log_message('error', 'Error in create_student: ' . $e->getMessage());
+            return false;
+        }
+    }
+
+    function update_student($student_id, $student_data, $address_data, $student_details_data)
+    {
+        try {
+            $this->db->where('student_id', $student_id);
+            $this->db->update('student', $student_data);
+
+            $this->db->where('address_id', $student_details_data['address_id']);
+            $this->db->update('address', $address_data);
+
+            $this->db->where('student_id', $student_id);
+            $this->db->update('student_details', $student_details_data);
+
+            return true;
+        } catch (Exception $e) {
+            log_message('error', 'Error in update_student: ' . $e->getMessage());
+            return false;
+        }
+    }
+
+    function inactive_student($student_id, $status_reason)
+    {
+        try {
+            $this->db->where('student_id', $student_id);
+            $this->db->update('student', array('user_status_id' => 0, 'status_reason' => $status_reason, 'class_id' => null, 'section_id' => null));
+
+            return true;
+        } catch (Exception $e) {
+            log_message('error', 'Error in inactive_student: ' . $e->getMessage());
+            return false;
+        }
+    }
+
+    function inactive_student_pre_enrollments($student_id, $status_reason)
+    {
+        try {
+            $this->db->where('student_id', $student_id);
+            $this->db->update('student_details', array('user_status_id' => 0, 'status_reason' => $status_reason, 'class_id' => null, 'section_id' => null));
+
+            return true;
+        } catch (Exception $e) {
+            log_message('error', 'Error in inactive_student_pre_enrollments: ' . $e->getMessage());
+            return false;
         }
     }
 }

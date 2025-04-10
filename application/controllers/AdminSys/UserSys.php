@@ -2,26 +2,27 @@
 
 class UserSys extends CI_Controller
 {
-    
-	function __construct()
-	{
-		parent::__construct();
-		$this->load->database();
+    function __construct()
+    {
+        parent::__construct();
+        $this->load->database();
         $this->load->library('session');
 
-        date_default_timezone_set('America/Argentina/Buenos_Aires');
-		
-       /*cache control*/
-		$this->output->set_header('Cache-Control: no-store, no-cache, must-revalidate, post-check=0, pre-check=0');
-		$this->output->set_header('Pragma: no-cache');
-    }
+        $this->load->model('usersys/Usersys_model');
+        $this->load->library('UserSys_service');
 
+        date_default_timezone_set('America/Argentina/Buenos_Aires');
+
+        /*cache control*/
+        $this->output->set_header('Cache-Control: no-store, no-cache, must-revalidate, post-check=0, pre-check=0');
+        $this->output->set_header('Pragma: no-cache');
+    }
 
     function manage_profile($user_id = '')
     {
         if ($this->session->userdata('admin_login') != 1)
             redirect('login', 'refresh');
-            
+
         $breadcrumb = array(
             array(
                 'text' => ucfirst(get_phrase('home')),
@@ -32,22 +33,20 @@ class UserSys extends CI_Controller
                 'url' => base_url('index.php?admin/manage_profile/' . $user_id)
             )
         );
-                    
-        $page_data['breadcrumb'] = $breadcrumb;
 
-        $page_data['page_name']   = 'manage_profile';
-        $page_data['page_title']  = ucfirst(get_phrase('manage_profile')) . ' - ' . ucfirst(get_phrase('view_profile'));
-        $page_data['user_id']  = $user_id;
-        
+        $page_data['breadcrumb'] = $breadcrumb;
+        $page_data['page_name'] = 'manage_profile';
+        $page_data['page_title'] = ucfirst(get_phrase('manage_profile')) . ' - ' . ucfirst(get_phrase('view_profile'));
+        $page_data['user_id'] = $user_id;
+
         $this->load->view('backend/index', $page_data);
     }
-
 
     function help()
     {
         if ($this->session->userdata('admin_login') != 1)
             redirect('login', 'refresh');
-            
+
         $breadcrumb = array(
             array(
                 'text' => ucfirst(get_phrase('home')),
@@ -58,34 +57,28 @@ class UserSys extends CI_Controller
                 'url' => base_url('index.php?admin/help/')
             )
         );
-                    
-        $page_data['breadcrumb'] = $breadcrumb;
 
-        $page_data['page_name']   = 'help';
-        $page_data['page_title']  = ucfirst(get_phrase('help'));
-        
+        $page_data['breadcrumb'] = $breadcrumb;
+        $page_data['page_name'] = 'help';
+        $page_data['page_title'] = ucfirst(get_phrase('help'));
+
         $this->load->view('backend/index', $page_data);
     }
 
     function get_postalcode_localidad($postal_code)
     {
-        $localidades = $this->db->get_where('postal_code_cba' , array(
-            'postal_code' => $postal_code
-        ))->result_array();
+        $localidades = $this->Usersys_model->get_postalcode_localidad($postal_code);
         foreach ($localidades as $row) {
             echo '<option value="' . $row['localidad'] . '">' . $row['localidad'] . '</option>';
         }
     }
 
     function get_postal_codes() {
-        $this->db->select('postal_code');
-        $this->db->distinct();
-        $postal_codes = $this->db->get('postal_code_cba')->result_array();
+        $postal_codes = $this->Usersys_model->get_postal_codes();
         foreach ($postal_codes as $row) {
             echo '<option value="' . $row['postal_code'] . '">' . $row['postal_code'] . '</option>';
         }
     }
-
 
     function profile_settings($param1 = '', $param2 = '', $param3 = '')
     {
@@ -94,12 +87,11 @@ class UserSys extends CI_Controller
         if ($param1 == 'update_profile_info') {
             $user_id = $this->session->userdata('login_user_id');
 
-            $dataDetails['firstname']  = $this->input->post('firstname');
-            $dataDetails['lastname']  = $this->input->post('lastname');
+            $dataDetails['firstname'] = $this->input->post('firstname');
+            $dataDetails['lastname'] = $this->input->post('lastname');
             $data['email'] = $this->input->post('email');
-            
-            $this->db->where('admin_id', $user_id);
-            $this->db->update('admin', $data);
+
+            $this->Usersys_model->update_user_info($user_id, $data);
 
             if (!empty($_FILES['userfile']['name'])) {
                 $file_name = 'admin id - ' . $user_id . '.jpg';
@@ -110,8 +102,7 @@ class UserSys extends CI_Controller
                 $dataDetails['photo'] = 'assets/images/default-user-img.jpg';
             }
 
-            $this->db->where('admin_id', $user_id);
-            $this->db->update('admin_details', $dataDetails);
+            $this->Usersys_model->update_user_details($user_id, $dataDetails);
 
             $this->session->set_flashdata('flash_message', array(
                 'title' => ucfirst(get_phrase('profile_updated_successfully')) . '!',
@@ -128,13 +119,11 @@ class UserSys extends CI_Controller
         if ($param1 == 'change_password') {
             $user_id = $this->session->userdata('login_user_id');
 
-            $data['password']             = $this->input->post('password');
-            $data['new_password']         = $this->input->post('new_password');
+            $data['password'] = $this->input->post('password');
+            $data['new_password'] = $this->input->post('new_password');
             $data['confirm_new_password'] = $this->input->post('confirm_new_password');
-            
-            $current_password = $this->db->get_where('admin', array(
-                'admin_id' => $user_id
-            ))->row()->password;
+
+            $current_password = $this->Usersys_model->get_current_password($user_id);
             if ($current_password !== $data['password']) {
                 $this->session->set_flashdata('flash_message', array(
                     'title' => ucfirst(get_phrase('the_old_password_does_not_match')) . '!',
@@ -147,10 +136,7 @@ class UserSys extends CI_Controller
                     'timerProgressBar' => 'true',
                 ));
             } else if ($current_password == $data['password'] && $data['new_password'] == $data['confirm_new_password']) {
-                $this->db->where('admin_id', $this->session->userdata('admin_id'));
-                $this->db->update('admin', array(
-                    'password' => $data['new_password']
-                ));
+                $this->Usersys_model->update_password($user_id, $data['new_password']);
                 $this->session->set_flashdata('flash_message', array(
                     'title' => ucfirst(get_phrase('password_updated_successfully')) . '!',
                     'text' => '',
@@ -186,60 +172,38 @@ class UserSys extends CI_Controller
                 'url' => base_url('index.php?admin/manage_profile')
             )
         );
-                
-        $page_data['breadcrumb'] = $breadcrumb;
 
-        $page_data['page_name']  = 'profile_settings';
+        $page_data['breadcrumb'] = $breadcrumb;
+        $page_data['page_name'] = 'profile_settings';
         $page_data['page_title'] = ucfirst(get_phrase('profile_settings'));
         $page_data['edit_data'] = $this->crud_model->get_admin_info($this->session->userdata('admin_id'));
-    
+
         $this->load->view('backend/index', $page_data);
     }
-
 
     function change_theme($param1 = '', $param2 = '')
     {
         if ($this->session->userdata('admin_login') != 1)
-        redirect(base_url(), 'refresh');
+            redirect(base_url(), 'refresh');
 
-        // Actualiza el valor del tema en la sesión de usuario
         $this->session->set_userdata('theme_preference', $param2);
 
-        $data['theme_preference'] = $param2;
-        $this->db->where('admin_id' , $param1);
-        $this->db->update('admin_details' , $data);
+        $this->Usersys_model->update_theme_preference($param1, $param2);
 
-        // $this->session->set_flashdata('flash_message' , get_phrase('modo actualizado exitosamente')); 
-       redirect(base_url() . 'index.php?admin/dashboard/', 'refresh');
+        redirect(base_url() . 'index.php?admin/dashboard/', 'refresh');
     }
 
     function change_language($param1 = '', $param2 = '')
     {
         if ($this->session->userdata('admin_login') != 1)
-        redirect(base_url(), 'refresh');
+            redirect(base_url(), 'refresh');
 
         $this->session->set_userdata('language_preference', $param2);
 
-        $data['language_preference'] = $param2;
-        $this->db->where('admin_id' , $param1);
-        $this->db->update('admin_details' , $data);
+        $this->Usersys_model->update_language_preference($param1, $param2);
 
-       redirect(base_url() . 'index.php?admin/dashboard/', 'refresh');
+        redirect(base_url() . 'index.php?admin/dashboard/', 'refresh');
     }
-
-    function reset_page_tracking($page_name = '', $page_id = '')
-	{
-		if ($this->session->userdata('admin_login') != 1)
-            redirect('login', 'refresh');
-
-            $dataTracking = array(
-                'user_id' => null,
-                'user_group' => null
-            );
-            $this->db->where('page_name', $page_name);
-            $this->db->where('element_id', $page_id);
-            $this->db->update('page_tracking', $dataTracking);
-	}
 
     function language_settings($param1 = '', $param2 = '', $param3 = '')
     {
