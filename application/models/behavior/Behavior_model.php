@@ -77,10 +77,23 @@ class Behavior_model extends CI_Model {
     }
 
     public function create_behavior($data) {
+        $this->db->trans_start(); // Iniciar transaccion
+
         try {
+            // Insertar el behavior
             $this->db->insert('behavior', $data);
-            return $this->db->insert_id();
+
+            // Verificar si fue exitoso
+            if ($this->db->affected_rows() <= 0) {
+                throw new Exception('Error al insertar comportamiento.');
+            }
+
+            // Confirmar la transaccion
+            $this->db->trans_commit();
+            return true;
+
         } catch (Exception $e) {
+            $this->db->trans_rollback(); // Revertir cambios en caso de error
             log_message('error', 'Error in create_behavior: ' . $e->getMessage());
             return false;
         }
