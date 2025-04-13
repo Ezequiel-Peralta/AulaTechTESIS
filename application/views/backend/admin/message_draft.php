@@ -282,7 +282,7 @@
 				<!-- menu -->
 				<ul class="mail-menu">
 					<li>
-						<a href="<?php echo base_url(); ?>index.php?admin/message/">
+						<a href="<?php echo base_url(); ?>index.php?admin/messages/">
 							<?php if ($unread_count > 0): ?>
 								<span class="badge badge-gray badge-tag badge-mail-menu pull-right"><?php echo $unread_count; ?></span>
 							<?php endif; ?>

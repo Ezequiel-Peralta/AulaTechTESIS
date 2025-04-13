@@ -95,7 +95,7 @@ $all_classes_count = count($active_sections);
 							</td>
                             <td class="text-center">
 								<?php 
-									$teacher_aide_info = $this->Teacher_model->get_teacher_aide_info_per_id($section['teacher_aide_id']);
+									$teacher_aide_info = $this->Teachers_model->get_teacher_aide_info_per_id($section['teacher_aide_id']);
 									foreach ($teacher_aide_info as $teacher_aide):
 								?>
 								<a href="#">
@@ -223,7 +223,7 @@ $all_classes_count = count($active_sections);
 					</td>
 					<td class="text-center">
                         <?php 
-                        $teacher_aide_info = $this->Teacher_model->get_teacher_aide_info($section['teacher_aide_id']);
+                        $teacher_aide_info = $this->Teachers_model->get_teacher_aide_info($section['teacher_aide_id']);
                         foreach ($teacher_aide_info as $teacher_aide):
                         ?>
                         <img src="<?php echo $teacher_aide['photo']; ?>" class="img-circle" width="30" height="30" title="<?php echo $teacher_aide['lastname']; ?>, <?php echo $teacher_aide['firstname']; ?>"/>

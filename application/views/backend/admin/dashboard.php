@@ -520,7 +520,7 @@
                                                         </a>
                                                     </li>
                                                     <li>
-                                                        <a href="javascript:;" class="btn btn-default task-option-a btn-icon icon-left" style="color: #fff !important;" onclick="confirm_disable_sweet_modal('<?php echo base_url();?>index.php?admin/task/disable/<?php echo $row2['task_id']; ?>');">
+                                                        <a href="javascript:;" class="btn btn-default task-option-a btn-icon icon-left" style="color: #fff !important;" onclick="confirm_disable_sweet_modal('<?php echo base_url();?>index.php?admin/tasks/disable/<?php echo $row2['task_id']; ?>');">
                                                             <?php echo ucfirst(get_phrase('disable')); ?>
                                                             <i class="entypo-block"></i>
                                                         </a>
@@ -545,7 +545,7 @@
                                                         <label><?php echo $item['description']; ?></label>
                                                     
                                                     </div>
-                                                    <a href="#" class="btn task-label-a btn-default" onclick="confirm_sweet_modal('<?php echo base_url();?>index.php?admin/task/disabledIndividualTaskItem/<?php echo $item['task_item_id']; ?>');">
+                                                    <a href="#" class="btn task-label-a btn-default" onclick="confirm_sweet_modal('<?php echo base_url();?>index.php?admin/tasks/disabledIndividualTaskItem/<?php echo $item['task_item_id']; ?>');">
                                                                 <i class="entypo-trash"></i>
                                                             </a>
                                                 </li>
@@ -656,7 +656,7 @@
                                                 </button>
                                                 <ul class="dropdown-menu task-dropdown-menu dropdown-default pull-right" role="menu" aria-labelledby="dropdownMenuButton">
                                                     <li>
-                                                        <a href="javascript:;" class="btn btn-default task-option-a btn-icon icon-left" style="color: #fff !important;" onclick="confirm_enable_sweet_modal('<?php echo base_url();?>index.php?admin/task/enable/<?php echo $row2['task_id']; ?>');">
+                                                        <a href="javascript:;" class="btn btn-default task-option-a btn-icon icon-left" style="color: #fff !important;" onclick="confirm_enable_sweet_modal('<?php echo base_url();?>index.php?admin/tasks/enable/<?php echo $row2['task_id']; ?>');">
                                                             <?php echo ucfirst(get_phrase('enable')); ?>
                                                             <i class="fa fa-check-circle-o"></i>
                                                         </a>
@@ -769,7 +769,7 @@
                     replaceCheckboxes();
 
                     $.ajax({
-                        url: 'index.php?admin/task/createIndividualTaskItem/' + task_id + '/' + item,
+                        url: 'index.php?admin/tasks/createIndividualTaskItem/' + task_id + '/' + item,
                         success: function(response) {
                             console.log('Nueva tarea creada exitosamente.');
                             location.reload();
@@ -815,9 +815,9 @@
 
             // Realizar la solicitud AJAX
             $.ajax({
-                url: 'index.php?admin/task/checkUncheckIndividualTaskItem/' + task_id + '/' + task_item_id + '/' + checkType,
+                url: 'index.php?admin/tasks/checkUncheckIndividualTaskItem/' + task_id + '/' + task_item_id + '/' + checkType,
                 success: function(response) {
-                    console.log('Operación realizada exitosamente.', 'index.php?admin/task/checkUncheckIndividualTaskItem/' + task_id + '/' + task_item_id + '/' + checkType);
+                    console.log('Operación realizada exitosamente.', 'index.php?admin/tasks/checkUncheckIndividualTaskItem/' + task_id + '/' + task_item_id + '/' + checkType);
                 },
                 error: function(xhr, status, error) {
                     console.error('Error al realizar la operación:', error);

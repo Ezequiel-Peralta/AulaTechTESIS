@@ -74,7 +74,7 @@
         </li> -->
 
         <li class="<?php if ($page_name == 'message') echo 'active'; ?> ">
-            <a href="<?php echo base_url(); ?>index.php?admin/message">
+            <a href="<?php echo base_url(); ?>index.php?admin/messages">
                 <i class="entypo-mail mail-icon" style="background-color: #265044; border-radius: 10px; padding: 5px 5px 6px; color:white;"></i>
                 <span><?php echo ucfirst(get_phrase('message')); ?></span>
             </a>

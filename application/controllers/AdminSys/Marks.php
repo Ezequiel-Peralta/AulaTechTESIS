@@ -8,8 +8,8 @@ class Marks extends CI_Controller
         $this->load->database();
         $this->load->library('session');
 
-        $this->load->model('mark/Mark_model');
-        $this->load->library('Mark_service');
+        $this->load->model('marks/Marks_model');
+        $this->load->library('Marks_service');
 
         date_default_timezone_set('America/Argentina/Buenos_Aires');
 
@@ -80,7 +80,7 @@ class Marks extends CI_Controller
                     'mark_obtained' => $mark_obtained,
                     'exam_type_id' => $exam_type_id // Incluye el exam_type_id en los datos
                 );
-                $this->Mark_model->update_mark($mark_id, $data);
+                $this->Marks_model->update_mark($mark_id, $data);
             }
 
             // Redirige según sea necesario
@@ -115,7 +115,7 @@ class Marks extends CI_Controller
             $data['mark_obtained'] = $this->input->post('mark_obtained');
             $data['exam_type_id'] = $this->input->post('exam_type_id'); // Incluye el exam_type_id
 
-            $this->Mark_model->update_mark($this->input->post('mark_id'), $data);
+            $this->Marks_model->update_mark($this->input->post('mark_id'), $data);
             $this->session->set_flashdata('flash_message', get_phrase('datos actualizados exitosamente'));
             redirect(base_url() . 'index.php?admin/marks_per_exam/' . $this->input->post('exam_id') . '/' . $this->input->post('class_id') . '/' . $this->input->post('subject_id'), 'refresh');
         }
@@ -218,26 +218,26 @@ class Marks extends CI_Controller
         $used_section_history = false;
 
         // Buscar datos de la sección
-        $section_data = $this->Mark_model->get_section_data($section_id);
+        $section_data = $this->Marks_model->get_section_data($section_id);
 
         if (empty($section_data)) {
             // Si no hay registros en 'section', buscar en 'section_history'
-            $section_data = $this->Mark_model->get_section_history_data($section_id);
+            $section_data = $this->Marks_model->get_section_history_data($section_id);
             $used_section_history = true;
         }
 
         // Contar la cantidad de materias asociadas a la sección
-        $section_subject_count = $this->Mark_model->get_subject_count_by_section($section_id);
+        $section_subject_count = $this->Marks_model->get_subject_count_by_section($section_id);
 
         $used_subject_history = false;
 
         if (!empty($subject_id)) {
             // Buscar datos de la materia
-            $subject_data = $this->Mark_model->get_subject_data($subject_id);
+            $subject_data = $this->Marks_model->get_subject_data($subject_id);
 
             if (empty($subject_data)) {
                 // Si no hay registros en 'subject', buscar en 'subject_history'
-                $subject_data = $this->Mark_model->get_subject_history_data($subject_id);
+                $subject_data = $this->Marks_model->get_subject_history_data($subject_id);
                 $used_subject_history = true;
             }
         } else {
@@ -320,11 +320,11 @@ class Marks extends CI_Controller
         }
 
         if ($operation === 'create') {
-            $this->Mark_model->create_mark($data);
+            $this->Marks_model->create_mark($data);
         } elseif ($operation === 'update' && !empty($mark_id)) {
-            $this->Mark_model->update_mark($mark_id, $data);
+            $this->Marks_model->update_mark($mark_id, $data);
         } elseif ($operation === 'delete' && !empty($mark_id)) {
-            $this->Mark_model->delete_mark($mark_id);
+            $this->Marks_model->delete_mark($mark_id);
         }
     }
 
@@ -344,11 +344,11 @@ class Marks extends CI_Controller
         }
 
         if ($operation === 'create') {
-            $this->Mark_model->create_mark($data);
+            $this->Marks_model->create_mark($data);
         } elseif ($operation === 'update' && !empty($mark_id)) {
-            $this->Mark_model->update_mark_history($mark_id, $data);
+            $this->Marks_model->update_mark_history($mark_id, $data);
         } elseif ($operation === 'delete' && !empty($mark_id)) {
-            $this->Mark_model->delete_mark_history($mark_id);
+            $this->Marks_model->delete_mark_history($mark_id);
         }
     }
 }

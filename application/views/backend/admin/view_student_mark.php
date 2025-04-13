@@ -211,9 +211,9 @@ foreach ($students as $student):
             <td class="student-element-cell"><?php echo $student['lastname']; ?>, <?php echo $student['firstname']; ?></td>
             <?php
             if ($used_section_history || $used_subject_history) {
-                $marks = $this->Mark_model->get_marks_by_student_subject2($student['student_id'], $subject['subject_id'], $academic_period_id);
+                $marks = $this->Marks_model->get_marks_by_student_subject2($student['student_id'], $subject['subject_id'], $academic_period_id);
             } else {
-                $marks = $this->Mark_model->get_marks_by_student_subject($student['student_id'], $subject['subject_id']);
+                $marks = $this->Marks_model->get_marks_by_student_subject($student['student_id'], $subject['subject_id']);
             }
             
             // Create an associative array to store all marks
@@ -228,7 +228,7 @@ foreach ($students as $student):
             // Process all marks
             foreach ($marks as $mark) {
                 $exam_type_id = $mark['exam_type_id'];
-                $exam_type_info = $this->Exam_model->get_exam_type_info($exam_type_id);
+                $exam_type_info = $this->exams_model->get_exam_type_info($exam_type_id);
                 
                 if (!empty($exam_type_info) && isset($exam_type_info[0]['short_name'])) {
                     $short_name = $exam_type_info[0]['short_name'];
@@ -349,7 +349,7 @@ foreach ($students as $student):
                             <?php
                                 endif;
                             } else {
-                                $subjects = $this->Subject_model->get_subjects_by_section2($section_data['section_id']);
+                                $subjects = $this->Subjects_model->get_subjects_by_section2($section_data['section_id']);
                                 foreach ($subjects as $subject):
                             ?>
                             <div class="panel panel-default">
@@ -423,9 +423,9 @@ foreach ($students as $student):
             <td class="student-element-cell"><?php echo $student['lastname']; ?>, <?php echo $student['firstname']; ?></td>
             <?php
             if ($used_section_history || $used_subject_history) {
-                $marks = $this->Mark_model->get_marks_by_student_subject2($student['student_id'], $subject['subject_id'], $academic_period_id);
+                $marks = $this->Marks_model->get_marks_by_student_subject2($student['student_id'], $subject['subject_id'], $academic_period_id);
             } else {
-                $marks = $this->Mark_model->get_marks_by_student_subject($student['student_id'], $subject['subject_id']);
+                $marks = $this->Marks_model->get_marks_by_student_subject($student['student_id'], $subject['subject_id']);
             }
             
             // Create an associative array to store all marks
@@ -441,7 +441,7 @@ foreach ($students as $student):
             // Process all marks
             foreach ($marks as $mark) {
                 $exam_type_id = $mark['exam_type_id'];
-                $exam_type_info = $this->Exam_model->get_exam_type_info($exam_type_id);
+                $exam_type_info = $this->exams_model->get_exam_type_info($exam_type_id);
                 
                 if (!empty($exam_type_info) && isset($exam_type_info[0]['short_name'])) {
                     $short_name = $exam_type_info[0]['short_name'];

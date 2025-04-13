@@ -1,5 +1,5 @@
 <?php
-$student_info = $this->Student_model->get_student_info($param2);
+$student_info = $this->Students_model->get_student_info($param2);
 foreach($student_info as $row):?>
 
     <div class="profile-header" style="border-radius: 15px;">
@@ -138,7 +138,7 @@ foreach($student_info as $row):?>
             <br>
                 <div class="profile-container"> 
                 <?php
-                    $teacher_aide_info = $this->Teacher_model->get_teacher_aide_info_per_section($row['section_id']);
+                    $teacher_aide_info = $this->Teachers_model->get_teacher_aide_info_per_section($row['section_id']);
                     if (!empty($teacher_aide_info)) {
                         foreach ($teacher_aide_info as $row2): ?>
                         <a href="<?php echo base_url(); ?>index.php?admin/teacher_aide_profile/<?php echo $row2['teacher_aide_id']; ?>">
@@ -219,7 +219,7 @@ foreach($student_info as $row):?>
             <br>
             <div class="profile-container">
                 <?php
-                    $subject_info = $this->Subject_model->get_subjects_by_section($row['section_id']);
+                    $subject_info = $this->Subjects_model->get_subjects_by_section($row['section_id']);
                     if (!empty($subject_info)) {
                         foreach ($subject_info as $subject): ?>
                         <a href="<?php echo base_url(); ?>index.php?admin/subject_profile/<?php echo $subject['subject_id'];?>">
@@ -250,7 +250,7 @@ foreach($student_info as $row):?>
             <br>
             <div class="profile-container">
                 <?php
-                    $guardian_info = $this->Guardian_model->get_guardian_info_per_student($row['student_id']);
+                    $guardian_info = $this->Guardians_model->get_guardian_info_per_student($row['student_id']);
                     if (!empty($guardian_info)) {
                         foreach ($guardian_info as $guardian): ?>
                             <a href="<?php echo base_url(); ?>index.php?admin/guardian_profile/<?php echo $guardian['guardian_id'];?>">

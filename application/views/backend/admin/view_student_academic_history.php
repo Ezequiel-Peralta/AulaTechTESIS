@@ -20,10 +20,10 @@
                     <div class="panel-group joined" id="accordion-test-1">
                         <?php
                         // Obtener el historial académico del estudiante
-                        $sections_history = $this->Student_model->get_academic_history_by_student($student_id);
+                        $sections_history = $this->Students_model->get_academic_history_by_student($student_id);
 
                         if (empty($sections_history)) {
-                            $sections_history = $this->Student_model->get_academic_by_student($student_id);
+                            $sections_history = $this->Students_model->get_academic_by_student($student_id);
                         }
 
 
@@ -95,13 +95,13 @@
                                                 </thead>
                                                 <tbody>
     <?php
-     $subjects = $this->Subject_model->get_subjects_by_section2($section['section_id']);
+     $subjects = $this->Subjects_model->get_subjects_by_section2($section['section_id']);
      foreach ($subjects as $subject):
     ?>
         <tr class="text-center" id="<?php echo $subject['subject_id']; ?>">
             <td class="student-element-cell"><?php echo $subject['name']; ?></td>
             <?php
-            $marks = $this->Mark_model->get_marks_by_student_subject2($student_data['student_id'], $subject['subject_id'], $section['academic_period_id']);
+            $marks = $this->Marks_model->get_marks_by_student_subject2($student_data['student_id'], $subject['subject_id'], $section['academic_period_id']);
             
             // Create an associative array to store all marks
             $all_marks = array(
@@ -116,7 +116,7 @@
             // Process all marks
             foreach ($marks as $mark) {
                 $exam_type_id = $mark['exam_type_id'];
-                $exam_type_info = $this->Exam_model->get_exam_type_info($exam_type_id);
+                $exam_type_info = $this->exams_model->get_exam_type_info($exam_type_id);
                 
                 if (!empty($exam_type_info) && isset($exam_type_info[0]['short_name'])) {
                     $short_name = $exam_type_info[0]['short_name'];

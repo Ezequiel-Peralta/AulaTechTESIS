@@ -18,7 +18,7 @@ class Tasks extends CI_Controller
         $this->output->set_header('Pragma: no-cache');
     }
 
-    function task($param1 = '', $param2 = '', $param3 = '', $param4 = '')
+    function tasks($param1 = '', $param2 = '', $param3 = '', $param4 = '')
     {
         if ($this->session->userdata('admin_login') != 1)
             redirect(base_url(), 'refresh');

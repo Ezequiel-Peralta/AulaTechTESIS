@@ -78,7 +78,7 @@
 
     function confirm_sweet_modal(url) {
         Swal.fire({
-            title: "¿<?php echo ucfirst(get_phrase('are_you_sure_you_want_to_enroll_these_students')); ?>?",
+            title: "¿<?php echo ucfirst(get_phrase('are_you_sure_you_want_to_do_this')); ?>?",
             icon: "warning",
             iconColor: "#d33",
             showCancelButton: true,

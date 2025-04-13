@@ -1,5 +1,5 @@
 <?php
-$student_info = $this->Student_model->get_student_info($param2);
+$student_info = $this->Students_model->get_student_info($param2);
 foreach ($student_info as $row1):
     ?>
     <center>
@@ -37,14 +37,14 @@ foreach ($student_info as $row1):
                 </thead>
                 <tbody>
                     <?php
-                    $subjects = $this->Subject_model->get_subjects_by_section($row1['section_id']);
+                    $subjects = $this->Subjects_model->get_subjects_by_section($row1['section_id']);
                     foreach ($subjects as $row2):
                         ?>
                         <tr class="text-center">
                             <td class="subject-element-cell"><?php echo $row2['name']; ?></td>
                             <?php
                             // Obtener las calificaciones para esta materia
-                            $marks = $this->Mark_model->get_marks_by_student_subject($row1['student_id'], $row2['subject_id']);
+                            $marks = $this->Marks_model->get_marks_by_student_subject($row1['student_id'], $row2['subject_id']);
                             
                             // Crear un array asociativo para mapear cada tipo de evaluación y recuperación con su mark_obtained
                             $mark_array = array();

@@ -64,7 +64,7 @@ function getStatusClass($status)
 
 
 <?php
-$student_info = $this->Student_model->get_student_info($student_id);
+$student_info = $this->Students_model->get_student_info($student_id);
 foreach($student_info as $row):?>
 
 <div class="profile-header" style="border-radius: 15px;">

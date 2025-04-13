@@ -1,6 +1,6 @@
 <?php 
 
-$edit_data = $this->Teacher_model->get_teacher_info($teacher_id);
+$edit_data = $this->Teachers_model->get_teacher_info($teacher_id);
 foreach ($edit_data as $row):
 
 ?>

@@ -19,12 +19,12 @@ class PrintT extends CI_Controller
 
     public function printReportCardES($student_id = '', $section_id = '')
     {
-        $student_data = $this->Student_model->get_student_info2($student_id);
+        $student_data = $this->Students_model->get_student_info2($student_id);
         $section = $this->crud_model->get_section_info4($section_id);
         $class_name = $this->crud_model->get_class_name($section['class_id']);
         $academic_period = $this->crud_model->get_academic_period_name_per_section2($section['section_id']);
         $section_letter_name = $section['letter_name'];
-        $subjects = $this->Subject_model->get_subjects_by_section2($section_id);
+        $subjects = $this->Subjects_model->get_subjects_by_section2($section_id);
         $shift = ($section['shift_id'] == 1) ? ucfirst(get_phrase('morning')) : ucfirst(get_phrase('afternoon'));
         $academic_period_id = $section['academic_period_id'];
 
@@ -355,7 +355,7 @@ class PrintT extends CI_Controller
     
         foreach ($subjects as $subject) {
             // Obtener las marcas del estudiante para la asignatura
-            $marks = $this->Mark_model->get_marks_by_student_subject2($student_id, $subject['subject_id'], $section['academic_period_id']);
+            $marks = $this->Marks_model->get_marks_by_student_subject2($student_id, $subject['subject_id'], $section['academic_period_id']);
     
             // Inicializar un array para almacenar los marks organizados por exam_type_id
             $marks_by_exam_type = array_fill(1, 21, ''); // Rellenar todas las posiciones con valores vacíos
@@ -478,7 +478,7 @@ class PrintT extends CI_Controller
                 // Recorre las asignaturas y sus marcas
                 foreach ($subjects as $subject) {
                     // Obtener las marcas para el subject con exam_type_id = 21
-                    $marks = $this->Mark_model->get_marks_by_student_subject3($student_id, $subject['subject_id'], $section['academic_period_id']);
+                    $marks = $this->Marks_model->get_marks_by_student_subject3($student_id, $subject['subject_id'], $section['academic_period_id']);
                 
                     foreach ($marks as $mark) {
                         if ($mark['exam_type_id'] == 21 && ($mark['date'] !== null && $mark['date'] !== '' && $mark['mark_obtained'] < 7)) {
@@ -858,7 +858,7 @@ class PrintT extends CI_Controller
     public function printStudentTableES($section_id = '')
     {
         // Obtener datos de los estudiantes y la sección
-        $student_data = $this->Student_model->get_students_per_section($section_id);
+        $student_data = $this->Students_model->get_students_per_section($section_id);
         $section = $this->crud_model->get_section_info($section_id);
         $class_name = $this->crud_model->get_class_name($section['class_id']);
         $academic_period = $this->crud_model->get_academic_period_name_per_section($section_id);
@@ -1031,7 +1031,7 @@ class PrintT extends CI_Controller
     public function printStudentTableEN($section_id = '')
     {
         // Obtener datos de los estudiantes y secciones
-        $student_data = $this->Student_model->get_students_per_section($section_id);
+        $student_data = $this->Students_model->get_students_per_section($section_id);
         $section = $this->crud_model->get_section_info($section_id);
         $section_letter_name = $this->crud_model->get_section_letter_name($section_id);
         $class_name = $this->crud_model->get_class_name($section['class_id']);
@@ -1965,7 +1965,7 @@ class PrintT extends CI_Controller
     public function printStudentAdmissionsTableES()
     {
         // Obtener datos de los estudiantes y la sección
-        $student_data = $this->Student_model->get_students_admissions();
+        $student_data = $this->Students_model->get_students_admissions();
         $academic_period = $this->crud_model->get_active_academic_period_name();
 
         $studentsPerPage = 13;
@@ -2139,7 +2139,7 @@ class PrintT extends CI_Controller
 
     public function printStudentAdmissionsTableEN()
     {
-        $student_data = $this->Student_model->get_students_admissions();
+        $student_data = $this->Students_model->get_students_admissions();
         $academic_period = $this->crud_model->get_active_academic_period_name();
     
         // Número máximo de estudiantes por página
@@ -2318,7 +2318,7 @@ class PrintT extends CI_Controller
     public function printStudentPreEnrollmentsTableES()
     {
         // Obtener datos de los estudiantes y la sección
-        $student_data = $this->Student_model->get_students_pre_enrollments();
+        $student_data = $this->Students_model->get_students_pre_enrollments();
         $academic_period = $this->crud_model->get_active_academic_period_name();
 
         $studentsPerPage = 13;
@@ -2490,7 +2490,7 @@ class PrintT extends CI_Controller
 
     public function printStudentPreEnrollmentsTableEN()
     {
-        $student_data = $this->Student_model->get_students_pre_enrollments();
+        $student_data = $this->Students_model->get_students_pre_enrollments();
         $academic_period = $this->crud_model->get_active_academic_period_name();
     
         // Número máximo de estudiantes por página

@@ -8,8 +8,8 @@ class Admin extends CI_Controller
         $this->load->database();
         $this->load->library('session');
 
-        $this->load->model('admin/Admin_model');
-        $this->load->library('Admin_service');
+        $this->load->model('admin/Admins_model');
+        $this->load->library('Admins_service');
 
         date_default_timezone_set('America/Argentina/Buenos_Aires');
 

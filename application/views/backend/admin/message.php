@@ -2,7 +2,7 @@
 		
 			<!-- compose new email button -->
 			<div class="mail-sidebar-row visible-xs">
-				<a href="<?php echo base_url(); ?>index.php?admin/message_new/" class="btn btn-success btn-icon btn-block">
+				<a href="<?php echo base_url(); ?>index.php?admin/messages_new/" class="btn btn-success btn-icon btn-block">
 					Enviar correo
 					<i class="entypo-pencil"></i>
 				</a>
@@ -101,11 +101,11 @@
                 </div>
             </td>
             <td class="col-name">
-                <a href="<?php echo base_url(); ?>index.php?admin/message_settings/favorite/message/<?php echo $message['message_thread_code']; ?>/<?php echo ($message['is_favorite'] == 1) ? 'remove' : 'add'; ?>" class="star popover-white" 
+                <a href="<?php echo base_url(); ?>index.php?admin/messages_settings/favorite/messages/<?php echo $message['message_thread_code']; ?>/<?php echo ($message['is_favorite'] == 1) ? 'remove' : 'add'; ?>" class="star popover-white" 
 					data-toggle="popover" data-trigger="hover" data-placement="top" data-content="<?php echo ($message['is_favorite'] == 1) ? 'Eliminar de favoritos' : 'Añadir a favoritos'; ?>">
                     <i class="<?php echo ($message['is_favorite'] == 1) ? 'fa fa-star' : 'fa fa-star-o'; ?>"></i>
                 </a>
-                <a href="<?php echo base_url(); ?>index.php?admin/message_read/<?php echo $message['message_thread_code']; ?>" 
+                <a href="<?php echo base_url(); ?>index.php?admin/messages_read/<?php echo $message['message_thread_code']; ?>" 
 					class="col-name popover-white" 
 					data-toggle="popover" 
 					data-trigger="hover" 
@@ -265,7 +265,7 @@
             </td>
 			<td class="col-options">
 				
-				<a type="button" class="btn btn-table btn-white btn-info-hover popover-white" href="<?php echo base_url(); ?>index.php?admin/message_settings/user_message_status/<?php echo $message['message_thread_code']; ?>/<?php echo ($message['new_message_count']) > 0 ? 'read' : 'unread'; ?>/message"
+				<a type="button" class="btn btn-table btn-white btn-info-hover popover-white" href="<?php echo base_url(); ?>index.php?admin/messages_settings/user_message_status/<?php echo $message['message_thread_code']; ?>/<?php echo ($message['new_message_count']) > 0 ? 'read' : 'unread'; ?>/message"
 					data-toggle="popover" data-trigger="hover" data-placement="top" data-content="<?php echo $message['new_message_count'] > 0 ? 'Marcar como visto' : 'Marcar como no visto'; ?>">
                     <i class="<?php echo $message['new_message_count'] > 0 ? 'fa fa-eye' : 'fa fa-eye-slash'; ?>"></i>    
                 </a>
@@ -312,7 +312,7 @@
 				<!-- menu -->
 				<ul class="mail-menu">
 					<li class="active">
-						<a href="<?php echo base_url(); ?>index.php?admin/message/">
+						<a href="<?php echo base_url(); ?>index.php?admin/messages/">
 							<?php if ($unread_count > 0): ?>
 								<span class="badge badge-danger badge-tag badge-mail-menu pull-right"><?php echo $unread_count; ?></span>
 							<?php endif; ?>
