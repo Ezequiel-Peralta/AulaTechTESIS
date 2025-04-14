@@ -1,5 +1,5 @@
 <?php 
-$edit_data		=	$this->Subject_model->get_student_info_per_section2($subject_id);
+$edit_data		=	$this->Subjects_model->get_student_info_per_section2($subject_id);
 foreach ( $edit_data as $row):
 ?>
 

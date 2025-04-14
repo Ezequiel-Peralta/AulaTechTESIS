@@ -100,7 +100,7 @@ foreach($task_info as $row):?>
                     replaceCheckboxes();
 
                     $.ajax({
-                        url: 'index.php?admin/task/createIndividualTaskItem/' + task_id + '/' + item,
+                        url: 'index.php?admin/tasks/createIndividualTaskItem/' + task_id + '/' + item,
                         success: function(response) {
                             console.log('Nueva tarea creada exitosamente.');
 
@@ -146,9 +146,9 @@ foreach($task_info as $row):?>
 
         // Realizar la solicitud AJAX
         $.ajax({
-            url: 'index.php?admin/task/checkUncheckIndividualTaskItem/' + task_id + '/' + task_item_id + '/' + checkType,
+            url: 'index.php?admin/tasks/checkUncheckIndividualTaskItem/' + task_id + '/' + task_item_id + '/' + checkType,
             success: function(response) {
-                console.log('Operación realizada exitosamente.', 'index.php?admin/task/checkUncheckIndividualTaskItem/' + task_id + '/' + task_item_id + '/' + checkType);
+                console.log('Operación realizada exitosamente.', 'index.php?admin/tasks/checkUncheckIndividualTaskItem/' + task_id + '/' + task_item_id + '/' + checkType);
                 
                 // Aquí puedes manejar cualquier respuesta del servidor si es necesario
             },

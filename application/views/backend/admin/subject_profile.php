@@ -73,7 +73,7 @@ if (!empty($subject_info)) {
             <br>
             <div class="profile-container"> 
                 <?php
-                    $teacher_aide_info = $this->Teacher_model->get_teacher_aide_info_per_section($subject['section_id']);
+                    $teacher_aide_info = $this->Teachers_model->get_teacher_aide_info_per_section($subject['section_id']);
                     if (!empty($teacher_aide_info)) {
                         foreach ($teacher_aide_info as $row2): ?>
                         <a href="<?php echo base_url(); ?>index.php?admin/teacher_aide_profile/<?php echo $row2['teacher_aide_id']; ?>">
@@ -98,7 +98,7 @@ if (!empty($subject_info)) {
             <a href="<?php echo base_url(); ?>index.php?admin/teacher_profile/<?php echo $subject['teacher_id'];?>">
                 <div class="profile-container">
                     <?php
-                        $teacher_info = $this->Teacher_model->get_teacher_info_per_subject2($subject['subject_id']);
+                        $teacher_info = $this->Teachers_model->get_teacher_info_per_subject2($subject['subject_id']);
                         ?>
                         <div class="profile-card"> 
                 
@@ -120,7 +120,7 @@ if (!empty($subject_info)) {
             <br>
                 <div class="profile-container"> 
                     <?php
-                        $student_info = $this->Student_model->get_student_info_per_section2($subject['section_id']);
+                        $student_info = $this->Students_model->get_student_info_per_section2($subject['section_id']);
                         foreach ($student_info as $student): ?>
                         <a href="<?php echo base_url(); ?>index.php?admin/student_profile/<?php echo $student['student_id'];?>">
                             <div class="profile-card" style="min-height: 240px !important;"> 

@@ -66,9 +66,8 @@ function getStatusClass($status)
 
 
 <?php
-$student_info = $this->Student_model->get_student_info($student_id);
-foreach ($student_info as $row): ?>
-
+$student_info = $this->Students_model->get_student_info($student_id);
+foreach($student_info as $row):?>
     <div class="profile-header" style="border-radius: 15px;">
         <img src="assets/images/photo-header.png" class="cover-photo" alt="Cover Photo">
         <img src="<?php echo $row['photo']; ?>" class="img-fluid" alt="Profile Picture" width="150" height="150">

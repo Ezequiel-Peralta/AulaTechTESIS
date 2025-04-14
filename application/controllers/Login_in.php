@@ -59,19 +59,19 @@ class Login_in extends CI_Controller {
             $row = $query->row();
 
             // Obtener datos adicionales de admin_details
-            $details_query = $this->db->get_where('admin_details', array('admin_id' => $row->id));
+            $details_query = $this->db->get_where('admin_details', array('admin_id' => $row->admin_id));
             if ($details_query->num_rows() > 0) {
                 $details = $details_query->row();
 
                 // Cambiar el valor de login_status_id a 1 cuando se inicia sesión
                 $this->db->set('login_status_id', '1');
                 $this->db->set('last_login', 'NOW()', FALSE);
-                $this->db->where('admin_id', $row->id);
+                $this->db->where('admin_id', $row->admin_id);
                 $this->db->update('admin_details');
 
                 $this->session->set_userdata('admin_login', '1');
-                $this->session->set_userdata('admin_id', $row->id);
-                $this->session->set_userdata('login_user_id', $row->id);
+                $this->session->set_userdata('admin_id', $row->admin_id);
+                $this->session->set_userdata('login_user_id', $row->admin_id);
                 $this->session->set_userdata('username', $row->username);
                 $this->session->set_userdata('email', $row->email);
                 $this->session->set_userdata('firstname', $details->firstname);
@@ -85,7 +85,6 @@ class Login_in extends CI_Controller {
                 return 'success';
             }
         }
-
         return 'invalid';
     }
 

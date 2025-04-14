@@ -4,7 +4,7 @@
     <h4 class="modal-title"><i class="entypo-plus"></i><?php echo 'Añadir tarea'?></h4>
 </div>
 
-<?php echo form_open(base_url() . 'index.php?admin/task/create/' , array('class' => 'form-horizontal form-groups-bordered validate', 'enctype' => 'multipart/form-data'));?>
+<?php echo form_open(base_url() . 'index.php?admin/tasks/create/' , array('class' => 'form-horizontal form-groups-bordered validate', 'enctype' => 'multipart/form-data'));?>
 
 <div class="modal-body" style="height:500px; overflow:auto;">
    

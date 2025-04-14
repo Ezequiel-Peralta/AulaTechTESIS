@@ -11,7 +11,7 @@ foreach ( $edit_data as $row):
     <h4 class="modal-title"><i class="entypo-pencil"></i><?php echo 'Editar tarea'?></h4>
 </div>
 
-<?php echo form_open(base_url() . 'index.php?admin/task/update/'.$row['task_id'] , array('class' => 'form-horizontal form-groups-bordered validate','target'=>'_top', 'enctype' => 'multipart/form-data'));?>
+<?php echo form_open(base_url() . 'index.php?admin/tasks/update/'.$row['task_id'] , array('class' => 'form-horizontal form-groups-bordered validate','target'=>'_top', 'enctype' => 'multipart/form-data'));?>
 
 <div class="modal-body" style="height:500px; overflow:auto;">
    

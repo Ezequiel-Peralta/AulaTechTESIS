@@ -57,7 +57,7 @@
                     <br>
                     <div class="panel-group joined" id="accordion-test-1">
                         <?php
-                        $subjects = $this->Subject_model->get_subjects_and_library_by_section($section_data['section_id']);
+                        $subjects = $this->Subjects_model->get_subjects_and_library_by_section($section_data['section_id']);
                         foreach ($subjects as $subject):
                         ?>
                             <div class="panel panel-default">
@@ -136,7 +136,7 @@
         var languagePreference = '<?php echo $this->session->userdata('language_preference'); ?>';
 
             <?php
-                        $subjects = $this->Subject_model->get_subjects_by_section($section_data['section_id']);
+                        $subjects = $this->Subjects_model->get_subjects_by_section($section_data['section_id']);
                         foreach ($subjects as $row):
                         ?>
 

@@ -236,7 +236,7 @@ $user_new_messages = $this->db->get('user_message_status')->result_array();
 											?>
 
 											<li class="active">
-												<a href="<?php echo base_url(); ?>index.php?admin/message/">
+												<a href="<?php echo base_url(); ?>index.php?admin/messages/">
 													<span class="image pull-right">
 														<img src="<?php echo $sender['photo']; ?>" width="44" alt="" class="img-circle" />
 													</span>
@@ -278,7 +278,7 @@ $user_new_messages = $this->db->get('user_message_status')->result_array();
 
 								if ($user_message_count > 0): ?>
 									<li class="external text-center">
-										<a href="<?php echo base_url(); ?>index.php?admin/message/">Ver todos los mensajes</a>
+										<a href="<?php echo base_url(); ?>index.php?admin/messages/">Ver todos los mensajes</a>
 									</li>
 								<?php endif; ?>
 							

@@ -1,5 +1,5 @@
 <?php 
-    $edit_data		=	$this->Student_model->get_behavior_student($behavior_id);
+    $edit_data		=	$this->Students_model->get_behavior_student($behavior_id);
     foreach ( $edit_data as $rowBehavior):
 ?>
 
@@ -78,7 +78,7 @@
                                                     <?php echo ucfirst(get_phrase(empty($rowBehavior['class_id']) ? 'first_select_the_class_and_section' : 'select')); ?>
                                                 </option>
 											<?php 
-											$students = $this->Student_model->get_student_info_per_section($rowBehavior['section_id']);
+											$students = $this->Students_model->get_student_info_per_section($rowBehavior['section_id']);
 											foreach ($students as $student):
 												$selected = ($student['student_id'] == $rowBehavior['student_id']) ? 'selected' : '';
 											?>

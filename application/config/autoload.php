@@ -1,5 +1,9 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+if (!defined('BASEPATH')) {
+    echo 'Archivo accedido directamente: ' . __FILE__;
+    exit('No direct script access allowed');
+}
+
 
 /*
 | -------------------------------------------------------------------
@@ -137,4 +141,4 @@ $autoload['language'] = array();
 |	$autoload['model'] = array('first_model' => 'first');
 */
 
-$autoload['model'] = array('crud_model','student/Student_model' => 'Student_model','attendance/Attendance_model' => 'crudAttendance','exams/Exams_model'=> 'Exam_model','guardian/Guardian_model' => 'Guardian_model','mark/Mark_model' => 'Mark_model','parent/Guardian_model' => 'Guardian_model','subject/Subject_model' => 'Subject_model','teacher/Teacher_model' => 'Teacher_model', 'dashboard/Dashboard_model' => 'Dashboard_model', 'usersys/Usersys_model' => 'Usersys_model', 'message/Message_model' => 'Message_model');
+$autoload['model'] = array('crud_model','students/Students_model' => 'Students_model','attendances/Attendances_model' => 'Attendance_model','exams/Exams_model'=> 'Exams_model','guardians/Guardians_model' => 'Guardians_model','marks/Marks_model' => 'Marks_model','guardians/Guardians_model' => 'Guardians_model','subjects/Subjects_model' => 'Subjects_model','teachers/Teachers_model' => 'Teachers_model', 'dashboard/Dashboard_model' => 'Dashboard_model', 'usersys/Usersys_model' => 'Usersys_model', 'Messages/messages_model' => 'Messages_model');

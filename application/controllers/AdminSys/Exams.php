@@ -8,7 +8,7 @@ class Exams extends CI_Controller
         $this->load->database();
         $this->load->library('session');
 
-        $this->load->model('subject/subject_model');
+        $this->load->model('subjects/subjects_model');
         $this->load->model('exams/exams_model');
         $this->load->library('Exams_service');
 
@@ -80,7 +80,7 @@ class Exams extends CI_Controller
         if ($this->session->userdata('admin_login') != 1)
             redirect('login', 'refresh');
 
-        $subject_data = $this->subject_model->get_subject($subject_id);
+        $subject_data = $this->subjects_model->get_subject($subject_id);
         $active_academic_period = $this->db->get_where('academic_period', array('status_id' => 1))->row();
         $sections = array();
 
