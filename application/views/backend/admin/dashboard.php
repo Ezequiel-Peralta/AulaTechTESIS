@@ -316,17 +316,6 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
     <div class="panel panel-default">
                         <div class="panel-heading">
                             <h4 class="panel-title">
@@ -408,11 +397,6 @@
                             </div>
                         </div>
     </div>
-
-
-
-
-
 
 
 
@@ -830,7 +814,22 @@
 
 
 });
-
+function construirAjaxUrl(baseUrl, event_title, event_body, formatted_start_date, formatted_end_date, user_type, user_option, visibility_id, isAllDay, event_color, visibilityForCreator, visibleEdit, visibleDelete, event_type) {
+    return baseUrl + 'index.php?admin/events/create/' +
+        encodeURIComponent(event_title) + '/' +
+        encodeURIComponent(event_body) + '/' +
+        encodeURIComponent(formatted_start_date) + '/' +
+        (formatted_end_date ? encodeURIComponent(formatted_end_date) : 'null') + '/' + // Manejar null en URL
+        encodeURIComponent(user_type) + '/' +
+        encodeURIComponent(user_option) + '/' +
+        encodeURIComponent(visibility_id) + '/' +
+        encodeURIComponent(isAllDay) + '/' +
+        encodeURIComponent(event_color) + '/' +
+        encodeURIComponent(visibilityForCreator) + '/' +
+        encodeURIComponent(visibleEdit) + '/' +
+        encodeURIComponent(visibleDelete) + '/' +
+        encodeURIComponent(event_type);
+}
 </script>
 
 
@@ -1021,6 +1020,9 @@ $("body").on('submit', '#send_event_form', function(ev) {
 
         user_option = 'my_account';
 
+        var ajaxUrl = construirAjaxUrl('<?php echo base_url();?>', event_title, event_body, formatted_start_date, formatted_end_date, user_type, user_option, visibility_id, isAllDay, event_color, visibilityForCreator, visibleEdit, visibleDelete, event_type);
+
+       /* 
         // Enviamos los datos por la URL en la solicitud AJAX
         var ajaxUrl = '<?php echo base_url();?>index.php?admin/events/create/' + 
                     encodeURIComponent(event_title) + '/' +
@@ -1038,7 +1040,7 @@ $("body").on('submit', '#send_event_form', function(ev) {
                     encodeURIComponent(event_type);
 
         console.log(ajaxUrl);
-
+*/
         $.ajax({
             url: ajaxUrl,
             success: function(response) {
@@ -1059,23 +1061,8 @@ $("body").on('submit', '#send_event_form', function(ev) {
             var visibility_id = $('#content-section-list').val();
         }
 
-        // Enviamos los datos por la URL en la solicitud AJAX
-        var ajaxUrl = '<?php echo base_url();?>index.php?admin/events/create/' + 
-        encodeURIComponent(event_title) + '/' +
-        encodeURIComponent(event_body) + '/' +  
-                    encodeURIComponent(formatted_start_date) + '/' + 
-                    (formatted_end_date ? encodeURIComponent(formatted_end_date) : 'null') + '/' + // Manejar null en URL
-                    encodeURIComponent(user_type) + '/' + 
-                    encodeURIComponent(user_option) + '/' + 
-                    encodeURIComponent(visibility_id) + '/' + 
-                    encodeURIComponent(isAllDay) + '/' + 
-                    encodeURIComponent(event_color)  + '/' + 
-                    encodeURIComponent(visibilityForCreator) + '/' + 
-                    encodeURIComponent(visibleEdit) + '/' + 
-                    encodeURIComponent(visibleDelete) + '/'  +
-                    encodeURIComponent(event_type);
+        var ajaxUrl = construirAjaxUrl('<?php echo base_url();?>', event_title, event_body, formatted_start_date, formatted_end_date, user_type, user_option, visibility_id, isAllDay, event_color, visibilityForCreator, visibleEdit, visibleDelete, event_type);
 
-        console.log(ajaxUrl);
 
         $.ajax({
             url: ajaxUrl,
@@ -1096,24 +1083,8 @@ $("body").on('submit', '#send_event_form', function(ev) {
         } else if (user_option === 'PerSection') {
             var visibility_id = $('#content-section-list').val();
         }
+        var ajaxUrl = construirAjaxUrl('<?php echo base_url();?>', event_title, event_body, formatted_start_date, formatted_end_date, user_type, user_option, visibility_id, isAllDay, event_color, visibilityForCreator, visibleEdit, visibleDelete, event_type);
 
-        // Enviamos los datos por la URL en la solicitud AJAX
-        var ajaxUrl = '<?php echo base_url();?>index.php?admin/events/create/' + 
-        encodeURIComponent(event_title) + '/' +
-        encodeURIComponent(event_body) + '/' +  
-                    encodeURIComponent(formatted_start_date) + '/' + 
-                    (formatted_end_date ? encodeURIComponent(formatted_end_date) : 'null') + '/' + // Manejar null en URL
-                    encodeURIComponent(user_type) + '/' + 
-                    encodeURIComponent(user_option) + '/' + 
-                    encodeURIComponent(visibility_id) + '/' + 
-                    encodeURIComponent(isAllDay) + '/' + 
-                    encodeURIComponent(event_color)  + '/' + 
-                    encodeURIComponent(visibilityForCreator) + '/' + 
-                    encodeURIComponent(visibleEdit) + '/' + 
-                    encodeURIComponent(visibleDelete) + '/'  +
-                    encodeURIComponent(event_type);
-
-        console.log(ajaxUrl);
 
         $.ajax({
             url: ajaxUrl,
@@ -1134,23 +1105,9 @@ $("body").on('submit', '#send_event_form', function(ev) {
             var visibility_id = $('#content-section-list').val();
         }
 
-        // Enviamos los datos por la URL en la solicitud AJAX
-        var ajaxUrl = '<?php echo base_url();?>index.php?admin/events/create/' + 
-        encodeURIComponent(event_title) + '/' +
-        encodeURIComponent(event_body) + '/' +  
-                    encodeURIComponent(formatted_start_date) + '/' + 
-                    (formatted_end_date ? encodeURIComponent(formatted_end_date) : 'null') + '/' + // Manejar null en URL
-                    encodeURIComponent(user_type) + '/' + 
-                    encodeURIComponent(user_option) + '/' + 
-                    encodeURIComponent(visibility_id) + '/' + 
-                    encodeURIComponent(isAllDay) + '/' + 
-                    encodeURIComponent(event_color)  + '/' + 
-                    encodeURIComponent(visibilityForCreator) + '/' + 
-                    encodeURIComponent(visibleEdit) + '/' + 
-                    encodeURIComponent(visibleDelete) + '/'  +
-                    encodeURIComponent(event_type);
 
-        console.log(ajaxUrl);
+        var ajaxUrl = construirAjaxUrl('<?php echo base_url();?>', event_title, event_body, formatted_start_date, formatted_end_date, user_type, user_option, visibility_id, isAllDay, event_color, visibilityForCreator, visibleEdit, visibleDelete, event_type);
+
 
         $.ajax({
             url: ajaxUrl,
@@ -1171,23 +1128,8 @@ $("body").on('submit', '#send_event_form', function(ev) {
             var visibility_id = $('#content-section-list').val();
         }
 
-        // Enviamos los datos por la URL en la solicitud AJAX
-        var ajaxUrl = '<?php echo base_url();?>index.php?admin/events/create/' + 
-        encodeURIComponent(event_title) + '/' +
-        encodeURIComponent(event_body) + '/' +  
-                    encodeURIComponent(formatted_start_date) + '/' + 
-                    (formatted_end_date ? encodeURIComponent(formatted_end_date) : 'null') + '/' + // Manejar null en URL
-                    encodeURIComponent(user_type) + '/' + 
-                    encodeURIComponent(user_option) + '/' + 
-                    encodeURIComponent(visibility_id) + '/' + 
-                    encodeURIComponent(isAllDay) + '/' + 
-                    encodeURIComponent(event_color)  + '/' + 
-                    encodeURIComponent(visibilityForCreator) + '/' + 
-                    encodeURIComponent(visibleEdit) + '/' + 
-                    encodeURIComponent(visibleDelete) + '/'  +
-                    encodeURIComponent(event_type);
+        var ajaxUrl = construirAjaxUrl('<?php echo base_url();?>', event_title, event_body, formatted_start_date, formatted_end_date, user_type, user_option, visibility_id, isAllDay, event_color, visibilityForCreator, visibleEdit, visibleDelete, event_type);
 
-        console.log(ajaxUrl);
 
         $.ajax({
             url: ajaxUrl,
@@ -1206,23 +1148,8 @@ $("body").on('submit', '#send_event_form', function(ev) {
             var visibility_id = $('#content-admin-list').val();
         } 
 
-        // Enviamos los datos por la URL en la solicitud AJAX
-        var ajaxUrl = '<?php echo base_url();?>index.php?admin/events/create/' + 
-        encodeURIComponent(event_title) + '/' +
-        encodeURIComponent(event_body) + '/' +  
-                    encodeURIComponent(formatted_start_date) + '/' + 
-                    (formatted_end_date ? encodeURIComponent(formatted_end_date) : 'null') + '/' + // Manejar null en URL
-                    encodeURIComponent(user_type) + '/' + 
-                    encodeURIComponent(user_option) + '/' + 
-                    encodeURIComponent(visibility_id) + '/' + 
-                    encodeURIComponent(isAllDay) + '/' + 
-                    encodeURIComponent(event_color)  + '/' + 
-                    encodeURIComponent(visibilityForCreator) + '/' + 
-                    encodeURIComponent(visibleEdit) + '/' + 
-                    encodeURIComponent(visibleDelete) + '/'  +
-                    encodeURIComponent(event_type); 
+        var ajaxUrl = construirAjaxUrl('<?php echo base_url();?>', event_title, event_body, formatted_start_date, formatted_end_date, user_type, user_option, visibility_id, isAllDay, event_color, visibilityForCreator, visibleEdit, visibleDelete, event_type);
 
-        console.log(ajaxUrl);
 
         $.ajax({
             url: ajaxUrl,
@@ -1295,46 +1222,7 @@ $("body").on('submit', '#send_event_form', function(ev) {
         day: 'día'
     },
 
-    
-    // viewRender: function(view, element) {
-   
-    // $('.fc-week .fc-first').each(function() {
-      
-    //     $(this).find('div:first').css({
-    //         'height': '140px',
-    //         'min-height': '140px', 
-    //         'max-height': '140px'  
-    //     });
-    //     $(this).css({
-    //         'min-height': '140px', 
-    //         'max-height': '140px'  
-    //     });
-    // });
-
-    // $('.fc-week .fc-widget-content').each(function() {
-    //     $(this).find('div:first').css({
-    //         'height': '140px',
-    //         'min-height': '140px', 
-    //         'max-height': '140px'  
-    //     });
-    //     $(this).css({
-    //         'height': '140px',
-    //         'min-height': '140px', 
-    //         'max-height': '140px' 
-    //     });
-    // });
-
-    // $('.fc-event .fc-event-inner').each(function() {
-    //     $(this).css({
-    //         'height': '87px',
-    //         'min-height': '87px', 
-    //         'max-height': '87px' 
-    //     });
-    // });
-
-    
-// },
-
+ 
 
     drop: function(date, allDay) {
         var $this = $(this),
