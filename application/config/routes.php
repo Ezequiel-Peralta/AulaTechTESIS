@@ -118,10 +118,7 @@ $route['admin/view_students_academic_history/(:any)'] = 'AdminSys/Academic/view_
 $route['admin/add_library'] = 'AdminSys/Library/add_library';
 
 //Library - library
-$route['admin/library/(:any)/(:any)/(:any)/(:any)'] = 'AdminSys/Library/library/$1/$2/$3/$4';
-$route['admin/library/(:any)/(:any)/(:any)'] = 'AdminSys/Library/library/$1/$2/$3';
-$route['admin/library/(:any)/(:any)'] = 'AdminSys/Library/library/$1/$2';
-$route['admin/library/(:any)'] = 'AdminSys/Library/library/$1';
+$route['admin/library(/:any)?(/:any)?(/:any)?(/:any)?'] = 'AdminSys/Library/library$1$2$3$4';
 
 //Library - edit_library
 $route['admin/edit_library/(:any)'] = 'AdminSys/Library/edit_library/$1';
@@ -360,6 +357,7 @@ $route['admin/subjects_profile/(:any)'] = 'AdminSys/Subjects/subjects_profile/$1
 $route['admin/subjects/(:any)/(:any)/(:any)'] = 'AdminSys/Subjects/subjects/$1/$2/$3';
 $route['admin/subjects/(:any)/(:any)'] = 'AdminSys/Subjects/subjects/$1/$2';
 $route['admin/subjects/(:any)'] = 'AdminSys/Subjects/subjects/$1';
+$route['admin/subjects'] = 'AdminSys/Subjects/subjects';
 
 //Subjects - get_class_subjects
 $route['admin/get_class_subjects/(:any)'] = 'AdminSys/Subjects/get_class_subjects/$1';
@@ -398,10 +396,7 @@ $route['admin/get_class_content2'] = 'AdminSys/Classes/get_class_content2';
 $route['admin/attendance_students/(:any)'] = 'AdminSys/Attendance/attendance_students/$1';
 
 //Attendance - manage_attendance_students
-$route['admin/manage_attendance_students/(:any)/(:any)/(:any)/(:any)'] = 'AdminSys/Attendance/manage_attendance_students/$1/$2/$3/$4';
-$route['admin/manage_attendance_students/(:any)/(:any)/(:any)'] = 'AdminSys/Attendance/manage_attendance_students/$1/$2/$3';
-$route['admin/manage_attendance_students/(:any)/(:any)'] = 'AdminSys/Attendance/manage_attendance_students/$1/$2';
-$route['admin/manage_attendance_students/(:any)'] = 'AdminSys/Attendance/manage_attendance_students/$1';
+$route['admin/manage_attendance_students(/:any)?(/:any)?(/:any)?(/:any)?'] = 'AdminSys/Attendance/manage_attendance_students$1$2$3$4';
 
 //Attendance - manage_attendance_students_selector
 $route['admin/manage_attendance_students_selector'] = 'AdminSys/Attendance/manage_attendance_students_selector';
@@ -410,24 +405,10 @@ $route['admin/manage_attendance_students_selector'] = 'AdminSys/Attendance/manag
 $route['admin/summary_attendance_students/(:any)'] = 'AdminSys/Attendance/summary_attendance_students/$1';
 
 //Attendance - filter_attendance
-$route['admin/filter_attendance/(:any)/(:any)/(:any)/(:any)/(:any)/(:any)/(:any)/(:any)'] = 'AdminSys/Attendance/filter_attendance/$1/$2/$3/$4/$5/$6/$7/$8';
-$route['admin/filter_attendance/(:any)/(:any)/(:any)/(:any)/(:any)/(:any)/(:any)'] = 'AdminSys/Attendance/filter_attendance/$1/$2/$3/$4/$5/$6/$7';
-$route['admin/filter_attendance/(:any)/(:any)/(:any)/(:any)/(:any)/(:any)'] = 'AdminSys/Attendance/filter_attendance/$1/$2/$3/$4/$5/$6';
-$route['admin/filter_attendance/(:any)/(:any)/(:any)/(:any)/(:any)'] = 'AdminSys/Attendance/filter_attendance/$1/$2/$3/$4/$5';
-$route['admin/filter_attendance/(:any)/(:any)/(:any)/(:any)'] = 'AdminSys/Attendance/filter_attendance/$1/$2/$3/$4';
-$route['admin/filter_attendance/(:any)/(:any)/(:any)'] = 'AdminSys/Attendance/filter_attendance/$1/$2/$3';
-$route['admin/filter_attendance/(:any)/(:any)'] = 'AdminSys/Attendance/filter_attendance/$1/$2';
-$route['admin/filter_attendance/(:any)'] = 'AdminSys/Attendance/filter_attendance/$1';
+$route['admin/filter_attendance(/:any)?(/:any)?(/:any)?(/:any)?(/:any)?(/:any)?(/:any)?(/:any)?'] = 'AdminSys/Attendance/filter_attendance$1$2$3$4$5$6$7$8';
 
 // Attendance - filter_attendance_students
-$route['admin/filter_attendance_students/(:any)/(:any)/(:any)/(:any)/(:any)/(:any)/(:any)/(:any)'] = 'AdminSys/Attendance/filter_attendance_students/$1/$2/$3/$4/$5/$6/$7/$8';
-$route['admin/filter_attendance_students/(:any)/(:any)/(:any)/(:any)/(:any)/(:any)/(:any)'] = 'AdminSys/Attendance/filter_attendance_students/$1/$2/$3/$4/$5/$6/$7';
-$route['admin/filter_attendance_students/(:any)/(:any)/(:any)/(:any)/(:any)/(:any)'] = 'AdminSys/Attendance/filter_attendance_students/$1/$2/$3/$4/$5/$6';
-$route['admin/filter_attendance_students/(:any)/(:any)/(:any)/(:any)/(:any)'] = 'AdminSys/Attendance/filter_attendance_students/$1/$2/$3/$4/$5';
-$route['admin/filter_attendance_students/(:any)/(:any)/(:any)/(:any)'] = 'AdminSys/Attendance/filter_attendance_students/$1/$2/$3/$4';
-$route['admin/filter_attendance_students/(:any)/(:any)/(:any)'] = 'AdminSys/Attendance/filter_attendance_students/$1/$2/$3';
-$route['admin/filter_attendance_students/(:any)/(:any)'] = 'AdminSys/Attendance/filter_attendance_students/$1/$2';
-$route['admin/filter_attendance_students/(:any)'] = 'AdminSys/Attendance/filter_attendance_students/$1';
+$route['admin/filter_attendance_students(/:any)?(/:any)?(/:any)?(/:any)?(/:any)?(/:any)?(/:any)?(/:any)?'] = 'AdminSys/Attendance/filter_attendance_students$1$2$3$4$5$6$7$8';
 
 // Attendance - details_attendance_students
 $route['admin/details_attendance_students/(:any)'] = 'AdminSys/Attendance/details_attendance_students/$1';
@@ -442,11 +423,7 @@ $route['admin/edit_attendance_students/(:any)'] = 'AdminSys/Attendance/edit_atte
 $route['admin/students_mark_history/(:any)'] = 'AdminSys/Marks/students_mark_history/$1';
 
 // Marks - marks_per_Exams
-$route['admin/marks_per_Exams/(:any)/(:any)/(:any)/(:any)/(:any)'] = 'AdminSys/Marks/marks_per_Exams/$1/$2/$3/$4/$5';
-$route['admin/marks_per_Exams/(:any)/(:any)/(:any)/(:any)'] = 'AdminSys/Marks/marks_per_Exams/$1/$2/$3/$4';
-$route['admin/marks_per_Exams/(:any)/(:any)/(:any)'] = 'AdminSys/Marks/marks_per_Exams/$1/$2/$3';
-$route['admin/marks_per_Exams/(:any)/(:any)'] = 'AdminSys/Marks/marks_per_Exams/$1/$2';
-$route['admin/marks_per_Exams/(:any)'] = 'AdminSys/Marks/marks_per_Exams/$1';
+$route['admin/marks_per_Exams(/:any)?(/:any)?(/:any)?(/:any)?(/:any)?'] = 'AdminSys/Marks/marks_per_Exams$1$2$3$4$5';
 
 // Marks - students_mark
 $route['admin/students_mark/(:any)'] = 'AdminSys/Marks/students_mark/$1';
@@ -456,26 +433,10 @@ $route['admin/view_students_mark/(:any)/(:any)'] = 'AdminSys/Marks/view_students
 $route['admin/view_students_mark/(:any)'] = 'AdminSys/Marks/view_students_mark/$1';
 
 // Marks - marks
-$route['admin/marks/(:any)/(:any)/(:any)/(:any)/(:any)/(:any)/(:any)/(:any)/(:any)'] = 'AdminSys/Marks/marks/$1/$2/$3/$4/$5/$6/$7/$8/$9';
-$route['admin/marks/(:any)/(:any)/(:any)/(:any)/(:any)/(:any)/(:any)/(:any)'] = 'AdminSys/Marks/marks/$1/$2/$3/$4/$5/$6/$7/$8';
-$route['admin/marks/(:any)/(:any)/(:any)/(:any)/(:any)/(:any)/(:any)'] = 'AdminSys/Marks/marks/$1/$2/$3/$4/$5/$6/$7';
-$route['admin/marks/(:any)/(:any)/(:any)/(:any)/(:any)/(:any)'] = 'AdminSys/Marks/marks/$1/$2/$3/$4/$5/$6';
-$route['admin/marks/(:any)/(:any)/(:any)/(:any)/(:any)'] = 'AdminSys/Marks/marks/$1/$2/$3/$4/$5';
-$route['admin/marks/(:any)/(:any)/(:any)/(:any)'] = 'AdminSys/Marks/marks/$1/$2/$3/$4';
-$route['admin/marks/(:any)/(:any)/(:any)'] = 'AdminSys/Marks/marks/$1/$2/$3';
-$route['admin/marks/(:any)/(:any)'] = 'AdminSys/Marks/marks/$1/$2';
-$route['admin/marks/(:any)'] = 'AdminSys/Marks/marks/$1';
+$route['admin/marks(/:any)?(/:any)?(/:any)?(/:any)?(/:any)?(/:any)?(/:any)?(/:any)?(/:any)?'] = 'AdminSys/Marks/marks$1$2$3$4$5$6$7$8$9';
 
 // Marks - mark_history
-$route['admin/mark_history/(:any)/(:any)/(:any)/(:any)/(:any)/(:any)/(:any)/(:any)/(:any)'] = 'AdminSys/Marks/mark_history/$1/$2/$3/$4/$5/$6/$7/$8/$9';
-$route['admin/mark_history/(:any)/(:any)/(:any)/(:any)/(:any)/(:any)/(:any)/(:any)'] = 'AdminSys/Marks/mark_history/$1/$2/$3/$4/$5/$6/$7/$8';
-$route['admin/mark_history/(:any)/(:any)/(:any)/(:any)/(:any)/(:any)/(:any)'] = 'AdminSys/Marks/mark_history/$1/$2/$3/$4/$5/$6/$7';
-$route['admin/mark_history/(:any)/(:any)/(:any)/(:any)/(:any)/(:any)'] = 'AdminSys/Marks/mark_history/$1/$2/$3/$4/$5/$6';
-$route['admin/mark_history/(:any)/(:any)/(:any)/(:any)/(:any)'] = 'AdminSys/Marks/mark_history/$1/$2/$3/$4/$5';
-$route['admin/mark_history/(:any)/(:any)/(:any)/(:any)'] = 'AdminSys/Marks/mark_history/$1/$2/$3/$4';
-$route['admin/mark_history/(:any)/(:any)/(:any)'] = 'AdminSys/Marks/mark_history/$1/$2/$3';
-$route['admin/mark_history/(:any)/(:any)'] = 'AdminSys/Marks/mark_history/$1/$2';
-$route['admin/mark_history/(:any)'] = 'AdminSys/Marks/mark_history/$1';
+$route['admin/mark_history(/:any)?(/:any)?(/:any)?(/:any)?(/:any)?(/:any)?(/:any)?(/:any)?(/:any)?'] = 'AdminSys/Marks/mark_history$1$2$3$4$5$6$7$8$9';
 
 //Exams Routes
 
@@ -493,24 +454,17 @@ $route['admin/Exams_information/(:any)/(:any)'] = 'AdminSys/Exams/Exams_informat
 $route['admin/Exams_information/(:any)'] = 'AdminSys/Exams/Exams_information/$1';
 
 // Exams - Exams
-$route['admin/Exams/(:any)/(:any)/(:any)/(:any)'] = 'AdminSys/Exams/Exams/$1/$2/$3/$4';
-$route['admin/Exams/(:any)/(:any)/(:any)'] = 'AdminSys/Exams/Exams/$1/$2/$3';
-$route['admin/Exams/(:any)/(:any)'] = 'AdminSys/Exams/Exams/$1/$2';
-$route['admin/Exams/(:any)'] = 'AdminSys/Exams/Exams/$1';
+$route['admin/Exams(/:any)?(/:any)?(/:any)?(/:any)?'] = 'AdminSys/Exams/Exams$1$2$3$4';
 
 // Exams - view_Exams
 $route['admin/view_Exams/(:any)/(:any)/(:any)'] = 'AdminSys/Exams/view_Exams/$1/$2/$3';
 $route['admin/view_Exams/(:any)/(:any)'] = 'AdminSys/Exams/view_Exams/$1/$2';
 $route['admin/view_Exams/(:any)'] = 'AdminSys/Exams/view_Exams/$1';
 
-
 //Schedules Routes
 
 // Schedules - schedules
-$route['admin/schedules/(:any)/(:any)/(:any)/(:any)'] = 'AdminSys/Schedules/schedules/$1/$2/$3/$4';
-$route['admin/schedules/(:any)/(:any)/(:any)'] = 'AdminSys/Schedules/schedules/$1/$2/$3';
-$route['admin/schedules/(:any)/(:any)'] = 'AdminSys/Schedules/schedules/$1/$2';
-$route['admin/schedules/(:any)'] = 'AdminSys/Schedules/schedules/$1';
+$route['admin/schedules(/:any)?(/:any)?(/:any)?(/:any)?'] = 'AdminSys/Schedules/schedules$1$2$3$4';
 
 // Schedules - add_schedules
 $route['admin/add_schedules'] = 'AdminSys/Schedules/add_schedules';
@@ -520,10 +474,7 @@ $route['admin/edit_schedules/(:any)'] = 'AdminSys/Schedules/edit_schedules/$1';
 
 
 // Schedules - view_schedules
-$route['admin/view_schedules/(:any)/(:any)/(:any)/(:any)'] = 'AdminSys/Schedules/view_schedules/$1/$2/$3/$4';
-$route['admin/view_schedules/(:any)/(:any)/(:any)'] = 'AdminSys/Schedules/view_schedules/$1/$2/$3';
-$route['admin/view_schedules/(:any)/(:any)'] = 'AdminSys/Schedules/view_schedules/$1/$2';
-$route['admin/view_schedules/(:any)'] = 'AdminSys/Schedules/view_schedules/$1';
+$route['admin/view_schedules(/:any)?(/:any)?(/:any)?(/:any)?'] = 'AdminSys/Schedules/view_schedules$1$2$3$4';
 
 // Schedules - manage_schedules
 $route['admin/manage_schedules'] = 'AdminSys/Schedules/manage_schedules';
@@ -540,6 +491,7 @@ $route['admin/edit_news/(:any)'] = 'AdminSys/News/edit_news/$1';
 $route['admin/news/(:any)/(:any)/(:any)'] = 'AdminSys/News/news/$1/$2/$3';
 $route['admin/news/(:any)/(:any)'] = 'AdminSys/News/news/$1/$2';
 $route['admin/news/(:any)'] = 'AdminSys/News/news/$1';
+$route['admin/news'] = 'AdminSys/News/news';
 
 // News - manage_news
 $route['admin/manage_news'] = 'AdminSys/News/manage_news';
@@ -555,7 +507,6 @@ $route['admin/add_news'] = 'AdminSys/News/add_news';
 // Tasks - tasks
 $route['admin/tasks(/:any)?(/:any)?(/:any)?(/:any)?'] = 'AdminSys/Tasks/tasks$1$2$3$4';
 
-
 // Tasks - updateTasksProgress
 $route['admin/updateTasksProgress/(:any)'] = 'AdminSys/Tasks/updateTasksProgress/$1';
 
@@ -568,28 +519,36 @@ $route['admin/statistics'] = 'AdminSys/Statistics/statistics';
 //Messages Routes
 
 // Messages - messages
-$route['admin/messages(/:any)?(/:any)?(/:any)?'] = 'AdminSys/Messages/message$1$2$3';
+$route['admin/messages/(:any)/(:any)/(:any)'] = 'AdminSys/Messages/message/$1/$2/$3';
+$route['admin/messages/(:any)/(:any)'] = 'AdminSys/Messages/message/$1/$2';
+$route['admin/messages/(:any)'] = 'AdminSys/Messages/message/$1';
+$route['admin/messages'] = 'AdminSys/Messages/message/';
 
 // Messages - messages_favorite
 $route['admin/messages_favorite/(:any)/(:any)/(:any)'] = 'AdminSys/Messages/message_favorite/$1/$2/$3';
 $route['admin/messages_favorite/(:any)/(:any)'] = 'AdminSys/Messages/message_favorite/$1/$2';
 $route['admin/messages_favorite/(:any)'] = 'AdminSys/Messages/message_favorite/$1';
+$route['admin/messages_favorite'] = 'AdminSys/Messages/messages_favorite/';
 
 // Messages - messages_tag
 $route['admin/messages_tag/(:any)'] = 'AdminSys/Messages/message_tag/$1';
+$route['admin/messages_tag'] = 'AdminSys/Messages/messages_tag/';
 
 // Messages - messages_draft
 $route['admin/messages_draft/(:any)/(:any)/(:any)'] = 'AdminSys/Messages/message_draft/$1/$2/$3';
 $route['admin/messages_draft/(:any)/(:any)'] = 'AdminSys/Messages/message_draft/$1/$2';
 $route['admin/messages_draft/(:any)'] = 'AdminSys/Messages/message_draft/$1';
+$route['admin/messages_draft'] = 'AdminSys/Messages/messages_draft/';
 
 // Messages - messages_trash
 $route['admin/messages_trash/(:any)/(:any)/(:any)'] = 'AdminSys/Messages/message_trash/$1/$2/$3';
 $route['admin/messages_trash/(:any)/(:any)'] = 'AdminSys/Messages/message_trash/$1/$2';
 $route['admin/messages_trash/(:any)'] = 'AdminSys/Messages/message_trash/$1';
+$route['admin/messages_trash'] = 'AdminSys/Messages/messages_trash/';
 
 // Messages - messages_read
 $route['admin/messages_read/(:any)'] = 'AdminSys/Messages/message_read/$1';
+$route['admin/messages_read'] = 'AdminSys/Messages/messages_read/';
 
 // Messages - get_user_details
 $route['admin/get_user_details/(:any)/(:any)'] = 'AdminSys/Messages/get_user_details/$1/$2';
@@ -603,30 +562,19 @@ $route['admin/messages_news/(:any)'] = 'AdminSys/Messages/message_news/$1';
 $route['admin/messages_sent/(:any)/(:any)/(:any)'] = 'AdminSys/Messages/message_sent/$1/$2/$3';
 $route['admin/messages_sent/(:any)/(:any)'] = 'AdminSys/Messages/message_sent/$1/$2';
 $route['admin/messages_sent/(:any)'] = 'AdminSys/Messages/message_sent/$1';
+$route['admin/messages_sent'] = 'AdminSys/Messages/messages_sent/';
 
 // Messages - messages_settings
 $route['admin/messages_settings/(:any)/(:any)/(:any)/(:any)'] = 'AdminSys/Messages/message_settings/$1/$2/$3/$4';
 $route['admin/messages_settings/(:any)/(:any)/(:any)'] = 'AdminSys/Messages/message_settings/$1/$2/$3';
 $route['admin/messages_settings/(:any)/(:any)'] = 'AdminSys/Messages/message_settings/$1/$2';
 $route['admin/messages_settings/(:any)'] = 'AdminSys/Messages/message_settings/$1';
+$route['admin/messages_settings'] = 'AdminSys/Messages/messages_settings/';
 
 //Events Routes
 
 // Events - events
-$route['admin/events/(:any)/(:any)/(:any)/(:any)/(:any)/(:any)/(:any)/(:any)/(:any)/(:any)/(:any)/(:any)/(:any)/(:any)'] = 'AdminSys/Events/events/$1/$2/$3/$4/$5/$6/$7/$8/$9/$10/$11/$12/$13/$14';
-$route['admin/events/(:any)/(:any)/(:any)/(:any)/(:any)/(:any)/(:any)/(:any)/(:any)/(:any)/(:any)/(:any)/(:any)'] = 'AdminSys/Events/events/$1/$2/$3/$4/$5/$6/$7/$8/$9/$10/$11/$12/$13';
-$route['admin/events/(:any)/(:any)/(:any)/(:any)/(:any)/(:any)/(:any)/(:any)/(:any)/(:any)/(:any)/(:any)'] = 'AdminSys/Events/events/$1/$2/$3/$4/$5/$6/$7/$8/$9/$10/$11/$12';
-$route['admin/events/(:any)/(:any)/(:any)/(:any)/(:any)/(:any)/(:any)/(:any)/(:any)/(:any)/(:any)'] = 'AdminSys/Events/events/$1/$2/$3/$4/$5/$6/$7/$8/$9/$10/$11';
-$route['admin/events/(:any)/(:any)/(:any)/(:any)/(:any)/(:any)/(:any)/(:any)/(:any)/(:any)'] = 'AdminSys/Events/events/$1/$2/$3/$4/$5/$6/$7/$8/$9/$10';
-$route['admin/events/(:any)/(:any)/(:any)/(:any)/(:any)/(:any)/(:any)/(:any)/(:any)'] = 'AdminSys/Events/events/$1/$2/$3/$4/$5/$6/$7/$8/$9';
-$route['admin/events/(:any)/(:any)/(:any)/(:any)/(:any)/(:any)/(:any)/(:any)'] = 'AdminSys/Events/events/$1/$2/$3/$4/$5/$6/$7/$8';
-$route['admin/events/(:any)/(:any)/(:any)/(:any)/(:any)/(:any)/(:any)'] = 'AdminSys/Events/events/$1/$2/$3/$4/$5/$6/$7';
-$route['admin/events/(:any)/(:any)/(:any)/(:any)/(:any)/(:any)'] = 'AdminSys/Events/events/$1/$2/$3/$4/$5/$6';
-$route['admin/events/(:any)/(:any)/(:any)/(:any)/(:any)'] = 'AdminSys/Events/events/$1/$2/$3/$4/$5';
-$route['admin/events/(:any)/(:any)/(:any)/(:any)'] = 'AdminSys/Events/events/$1/$2/$3/$4';
-$route['admin/events/(:any)/(:any)/(:any)'] = 'AdminSys/Events/events/$1/$2/$3';
-$route['admin/events/(:any)/(:any)'] = 'AdminSys/Events/events/$1/$2';
-$route['admin/events/(:any)'] = 'AdminSys/Events/events/$1';
+$route['admin/events(/:any)?(/:any)?(/:any)?(/:any)?(/:any)?(/:any)?(/:any)?(/:any)?(/:any)?(/:any)?(/:any)?(/:any)?(/:any)?(/:any)?'] = 'AdminSys/Events/events$1$2$3$4$5$6$7$8$9$10$11$12$13$14';
 
 //Print Routes
 
@@ -677,6 +625,7 @@ $route['admin/printStudentsPreEnrollmentsTableEN'] = 'AdminSys/PrintT/printStude
 
 // UsersSys - manage_profile
 $route['admin/manage_profile/(:any)'] = 'AdminSys/UsersSys/manage_profile/$1';
+$route['admin/manage_profile'] = 'AdminSys/UsersSys/manage_profile';
 
 // UsersSys - help
 $route['admin/help'] = 'AdminSys/UsersSys/help';
@@ -691,14 +640,17 @@ $route['admin/get_postal_codes'] = 'AdminSys/UsersSys/get_postal_codes';
 $route['admin/profile_settings/(:any)/(:any)/(:any)'] = 'AdminSys/UsersSys/profile_settings/$1/$2/$3';
 $route['admin/profile_settings/(:any)/(:any)'] = 'AdminSys/UsersSys/profile_settings/$1/$2';
 $route['admin/profile_settings/(:any)'] = 'AdminSys/UsersSys/profile_settings/$1';
+$route['admin/profile_settings'] = 'AdminSys/UsersSys/profile_settings';
 
 // UsersSys - change_theme
 $route['admin/change_theme/(:any)/(:any)'] = 'AdminSys/UsersSys/change_theme/$1/$2';
 $route['admin/change_theme/(:any)'] = 'AdminSys/UsersSys/change_theme/$1';
+$route['admin/change_theme'] = 'AdminSys/UsersSys/change_theme';
 
 // UsersSys - change_language
 $route['admin/change_language/(:any)/(:any)'] = 'AdminSys/UsersSys/change_language/$1/$2';
 $route['admin/change_language/(:any)'] = 'AdminSys/UsersSys/change_language/$1';
+$route['admin/change_language'] = 'AdminSys/UsersSys/change_language';
 
 // UsersSys - reset_page_tracking
 $route['admin/reset_page_tracking/(:any)/(:any)'] = 'AdminSys/UsersSys/reset_page_tracking/$1/$2';
@@ -708,6 +660,7 @@ $route['admin/reset_page_tracking/(:any)'] = 'AdminSys/UsersSys/reset_page_track
 $route['admin/language_settings/(:any)/(:any)/(:any)'] = 'AdminSys/UsersSys/language_settings/$1/$2/$3';
 $route['admin/language_settings/(:any)/(:any)'] = 'AdminSys/UsersSys/language_settings/$1/$2';
 $route['admin/language_settings/(:any)'] = 'AdminSys/UsersSys/language_settings/$1';
+$route['admin/language_settings'] = 'AdminSys/UsersSys/language_settings';
 
 // UsersSys - get_all_users
 $route['admin/get_all_users'] = 'AdminSys/UsersSys/get_all_users';
