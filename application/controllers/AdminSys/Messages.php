@@ -21,7 +21,7 @@ class Messages extends CI_Controller
     }
 
 
-    function message($param1 = 'message_default', $param2 = '', $param3 = '') {
+    function messages($param1 = 'message_default', $param2 = '', $param3 = '') {
         if ($this->session->userdata('admin_login') != 1)
             redirect(base_url(), 'refresh');
     
@@ -296,7 +296,7 @@ class Messages extends CI_Controller
     }
 
 
-    function message_favorite($param1 = 'message_default', $param2 = '', $param3 = '') {
+    function messages_favorite($param1 = 'message_default', $param2 = '', $param3 = '') {
         if ($this->session->userdata('admin_login') != 1)
             redirect(base_url(), 'refresh');
     
@@ -563,7 +563,7 @@ class Messages extends CI_Controller
         $this->load->view('backend/index', $page_data);
     }
 
-    function message_tag($param1 = '') {
+    function messages_tag($param1 = '') {
         if ($this->session->userdata('admin_login') != 1)
             redirect(base_url(), 'refresh');
     
@@ -860,7 +860,7 @@ class Messages extends CI_Controller
         $this->load->view('backend/index', $page_data);
     }
 
-    function message_draft($param1 = 'message_default', $param2 = '', $param3 = '') {
+    function messages_draft($param1 = 'message_default', $param2 = '', $param3 = '') {
         if ($this->session->userdata('admin_login') != 1)
             redirect(base_url(), 'refresh');
     
@@ -1115,7 +1115,7 @@ class Messages extends CI_Controller
             ),
             array(
                 'text' => ucfirst(get_phrase('message')) . ' - ' . ucfirst(get_phrase('draft')),
-                'url' => base_url('index.php?admin/message_draft')
+                'url' => base_url('index.php?admin/messages_draft')
             )
         );
     
@@ -1127,7 +1127,7 @@ class Messages extends CI_Controller
         $this->load->view('backend/index', $page_data);
     }
 
-    function message_trash($param1 = 'message_default', $param2 = '', $param3 = '') {
+    function messages_trash($param1 = 'message_default', $param2 = '', $param3 = '') {
         if ($this->session->userdata('admin_login') != 1)
             redirect(base_url(), 'refresh');
     
@@ -1397,7 +1397,7 @@ class Messages extends CI_Controller
     }
 
 
-    function message_read($message_thread_code = '') {
+    function messages_read($message_thread_code = '') {
         // Verificar que el usuario esté logueado
         if ($this->session->userdata('admin_login') != 1) {
             redirect(base_url(), 'refresh');
@@ -1432,6 +1432,24 @@ class Messages extends CI_Controller
         $is_trash_thread = $message_thread_status_result->is_trash; 
         $trash_timestamp_thread = $message_thread_status_result->trash_timestamp;       
     
+        $this->db->select('is_favorite');
+        $this->db->from('user_message_thread_status');
+        $this->db->where('message_thread_code', $message_thread_code);
+        $this->db->where('user_id', $user_id);
+        $this->db->where('user_group', $user_group);
+        $favorite_query = $this->db->get();
+        $favorite_result = $favorite_query->row();
+        $is_favorite = $favorite_result ? $favorite_result->is_favorite : 0;
+
+        $this->db->select('is_draft');
+        $this->db->from('user_message_thread_status');
+        $this->db->where('message_thread_code', $message_thread_code);
+        $this->db->where('user_id', $user_id);
+        $this->db->where('user_group', $user_group);
+        $draft_query = $this->db->get();
+        $draft_result = $draft_query->row();
+        $is_draft = $draft_result ? $draft_result->is_draft : 0;
+
         // Consulta para obtener los mensajes específicos según el message_thread_code
         $this->db->select('m.message_id, m.message_thread_code, m.timestamp, m.message, m.sender_id, m.sender_group, m.receiver_id, m.receiver_group, m.has_image, m.has_video, m.has_audio, m.has_document, m.has_text');
         $this->db->from('message m');
@@ -1681,8 +1699,8 @@ class Messages extends CI_Controller
         $page_data['page_name'] = 'message_read';
         $page_data['page_title'] = 'Messaging';
         $page_data['message_thread_code'] = $message_thread_code;
-        $page_data['is_trash'] = $is_trash;
-        $page_data['trash_timestamp'] = $trash_timestamp;
+        $page_data['is_trash'] = $is_trash_thread;
+        $page_data['trash_timestamp'] = $trash_timestamp_thread;
         $page_data['is_favorite'] = $is_favorite;
         $page_data['is_draft'] = $is_draft;
         $page_data['is_trash_thread'] = $is_trash_thread;
@@ -1740,7 +1758,7 @@ class Messages extends CI_Controller
         return array_merge($details, $email);
     }
     
-    function message_new($param1 = '', $param2 = '') {
+    function messages_new($param1 = '', $param2 = '') {
         if ($this->session->userdata('admin_login') != 1)
             redirect(base_url(), 'refresh');
 
@@ -2323,7 +2341,7 @@ class Messages extends CI_Controller
         $this->load->view('backend/index', $page_data);
     }
     
-    function message_sent($param1 = 'message_default', $param2 = '', $param3 = '') {
+    function messages_sent($param1 = 'message_default', $param2 = '', $param3 = '') {
         if ($this->session->userdata('admin_login') != 1)
             redirect(base_url(), 'refresh');
     
@@ -2563,7 +2581,7 @@ class Messages extends CI_Controller
         $this->load->view('backend/index', $page_data);
     }
 
-    function message_settings($param1 = '', $param2 = '', $param3 = '', $param4 = '') {
+    function messages_settings($param1 = '', $param2 = '', $param3 = '', $param4 = '') {
         // Verificar que el usuario esté logueado
         if ($this->session->userdata('admin_login') != 1)
             redirect(base_url(), 'refresh');
@@ -2578,10 +2596,13 @@ class Messages extends CI_Controller
                 $this->Messages_model->remove_favorite($param3, $user_id, $user_group);
             }
             switch ($param2) {
-                case 'message_read':
+                case 'messages_read':
                     redirect(base_url() . 'index.php?admin/' . $param2 . '/' . $param3, 'refresh');
                     break;
-                case 'message':
+                case 'messages':
+                    redirect(base_url() . 'index.php?admin/' . $param2, 'refresh');
+                    break;
+                case 'messages_sent':
                     redirect(base_url() . 'index.php?admin/' . $param2, 'refresh');
                     break;
             }
@@ -2647,17 +2668,20 @@ class Messages extends CI_Controller
                     break;
             }
             switch ($param4) {
-                case 'message_read':
+                case 'messages_read':
                     redirect(base_url() . 'index.php?admin/' . $param4 . '/' . $param2, 'refresh');
                     break;
-                case 'message':
+                case 'messages':
                     redirect(base_url() . 'index.php?admin/' . $param4, 'refresh');
                     break;
-                case 'message_trash':
+                case 'messages_trash':
                     redirect(base_url() . 'index.php?admin/' . $param4, 'refresh');
                     break;
-                case 'message_draft':
+                case 'messages_draft':
                     redirect(base_url() . 'index.php?admin/' . $param4, 'refresh');
+                    break;
+                case 'messages_favorite':
+                    redirect(base_url() . 'index.php?admin/messages_favorite', 'refresh');
                     break;
             }
         }

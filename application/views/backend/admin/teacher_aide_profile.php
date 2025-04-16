@@ -1,5 +1,5 @@
 <?php
-$teacher_aide_info = $this->Teachers_model->get_teacher_aide_info($param2);
+$teacher_aide_info = $this->TeacherAide_model->get_teacher_aide_info($param2);
 foreach($teacher_aide_info as $row):?>
 
     <div class="profile-header" style="border-radius: 15px;">
@@ -103,7 +103,7 @@ foreach($teacher_aide_info as $row):?>
 
                     // Iterar por cada sección encontrada
                     foreach ($sections_teacher_aide as $section): ?>
-                        <a href="<?php echo base_url(); ?>index.php?admin/section_profile/<?php echo $section['section_id']; ?>">
+                        <a href="<?php echo base_url(); ?>index.php?admin/sections_profile/<?php echo $section['section_id']; ?>">
                             <div class="profile-card">
                                 <h3 style="font-weight: 600;">
                                     <?php echo ucfirst($section['name']); ?>

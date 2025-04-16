@@ -88,7 +88,7 @@ $titleES = 'Reporte de Estudiantes - ' . $section_name . ' - ' . date('d-m-Y');
 
                         foreach ($sections as $row):
                 ?>
-                            <option id="actualSectionId" value="<?php echo base_url(); ?>index.php?admin/summary_attendance_student/<?php echo $row['section_id']; ?>"
+                            <option id="actualSectionId" value="<?php echo base_url(); ?>index.php?admin/summary_attendance_students/<?php echo $row['section_id']; ?>"
                                 <?php if ($section_id == $row['section_id'] && $academic_period_id == $row['academic_period_id']) echo 'selected="selected"'; ?>>
                                 <?php echo $row['name']; ?>
                             </option>
@@ -105,7 +105,7 @@ $titleES = 'Reporte de Estudiantes - ' . $section_name . ' - ' . date('d-m-Y');
 
                         foreach ($sections as $row):
                         ?>
-                            <option id="actualSectionId" value="<?php echo base_url(); ?>index.php?admin/summary_attendance_student/<?php echo $row['section_id']; ?>"
+                            <option id="actualSectionId" value="<?php echo base_url(); ?>index.php?admin/summary_attendance_students/<?php echo $row['section_id']; ?>"
                                 <?php if ($section_id == $row['section_id']) echo 'selected="selected"'; ?>>
                                 <?php echo $row['name']; ?>
                             </option>
@@ -527,7 +527,7 @@ $titleES = 'Reporte de Estudiantes - ' . $section_name . ' - ' . date('d-m-Y');
 <script type="text/javascript">
     function get_sections(academic_period_id) {
         $.ajax({
-            url: '<?php echo base_url(); ?>index.php?admin/get_section_content_by_academic_period/' + academic_period_id + '/summary_attendance_student',
+            url: '<?php echo base_url(); ?>index.php?admin/get_section_content_by_academic_period/' + academic_period_id + '/summary_attendance_students',
             success: function(response) {
                 const emptyOption = '<option value="" selected disabled><?php echo ucfirst(get_phrase('select')); ?></option>';
                 jQuery('#class_select').html(emptyOption + response);

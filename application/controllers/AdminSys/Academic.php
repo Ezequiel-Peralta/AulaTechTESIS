@@ -8,8 +8,10 @@ class Academic extends CI_Controller
         $this->load->database();
         $this->load->library('session');
 
-        $this->load->model('academic/academic_model');
+        $this->load->model('academic/Academic_model');
         $this->load->library('Academic_service');
+
+        $this->load->model('exams/Exams_model');
 
         date_default_timezone_set('America/Argentina/Buenos_Aires');
 
@@ -61,7 +63,7 @@ class Academic extends CI_Controller
             $data['start_date'] = $this->input->post('start_date');
             $data['end_date'] = $this->input->post('end_date');
 
-            $result = $this->academic_model->update_academic_period($param2, $data);
+            $result = $this->Academic_model->update_academic_period($param2, $data);
             if ($result) {
                 $this->session->set_flashdata('flash_message', array(
                     'title' => ucfirst(get_phrase('academic_period_updated_successfully')),
@@ -89,7 +91,7 @@ class Academic extends CI_Controller
         }
 
         if ($param1 == 'disable_academic_period') {
-            $result = $this->academic_model->update_academic_period_status($param2, 0);
+            $result = $this->Academic_model->update_academic_period_status($param2, 0);
             if ($result) {
                 $this->session->set_flashdata('flash_message', array(
                     'title' => ucfirst(get_phrase('academic_period_disabled_successfully')),
@@ -117,7 +119,7 @@ class Academic extends CI_Controller
         }
 
         if ($param1 == 'enable_academic_period') {
-            $result = $this->academic_model->update_academic_period_status($param2, 1);
+            $result = $this->Academic_model->update_academic_period_status($param2, 1);
             if ($result) {
                 $this->session->set_flashdata('flash_message', array(
                     'title' => ucfirst(get_phrase('academic_period_enabled_successfully')),
@@ -155,7 +157,7 @@ class Academic extends CI_Controller
             )
         );
 
-        $academic_period = $this->academic_model->get_all_academic_periods();
+        $academic_period = $this->Academic_model->get_all_academic_periods();
         $period_count = count($academic_period);
 
         $page_data = array(
@@ -175,10 +177,10 @@ class Academic extends CI_Controller
         if ($this->session->userdata('admin_login') != 1)
             redirect('login', 'refresh');
 
-        $students = $this->academic_model->get_students_by_section($section_id);
+        $students = $this->Academic_model->get_students_by_section($section_id);
         $section_name = $this->crud_model->get_section_name($section_id);
-        $active_academic_period = $this->academic_model->get_active_academic_period();
-        $sections = $this->academic_model->get_sections_by_academic_period($active_academic_period->id);
+        $active_academic_period = $this->Academic_model->get_active_academic_period();
+        $sections = $this->Academic_model->get_sections_by_academic_period($active_academic_period->id);
         $all_student_count = count($students);
 
         $breadcrumb = array(
@@ -237,8 +239,8 @@ class Academic extends CI_Controller
         if ($this->session->userdata('admin_login') != 1)
             redirect('login', 'refresh');
 
-        $active_sections = $this->academic_model->get_active_sections();
-        $classes = $this->academic_model->get_all_classes();
+        $active_sections = $this->Academic_model->get_active_sections();
+        $classes = $this->Academic_model->get_all_classes();
 
         $breadcrumb = array(
             array(
@@ -261,12 +263,12 @@ class Academic extends CI_Controller
         $this->load->view('backend/index', $page_data);
     }
 
-    function view_student_academic_history($student_id = '')
+    function view_students_academic_history($student_id = '')
     {
         if ($this->session->userdata('admin_login') != 1)
             redirect('login', 'refresh');
 
-        $student_data = $this->academic_model->get_student_details($student_id);
+        $student_data = $this->Academic_model->get_student_details2($student_id);
 
         $breadcrumb = array(
             array(
@@ -275,7 +277,7 @@ class Academic extends CI_Controller
             ),
             array(
                 'text' => ucfirst(get_phrase('view_academic_history')) . ' ' . '&nbsp;&nbsp;/&nbsp;&nbsp;' . $student_data['lastname'] . ', ' . $student_data['firstname'],
-                'url' => base_url('index.php?admin/view_student_academic_history/' . $student_id)
+                'url' => base_url('index.php?admin/view_students_academic_history/' . $student_id)
             )
         );
 

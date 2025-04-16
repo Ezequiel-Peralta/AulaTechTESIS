@@ -81,7 +81,7 @@
                             <td class="text-center"><?php echo $row['dni'];?></td>
                             <td class="text-center"><?php echo $row['email'];?></td>
                             <td class="text-center">
-                                <a href="<?php echo base_url();?>index.php?admin/student_behavior/<?php echo $row['student_id'];?>" class="btn btn-table btn-white btn-info-hover" title="<?php echo ucfirst(get_phrase('view_behavior')); ?>">
+                                <a href="<?php echo base_url();?>index.php?admin/students_behaviors/<?php echo $row['student_id'];?>" class="btn btn-table btn-white btn-info-hover" title="<?php echo ucfirst(get_phrase('view_behavior')); ?>">
                                     <i class="entypo-info-circled"></i>
                                 </a>
                             </td>

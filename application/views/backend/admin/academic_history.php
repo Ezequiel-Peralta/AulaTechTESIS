@@ -108,7 +108,7 @@ $titleES = 'Reporte de Estudiantes - ' . $section_name . ' - ' . date('d-m-Y');
                             <td class="text-center display-column"><?php echo $row['address']; ?></td>
                             <td class="text-center display-column"><?php echo $row['address_line']; ?></td>
                             <td class="text-center">
-                                <a href="<?php echo base_url();?>index.php?admin/view_student_academic_history/<?php echo $row['student_id'];?>" class="btn btn-table btn-white btn-info-hover" title="<?php echo ucfirst(get_phrase('view_profile')); ?>">
+                                <a href="<?php echo base_url();?>index.php?admin/view_students_academic_history/<?php echo $row['student_id'];?>" class="btn btn-table btn-white btn-info-hover" title="<?php echo ucfirst(get_phrase('view_profile')); ?>">
                                     <i class="entypo-eye"></i>
                                 </a>
                             </td>

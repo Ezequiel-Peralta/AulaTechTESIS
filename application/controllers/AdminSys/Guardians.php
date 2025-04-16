@@ -264,7 +264,7 @@ class Guardians extends CI_Controller
                 ));
             }
 
-            redirect(base_url() . 'index.php?admin/student_profile/' . $param3, 'refresh');
+            redirect(base_url() . 'index.php?admin/students_profile/' . $param3, 'refresh');
         }
 
         if ($param1 == 'enable_guardian') {

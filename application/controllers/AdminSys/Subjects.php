@@ -9,6 +9,8 @@ class Subjects extends CI_Controller
         $this->load->library('session');
 
         $this->load->model('subjects/Subjects_model');
+        $this->load->model('teacherAide/TeacherAide_model');
+        $this->load->model('teachers/Teachers_model');
         $this->load->library('Subjects_service');
 
         date_default_timezone_set('America/Argentina/Buenos_Aires');
@@ -18,7 +20,7 @@ class Subjects extends CI_Controller
         $this->output->set_header('Pragma: no-cache');
     }
 
-    function subject_profile($subject_id = '')
+    function subjects_profile($subject_id = '')
     {
         if ($this->session->userdata('admin_login') != 1)
             redirect('login', 'refresh');
@@ -30,7 +32,7 @@ class Subjects extends CI_Controller
             ),
             array(
                 'text' => ucfirst(get_phrase('subject_profile')),
-                'url' => base_url('index.php?admin/subject_profile/')
+                'url' => base_url('index.php?admin/subjects_profile/')
             )
         );
 

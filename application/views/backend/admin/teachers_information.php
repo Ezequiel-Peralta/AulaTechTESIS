@@ -58,7 +58,7 @@ $all_teacher_count = $query->num_rows();
                             <td class="text-center"><?php echo $row['email'];?></td>
                             <td class="text-center"><?php echo $status_label; ?></td>
                             <td class="text-center">
-                                <a href="<?php echo base_url();?>index.php?admin/teacher_profile/<?php echo $row['teacher_id'];?>" class="btn btn-table btn-white btn-info-hover" title="<?php echo ucfirst(get_phrase('view_profile')); ?>">
+                                <a href="<?php echo base_url();?>index.php?admin/teachers_profile/<?php echo $row['teacher_id'];?>" class="btn btn-table btn-white btn-info-hover" title="<?php echo ucfirst(get_phrase('view_profile')); ?>">
                                     <i class="entypo-user"></i>
                                 </a>
                                 <a  href="<?php echo base_url();?>index.php?admin/edit_teacher/<?php echo $row['teacher_id'];?>" class="btn btn-table btn-white btn-orange-hover" title="<?php echo ucfirst(get_phrase('edit')); ?>">

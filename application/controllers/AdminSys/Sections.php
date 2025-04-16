@@ -9,6 +9,7 @@ class Sections extends CI_Controller
         $this->load->library('session');
 
         $this->load->model('sections/Sections_model');
+        $this->load->model('teacherAide/TeacherAide_model');
         $this->load->library('Sections_service');
 
         date_default_timezone_set('America/Argentina/Buenos_Aires');
@@ -42,7 +43,7 @@ class Sections extends CI_Controller
         $this->load->view('backend/index', $page_data);
     }
 
-    function section_profile($section_id = '')
+    function sections_profile($section_id = '')
     {
         if ($this->session->userdata('admin_login') != 1)
             redirect('login', 'refresh');
@@ -54,7 +55,7 @@ class Sections extends CI_Controller
             ),
             array(
                 'text' => ucfirst(get_phrase('manage_sections')) . '&nbsp;&nbsp;/&nbsp;&nbsp;' . ucfirst(get_phrase('view_profile')),
-                'url' => base_url('index.php?admin/section_profile/')
+                'url' => base_url('index.php?admin/sections_profile/')
             )
         );
 

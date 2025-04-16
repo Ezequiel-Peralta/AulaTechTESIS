@@ -172,7 +172,6 @@
                     <a href="<?php echo base_url(); ?>index.php?admin/manage_subjects">
                         <span><i class="entypo-dot"></i> <?php echo ucfirst(get_phrase('manage_subjects')); ?></span>
                     </a>
-                   
                 </li>
             </ul>
         </li>

@@ -116,10 +116,10 @@
             // Process all marks
             foreach ($marks as $mark) {
                 $exam_type_id = $mark['exam_type_id'];
-                $exam_type_info = $this->exams_model->get_exam_type_info($exam_type_id);
+                $exam_type_info = $this->Exams_model->get_exam_type_info($exam_type_id);
                 
-                if (!empty($exam_type_info) && isset($exam_type_info[0]['short_name'])) {
-                    $short_name = $exam_type_info[0]['short_name'];
+                if (!empty($exam_type_info) && isset($exam_type_info['short_name'])) {
+                    $short_name = $exam_type_info['short_name'];
                     if (array_key_exists($short_name, $all_marks)) {
                         if ($short_name === 'CAL-DEF') {
                             $all_marks[$short_name] = $mark['mark_obtained'];

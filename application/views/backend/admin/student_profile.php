@@ -12,13 +12,13 @@ foreach($student_info as $row):?>
         </div>
         <div class="profile-buttons">
             <a class="btn btn-secondary profile-button-active"><i class="entypo-vcard"></i> <?php echo ucfirst(get_phrase('information'));?></a>
-            <a href="<?php echo base_url(); ?>index.php?admin/student_behavior/<?php echo $row['student_id'];?>" class="btn btn-secondary"><i class="entypo-info-circled" style="font-size: 12px;"></i> <?php echo ucfirst(get_phrase('behavior'));?></a>
-            <a href="<?php echo base_url(); ?>index.php?admin/view_student_mark/<?php echo $row['section_id'];?>" class="btn btn-secondary"><i class="entypo-doc-text-inv"></i> <?php echo ucfirst(get_phrase('marks'));?></a>
+            <a href="<?php echo base_url(); ?>index.php?admin/students_behaviors/<?php echo $row['student_id'];?>" class="btn btn-secondary"><i class="entypo-info-circled" style="font-size: 12px;"></i> <?php echo ucfirst(get_phrase('behavior'));?></a>
+            <a href="<?php echo base_url(); ?>index.php?admin/view_students_mark/<?php echo $row['section_id'];?>" class="btn btn-secondary"><i class="entypo-doc-text-inv"></i> <?php echo ucfirst(get_phrase('marks'));?></a>
             <a href="<?php echo base_url(); ?>index.php?admin/view_exams/<?php echo $row['section_id']; ?>" class="btn btn-secondary">
                 <i class="entypo-doc-text-inv"></i>
                 <?php echo ucfirst(get_phrase('exams'));?>
             </a> 
-            <a href="<?php echo base_url(); ?>index.php?admin/view_student_academic_history/<?php echo $row['student_id']; ?>" class="btn btn-secondary">
+            <a href="<?php echo base_url(); ?>index.php?admin/view_students_academic_history/<?php echo $row['student_id']; ?>" class="btn btn-secondary">
                 <i class="entypo-vcard"></i>
                 <?php echo ucfirst(get_phrase('academic_history'));?>
             </a>
@@ -138,10 +138,10 @@ foreach($student_info as $row):?>
             <br>
                 <div class="profile-container"> 
                 <?php
-                    $teacher_aide_info = $this->Teachers_model->get_teacher_aide_info_per_section($row['section_id']);
+                    $teacher_aide_info = $this->TeacherAide_model->get_teacher_aide_info_per_section($row['section_id']);
                     if (!empty($teacher_aide_info)) {
                         foreach ($teacher_aide_info as $row2): ?>
-                        <a href="<?php echo base_url(); ?>index.php?admin/teacher_aide_profile/<?php echo $row2['teacher_aide_id']; ?>">
+                        <a href="<?php echo base_url(); ?>index.php?admin/teachers_aide_profile/<?php echo $row2['teacher_aide_id']; ?>">
                             <div class="profile-card">
                                 <img src="<?php echo $row2['photo']; ?>" class="img-circle" alt="Profile Picture" width="80" height="80">
                                 <h3 style="font-weight: 600;"><?php echo $row2['lastname']; ?>, <?php echo $row2['firstname']; ?>.</h3>
@@ -188,7 +188,7 @@ foreach($student_info as $row):?>
 
                             if ($teacher): ?>
                                 <div class="profile-card"> 
-                                    <a href="<?php echo base_url(); ?>index.php?admin/teacher_profile/<?php echo $teacher['teacher_id']; ?>">
+                                    <a href="<?php echo base_url(); ?>index.php?admin/teachers_profile/<?php echo $teacher['teacher_id']; ?>">
                                         <img src="<?php echo $teacher['photo']; ?>" class="img-circle" alt="Profile Picture" width="80" height="80">
                                         <h3 style="font-weight: 600;">
                                             <?php 
@@ -196,7 +196,7 @@ foreach($student_info as $row):?>
                                             ?>
                                         </h3>
                                     </a>
-                                    <a href="<?php echo base_url(); ?>index.php?admin/subject_profile/<?php echo $subject['subject_id']; ?>">
+                                    <a href="<?php echo base_url(); ?>index.php?admin/subjects_profile/<?php echo $subject['subject_id']; ?>">
                                         <p style="color: #265044; font-weight: 600;">
                                             <i class="entypo-docs"></i> <?php echo ucfirst(get_phrase('subject')); ?>: <span style="color: #265044; font-weight: 400;"><?php echo ucfirst($subject['name']); ?></span>
                                         </p>
@@ -222,7 +222,7 @@ foreach($student_info as $row):?>
                     $subject_info = $this->Subjects_model->get_subjects_by_section($row['section_id']);
                     if (!empty($subject_info)) {
                         foreach ($subject_info as $subject): ?>
-                        <a href="<?php echo base_url(); ?>index.php?admin/subject_profile/<?php echo $subject['subject_id'];?>">
+                        <a href="<?php echo base_url(); ?>index.php?admin/subjects_profile/<?php echo $subject['subject_id'];?>">
                             <div class="profile-card profile-card-subject" title=" <?php 
                                         echo ucfirst($subject['name']);
                                         ?>"> 
@@ -250,7 +250,7 @@ foreach($student_info as $row):?>
             <br>
             <div class="profile-container">
                 <?php
-                    $guardian_info = $this->Guardians_model->get_guardian_info_per_student($row['student_id']);
+                    $guardian_info = $this->Students_model->get_guardian_info_per_student($row['student_id']);
                     if (!empty($guardian_info)) {
                         foreach ($guardian_info as $guardian): ?>
                             <a href="<?php echo base_url(); ?>index.php?admin/guardian_profile/<?php echo $guardian['guardian_id'];?>">

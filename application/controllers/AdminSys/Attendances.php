@@ -9,8 +9,9 @@ class Attendances extends CI_Controller
 		$this->load->database();
         $this->load->library('session');
         
-        $this->load->model('attendances/attendances_model'); // Cargar el modelo de asistencia
-        $this->load->library('attendances_service'); // Cargar la librería de servicio de asistencia 
+         $this->load->model('attendances/Attendances_model'); 
+        
+        $this->load->library('Attendances_service'); // Cargar la librería de servicio de asistencia 
 
         date_default_timezone_set('America/Argentina/Buenos_Aires');
 		
@@ -25,7 +26,7 @@ class Attendances extends CI_Controller
         if ($this->session->userdata('admin_login') != 1)
             redirect(base_url(), 'refresh');
 
-        $class_id = empty($class_id) ? $this->attendances_model->get_first_class_id() : $class_id;
+        $class_id = empty($class_id) ? $this->Attendances_model->get_first_class_id() : $class_id;
         
         $breadcrumb = array(
             array(
@@ -54,7 +55,7 @@ class Attendances extends CI_Controller
         }
 
         if ($_POST) {
-            $students = $this->attendances_model->get_students_by_section($section_id);
+            $students = $this->Attendances_model->get_students_by_section($section_id);
             $attendance_data = [];
 
             foreach ($students as $row) {
@@ -131,17 +132,17 @@ class Attendances extends CI_Controller
         redirect($redirect_url, 'refresh');
     }
 
-    function summary_attendance_student($section_id='') {
+    function summary_attendance_students($section_id='') {
         if ($this->session->userdata('admin_login') != 1) {
             redirect(base_url(), 'refresh');
         }
 
         $used_section_history = false;
 
-        $section_data = $this->attendances_model->get_section_data($section_id);
+        $section_data = $this->Attendances_model->get_section_data($section_id);
 
         if (empty($section_data)) {
-            $section_data = $this->attendances_model->get_section_history_data($section_id);
+            $section_data = $this->Attendances_model->get_section_history_data($section_id);
             $used_section_history = true;
         }
 
@@ -153,16 +154,16 @@ class Attendances extends CI_Controller
         }
 
          // Obtener el conteo de todos los estudiantes
-         $all_student_count = $this->attendances_model->get_all_student_count($section_id);
+         $all_student_count = $this->Attendances_model->get_all_student_count($section_id);
 
          // Obtener los estudiantes
-         $students = $this->attendances_model->get_students($section_id);
+         $students = $this->Attendances_model->get_students($section_id);
 
         $current_date = date('Y-m-d');
-        $attendance_student_presente = $this->attendances_model->get_attendance_student_section_amount($section_id, 1, 'daily', $current_date);
-        $attendance_student_ausente = $this->attendances_model->get_attendance_student_section_amount($section_id, 2, 'daily', $current_date);
-        $attendance_student_tardanza = $this->attendances_model->get_attendance_student_section_amount($section_id, 3, 'daily', $current_date);
-        $attendance_student_ausencia_justificada = $this->attendances_model->get_attendance_student_section_amount($section_id, 4, 'daily', $current_date);
+        $attendance_student_presente = $this->Attendances_model->get_attendance_student_section_amount($section_id, 1, 'daily', $current_date);
+        $attendance_student_ausente = $this->Attendances_model->get_attendance_student_section_amount($section_id, 2, 'daily', $current_date);
+        $attendance_student_tardanza = $this->Attendances_model->get_attendance_student_section_amount($section_id, 3, 'daily', $current_date);
+        $attendance_student_ausencia_justificada = $this->Attendances_model->get_attendance_student_section_amount($section_id, 4, 'daily', $current_date);
 
         $total_attendance = $attendance_student_presente + $attendance_student_ausente + $attendance_student_tardanza + $attendance_student_ausencia_justificada;
         $percentage_presente = $total_attendance > 0 ? number_format(($attendance_student_presente / $total_attendance) * 100, 2) : 0;
@@ -170,7 +171,7 @@ class Attendances extends CI_Controller
         $percentage_tardanza = $total_attendance > 0 ? number_format(($attendance_student_tardanza / $total_attendance) * 100, 2) : 0;
         $percentage_justificados = $total_attendance > 0 ? number_format(($attendance_student_ausencia_justificada / $total_attendance) * 100, 2) : 0;
 
-        $academic_periods = $this->attendances_model->get_academic_periods();
+        $academic_periods = $this->Attendances_model->get_academic_periods();
 
         $breadcrumb = array(
             array(
@@ -215,19 +216,19 @@ class Attendances extends CI_Controller
 
 
     function filter_attendance($section_id = '', $filter_type = '', $date = '', $start_date = '', $end_date = '', $dateMoth = '', $start_date_yearly = '', $end_date_yearly = '') {
-        $attendance_student_presente = $this->attendances_model->get_attendance_student_section_amount(
+        $attendance_student_presente = $this->Attendances_model->get_attendance_student_section_amount(
             $section_id, 1, $filter_type, $date, $start_date, $end_date, $dateMoth, $start_date_yearly, $end_date_yearly
         );
     
-        $attendance_student_ausente = $this->attendances_model->get_attendance_student_section_amount(
+        $attendance_student_ausente = $this->Attendances_model->get_attendance_student_section_amount(
             $section_id, 2, $filter_type, $date, $start_date, $end_date, $dateMoth, $start_date_yearly, $end_date_yearly
         );
     
-        $attendance_student_tardanza = $this->attendances_model->get_attendance_student_section_amount(
+        $attendance_student_tardanza = $this->Attendances_model->get_attendance_student_section_amount(
             $section_id, 3, $filter_type, $date, $start_date, $end_date, $dateMoth, $start_date_yearly, $end_date_yearly
         );
     
-        $attendance_student_ausencia_justificada = $this->attendances_model->get_attendance_student_section_amount(
+        $attendance_student_ausencia_justificada = $this->Attendances_model->get_attendance_student_section_amount(
             $section_id, 4, $filter_type, $date, $start_date, $end_date, $dateMoth, $start_date_yearly, $end_date_yearly
         );
     
@@ -252,19 +253,19 @@ class Attendances extends CI_Controller
     }
     
     function filter_attendance_student($student_id = '', $filter_type = '', $date = '', $start_date = '', $end_date = '', $dateMoth = '' , $start_date_yearly = '', $end_date_yearly = '') {
-        $attendance_student_presente = $this->attendances_model->get_attendance_student_amount(
+        $attendance_student_presente = $this->Attendances_model->get_attendance_student_amount(
             $student_id, 1, $filter_type, $date, $start_date, $end_date, $dateMoth, $start_date_yearly, $end_date_yearly
         );
     
-        $attendance_student_ausente = $this->attendances_model->get_attendance_student_amount(
+        $attendance_student_ausente = $this->Attendances_model->get_attendance_student_amount(
             $student_id, 2, $filter_type, $date, $start_date, $end_date, $dateMoth, $start_date_yearly, $end_date_yearly
         );
     
-        $attendance_student_tardanza = $this->attendances_model->get_attendance_student_amount(
+        $attendance_student_tardanza = $this->Attendances_model->get_attendance_student_amount(
             $student_id, 3, $filter_type, $date, $start_date, $end_date, $dateMoth, $start_date_yearly, $end_date_yearly
         );
     
-        $attendance_student_ausencia_justificada = $this->attendances_model->get_attendance_student_amount(
+        $attendance_student_ausencia_justificada = $this->Attendances_model->get_attendance_student_amount(
             $student_id, 4, $filter_type, $date, $start_date, $end_date, $dateMoth, $start_date_yearly, $end_date_yearly
         );
     
@@ -296,12 +297,12 @@ class Attendances extends CI_Controller
         $student_info = $this->Students_model->get_student_info($student_id);
 
         $current_date = date('Y-m-d');
-        $attendance_data = $this->attendances_model->get_attendance_data_for_student($student_id);
+        $attendance_data = $this->Attendances_model->get_attendance_data_for_student($student_id);
 
-        $attendance_student_presente = $this->attendances_model->get_attendance_student_amount($student_id, 1, 'daily', $current_date);
-        $attendance_student_ausente = $this->attendances_model->get_attendance_student_amount($student_id, 2, 'daily', $current_date);
-        $attendance_student_tardanza = $this->attendances_model->get_attendance_student_amount($student_id, 3, 'daily', $current_date);
-        $attendance_student_ausencia_justificada = $this->attendances_model->get_attendance_student_amount($student_id, 4, 'daily', $current_date);
+        $attendance_student_presente = $this->Attendances_model->get_attendance_student_amount($student_id, 1, 'daily', $current_date);
+        $attendance_student_ausente = $this->Attendances_model->get_attendance_student_amount($student_id, 2, 'daily', $current_date);
+        $attendance_student_tardanza = $this->Attendances_model->get_attendance_student_amount($student_id, 3, 'daily', $current_date);
+        $attendance_student_ausencia_justificada = $this->Attendances_model->get_attendance_student_amount($student_id, 4, 'daily', $current_date);
 
         $total_attendance = $attendance_student_presente + $attendance_student_ausente + $attendance_student_tardanza + $attendance_student_ausencia_justificada;
 
@@ -323,7 +324,7 @@ class Attendances extends CI_Controller
             ),
             array(
                 'text' => $this->crud_model->get_class_name_numeric($student_info[0]['class_id']) . '° ' . $this->crud_model->get_section_letter_name($student_info[0]['section_id']),
-                'url' => base_url('index.php?admin/summary_attendance_student/' . $student_info[0]['section_id'])
+                'url' => base_url('index.php?admin/summary_attendance_students/' . $student_info[0]['section_id'])
             ),
             array(
                 // 'text' => $student_info[0]['name'],
@@ -369,7 +370,7 @@ class Attendances extends CI_Controller
             $date      = $this->input->post('date');
             $observation       = $this->input->post('observation');
 
-            $this->attendances_model->edit_attendance_student($student_id, $date, $status, $observation);
+            $this->Attendances_model->edit_attendance_student($student_id, $date, $status, $observation);
 
             $this->session->set_flashdata('flash_message', array(
                 'title' => 'Datos actualizados correctamente!',

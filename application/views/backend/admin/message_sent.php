@@ -100,11 +100,11 @@
                 </div>
             </td>
             <td class="col-name">
-                <a href="<?php echo base_url(); ?>index.php?admin/message_settings/favorite/message/<?php echo $message['message_thread_code']; ?>/<?php echo ($message['is_favorite'] == 1) ? 'remove' : 'add'; ?>" class="star popover-white" 
+                <a href="<?php echo base_url(); ?>index.php?admin/messages_settings/favorite/messages_sent/<?php echo $message['message_thread_code']; ?>/<?php echo ($message['is_favorite'] == 1) ? 'remove' : 'add'; ?>" class="star popover-white" 
 					data-toggle="popover" data-trigger="hover" data-placement="top" data-content="<?php echo ($message['is_favorite'] == 1) ? 'Eliminar de favoritos' : 'Añadir a favoritos'; ?>">
                     <i class="<?php echo ($message['is_favorite'] == 1) ? 'fa fa-star' : 'fa fa-star-o'; ?>"></i>
                 </a>
-                <a href="<?php echo base_url(); ?>index.php?admin/message_read/<?php echo $message['message_thread_code']; ?>" class="col-name popover-white" 
+                <a href="<?php echo base_url(); ?>index.php?admin/messages_read/<?php echo $message['message_thread_code']; ?>" class="col-name popover-white" 
 				data-toggle="popover" 
 				data-trigger="hover" 
 				data-placement="top" 
@@ -266,12 +266,12 @@
             </td>
 			<td class="col-options">
 				
-				<a type="button" class="btn btn-table btn-white btn-info-hover popover-white" href="<?php echo base_url(); ?>index.php?admin/message_settings/user_message_status/<?php echo $message['message_thread_code']; ?>/<?php echo ($message['new_message_count']) > 0 ? 'read' : 'unread'; ?>/message"
+				<a type="button" class="btn btn-table btn-white btn-info-hover popover-white" href="<?php echo base_url(); ?>index.php?admin/messages_settings/user_message_status/<?php echo $message['message_thread_code']; ?>/<?php echo ($message['new_message_count']) > 0 ? 'read' : 'unread'; ?>/messages"
 					data-toggle="popover" data-trigger="hover" data-placement="top" data-content="<?php echo $message['new_message_count'] > 0 ? 'Marcar como visto' : 'Marcar como no visto'; ?>">
                     <i class="<?php echo $message['new_message_count'] > 0 ? 'fa fa-eye' : 'fa fa-eye-slash'; ?>"></i>    
                 </a>
 
-				<button type="button" class="btn btn-table btn-white btn-green-hover popover-white" href="javascript:;" onclick="sweet_modal_message_move_to('<?php echo base_url();?>index.php?admin/message_settings/move_to/<?php echo $message['message_thread_code'];?>');"
+				<button type="button" class="btn btn-table btn-white btn-green-hover popover-white" href="javascript:;" onclick="sweet_modal_message_move_to('<?php echo base_url();?>index.php?admin/messages_settings/move_to/<?php echo $message['message_thread_code'];?>');"
 				data-toggle="popover" data-trigger="hover" data-placement="top" data-content="Mover a">
 					<i class="entypo-shuffle"></i>
 				</button>
@@ -304,7 +304,7 @@
 				
 				<!-- compose new email button -->
 				<div class="mail-sidebar-row hidden-xs">
-					<a href="<?php echo base_url(); ?>index.php?admin/message_new/" class="btn btn-success btn-icon btn-block">
+					<a href="<?php echo base_url(); ?>index.php?admin/messages_new/" class="btn btn-success btn-icon btn-block">
 						Enviar correo
 						<i class="entypo-pencil"></i>
 					</a>
@@ -313,7 +313,7 @@
 				<!-- menu -->
 				<ul class="mail-menu">
 					<li>
-						<a href="<?php echo base_url(); ?>index.php?admin/message/">
+						<a href="<?php echo base_url(); ?>index.php?admin/messages/">
 							<?php if ($unread_count > 0): ?>
 								<span class="badge badge-gray badge-tag badge-mail-menu pull-right"><?php echo $unread_count; ?></span>
 							<?php endif; ?>
@@ -323,7 +323,7 @@
 					</li>
 					
 					<li  class="active">
-						<a href="<?php echo base_url(); ?>index.php?admin/message_sent/">
+						<a href="<?php echo base_url(); ?>index.php?admin/messages_sent/">
 							<?php if ($sent_count > 0): ?>
 								<span class="badge badge-danger badge-tag badge-mail-menu pull-right"><?php echo $sent_count; ?></span>
 							<?php endif; ?>
@@ -333,7 +333,7 @@
 					</li>
 
 					<li>
-						<a href="<?php echo base_url(); ?>index.php?admin/message_favorite/">
+						<a href="<?php echo base_url(); ?>index.php?admin/messages_favorite/">
 							<?php if ($favorite_count > 0): ?>
 								<span class="badge badge-gray badge-tag badge-mail-menu pull-right"><?php echo $favorite_count; ?></span> 
 							<?php endif; ?>
@@ -345,7 +345,7 @@
 				
 					
 					<li>
-						<a href="<?php echo base_url(); ?>index.php?admin/message_trash/">
+						<a href="<?php echo base_url(); ?>index.php?admin/messages_trash/">
 							<?php if ($trash_count > 0): ?>
 								<span class="badge badge-gray badge-tag badge-mail-menu pull-right"><?php echo $trash_count; ?></span>
 							<?php endif; ?>
@@ -355,7 +355,7 @@
 					</li>
 
                     <li>
-						<a href="<?php echo base_url(); ?>index.php?admin/message_draft/">
+						<a href="<?php echo base_url(); ?>index.php?admin/messages_draft/">
 							<?php if ($draft_count > 0): ?>
 								<span class="badge badge-gray badge-tag badge-mail-menu pull-right"><?php echo $draft_count; ?></span>
 							<?php endif; ?>
@@ -383,7 +383,7 @@
 
 					<?php foreach ($tag_data_map as $tag_name => $tag_info): ?>
 						<li class="<?php echo $tag_info['name'] == $active_tag ? 'active' : ''; ?>">
-							<a href="<?php echo base_url(); ?>index.php?admin/message_tag/<?php echo $tag_info['name']; ?>">
+							<a href="<?php echo base_url(); ?>index.php?admin/messages_tag/<?php echo $tag_info['name']; ?>">
 								<span class="badge badge-tag <?php echo $tag_info['badge']; ?> badge-roundless pull-left">
 									<?php echo isset($message_counts[$tag_name]) ? $message_counts[$tag_name] : ''; ?>
 								</span>
@@ -427,7 +427,7 @@ $(document).ready(function() {
         });
 
         if (selectedMessageThread.length > 0) {
-            var url = '<?php echo base_url();?>index.php?admin/message_settings/delete_message_thread_bulk/message/' + selectedMessageThread.join('-');
+            var url = '<?php echo base_url();?>index.php?admin/messages_settings/delete_message_thread_bulk/messages/' + selectedMessageThread.join('-');
 			confirm_sweet_modal_delete_message_thread_bulk(url);
 			console.log(url);
         } else {
@@ -455,7 +455,7 @@ $(document).ready(function() {
         });
 
         if (selectedMessageThread.length > 0) {
-            var url = '<?php echo base_url();?>index.php?admin/message_settings/draft_message_thread_bulk/message/' + selectedMessageThread.join('-');
+            var url = '<?php echo base_url();?>index.php?admin/messages_settings/draft_message_thread_bulk/messages/' + selectedMessageThread.join('-');
 			confirm_sweet_modal_draft_message_thread_bulk(url);
 			console.log(url);
         } else {
@@ -483,7 +483,7 @@ $(document).ready(function() {
         });
 
         if (selectedMessageThread.length > 0) {
-            var url = '<?php echo base_url();?>index.php?admin/message_settings/read_message_thread_bulk/message/' + selectedMessageThread.join('-');
+            var url = '<?php echo base_url();?>index.php?admin/messages_settings/read_message_thread_bulk/messages/' + selectedMessageThread.join('-');
 			confirm_sweet_modal_read_message_thread_bulk(url);
 			console.log(url);
         } else {
@@ -511,7 +511,7 @@ $(document).ready(function() {
         });
 
         if (selectedMessageThread.length > 0) {
-            var url = '<?php echo base_url();?>index.php?admin/message_settings/unread_message_thread_bulk/message/' + selectedMessageThread.join('-');
+            var url = '<?php echo base_url();?>index.php?admin/messages_settings/unread_message_thread_bulk/messages/' + selectedMessageThread.join('-');
 			confirm_sweet_modal_unread_message_thread_bulk(url);
 			console.log(url);
         } else {
@@ -537,7 +537,7 @@ $(document).ready(function() {
         });
 
         if (selectedMessageThread.length > 0) {
-            var url = '<?php echo base_url();?>index.php?admin/message_settings/add_favorite_message_thread_bulk/message_sent/' + selectedMessageThread.join('-');
+            var url = '<?php echo base_url();?>index.php?admin/messages_settings/add_favorite_message_thread_bulk/messages_sent/' + selectedMessageThread.join('-');
 			confirm_sweet_modal_add_favorite_message_thread_bulk(url);
 			console.log(url);
         } else {
@@ -563,7 +563,7 @@ $(document).ready(function() {
         });
 
         if (selectedMessageThread.length > 0) {
-            var url = '<?php echo base_url();?>index.php?admin/message_settings/remove_favorite_message_thread_bulk/message_sent/' + selectedMessageThread.join('-');
+            var url = '<?php echo base_url();?>index.php?admin/messages_settings/remove_favorite_message_thread_bulk/messages_sent/' + selectedMessageThread.join('-');
 			confirm_sweet_modal_remove_favorite_message_thread_bulk(url);
 			console.log(url);
         } else {

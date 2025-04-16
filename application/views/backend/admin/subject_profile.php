@@ -22,7 +22,7 @@ if (!empty($subject_info)) {
         </div>
         <div class="profile-buttons">
             <a class="btn btn-secondary profile-button-active"><i class="entypo-vcard"></i> <?php echo ucfirst(get_phrase('information'));?></a>
-            <a href="<?php echo base_url(); ?>index.php?admin/view_student_mark/<?php echo $subject['section_id']; ?>/<?php echo $subject['subject_id']; ?>" style="font-size: 12px;" class="btn btn-secondary">
+            <a href="<?php echo base_url(); ?>index.php?admin/view_students_mark/<?php echo $subject['section_id']; ?>/<?php echo $subject['subject_id']; ?>" style="font-size: 12px;" class="btn btn-secondary">
                 <i class="entypo-vcard"></i>
                 <?php echo ucfirst(get_phrase('marks_section'));?>
             </a> 
@@ -73,10 +73,10 @@ if (!empty($subject_info)) {
             <br>
             <div class="profile-container"> 
                 <?php
-                    $teacher_aide_info = $this->Teachers_model->get_teacher_aide_info_per_section($subject['section_id']);
+                    $teacher_aide_info = $this->TeacherAide_model->get_teacher_aide_info_per_section($subject['section_id']);
                     if (!empty($teacher_aide_info)) {
                         foreach ($teacher_aide_info as $row2): ?>
-                        <a href="<?php echo base_url(); ?>index.php?admin/teacher_aide_profile/<?php echo $row2['teacher_aide_id']; ?>">
+                        <a href="<?php echo base_url(); ?>index.php?admin/teachers_aide_profile/<?php echo $row2['teacher_aide_id']; ?>">
                             <div class="profile-card">
                                 <img src="<?php echo $row2['photo']; ?>" class="img-circle" alt="Profile Picture" width="80" height="80">
                                 <h3 style="font-weight: 600;"><?php echo $row2['lastname']; ?>, <?php echo $row2['firstname']; ?>.</h3>
@@ -95,10 +95,10 @@ if (!empty($subject_info)) {
         <div class="card-body">
             <h4 class="card-title" style="font-weight: bold;"><?php echo ucfirst(get_phrase('teacher')); ?></h4>
             <br>
-            <a href="<?php echo base_url(); ?>index.php?admin/teacher_profile/<?php echo $subject['teacher_id'];?>">
+            <a href="<?php echo base_url(); ?>index.php?admin/teachers_profile/<?php echo $subject['teacher_id'];?>">
                 <div class="profile-container">
                     <?php
-                        $teacher_info = $this->Teachers_model->get_teacher_info_per_subject2($subject['subject_id']);
+                        $teacher_info = $this->Teachers_model->get_teacher_info_per_subject($subject['subject_id']);
                         ?>
                         <div class="profile-card"> 
                 
@@ -122,7 +122,7 @@ if (!empty($subject_info)) {
                     <?php
                         $student_info = $this->Students_model->get_student_info_per_section2($subject['section_id']);
                         foreach ($student_info as $student): ?>
-                        <a href="<?php echo base_url(); ?>index.php?admin/student_profile/<?php echo $student['student_id'];?>">
+                        <a href="<?php echo base_url(); ?>index.php?admin/students_profile/<?php echo $student['student_id'];?>">
                             <div class="profile-card" style="min-height: 240px !important;"> 
                                     <img src="<?php echo $student['photo']; ?>" class="img-circle" alt="Profile Picture" width="80" height="80">
                                     <h3 style="font-weight: 600;">

@@ -166,7 +166,7 @@ class Behaviors extends CI_Controller
                     'timerProgressBar' => 'true',
                 ));
             }
-            redirect(base_url() . 'index.php?admin/student_behavior/' . $data['student_id'], 'refresh');
+            redirect(base_url() . 'index.php?admin/students_behaviors/' . $data['student_id'], 'refresh');
         }
 
         if ($param1 == 'update') {
@@ -191,7 +191,7 @@ class Behaviors extends CI_Controller
                 'timer' => '10000',
                 'timerProgressBar' => 'true',
             ));
-            redirect(base_url() . 'index.php?admin/student_behavior/' . $data['student_id'], 'refresh');
+            redirect(base_url() . 'index.php?admin/students_behaviors/' . $data['student_id'], 'refresh');
         }
 
         if ($param1 == 'disable_behavior') {
@@ -207,7 +207,7 @@ class Behaviors extends CI_Controller
                 'timer' => '10000',
                 'timerProgressBar' => 'true',
             ));
-            redirect(base_url() . 'index.php?admin/student_behavior/' . $param3, 'refresh');
+            redirect(base_url() . 'index.php?admin/students_behaviors/' . $param3, 'refresh');
         }
 
         if ($param1 == 'enable_behavior') {
@@ -223,11 +223,11 @@ class Behaviors extends CI_Controller
                 'timer' => '10000',
                 'timerProgressBar' => 'true',
             ));
-            redirect(base_url() . 'index.php?admin/student_behavior/' . $param3, 'refresh');
+            redirect(base_url() . 'index.php?admin/students_behaviors/' . $param3, 'refresh');
         }
     }
 
-    function student_behavior($student_id = '')
+    function students_behaviors($student_id = '')
     {
         if ($this->session->userdata('admin_login') != 1)
             redirect('login', 'refresh');
@@ -243,7 +243,7 @@ class Behaviors extends CI_Controller
             ),
             array(
                 'text' => ucfirst(get_phrase('student_behavior')) . ' - ' . $student['lastname'] . ", " . $student['firstname'] . ".",
-                'url' => base_url('index.php?admin/student_behavior/' . $student_id)
+                'url' => base_url('index.php?admin/students_behaviors/' . $student_id)
             )
         );
 

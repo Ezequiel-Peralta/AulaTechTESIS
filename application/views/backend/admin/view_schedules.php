@@ -262,7 +262,7 @@ foreach ($schedules as $schedule) {
                                                         ):
                                                         ?>
                                                             <div class="class-container text-center">
-                                                                <a href="<?php echo base_url(); ?>index.php?admin/subject_profile/<?php echo $class['subject_id']; ?>">
+                                                                <a href="<?php echo base_url(); ?>index.php?admin/subjects_profile/<?php echo $class['subject_id']; ?>">
                                                                     <div class="class-block" title="<?php echo ucfirst($class['full_subject_name']); ?>">
                                                                         <span class="subject-name"><?php echo ucfirst($class['subject_name']); ?></span><br>
                                                                         <?php if (!empty($teacher_id)): ?>
@@ -274,7 +274,7 @@ foreach ($schedules as $schedule) {
                                                                         <?php echo $class['time_start'] . ' - ' . $class['time_end']; ?>
                                                                     </div>
                                                                                     <div class="action-buttons text-center">
-                                                                                        <a href="<?php echo base_url(); ?>index.php?admin/subject_profile/<?php echo $class['subject_id']; ?>" class="btn btn-table btn-white btn-info-hover" title="<?php echo ucfirst(get_phrase('view_profile')); ?>">
+                                                                                        <a href="<?php echo base_url(); ?>index.php?admin/subjects_profile/<?php echo $class['subject_id']; ?>" class="btn btn-table btn-white btn-info-hover" title="<?php echo ucfirst(get_phrase('view_profile')); ?>">
                                                                                             <i class="entypo-eye"></i>
                                                                                         </a>
                                                                                         <a href="<?php echo base_url(); ?>index.php?admin/edit_schedule/<?php echo $class['schedule_id']; ?>" class="btn btn-table btn-white btn-orange-hover" title="<?php echo ucfirst(get_phrase('edit')); ?>">

@@ -364,5 +364,20 @@ class Academic_model extends CI_Model {
         }
     }
 
+    public function get_student_details2($student_id) {
+        try {
+        $this->db->select('student.student_id, student.email, student.username, student.password, student_details.enrollment, student_details.firstname, student_details.lastname, student_details.dni, student_details.photo, student_details.medical_record, student_details.section_id, student_details.about, student_details.class_id, student_details.phone_cel, student_details.phone_fij, student_details.birthday, student_details.gender_id, student_details.enrollment, address.locality, address.neighborhood, address.address, address.address_line, address.postalcode');
+        $this->db->from('student');
+        $this->db->join('student_details', 'student.student_id = student_details.student_id');
+        $this->db->join('address', 'student_details.address_id = address.address_id');
+        $this->db->where('student.student_id', $student_id);
+        $query = $this->db->get();
+
+        return $query->row_array();
+        } catch (Exception $e) {
+            log_message('error', 'Error in get_student_details: ' . $e->getMessage());
+            return false;
+        }
+    }
 
 }

@@ -28,7 +28,7 @@
 				
 				<div class="mail-compose">
 				
-                <?php echo form_open_multipart(base_url() . 'index.php?admin/message_new/send_new/', array('class' => 'form-horizontal form-groups-bordered validate')); ?>
+                <?php echo form_open_multipart(base_url() . 'index.php?admin/messages_new/send_new/', array('class' => 'form-horizontal form-groups-bordered validate')); ?>
 						
                     <div class="form-group">
                         <label for="to">Destinatario:</label>
@@ -129,7 +129,7 @@
 			<div class="mail-sidebar">
 				
                 <div class="mail-sidebar-row hidden-xs">
-					<a href="<?php echo base_url(); ?>index.php?admin/message_new/" class="btn btn-success btn-icon btn-block">
+					<a href="<?php echo base_url(); ?>index.php?admin/messages_new/" class="btn btn-success btn-icon btn-block">
 						Enviar correo
 						<i class="entypo-pencil"></i>
 					</a>
@@ -138,7 +138,7 @@
 				<!-- menu -->
 				<ul class="mail-menu">
 					<li>
-						<a href="<?php echo base_url(); ?>index.php?admin/message/">
+						<a href="<?php echo base_url(); ?>index.php?admin/messages/">
 							<?php if ($unread_count > 0): ?>
 								<span class="badge badge-gray badge-tag badge-mail-menu pull-right"><?php echo $unread_count; ?></span>
 							<?php endif; ?>
@@ -148,7 +148,7 @@
 					</li>
 					
 					<li>
-						<a href="<?php echo base_url(); ?>index.php?admin/message_sent/">
+						<a href="<?php echo base_url(); ?>index.php?admin/messages_sent/">
 							<?php if ($sent_count > 0): ?>
 								<span class="badge badge-gray badge-tag badge-mail-menu pull-right"><?php echo $sent_count; ?></span>
 							<?php endif; ?>
@@ -158,7 +158,7 @@
 					</li>
 
 					<li>
-						<a href="<?php echo base_url(); ?>index.php?admin/message_favorite/">
+						<a href="<?php echo base_url(); ?>index.php?admin/messages_favorite/">
 							<?php if ($favorite_count > 0): ?>
 								<span class="badge badge-gray badge-tag badge-mail-menu pull-right"><?php echo $favorite_count; ?></span> 
 							<?php endif; ?>
@@ -168,7 +168,7 @@
 					</li>
 					
 					<li>
-						<a href="<?php echo base_url(); ?>index.php?admin/message_trash/">
+						<a href="<?php echo base_url(); ?>index.php?admin/messages_trash/">
 							<?php if ($trash_count > 0): ?>
 								<span class="badge badge-gray badge-tag badge-mail-menu pull-right"><?php echo $trash_count; ?></span>
 							<?php endif; ?>
@@ -178,7 +178,7 @@
 					</li>
 
                     <li>
-						<a href="<?php echo base_url(); ?>index.php?admin/message_draft/">
+						<a href="<?php echo base_url(); ?>index.php?admin/messages_draft/">
 							<?php if ($draft_count > 0): ?>
 								<span class="badge badge-gray badge-tag badge-mail-menu pull-right"><?php echo $draft_count; ?></span>
 							<?php endif; ?>
@@ -206,7 +206,7 @@
 
 					<?php foreach ($tag_data_map as $tag_name => $tag_info): ?>
 						<li>
-							<a href="<?php echo base_url(); ?>index.php?admin/message_tag/<?php echo $tag_info['name']; ?>">
+							<a href="<?php echo base_url(); ?>index.php?admin/messages_tag/<?php echo $tag_info['name']; ?>">
 								<span class="badge badge-tag <?php echo $tag_info['badge']; ?> badge-roundless pull-left">
 									<?php echo isset($message_counts[$tag_name]) ? $message_counts[$tag_name] : ''; ?>
 								</span>
