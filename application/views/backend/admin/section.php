@@ -95,13 +95,11 @@ $all_classes_count = count($active_sections);
 							</td>
                             <td class="text-center">
 								<?php 
-									$teacher_aide_info = $this->Teachers_model->get_teacher_aide_info_per_id($section['teacher_aide_id']);
-									foreach ($teacher_aide_info as $teacher_aide):
+									$teacher_aide_info = $this->TeacherAide_model->get_teacher_aide_info_per_id($section['teacher_aide_id']);
 								?>
-								<a href="#">
-									<img src="<?php echo $teacher_aide['photo']; ?>" class="img-circle" width="30" height="30" title="<?php echo $teacher_aide['lastname']; ?>, <?php echo $teacher_aide['firstname']; ?>"/>
+								<a href="<?php echo base_url(); ?>index.php?admin/teachers_aide_profile/<?php echo $teacher_aide_info['teacher_aide_id']; ?>">
+									<img src="<?php echo $teacher_aide_info['photo']; ?>" class="img-circle" width="30" height="30" title="<?php echo $teacher_aide_info['lastname']; ?>, <?php echo $teacher_aide_info['firstname']; ?>"/>
 								</a>
-								<?php endforeach;?>
 							</td> 
                         
                             <td class="text-center">
@@ -133,7 +131,7 @@ $all_classes_count = count($active_sections);
                                                 $lastname = isset($teacher['lastname']) ? $teacher['lastname'] : '';
                                                 $photo = isset($teacher['photo']) ? $teacher['photo'] : '';
                                                 ?>
-                                                <a href="<?php echo base_url(); ?>index.php?admin/teacher_profile/<?php echo $teacher['teacher_id']; ?>">
+                                                <a href="<?php echo base_url(); ?>index.php?admin/teachers_profile/<?php echo $teacher['teacher_id']; ?>">
                                                     <img src="<?php echo $photo; ?>" class="img-circle" width="30" height="30" title="<?php echo $lastname; ?>, <?php echo $firstname; ?>."/>
                                                 </a>
                                                 <?php
@@ -146,7 +144,7 @@ $all_classes_count = count($active_sections);
                             </td>
                             <td class="text-center"><?php echo $status_label; ?></td>
                             <td class="text-center">
-                                <a href="<?php echo base_url();?>index.php?admin/section_profile/<?php echo $section['section_id'];?>" class="btn btn-table btn-white btn-info-hover" title="<?php echo ucfirst(get_phrase('view')); ?>">
+                                <a href="<?php echo base_url();?>index.php?admin/sections_profile/<?php echo $section['section_id'];?>" class="btn btn-table btn-white btn-info-hover" title="<?php echo ucfirst(get_phrase('view')); ?>">
                                     <i class="entypo-eye"></i>
                                 </a>
                                 <a  href="javascript:;" onclick="showAjaxModal('<?php echo base_url();?>index.php?modal/popup/modal_section_edit/<?php echo $section['section_id'];?>');" class="btn btn-table btn-white btn-orange-hover" title="<?php echo ucfirst(get_phrase('edit')); ?>">
@@ -221,14 +219,14 @@ $all_classes_count = count($active_sections);
 							}
 						?>
 					</td>
-					<td class="text-center">
-                        <?php 
-                        $teacher_aide_info = $this->Teachers_model->get_teacher_aide_info($section['teacher_aide_id']);
-                        foreach ($teacher_aide_info as $teacher_aide):
-                        ?>
-                        <img src="<?php echo $teacher_aide['photo']; ?>" class="img-circle" width="30" height="30" title="<?php echo $teacher_aide['lastname']; ?>, <?php echo $teacher_aide['firstname']; ?>"/>
-                        <?php endforeach; ?>
-                    </td> 
+                    <td class="text-center">
+								<?php 
+									$teacher_aide_info = $this->TeacherAide_model->get_teacher_aide_info_per_id($section['teacher_aide_id']);
+								?>
+								<a href="<?php echo base_url(); ?>index.php?admin/teachers_aide_profile/<?php echo $teacher_aide_info['teacher_aide_id']; ?>">
+									<img src="<?php echo $teacher_aide_info['photo']; ?>" class="img-circle" width="30" height="30" title="<?php echo $teacher_aide_info['lastname']; ?>, <?php echo $teacher_aide_info['firstname']; ?>"/>
+								</a>
+							</td> 
                     <td class="text-center">
                         <?php 
                             // Verificar el estado del período académico
@@ -258,7 +256,7 @@ $all_classes_count = count($active_sections);
                                         $lastname = isset($teacher['lastname']) ? $teacher['lastname'] : '';
                                         $photo = isset($teacher['photo']) ? $teacher['photo'] : '';
                                         ?>
-                                        <a href="<?php echo base_url(); ?>index.php?admin/teacher_profile/<?php echo $teacher['teacher_id']; ?>">
+                                        <a href="<?php echo base_url(); ?>index.php?admin/teachers_profile/<?php echo $teacher['teacher_id']; ?>">
                                             <img src="<?php echo $photo; ?>" class="img-circle" width="30" height="30" title="<?php echo $lastname; ?>, <?php echo $firstname; ?>."/>
                                         </a>
                                         <?php
@@ -272,7 +270,7 @@ $all_classes_count = count($active_sections);
 
                     <td class="text-center"><?php echo $status_label; ?></td>
                     <td class="text-center">
-                        <a href="<?php echo base_url();?>index.php?admin/section_profile/<?php echo $section['section_id'];?>" class="btn btn-table btn-white btn-info-hover" title="<?php echo ucfirst(get_phrase('view')); ?>">
+                        <a href="<?php echo base_url();?>index.php?admin/sections_profile/<?php echo $section['section_id'];?>" class="btn btn-table btn-white btn-info-hover" title="<?php echo ucfirst(get_phrase('view')); ?>">
                             <i class="entypo-eye"></i>
                         </a>
                         <a href="javascript:;" onclick="showAjaxModal('<?php echo base_url();?>index.php?modal/popup/modal_section_edit/<?php echo $section['section_id']; ?>');" class="btn btn-table btn-white btn-orange-hover" title="<?php echo ucfirst(get_phrase('edit')); ?>">

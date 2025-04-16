@@ -82,7 +82,7 @@ foreach ($student_info as $row1):
                                                 $mark_array = array();
                                                 foreach ($marks as $mark) {
                                                     $exam_type_id = $mark['exam_type_id'];
-                                                    $exam_type_info = $this->exams_model->get_exam_type_info($exam_type_id);
+                                                    $exam_type_info = $this->Exams_model->get_exam_type_info($exam_type_id);
                                                     
                                                     if (!empty($exam_type_info) && isset($exam_type_info[0]['short_name'])) {
                                                         $short_name = $exam_type_info[0]['short_name'];

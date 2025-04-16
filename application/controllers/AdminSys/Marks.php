@@ -165,7 +165,7 @@ class Marks extends CI_Controller
         $this->load->view('backend/index', $page_data);
     }
 
-    function view_student_mark($section_id = '', $subject_id = '')
+    function view_students_mark($section_id = '', $subject_id = '')
     {
         if ($this->session->userdata('admin_login') != 1)
             redirect('login', 'refresh');
@@ -264,7 +264,7 @@ class Marks extends CI_Controller
                 ),
                 array(
                     'text' => ucfirst(get_phrase('view')) . ' ' . ucfirst(get_phrase('marks_sheet')) . ($used_section_history ? '&nbsp;&nbsp;/&nbsp;&nbsp;' . $academic_period_name : '') . '&nbsp;&nbsp;/&nbsp;&nbsp;' . $section_data['name'],
-                    'url' => base_url('index.php?admin/view_student_mark/' . '/' . $section_id)
+                    'url' => base_url('index.php?admin/view_students_mark/' . '/' . $section_id)
                 )
             );
         } else {
@@ -276,7 +276,7 @@ class Marks extends CI_Controller
                 array(
                     'text' => ucfirst(get_phrase('view')) . ' ' . ucfirst(get_phrase('marks_sheet')) .
                         ($used_subject_history ? '&nbsp;&nbsp;/&nbsp;&nbsp;' . $academic_period_name : '') . '&nbsp;&nbsp;/&nbsp;&nbsp;' . $section_data['name'] . '&nbsp;&nbsp;/&nbsp;&nbsp;' . ucfirst($subject_data['name']),
-                    'url' => base_url('index.php?admin/view_student_mark/' . $section_id . '/' . $subject_id)
+                    'url' => base_url('index.php?admin/view_students_mark/' . $section_id . '/' . $subject_id)
                 )
             );
         }

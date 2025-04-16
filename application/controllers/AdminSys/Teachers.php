@@ -42,7 +42,7 @@ class Teachers extends CI_Controller
         $this->load->view('backend/index', $page_data);
     }
 
-    function teacher_profile($teacher_id = '')
+    function teachers_profile($teacher_id = '')
     {
         if ($this->session->userdata('admin_login') != 1)
             redirect('login', 'refresh');
@@ -61,6 +61,7 @@ class Teachers extends CI_Controller
         $page_data['breadcrumb'] = $breadcrumb;
         $page_data['teacher'] = $this->Teachers_model->get_teacher_info($teacher_id);
         $page_data['page_name'] = 'teacher_profile';
+        $page_data['param2'] = $teacher_id;
         $page_data['page_title'] = ucfirst(get_phrase('view_profile'));
 
         $this->load->view('backend/index', $page_data);

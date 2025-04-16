@@ -117,10 +117,10 @@
                             <td class="text-center">
                                 <?php 
                                     $exam_type_id = ''; // Inicializar variable de tipo de examen
-                                    $exams = $this->exams_model->get_exam_info($exam_id);
+                                    $exams = $this->Exams_model->get_exam_info($exam_id);
                                     foreach($exams as $row3):
                                         $exam_type_id = $row3['exam_type_id'];
-                                        $exam_type_info = $this->exams_model->get_exam_type_info($exam_type_id);
+                                        $exam_type_info = $this->Exams_model->get_exam_type_info($exam_type_id);
                                         if (!empty($exam_type_info)) {
                                             echo $exam_type_info[0]['short_name']; 
                                         }

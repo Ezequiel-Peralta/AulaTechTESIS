@@ -116,17 +116,17 @@ $all_student_count = count($students);
     ?>
     <tr>
         <td class="text-center">
-            <a href="<?php echo base_url();?>index.php?admin/student_profile/<?php echo $row['student_id']; ?>">
+            <a href="<?php echo base_url();?>index.php?admin/students_profile/<?php echo $row['student_id']; ?>">
                 <img src="<?php echo $row['photo']; ?>" class="img-circle" width="30" height="30" />
             </a>
         </td>
         <td class="text-center" style="font-weight: bold;">
-            <a href="<?php echo base_url();?>index.php?admin/student_profile/<?php echo $row['student_id']; ?>" style="text-decoration: none; color: inherit;">
+            <a href="<?php echo base_url();?>index.php?admin/students_profile/<?php echo $row['student_id']; ?>" style="text-decoration: none; color: inherit;">
                 <?php echo $row['lastname']; ?>
             </a>
         </td>
         <td class="text-center" style="font-weight: bold;">
-            <a href="<?php echo base_url();?>index.php?admin/student_profile/<?php echo $row['student_id']; ?>" style="text-decoration: none; color: inherit;">
+            <a href="<?php echo base_url();?>index.php?admin/students_profile/<?php echo $row['student_id']; ?>" style="text-decoration: none; color: inherit;">
                 <?php echo $row['firstname']; ?>
             </a>
         </td>

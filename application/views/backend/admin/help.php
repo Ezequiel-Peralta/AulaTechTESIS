@@ -3,50 +3,81 @@
             <h4 class="card-title" style="font-weight: bold;"> <?php echo ucfirst(get_phrase('downloadable_material'));?></h4>
             <br>
             <ul class="info-list">
+                <?php
+                    $folder = 'documentation';
+
+                    $file_url_user_manual = base_url() . 'uploads/' . $folder . '/' . 'manual_de_usuario.pdf';
+                    $file_url_administration_folder = base_url() . 'uploads/' . $folder . '/' . 'carpeta_de_administracion.docx';
+                    $file_url_practice_folder = base_url() . 'uploads/' . $folder . '/' . 'carpeta_de_practica.docx'; 
+                ?>
+                        
                 <li>
-                    <a class="dt-button btn buttons-html5 btn-white btn-sm btn-green-hover" title="<?php echo ucfirst(get_phrase('download'));?>" href="#" download><span><i class="fa fa-file"></i> <?php echo ucfirst(get_phrase('user_manual'));?></span></a>
+                    <a class="dt-button btn buttons-html5 btn-white btn-sm btn-green-hover" title="<?php echo ucfirst(get_phrase('download'));?>" href="<?php echo $file_url_user_manual;?>" download><span><i class="fa fa-file"></i> <?php echo ucfirst(get_phrase('user_manual'));?></span></a>
                 </li>
                 <li>
-                    <a class="dt-button btn buttons-html5 btn-white btn-sm btn-orange-hover" title="<?php echo ucfirst(get_phrase('download'));?>" href="#" download><span><i class="fa fa-file"></i> <?php echo ucfirst(get_phrase('documentation'));?></span></a>
+                    <a class="dt-button btn buttons-html5 btn-white btn-sm btn-orange-hover" title="<?php echo ucfirst(get_phrase('download'));?>" href="<?php echo $file_url_administration_folder;?>" download><span><i class="fa fa-file"></i> <?php echo ucfirst(get_phrase('administration_folder'));?></span></a>
+                </li>
+                <li>
+                    <a class="dt-button btn buttons-html5 btn-white btn-sm btn-info-hover" title="<?php echo ucfirst(get_phrase('download'));?>" href="<?php echo $file_url_practice_folder;?>" download><span><i class="fa fa-file"></i> <?php echo ucfirst(get_phrase('practice_folder'));?></span></a>
                 </li>
             </ul>
         </div>
     </div>
 
+    <br>
 
-
-    <div class="profile-details card mt-4" style="background-color: #fff; border-radius: 15px; padding: 10px 20px 20px 20px;">
+    <div class="profile-details2 card mt-4">
         <div class="card-body">
-            <h4 class="card-title" style="font-weight: bold;">
-                <?php echo ucfirst(get_phrase('aula_tech_team')); ?>
-            </h4>
+            <h4 class="card-title" style="font-weight: bold;"> <?php echo ucfirst(get_phrase('aula_tech_team'));?></h4>
             <br>
+            <div class="photo-gallery">
+                <?php
+                $admins = $this->db->order_by('lastname', 'ASC')->get('admin_details')->result_array();
 
-            <?php
-            $admins = $this->db->order_by('lastname', 'ASC')->get('admin_details')->result_array();
-
-            foreach ($admins as $admin):
-            ?>
-                <div class="member-entry">
-                    <a href="<?php echo base_url();?>index.php?admin/admin_profile/<?php echo $admin['admin_id'];?>" class="member-img">
-                        <img src="<?php echo $admin['photo']; ?>" class="img-rounded">
-                        <i class="entypo-user" title="<?php echo ucfirst(get_phrase('view_profile'));?>"></i>
-                    </a>
-                    <div class="member-details">
-                        <h4>
-                            <a href="<?php echo base_url();?>index.php?admin/admin_profile/<?php echo $admin['admin_id'];?>"><?php echo $admin['lastname'] . ', ' . $admin['firstname']; ?></a>
-                        </h4>
+                foreach ($admins as $admin):
+                ?>
+                    <div class="photo-item">
+                        <img src="<?php echo $admin['photo']; ?>" alt="Foto">
+                        <p style="font-weight: bold; color: #265044;"><?php echo $admin['lastname'] . ', ' . $admin['firstname'] . '. '; ?></p>
                     </div>
-                </div>
-            <?php endforeach; ?>
-
+                <?php endforeach; ?>
+            </div>
         </div>
     </div>
 
 
 
-
     <style>
+
+.profile-details2 {
+    background-color: #fff;
+    border-radius: 15px;
+    padding: 10px 20px 20px 20px;
+}
+
+.photo-gallery {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+}
+
+.photo-item {
+    text-align: center;
+    width: 150px;
+}
+
+.photo-item img {
+    width: 100%;
+    border-radius: 10px;
+}
+
+.photo-item p {
+    margin-top: 10px;
+    font-size: 14px;
+    font-weight: bold;
+}
+
     .img-rounded {
         border-radius: 20px;
     }
@@ -170,19 +201,20 @@
         margin-top: 20px;
     }
     .profile-details .info-list {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        gap: 10px;
-        padding: 0;
-        list-style: none;
-    }
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    padding: 0;
+    list-style: none;
+}
 
-    .profile-details .info-list li {
-        display: inline-flex;
-        justify-content: center;
-        align-items: center;
-    }
+.profile-details .info-list li {
+    display: flex;
+    flex-direction: column; 
+    align-items: center; 
+    width: auto; 
+}
 
     .profile-details .info-list li strong, 
     .profile-details .info-list li span {
@@ -239,7 +271,7 @@
     }
 
     .member-entry .member-img i {
-        background-color: rgba(176, 223, 204, 0.7) !important; /* Fondo semitransparente */
+        background-color: rgba(176, 223, 204, 0.7) !important; 
         position: absolute !important;
         display: flex !important;;
         justify-content: center !important;

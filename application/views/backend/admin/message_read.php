@@ -31,7 +31,7 @@ endforeach?>
 
     <!-- compose new email button -->
     <div class="mail-sidebar-row visible-xs">
-        <a href="<?php echo base_url(); ?>index.php?admin/message_new/" class="btn btn-success btn-icon btn-block">
+        <a href="<?php echo base_url(); ?>index.php?admin/messages_new/" class="btn btn-success btn-icon btn-block">
             Enviar correo
             <i class="entypo-pencil"></i>
         </a>
@@ -78,21 +78,21 @@ if (!empty($messages) && isset($messages[$message_thread_code]['messages'])):
 
         if ($mt_sender_id == $user_id && $mt_sender_group == $user_group) {
             ?>
-            <a href="<?php echo base_url();?>index.php?admin/message_settings/<?php echo $message_thread_code;?>/<?php echo ($is_trash_thread == 1) ? 'remove' : 'add'; ?>/trash_for_all_user_message_thread_owner" class="btn <?php echo ($is_trash_thread == 1) ? 'btn-active' : 'btn-inactive'; ?>" title="<?php echo ($is_trash_thread == 1) ? 'Traer de papelera para todos los usuarios de la conversación' : 'Enviar a papelera para todos los usuarios de la conversación'; ?>">
+            <a href="<?php echo base_url();?>index.php?admin/messages_settings/<?php echo $message_thread_code;?>/<?php echo ($is_trash_thread == 1) ? 'remove' : 'add'; ?>/trash_for_all_user_message_thread_owner" class="btn <?php echo ($is_trash_thread == 1) ? 'btn-active' : 'btn-inactive'; ?>" title="<?php echo ($is_trash_thread == 1) ? 'Traer de papelera para todos los usuarios de la conversación' : 'Enviar a papelera para todos los usuarios de la conversación'; ?>">
                 <i class="entypo-trash"></i>
             </a>
             <?php
         } 
         ?>
-        <a href="<?php echo base_url(); ?>index.php?admin/message_settings/favorite/message_read/<?php echo $message_thread_code; ?>/<?php echo ($is_favorite == 1) ? 'remove' : 'add'; ?>" class="btn <?php echo ($is_favorite == 1) ? 'btn-active' : 'btn-inactive'; ?>" title="<?php echo ($is_favorite == 1) ? 'Eliminar de favoritos' : 'Añadir a favoritos'; ?>">
+        <a href="<?php echo base_url(); ?>index.php?admin/messages_settings/favorite/messages_read/<?php echo $message_thread_code; ?>/<?php echo ($is_favorite == 1) ? 'remove' : 'add'; ?>" class="btn <?php echo ($is_favorite == 1) ? 'btn-active' : 'btn-inactive'; ?>" title="<?php echo ($is_favorite == 1) ? 'Eliminar de favoritos' : 'Añadir a favoritos'; ?>">
             <i class="entypo-star"></i>
         </a>
-        <a href="<?php echo base_url(); ?>index.php?admin/message_settings/draft/message_draft/<?php echo $message_thread_code; ?>/<?php echo ($is_draft == 1) ? 'remove' : 'add'; ?>" class="btn <?php echo ($is_draft == 1) ? 'btn-active' : 'btn-inactive'; ?>" title="<?php echo ($is_trash == 1) ? 'Deshacer archivado de conversación' : 'Archivar conversación'; ?>">
+        <a href="<?php echo base_url(); ?>index.php?admin/messages_settings/draft/messages_draft/<?php echo $message_thread_code; ?>/<?php echo ($is_draft == 1) ? 'remove' : 'add'; ?>" class="btn <?php echo ($is_draft == 1) ? 'btn-active' : 'btn-inactive'; ?>" title="<?php echo ($is_trash == 1) ? 'Deshacer archivado de conversación' : 'Archivar conversación'; ?>">
             <i class="fa fa-archive"></i> <!--<i class="entypo-bookmark"></i> <i class="entypo-box"></i> -->
         </a>
       
 
-        <a href="<?php echo base_url(); ?>index.php?admin/message_settings/trash/message/<?php echo $message_thread_code; ?>/<?php echo ($is_trash == 1) ? 'remove' : 'add'; ?>/trash_for_user_message_thread" class="btn <?php echo ($is_trash == 1) ? 'btn-active' : 'btn-inactive'; ?>" title="<?php echo ($is_trash == 1) ? 'Traer de papelera' : 'Enviar a papelera'; ?>">
+        <a href="<?php echo base_url(); ?>index.php?admin/messages_settings/trash/messages/<?php echo $message_thread_code; ?>/<?php echo ($is_trash == 1) ? 'remove' : 'add'; ?>/trash_for_user_message_thread" class="btn <?php echo ($is_trash == 1) ? 'btn-active' : 'btn-inactive'; ?>" title="<?php echo ($is_trash == 1) ? 'Traer de papelera' : 'Enviar a papelera'; ?>">
                 <i class="entypo-trash"></i>
             </a>
 
@@ -470,7 +470,7 @@ if (!empty($messages) && isset($messages[$message_thread_code]['messages'])):
 <?php endif; ?>
 
         <div class="mail-reply" id="mail-reply">
-            <?php echo form_open_multipart(base_url() . 'index.php?admin/message_new/send_reply/' . $message_thread_code, array('class' => 'form-horizontal form-groups-bordered validate')); ?>
+            <?php echo form_open_multipart(base_url() . 'index.php?admin/messages_new/send_reply/' . $message_thread_code, array('class' => 'form-horizontal form-groups-bordered validate')); ?>
 
             <?php if ($is_bcc_user_me): ?>
         <!-- Si el usuario está en BCC, muestra el mensaje de no disponible -->
@@ -605,7 +605,7 @@ if (!empty($messages) && isset($messages[$message_thread_code]['messages'])):
     <!-- Sidebar -->
     <div class="mail-sidebar">
         <div class="mail-sidebar-row hidden-xs">
-            <a href="<?php echo base_url(); ?>index.php?admin/message_new/" class="btn btn-success btn-icon btn-block">
+            <a href="<?php echo base_url(); ?>index.php?admin/messages_new/" class="btn btn-success btn-icon btn-block">
                 Enviar correo
                 <i class="entypo-pencil"></i>
             </a>
@@ -614,7 +614,7 @@ if (!empty($messages) && isset($messages[$message_thread_code]['messages'])):
         <!-- menu -->
         <ul class="mail-menu">
 					<li class="active">
-						<a href="<?php echo base_url(); ?>index.php?admin/message/">
+						<a href="<?php echo base_url(); ?>index.php?admin/messages/">
 							<?php if ($unread_count > 0): ?>
 								<span class="badge badge-danger badge-tag badge-mail-menu pull-right"><?php echo $unread_count; ?></span>
 							<?php endif; ?>
@@ -624,7 +624,7 @@ if (!empty($messages) && isset($messages[$message_thread_code]['messages'])):
 					</li>
 					
 					<li>
-						<a href="<?php echo base_url(); ?>index.php?admin/message_sent/">
+						<a href="<?php echo base_url(); ?>index.php?admin/messages_sent/">
 							<?php if ($sent_count > 0): ?>
 								<span class="badge badge-gray badge-tag badge-mail-menu pull-right"><?php echo $sent_count; ?></span>
 							<?php endif; ?>
@@ -634,7 +634,7 @@ if (!empty($messages) && isset($messages[$message_thread_code]['messages'])):
 					</li>
 
 					<li>
-						<a href="<?php echo base_url(); ?>index.php?admin/message_favorite/">
+						<a href="<?php echo base_url(); ?>index.php?admin/messages_favorite/">
 							<?php if ($favorite_count > 0): ?>
 								<span class="badge badge-gray badge-tag badge-mail-menu pull-right"><?php echo $favorite_count; ?></span> 
 							<?php endif; ?>
@@ -644,7 +644,7 @@ if (!empty($messages) && isset($messages[$message_thread_code]['messages'])):
 					</li>
 					
 					<li>
-						<a href="<?php echo base_url(); ?>index.php?admin/message_trash/">
+						<a href="<?php echo base_url(); ?>index.php?admin/messages_trash/">
 							<?php if ($trash_count > 0): ?>
 								<span class="badge badge-grey badge-tag badge-mail-menu pull-right"><?php echo $trash_count; ?></span>
 							<?php endif; ?>
@@ -654,7 +654,7 @@ if (!empty($messages) && isset($messages[$message_thread_code]['messages'])):
 					</li>
 
                     <li>
-						<a href="<?php echo base_url(); ?>index.php?admin/message_draft/">
+						<a href="<?php echo base_url(); ?>index.php?admin/messages_draft/">
 							<?php if ($draft_count > 0): ?>
 								<span class="badge badge-grey badge-tag badge-mail-menu pull-right"><?php echo $draft_count; ?></span>
 							<?php endif; ?>
@@ -694,7 +694,7 @@ if (!empty($messages) && isset($messages[$message_thread_code]['messages'])):
 
 					<?php foreach ($tag_data_map as $tag_name => $tag_info): ?>
 						<li>
-							<a href="<?php echo base_url(); ?>index.php?admin/message_tag/<?php echo $tag_info['name']; ?>">
+							<a href="<?php echo base_url(); ?>index.php?admin/messages_tag/<?php echo $tag_info['name']; ?>">
 								<span class="badge badge-tag <?php echo $tag_info['badge']; ?> badge-roundless pull-left">
 									<?php echo isset($message_counts[$tag_name]) ? $message_counts[$tag_name] : ''; ?>
 								</span>

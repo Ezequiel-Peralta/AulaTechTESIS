@@ -12,7 +12,7 @@ $section_info = $this->crud_model->get_section_info4($section_id)?>
         <div class="profile-buttons">
             <a class="btn btn-secondary profile-button-active"><i class="entypo-vcard"></i> <?php echo ucfirst(get_phrase('information'));?></a>
             <a href="<?php echo base_url(); ?>index.php?admin/view_subjects/<?php echo $section_info['section_id'];?>" class="btn btn-secondary"><i class="entypo-docs" style="font-size: 12px;"></i> <?php echo ucfirst(get_phrase('subjects'));?></a>
-            <a href="<?php echo base_url(); ?>index.php?admin/view_student_mark/<?php echo $section_info['section_id'];?>" class="btn btn-secondary">
+            <a href="<?php echo base_url(); ?>index.php?admin/view_students_mark/<?php echo $section_info['section_id'];?>" class="btn btn-secondary">
                 <i class="entypo-vcard"></i>
                 <?php echo ucfirst(get_phrase('marks_section'));?>
             </a> 
@@ -29,7 +29,7 @@ $section_info = $this->crud_model->get_section_info4($section_id)?>
                 <?php echo ucfirst(get_phrase('library'));?>
             </a> 
           
-            <a href="<?php echo base_url(); ?>index.php?admin/summary_attendance_student/<?php echo $section_info['class_id'];?>/<?php echo $section_info['section_id'];?>" class="btn btn-secondary"><i class="entypo-pencil" style="font-size: 12px;"></i> <?php echo ucfirst(get_phrase('attendance'));?></a>
+            <a href="<?php echo base_url(); ?>index.php?admin/summary_attendance_students/<?php echo $section_info['class_id'];?>/<?php echo $section_info['section_id'];?>" class="btn btn-secondary"><i class="entypo-pencil" style="font-size: 12px;"></i> <?php echo ucfirst(get_phrase('attendance'));?></a>
           
         </div>
         <br>
@@ -75,9 +75,9 @@ $section_info = $this->crud_model->get_section_info4($section_id)?>
             <br>
                 <div class="profile-container"> 
                     <?php
-                        $teacher_aide_info = $this->Teachers_model->get_teacher_aide_info_per_section($section_info['section_id']);
+                        $teacher_aide_info = $this->TeacherAide_model->get_teacher_aide_info_per_section($section_info['section_id']);
                         foreach ($teacher_aide_info as $row2): ?>
-                    <a href="<?php echo base_url(); ?>index.php?admin/teacher_aide_profile/<?php echo $row2['teacher_aide_id']; ?>">
+                    <a href="<?php echo base_url(); ?>index.php?admin/teachers_aide_profile/<?php echo $row2['teacher_aide_id']; ?>">
                         <div class="profile-card">
                             <img src="<?php echo $row2['photo']; ?>" class="img-circle" alt="Profile Picture" width="80" height="80">
                             <h3 style="font-weight: 600;"><?php echo $row2['lastname']; ?>, <?php echo $row2['firstname']; ?>.</h3>
@@ -118,7 +118,7 @@ $section_info = $this->crud_model->get_section_info4($section_id)?>
 
                             if ($teacher): ?>
                                 <div class="profile-card"> 
-                                    <a href="<?php echo base_url(); ?>index.php?admin/teacher_profile/<?php echo $teacher['teacher_id']; ?>">
+                                    <a href="<?php echo base_url(); ?>index.php?admin/teachers_profile/<?php echo $teacher['teacher_id']; ?>">
                                         <img src="<?php echo $teacher['photo']; ?>" class="img-circle" alt="Profile Picture" width="80" height="80">
                                         <h3 style="font-weight: 600;">
                                             <?php 
@@ -126,7 +126,7 @@ $section_info = $this->crud_model->get_section_info4($section_id)?>
                                             ?>
                                         </h3>
                                     </a>
-                                    <a href="<?php echo base_url(); ?>index.php?admin/subject_profile/<?php echo $subject['subject_id']; ?>">
+                                    <a href="<?php echo base_url(); ?>index.php?admin/subjects_profile/<?php echo $subject['subject_id']; ?>">
                                         <p style="color: #265044; font-weight: 600;">
                                             <i class="entypo-docs"></i> <?php echo ucfirst(get_phrase('subject')); ?>: <span style="color: #265044; font-weight: 400;"><?php echo ucfirst($subject['name']); ?></span>
                                         </p>
@@ -167,7 +167,7 @@ $section_info = $this->crud_model->get_section_info4($section_id)?>
                         $section_name = !empty($section) ? $section['name'] : ucfirst(get_phrase('unknown'));
                         $section_shift_id = !empty($section) ? $section['shift_id'] : ucfirst(get_phrase('unknown'));
                 ?>
-                        <a href="<?php echo base_url(); ?>index.php?admin/subject_profile/<?php echo $subject['subject_id']; ?>">
+                        <a href="<?php echo base_url(); ?>index.php?admin/subjects_profile/<?php echo $subject['subject_id']; ?>">
                             <div class="profile-card" style="min-height: 240px !important;"> 
                                 <img src="<?php 
                                     $imagePath = 'uploads/subject_image/' . $subject['image'];
@@ -217,7 +217,7 @@ $section_info = $this->crud_model->get_section_info4($section_id)?>
                     <?php
                         $student_info = $this->Students_model->get_student_info_per_section($section_info['section_id']);
                         foreach ($student_info as $student): ?>
-                        <a href="<?php echo base_url(); ?>index.php?admin/student_profile/<?php echo $student['student_id'];?>">
+                        <a href="<?php echo base_url(); ?>index.php?admin/students_profile/<?php echo $student['student_id'];?>">
                             <div class="profile-card" style="min-height: 240px !important;"> 
                                     <img src="<?php echo $student['photo']; ?>" class="img-circle" alt="Profile Picture" width="80" height="80">
                                     <h3 style="font-weight: 600;">

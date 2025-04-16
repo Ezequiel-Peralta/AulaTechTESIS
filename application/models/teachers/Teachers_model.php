@@ -28,6 +28,69 @@ class Teachers_model extends CI_Model {
         }
     }
 
+    public function get_teacher_info_per_subject($subject_id) {
+        try {
+            $subject_id = $this->db->escape_str($subject_id);
+    
+            $this->db->select('teacher_id');
+            $this->db->from('subject');
+            $this->db->where('subject_id', $subject_id);
+            $query = $this->db->get();
+            $subject_data = $query->row_array();
+    
+            if (!$subject_data || empty($subject_data['teacher_id'])) {
+                return false; 
+            }
+    
+            $teacher_id = $subject_data['teacher_id'];
+    
+            $this->db->select('
+                teacher.teacher_id,
+                teacher.email,
+                teacher.username,
+                teacher.password,
+                teacher_details.firstname,
+                teacher_details.lastname,
+                teacher_details.dni,
+                teacher_details.photo,
+                teacher_details.phone_cel,
+                teacher_details.phone_fij,
+                teacher_details.birthday,
+                teacher_details.gender_id,
+                address.locality,
+                address.neighborhood,
+                address.address,
+                address.address_line,
+                address.postalcode
+            ');
+            $this->db->from('teacher');
+            $this->db->join('teacher_details', 'teacher.teacher_id = teacher_details.teacher_id');
+            $this->db->join('address', 'teacher_details.address_id = address.address_id');
+            $this->db->where('teacher.teacher_id', $teacher_id);
+    
+            return $this->db->get()->row_array();
+    
+        } catch (Exception $e) {
+            log_message('error', 'Error in get_teacher_info_per_subject: ' . $e->getMessage());
+            return false;
+        }
+    }
+
+    public function get_teacher_info2($teacher_id) {
+        try {
+            $teacher_id = $this->db->escape_str($teacher_id);
+            $this->db->select('teacher.teacher_id, teacher.email, teacher.username, teacher.password, teacher_details.firstname, teacher_details.lastname, teacher_details.dni, teacher_details.photo, teacher_details.phone_cel, teacher_details.phone_fij, teacher_details.birthday, teacher_details.gender_id, address.locality, address.neighborhood, address.address, address.address_line, address.postalcode');
+            $this->db->from('teacher');
+            $this->db->join('teacher_details', 'teacher.teacher_id = teacher_details.teacher_id');
+            $this->db->join('address', 'teacher_details.address_id = address.address_id');
+            $this->db->where('teacher.teacher_id', $teacher_id);
+            return $this->db->get()->result_array();
+        } catch (Exception $e) {
+            log_message('error', 'Error in get_teacher_info: ' . $e->getMessage());
+            return false;
+        }
+    }
+
     public function insert_teacher($data) {
         try {
             $this->db->insert('teacher', $data);

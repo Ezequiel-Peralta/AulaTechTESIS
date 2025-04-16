@@ -8,8 +8,8 @@ class Exams extends CI_Controller
         $this->load->database();
         $this->load->library('session');
 
-        $this->load->model('subjects/subjects_model');
-        $this->load->model('exams/exams_model');
+        $this->load->model('subjects/Subjects_model');
+        $this->load->model('exams/Exams_model');
         $this->load->library('Exams_service');
 
         date_default_timezone_set('America/Argentina/Buenos_Aires');
@@ -35,8 +35,8 @@ class Exams extends CI_Controller
             )
         );
 
-        $exam_types = $this->exams_model->get_exam_types();
-        $edit_data = $this->exams_model->get_exam_info($param2);
+        $exam_types = $this->Exams_model->get_exam_types();
+        $edit_data = $this->Exams_model->get_exam_info($param2);
 
         $page_data = array(
             'breadcrumb' => $breadcrumb,
@@ -93,8 +93,8 @@ class Exams extends CI_Controller
         $exams = $this->exams_service->get_exams($section_id, $subject_id);
 
         foreach ($exams as &$exam) {
-            $exam['exam_type_name'] = $this->exams_model->get_exam_type_name($exam['exam_type_id']);
-            $exam['subject_name'] = $this->exams_model->get_subject_name($exam['subject_id']);
+            $exam['exam_type_name'] = $this->Exams_model->get_exam_type_name($exam['exam_type_id']);
+            $exam['subject_name'] = $this->Exams_model->get_subject_name($exam['subject_id']);
         }
 
         if (!empty($subject_id)) {

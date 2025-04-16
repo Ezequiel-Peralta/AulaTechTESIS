@@ -1,5 +1,5 @@
 <?php
-$teacher_info = $this->Teachers_model->get_teacher_info($param2);
+$teacher_info = $this->Teachers_model->get_teacher_info2($param2);
 foreach($teacher_info as $row):?>
 
     <div class="profile-header" style="border-radius: 15px;">
@@ -121,7 +121,7 @@ foreach($teacher_info as $row):?>
                                 $section = $this->db->get('section')->row_array();
 
                                 if ($section): ?>
-                                    <a href="<?php echo base_url(); ?>index.php?admin/section_profile/<?php echo $section['section_id']; ?>">
+                                    <a href="<?php echo base_url(); ?>index.php?admin/sections_profile/<?php echo $section['section_id']; ?>">
                                         <div class="profile-card">
                                             <h3 style="font-weight: 600;">
                                                 <?php echo ucfirst($section['name']); ?>
@@ -158,7 +158,7 @@ foreach($teacher_info as $row):?>
                         $section_name = !empty($section) ? $section['name'] : ucfirst(get_phrase('unknown'));
                         $section_shift_id = !empty($section) ? $section['shift_id'] : ucfirst(get_phrase('unknown'));
                 ?>
-                        <a href="<?php echo base_url(); ?>index.php?admin/subject_profile/<?php echo $subject['subject_id']; ?>">
+                        <a href="<?php echo base_url(); ?>index.php?admin/subjects_profile/<?php echo $subject['subject_id']; ?>">
                             <div class="profile-card" style="min-height: 240px !important;"> 
                                 <img src="<?php 
         $imagePath = 'uploads/subject_image/' . $subject['image'];

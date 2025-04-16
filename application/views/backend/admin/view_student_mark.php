@@ -63,7 +63,7 @@ if (empty($subject_id)) {
 
                             foreach ($sections as $row):
                     ?>
-                                <option id="actualSectionId" value="<?php echo base_url(); ?>index.php?admin/view_student_mark/<?php echo $row['section_id']; ?>"
+                                <option id="actualSectionId" value="<?php echo base_url(); ?>index.php?admin/view_students_mark/<?php echo $row['section_id']; ?>"
                                     <?php if ($section_id == $row['section_id'] && $academic_period_id == $row['academic_period_id']) echo 'selected="selected"'; ?>>
                                     <?php echo $row['name']; ?>
                                 </option>
@@ -80,7 +80,7 @@ if (empty($subject_id)) {
 
                             foreach ($sections as $row):
                     ?>
-                                <option id="actualSectionId" value="<?php echo base_url(); ?>index.php?admin/view_student_mark/<?php echo $row['section_id']; ?>"
+                                <option id="actualSectionId" value="<?php echo base_url(); ?>index.php?admin/view_students_mark/<?php echo $row['section_id']; ?>"
                                     <?php if ($section_id == $row['section_id']) echo 'selected="selected"'; ?>>
                                     <?php echo $row['name']; ?>
                                 </option>
@@ -228,7 +228,7 @@ foreach ($students as $student):
             // Process all marks
             foreach ($marks as $mark) {
                 $exam_type_id = $mark['exam_type_id'];
-                $exam_type_info = $this->exams_model->get_exam_type_info($exam_type_id);
+                $exam_type_info = $this->Exams_model->get_exam_type_info($exam_type_id);
                 
                 if (!empty($exam_type_info) && isset($exam_type_info[0]['short_name'])) {
                     $short_name = $exam_type_info[0]['short_name'];
@@ -441,7 +441,7 @@ foreach ($students as $student):
             // Process all marks
             foreach ($marks as $mark) {
                 $exam_type_id = $mark['exam_type_id'];
-                $exam_type_info = $this->exams_model->get_exam_type_info($exam_type_id);
+                $exam_type_info = $this->Exams_model->get_exam_type_info($exam_type_id);
                 
                 if (!empty($exam_type_info) && isset($exam_type_info[0]['short_name'])) {
                     $short_name = $exam_type_info[0]['short_name'];
@@ -572,7 +572,7 @@ foreach ($students as $student):
 <script type="text/javascript">
         function get_sections(academic_period_id) {
             $.ajax({
-                url: '<?php echo base_url();?>index.php?admin/get_section_content_by_academic_period/' + academic_period_id + '/view_student_mark',
+                url: '<?php echo base_url();?>index.php?admin/get_section_content_by_academic_period/' + academic_period_id + '/view_students_mark',
                 success: function(response) {
                     const emptyOption = '<option value="" selected disabled><?php echo ucfirst(get_phrase('select')); ?></option>';
                     jQuery('#class_select').html(emptyOption + response);

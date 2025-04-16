@@ -11,6 +11,9 @@ class Students extends CI_Controller
         $this->load->model('students/Students_model');
         $this->load->library('students_service');
 
+        $this->load->model('teacherAide/TeacherAide_model');
+        $this->load->model('guardians/Guardians_model');
+
         date_default_timezone_set('America/Argentina/Buenos_Aires');
 
         /*cache control*/
@@ -275,7 +278,7 @@ class Students extends CI_Controller
             $this->load->view('backend/index', $page_data);
         }
     
-        function student_profile($student_id = '')
+        function students_profile($student_id = '')
         {
             if ($this->session->userdata('admin_login') != 1)
                 redirect('login', 'refresh');
@@ -287,12 +290,13 @@ class Students extends CI_Controller
                 ),
                 array(
                     'text' => ucfirst(get_phrase('manage_students')) . '&nbsp;&nbsp;/&nbsp;&nbsp;' . ucfirst(get_phrase('view_profile')),
-                    'url' => base_url('index.php?admin/student_profile/' . $student_id)
+                    'url' => base_url('index.php?admin/students_profile/' . $student_id)
                 )
             );
     
             $page_data['breadcrumb'] = $breadcrumb;
             $page_data['page_name'] = 'student_profile';
+            $page_data['param2'] = $student_id;
             $page_data['page_title'] = ucfirst(get_phrase('view_profile'));
             $page_data['student_info'] = $this->Students_model->get_student_info($student_id);
     

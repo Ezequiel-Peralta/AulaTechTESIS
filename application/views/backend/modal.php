@@ -188,9 +188,9 @@
             }
         }).then((result) => {
             if (result.isConfirmed) {
-                window.location.href = url + "/trash/message_trash";
+                window.location.href = url + "/trash/messages_trash";
             } else if (result.isDenied) {
-                window.location.href = url + "/draft/message_draft";
+                window.location.href = url + "/draft/messages_draft";
             }
         });
     }
@@ -214,9 +214,9 @@
             }
         }).then((result) => {
             if (result.isConfirmed) {
-                window.location.href = url + "/trash/message_trash";
+                window.location.href = url + "/trash/messages_trash";
             } else if (result.isDenied) {
-                window.location.href = url + "/draft/message_draft";
+                window.location.href = url + "/draft/messages_draft";
             }
         });
     }

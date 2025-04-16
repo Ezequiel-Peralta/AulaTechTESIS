@@ -87,7 +87,7 @@ if ($all_subjects_count == 0) {
 
                             foreach ($sections as $row):
                     ?>
-                                <option id="actualSectionId" value="<?php echo base_url(); ?>index.php?admin/view_student_mark/<?php echo $row['section_id']; ?>"
+                                <option id="actualSectionId" value="<?php echo base_url(); ?>index.php?admin/view_students_mark/<?php echo $row['section_id']; ?>"
                                     <?php if ($section_id == $row['section_id'] && $academic_period_id == $row['academic_period_id']) echo 'selected="selected"'; ?>>
                                     <?php echo $row['name']; ?>
                                 </option>
@@ -174,7 +174,7 @@ if (empty($subjects)) {
 <div class="row">
     <?php foreach ($subjects as $subject): ?>
         <div class="col-md-4 mb-4">
-            <a href="<?php echo base_url(); ?>index.php?admin/subject_profile/<?php echo $subject['subject_id']; ?>">
+            <a href="<?php echo base_url(); ?>index.php?admin/subjects_profile/<?php echo $subject['subject_id']; ?>">
                 <div class="card shadow-sm">
                         <?php
                                 $folder = ($used_section_history) ? 'subject_image_history' : 'subject_image';

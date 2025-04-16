@@ -59,7 +59,7 @@ $all_exams_count = count($exams);
 
                             foreach ($sections as $row):
                     ?>
-                                <option id="actualSectionId" value="<?php echo base_url(); ?>index.php?admin/view_student_mark/<?php echo $row['section_id']; ?>"
+                                <option id="actualSectionId" value="<?php echo base_url(); ?>index.php?admin/view_students_mark/<?php echo $row['section_id']; ?>"
                                     <?php if ($section_id == $row['section_id'] && $academic_period_id == $row['academic_period_id']) echo 'selected="selected"'; ?>>
                                     <?php echo $row['name']; ?>
                                 </option>

@@ -84,7 +84,7 @@ $all_classes_count = count($active_sections);
 								?>
                             </td>
                             <td class="text-center">
-                                <a href="<?php echo base_url(); ?>index.php?admin/view_student_mark/<?php echo $section['section_id']; ?>" class="btn btn-table btn-white btn-info-hover" title="<?php echo ucfirst(get_phrase('view')); ?>">
+                                <a href="<?php echo base_url(); ?>index.php?admin/view_students_mark/<?php echo $section['section_id']; ?>" class="btn btn-table btn-white btn-info-hover" title="<?php echo ucfirst(get_phrase('view')); ?>">
                                     <i class="entypo-eye"></i>
                                 </a>
                             </td>
@@ -143,7 +143,7 @@ $all_classes_count = count($active_sections);
                                 ?>
                             </td>
                             <td class="text-center">
-                                <a href="<?php echo base_url(); ?>index.php?admin/view_student_mark/<?php echo $section['section_id']; ?>" class="btn btn-table btn-white btn-info-hover" title="<?php echo ucfirst(get_phrase('view')); ?>">
+                                <a href="<?php echo base_url(); ?>index.php?admin/view_students_mark/<?php echo $section['section_id']; ?>" class="btn btn-table btn-white btn-info-hover" title="<?php echo ucfirst(get_phrase('view')); ?>">
                                     <i class="entypo-eye"></i>
                                 </a>
                             </td>
