@@ -134,6 +134,7 @@ class Attendances extends CI_Controller
         redirect($redirect_url, 'refresh');
     }
 
+
     function summary_attendance_students($class_id = '', $section_id='') {
         if ($this->session->userdata('admin_login') != 1) {
             redirect(base_url(), 'refresh');
