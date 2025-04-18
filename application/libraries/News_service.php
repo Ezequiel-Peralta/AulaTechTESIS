@@ -64,13 +64,17 @@ class News_service extends CI_Model {
             foreach ($files_to_delete as $file) {
                 $file_path = 'uploads/news/' . $news_id . '/' . $file;
                 if (file_exists($file_path) && is_file($file_path)) {
-                    unlink($file_path);
+                    unlink($file_path); 
+                    
                 }
             }
 
             $final_files = $files_to_keep;
 
             if (!empty($files) && isset($files['name'][0]) && !empty($files['name'][0])) {
+
+
+                
                 $exam_directory = 'uploads/news/' . $news_id . '/';
                 if (!is_dir($exam_directory)) {
                     mkdir($exam_directory, 0777, true);
