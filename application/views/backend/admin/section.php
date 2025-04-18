@@ -94,12 +94,15 @@ $all_classes_count = count($active_sections);
 								?>
 							</td>
                             <td class="text-center">
-								<?php 
+                                <?php 
 									$teacher_aide_info = $this->TeachersAide_model->get_teacher_aide_info_per_id($section['teacher_aide_id']);
 								?>
-								<a href="<?php echo base_url(); ?>index.php?admin/teachers_aide_profile/<?php echo $teacher_aide_info['teacher_aide_id']; ?>">
-									<img src="<?php echo $teacher_aide_info['photo']; ?>" class="img-circle" width="30" height="30" title="<?php echo $teacher_aide_info['lastname']; ?>, <?php echo $teacher_aide_info['firstname']; ?>"/>
-								</a>
+                                <?php if (!empty($teacher_aide_info) && !empty($teacher_aide_info['photo'])): ?>
+                                <a href="<?php echo base_url(); ?>index.php?admin/teachers_aide_profile/<?php echo $teacher_aide_info['teacher_aide_id']; ?>">
+                                    <img src="<?php echo $teacher_aide_info['photo']; ?>" class="img-circle" width="30" height="30" title="<?php echo $teacher_aide_info['lastname']; ?>, <?php echo $teacher_aide_info['firstname']; ?>"/>
+                                </a>
+                                <?php else: ?>
+                                <?php endif; ?>
 							</td> 
                         
                             <td class="text-center">
@@ -223,9 +226,15 @@ $all_classes_count = count($active_sections);
 								<?php 
 									$teacher_aide_info = $this->TeachersAide_model->get_teacher_aide_info_per_id($section['teacher_aide_id']);
 								?>
-								<a href="<?php echo base_url(); ?>index.php?admin/teachers_aide_profile/<?php echo $teacher_aide_info['teacher_aide_id']; ?>">
-									<img src="<?php echo $teacher_aide_info['photo']; ?>" class="img-circle" width="30" height="30" title="<?php echo $teacher_aide_info['lastname']; ?>, <?php echo $teacher_aide_info['firstname']; ?>"/>
-								</a>
+                                <?php if (!empty($teacher_aide_info) && !empty($teacher_aide_info['photo'])): ?>
+                                <a href="<?php echo base_url(); ?>index.php?admin/teachers_aide_profile/<?php echo $teacher_aide_info['teacher_aide_id']; ?>">
+                                    <img src="<?php echo $teacher_aide_info['photo']; ?>" class="img-circle" width="30" height="30" title="<?php echo $teacher_aide_info['lastname']; ?>, <?php echo $teacher_aide_info['firstname']; ?>"/>
+                                </a>
+                                <?php else: ?>
+                                <?php endif; ?>
+
+
+								
 							</td> 
                     <td class="text-center">
                         <?php 

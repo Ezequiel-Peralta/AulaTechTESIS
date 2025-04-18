@@ -262,38 +262,10 @@ foreach ($edit_data as $row):
 endforeach;
 ?>
 
-<script>
-  $(document).ready(function() {
-    let ajaxSent = false;
-
-    function sendPageTracking() {
-      if (!ajaxSent) {
-        ajaxSent = true;
-
-        let page_name = '<?php echo $page_name;?>'
-        let user_id = '<?php echo $this->session->userdata('login_user_id');?>'
-        let user_group = '<?php echo $this->session->userdata('login_type');?>'
-
-        $.ajax({
-          url: 'index.php?admin/reset_page_tracking/' + page_name, 
-          success: function(response) {
-          },
-          error: function(xhr, status, error) {
-          }
-        });
-      }
-    }
-
-    // Captura el evento `beforeunload`
-    $(window).on('beforeunload', function() {
-      sendPageTracking();
-    });
-  });
-</script>
 
 <script>
     const guardians = <?php echo json_encode($this->db->get('guardian_details')->result_array()); ?>;
-</script>
+</>
 
 <script type="text/javascript">
 	 function addGuardianEntry() {

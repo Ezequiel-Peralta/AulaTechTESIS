@@ -583,35 +583,7 @@ foreach ($students as $student):
    
 </script>
 
-<script>
-  $(document).ready(function() {
-    let ajaxSent = false;
 
-    function sendPageTracking() {
-      if (!ajaxSent) {
-        ajaxSent = true;
-
-        let page_name = '<?php echo $page_name;?>'
-        let user_id = '<?php echo $this->session->userdata('login_user_id');?>'
-        let user_group = '<?php echo $this->session->userdata('login_type');?>'
-         let page_id = '<?php echo $section_id;?>'
-
-        $.ajax({
-          url: 'index.php?admin/reset_page_tracking/' + page_name + '/' + page_id, 
-          success: function(response) {
-          },
-          error: function(xhr, status, error) {
-          }
-        });
-      }
-    }
-
-    // Captura el evento `beforeunload`
-    $(window).on('beforeunload', function() {
-      sendPageTracking();
-    });
-  });
-</script>
 
 <script type="text/javascript">
     function reload_ajax() {
