@@ -7,7 +7,7 @@ $student_id = $param2;
     <h4 class="modal-title"><?php echo ucfirst(get_phrase('disable_student'))?></h4>
 </div>
 
-<?php echo form_open(base_url() . 'index.php?admin/student/inactive_student_pre_enrollements/'.$student_id  , array('class' => 'form-horizontal form-groups-bordered validate'));?>
+<?php echo form_open(base_url() . 'index.php?admin/students/inactive_student_pre_enrollements/'.$student_id  , array('class' => 'form-horizontal form-groups-bordered validate'));?>
 
 <div class="modal-body" style="height:500px; overflow:auto;">
     <div class="row">

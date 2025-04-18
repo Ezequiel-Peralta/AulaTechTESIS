@@ -75,7 +75,7 @@ $section_info = $this->crud_model->get_section_info4($section_id)?>
             <br>
                 <div class="profile-container"> 
                     <?php
-                        $teacher_aide_info = $this->TeacherAide_model->get_teacher_aide_info_per_section($section_info['section_id']);
+                        $teacher_aide_info = $this->TeachersAide_model->get_teacher_aide_info_per_section($section_info['section_id']);
                         foreach ($teacher_aide_info as $row2): ?>
                     <a href="<?php echo base_url(); ?>index.php?admin/teachers_aide_profile/<?php echo $row2['teacher_aide_id']; ?>">
                         <div class="profile-card">

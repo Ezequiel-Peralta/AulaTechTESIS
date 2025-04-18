@@ -318,7 +318,7 @@ if ($file_count == 0) {
 <script type="text/javascript">
         function get_sections(academic_period_id) {
             $.ajax({
-                url: '<?php echo base_url();?>index.php?admin/get_section_content_by_academic_period/' + academic_period_id + '/view_library',
+                url: '<?php echo base_url();?>index.php?admin/get_sections_content_by_academic_period/' + academic_period_id + '/view_library',
                 success: function(response) {
                     const emptyOption = '<option value="" selected disabled><?php echo ucfirst(get_phrase('select')); ?></option>';
                     jQuery('#class_select').html(emptyOption + response);

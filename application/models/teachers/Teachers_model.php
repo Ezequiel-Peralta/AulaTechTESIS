@@ -6,12 +6,16 @@ class Teachers_model extends CI_Model {
 
     public function get_all_teachers() {
         try {
-            return $this->db->get('teacher')->result_array();
+            $this->db->select('teacher.*, teacher_details.*');
+            $this->db->from('teacher');
+            $this->db->join('teacher_details', 'teacher.teacher_id = teacher_details.teacher_id', 'left');
+            return $this->db->get()->result_array();
         } catch (Exception $e) {
             log_message('error', 'Error in get_all_teachers: ' . $e->getMessage());
             return false;
         }
     }
+    
 
     public function get_teacher_info($teacher_id) {
         try {
@@ -116,7 +120,7 @@ class Teachers_model extends CI_Model {
         try {
             $teacher_id = $this->db->escape_str($teacher_id);
             $this->db->where('teacher_id', $teacher_id);
-            return $this->db->update('teacher', array('status' => $status));
+            return $this->db->update('teacher_details', array('user_status_id' => $status));
         } catch (Exception $e) {
             log_message('error', 'Error in update_teacher_status: ' . $e->getMessage());
             return false;

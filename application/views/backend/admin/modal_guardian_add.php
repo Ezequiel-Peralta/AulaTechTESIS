@@ -12,7 +12,7 @@
 			</div> -->
 				
 			<div class="panel-body">
-                <?php echo form_open(base_url() . 'index.php?admin/student/create/' , array('class' => 'form-wizard validate', 'enctype' => 'multipart/form-data'));?>
+                <?php echo form_open(base_url() . 'index.php?admin/students/create/' , array('class' => 'form-wizard validate', 'enctype' => 'multipart/form-data'));?>
 				
 			
 					<div class="steps-progress">

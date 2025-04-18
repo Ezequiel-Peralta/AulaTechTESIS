@@ -136,6 +136,7 @@ class Subjects_model extends CI_Model {
                 library.library_id AS library_id,
                 library.url_file AS url_file,
                 library.file_name AS file_name,
+                 library.subject_id AS file_subject_id,
                 library.date AS file_date,
                 library.description AS file_description,
                 library.status_id AS file_status_id
@@ -161,6 +162,7 @@ class Subjects_model extends CI_Model {
                         'file_date' => $row['file_date'],
                         'file_description' => $row['file_description'],
                         'file_status_id' => $row['file_status_id'],
+                        'file_subject_id' => $row['file_subject_id'],
                         'library_id' => $row['library_id']
                     ];
                 }

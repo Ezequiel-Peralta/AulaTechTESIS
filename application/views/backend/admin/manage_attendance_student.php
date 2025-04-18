@@ -83,7 +83,7 @@
     $timestamp = strtotime($full_date);
     $day = strtolower(date('l', $timestamp));
     ?>
-    <form method="post" action="<?php echo base_url(); ?>index.php?admin/manage_attendance_student/<?php echo $date . '/' . $month . '/' . $year . '/' . $section_id; ?>">
+    <form method="post" action="<?php echo base_url(); ?>index.php?admin/manage_attendance_students/<?php echo $date . '/' . $month . '/' . $year . '/' . $section_id; ?>">
         <div class="col-sm-offset-3 col-md-6">
             <table class="table table-bordered table-data table-hover table-striped">
                 <thead>

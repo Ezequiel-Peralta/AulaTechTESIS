@@ -43,19 +43,21 @@
         <p class="modal-news-date">
             <?php
             $date = DateTime::createFromFormat('Y-m-d', $row['date']);
-            // Obtener día y mes en español o inglés
-           
 
-          
             if ($this->session->userdata('language_preference') === 'spanish') {
                 $day = strftime('%A', $date->getTimestamp());
                 $month = strftime('%B', $date->getTimestamp());
-                echo DAYSMAP[$day] . ', ' . $date->format('d') . ' de ' . MONTHSMAP[$month] . ' del ' . $date->format('Y');
+
+                $daysMap = unserialize(DAYSMAP);
+                $monthsMap = unserialize(MONTHSMAP);
+
+                echo $daysMap[$day] . ', ' . $date->format('d') . ' de ' . $monthsMap[$month] . ' del ' . $date->format('Y');
             } else {
                 echo $date->format('l, d F Y');
             }
             ?>
         </p>
+
         <p class="modal-news-type">
             <span class="span-modal-news-type"><?php
             if (isset($row['news_type_id'])) {

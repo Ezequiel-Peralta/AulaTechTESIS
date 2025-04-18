@@ -100,19 +100,19 @@
                 <span> <?php echo ucfirst(get_phrase('student_section')); ?></span>
             </a>
             <ul>
-                <li class="<?php if ($page_name == 'guardian_add') echo 'active'; ?> ">
-                    <a href="<?php echo base_url(); ?>index.php?admin/guardian_add">
+                <li class="<?php if ($page_name == 'guardians_add') echo 'active'; ?> ">
+                    <a href="<?php echo base_url(); ?>index.php?admin/guardians_add">
                         <span><i class="entypo-dot"></i> <?php echo ucfirst(get_phrase('add_guardian')); ?></span>
                     </a>
                 </li>
                 <li class="<?php if ($page_name == 'student_add') echo 'active'; ?> ">
-                    <a href="<?php echo base_url(); ?>index.php?admin/student_add">
+                    <a href="<?php echo base_url(); ?>index.php?admin/students_add">
                         <span><i class="entypo-dot"></i> <?php echo ucfirst(get_phrase('student_add')); ?></span>
                     </a>
                 </li>
 
                 <li class="<?php if ($page_name == 'student_bulk_add') echo 'active'; ?> ">
-                    <a href="<?php echo base_url(); ?>index.php?admin/student_bulk_add">
+                    <a href="<?php echo base_url(); ?>index.php?admin/students_bulk_add">
                         <span><i class="entypo-dot"></i> <?php echo ucfirst(get_phrase('bulk_add_students')); ?></span>
                     </a>
                 </li>
@@ -125,7 +125,7 @@
                 </li>
 
                 <li class="<?php if ($page_name == 'manage_behavior' || $page_name == 'behavior') echo 'active'; ?> ">
-                    <a href="<?php echo base_url(); ?>index.php?admin/manage_behavior">
+                    <a href="<?php echo base_url(); ?>index.php?admin/manage_behaviors">
                         <span><i class="entypo-dot"></i> <?php echo ucfirst(get_phrase('manage_behavior')); ?></span>
                     </a>
                    
@@ -159,7 +159,7 @@
             </a>
             <ul class="text-left">
                 <li class="<?php if ($page_name == 'add_subject') echo 'active'; ?>">
-                    <a href="<?php echo base_url(); ?>index.php?admin/add_subject">
+                    <a href="<?php echo base_url(); ?>index.php?admin/add_subjects">
                         <span><i class="entypo-dot"></i> <?php echo ucfirst(get_phrase('add_subject')); ?></span>
                     </a>
                 </li>
@@ -181,7 +181,7 @@
             || $page_name == 'manage_attendance_student' || $page_name == 'details_attendance_student')
             echo 'active';
         ?> ">
-            <a href="<?php echo base_url(); ?>index.php?admin/attendance_student">
+            <a href="<?php echo base_url(); ?>index.php?admin/attendance_students">
                 <i class="entypo-pencil" style="background-color: #265044; border-radius: 10px; padding: 5px 5px 6px; color:white"></i>
                 <span><?php echo ucfirst(get_phrase('attendance')); ?></span>
             </a>
@@ -200,7 +200,7 @@
                 </li>
 
                 <li class="<?php if ($page_name == 'student_mark') echo 'active'; ?> ">
-                    <a href="<?php echo base_url(); ?>index.php?admin/student_mark">
+                    <a href="<?php echo base_url(); ?>index.php?admin/students_mark">
                         <span><i class="entypo-dot"></i> <?php echo ucfirst(get_phrase('marks_sheet')); ?></span>
                     </a>
                    
@@ -223,7 +223,7 @@
             </a>
             <ul>     
                 <li class="<?php if ($page_name == 'exam_add') echo 'active'; ?>">
-                    <a href="<?php echo base_url(); ?>index.php?admin/exam_add">
+                    <a href="<?php echo base_url(); ?>index.php?admin/exams_add">
                         <span><i class="entypo-dot"></i> <?php echo ucfirst(get_phrase('exam_add')); ?></span>
                     </a>
                 </li>
@@ -257,7 +257,7 @@
 
             <ul>     
                 <li class="<?php if ($page_name == 'add_schedule') echo 'active'; ?>">
-                    <a href="<?php echo base_url(); ?>index.php?admin/add_schedule">
+                    <a href="<?php echo base_url(); ?>index.php?admin/add_schedules">
                         <span><i class="entypo-dot"></i> <?php echo ucfirst(get_phrase('add_schedule')); ?></span>
                     </a>
                 </li>
@@ -384,7 +384,7 @@
                     </a>
                     <ul class="text-left">
                         <li class="<?php if ($page_name == 'add_teacher') echo 'active'; ?>">
-                            <a href="<?php echo base_url(); ?>index.php?admin/add_teacher">
+                            <a href="<?php echo base_url(); ?>index.php?admin/add_teachers">
                                 <span><i class="entypo-dot"></i><?php echo ucfirst(get_phrase('add_teacher')); ?> </span>
                             </a>
                         </li>
@@ -401,7 +401,7 @@
                     </a>
                     <ul class="text-left">
                         <li class="<?php if ($page_name == 'add_teacher_aide') echo 'active'; ?>">
-                            <a href="<?php echo base_url(); ?>index.php?admin/add_teacher_aide">
+                            <a href="<?php echo base_url(); ?>index.php?admin/add_teachers_aide">
                                 <span><i class="entypo-dot"></i><?php echo ucfirst(get_phrase('add_teacher_aide')); ?> </span>
                             </a>
                         </li>

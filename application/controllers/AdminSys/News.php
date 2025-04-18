@@ -37,6 +37,9 @@ class News extends CI_Controller
         $news_types = $this->News_model->get_news_types();
         $edit_data = $this->News_model->get_news_by_id($param2);
 
+        log_message('error', 'EDIT DATA: ' . print_r($edit_data, true));
+
+
         $page_data['breadcrumb'] = $breadcrumb;
         $page_data['param2'] = $param2;
         $page_data['news_types'] = $news_types;
@@ -64,7 +67,7 @@ class News extends CI_Controller
                 'section_id' => ($this->input->post('section_id') == 0) ? null : $this->input->post('section_id')
             );
 
-            $result = $this->News_service->create_news($data, $_FILES['images']);
+            $result = $this->news_service->create_news($data, $_FILES['images']);
             if ($result) {
                 $this->session->set_flashdata('flash_message', array(
                     'title' => '¡' . ucfirst(get_phrase('news_added_successfully')) . '!',
@@ -100,11 +103,14 @@ class News extends CI_Controller
                 'class_id' => ($this->input->post('class_id') == 0) ? null : $this->input->post('class_id'),
                 'section_id' => ($this->input->post('section_id') == 0) ? null : $this->input->post('section_id')
             );
-
+        
             $files_to_delete = $this->input->post('files_to_delete');
             $files_to_delete = is_array($files_to_delete) ? $files_to_delete : [];
-
-            $result = $this->News_service->update_news($param2, $data, $_FILES['images'], $files_to_delete);
+        
+            $files = isset($_FILES['images']) ? $_FILES['images'] : null;
+        
+            $result = $this->news_service->update_news($param2, $data, $files, $files_to_delete);
+        
             if ($result) {
                 $this->session->set_flashdata('flash_message', array(
                     'title' => '¡' . ucfirst(get_phrase('news_updated_successfully')) . '!',
@@ -126,6 +132,7 @@ class News extends CI_Controller
                     'confirmButtonColor' => '#d33',
                 ));
             }
+        
             redirect(base_url() . 'index.php?admin/manage_news/', 'refresh');
         }
 

@@ -7,7 +7,7 @@ foreach ( $edit_data as $row):
 	<div class="col-md-12">
 		<div class="panel panel-primary" data-collapsed="0">
 			<div class="panel-body">
-                <?php echo form_open(base_url() . 'index.php?admin/student/' .'update' . '/'.$row['student_id'] , array('class' => 'form-wizard validate', 'enctype' => 'multipart/form-data'));?>
+                <?php echo form_open(base_url() . 'index.php?admin/students/' .'update' . '/'.$row['student_id'] , array('class' => 'form-wizard validate', 'enctype' => 'multipart/form-data'));?>
 				
 					<div class="steps-progress">
 						<div class="progress-indicator"></div>
@@ -121,7 +121,7 @@ foreach ( $edit_data as $row):
 									<div class="form-group">
 										<label class="control-label" for="postalcode"><?php echo ucfirst(get_phrase('postalcode')); ?><span class="required-value">&nbsp;*</span></label>
 										<select name="postalcode" class="select2" id="postalcode" data-placeholder="<?php echo $row['postalcode']; ?>" <?php echo ($row['postalcode'] !== '') ? 'selected' : ''; ?>"  data-validate="required" data-message-required="<?php echo ucfirst(get_phrase('required_value')); ?>">
-											<option value="" selected disabled></option> 
+											<option value="<?php echo $row['postalcode']; ?>" selected><?php echo $row['postalcode']; ?></option>
 											<optgroup label="<?php echo ucfirst(get_phrase('postal_codes')); ?>" id="postal-codes-group">
 											</optgroup>
 										</select>
@@ -198,7 +198,7 @@ foreach ( $edit_data as $row):
 												<span class="btn btn-info btn-file">
 													<span class="fileinput-new"><?php echo ucfirst(get_phrase('select')); ?></span>
 													<span class="fileinput-exists"><?php echo ucfirst(get_phrase('change')); ?></span>
-													<input type="file" name="userfile" accept="image/*" value="<?php echo $row['photo'];?>">
+													<input type="file" name="photo" accept="image/*" value="<?php echo $row['photo'];?>">
 												</span>
 												<a href="#" class="btn btn-orange fileinput-exists" data-dismiss="fileinput"><?php echo ucfirst(get_phrase('remove')); ?></a>
 											</div>
@@ -558,7 +558,7 @@ endforeach;
 	function get_class_sections(class_id) {
 
 		$.ajax({
-            url: '<?php echo base_url();?>index.php?admin/get_section_content_by_class/' + class_id ,
+            url: '<?php echo base_url();?>index.php?admin/get_sections_content_by_class/' + class_id ,
             success: function(response) {
                 const emptyOption = '<option value="" selected disabled><?php echo ucfirst(get_phrase('select')); ?></option>';
                 jQuery('#section_selector_holder').html(emptyOption + response);

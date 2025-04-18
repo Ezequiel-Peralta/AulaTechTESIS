@@ -9,7 +9,7 @@
 	<div class="col-md-12">
 		<div class="panel " data-collapsed="0">
 			<div class="panel-body">
-                <?php echo form_open(base_url() . 'index.php?admin/exam/create/' , array('class' => 'form-wizard validate', 'enctype' => 'multipart/form-data'));?>
+                <?php echo form_open(base_url() . 'index.php?admin/exams/create/' , array('class' => 'form-wizard validate', 'enctype' => 'multipart/form-data'));?>
 				
 					<div class="steps-progress">
 						<div class="progress-indicator"></div>
@@ -176,7 +176,7 @@
     
 	function get_class_sections(class_id) {
     	$.ajax({
-            url: '<?php echo base_url();?>index.php?admin/get_class_section/' + class_id ,
+            url: '<?php echo base_url();?>index.php?admin/get_class_sections/' + class_id ,
             success: function(response)
             {
                 var select = $('#section_selector_holder');

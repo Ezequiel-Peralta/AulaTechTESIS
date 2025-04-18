@@ -28,7 +28,7 @@ foreach ( $edit_data as $row):
 	<div class="col-md-12">
 		<div class="panel panel-primary" data-collapsed="0">
 			<div class="panel-body">
-                <?php echo form_open(base_url() . 'index.php?admin/exam/'.$row['class_id'].'/do_update/'.$row['exam_id'] , array('class' => 'form-wizard validate', 'enctype' => 'multipart/form-data'));?>
+                <?php echo form_open(base_url() . 'index.php?admin/exams/'.$row['class_id'].'/do_update/'.$row['exam_id'] , array('class' => 'form-wizard validate', 'enctype' => 'multipart/form-data'));?>
 					<div class="steps-progress">
 						<div class="progress-indicator"></div>
 					</div>
@@ -164,7 +164,7 @@ endforeach;
     
 	function get_class_sections(class_id) {
     	$.ajax({
-            url: '<?php echo base_url();?>index.php?admin/get_class_section/' + class_id ,
+            url: '<?php echo base_url();?>index.php?admin/get_class_sections/' + class_id ,
             success: function(response)
             {
                 // jQuery('#section_selector_holder').html(response);
@@ -179,7 +179,7 @@ endforeach;
     var class_id = $("#class_id").val();
     
     $.ajax({
-        url: '<?php echo base_url();?>index.php?admin/get_class_section/' + class_id ,
+        url: '<?php echo base_url();?>index.php?admin/get_class_sections/' + class_id ,
         success: function(response)
         {
             jQuery('#section_selector_holder').html(response);

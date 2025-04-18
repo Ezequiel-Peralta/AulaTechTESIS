@@ -22,7 +22,7 @@ $all_teacher_count = $query->num_rows();
     <div class="tab-pane active" id="all_teacher">
     <br>
                 <div class="mt-2 mb-4">
-                    <a href="<?php echo base_url(); ?>index.php?admin/add_teacher"  class="btn btn-table btn-white btn-green-hover" title=" <?php echo ucfirst(get_phrase('add')); ?>" style="padding: 6px 10px;"><i class="fa fa-plus"></i></a>
+                    <a href="<?php echo base_url(); ?>index.php?admin/add_teachers"  class="btn btn-table btn-white btn-green-hover" title=" <?php echo ucfirst(get_phrase('add')); ?>" style="padding: 6px 10px;"><i class="fa fa-plus"></i></a>
                     <button type="button" onclick="reload_ajax()" class="btn btn-table btn-white btn-warning-hover" title="<?php echo ucfirst(get_phrase('reload')); ?>" style="padding: 6px 10px;"><i class="fa fa-refresh"></i></button>
                     <div class="pull-right">
                        
@@ -61,16 +61,16 @@ $all_teacher_count = $query->num_rows();
                                 <a href="<?php echo base_url();?>index.php?admin/teachers_profile/<?php echo $row['teacher_id'];?>" class="btn btn-table btn-white btn-info-hover" title="<?php echo ucfirst(get_phrase('view_profile')); ?>">
                                     <i class="entypo-user"></i>
                                 </a>
-                                <a  href="<?php echo base_url();?>index.php?admin/edit_teacher/<?php echo $row['teacher_id'];?>" class="btn btn-table btn-white btn-orange-hover" title="<?php echo ucfirst(get_phrase('edit')); ?>">
+                                <a  href="<?php echo base_url();?>index.php?admin/edit_teachers/<?php echo $row['teacher_id'];?>" class="btn btn-table btn-white btn-orange-hover" title="<?php echo ucfirst(get_phrase('edit')); ?>">
                                     <i class="entypo-pencil"></i>
                                 </a>
                                
                                 <?php if ($row['user_status_id'] == 1): ?>
-                                    <a href="javascript:;" onclick="confirm_disable_sweet_modal('<?php echo base_url();?>index.php?admin/teacher/disable_teacher/<?php echo $row['teacher_id'];?>');" class="btn btn-table btn-white btn-danger-hover" title="<?php echo ucfirst(get_phrase('disable')); ?>">
+                                    <a href="javascript:;" onclick="confirm_disable_sweet_modal('<?php echo base_url();?>index.php?admin/teachers/disable_teachers/<?php echo $row['teacher_id'];?>');" class="btn btn-table btn-white btn-danger-hover" title="<?php echo ucfirst(get_phrase('disable')); ?>">
                                         <i class="entypo-block"></i>
                                     </a>
                                 <?php elseif ($row['user_status_id'] == 0): ?>
-                                    <a href="javascript:;" onclick="confirm_enable_sweet_modal('<?php echo base_url();?>index.php?admin/teacher/enable_teacher/<?php echo $row['teacher_id'];?>');" class="btn btn-table btn-white btn-green-hover" title="<?php echo ucfirst(get_phrase('enable')); ?>">
+                                    <a href="javascript:;" onclick="confirm_enable_sweet_modal('<?php echo base_url();?>index.php?admin/teachers/enable_teachers/<?php echo $row['teacher_id'];?>');" class="btn btn-table btn-white btn-green-hover" title="<?php echo ucfirst(get_phrase('enable')); ?>">
                                         <i class="fa fa-check-circle-o"></i>
                                     </a>
                                 <?php endif; ?>

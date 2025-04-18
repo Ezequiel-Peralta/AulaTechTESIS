@@ -153,7 +153,7 @@ $edit_data		=	$this->db->get_where('section_routine' , array('section_routine_id
      function get_class_section2(class_id) {
         console.log("hola");
         $.ajax({
-            url: '<?php echo base_url();?>index.php?admin/get_class_section/' + class_id ,
+            url: '<?php echo base_url();?>index.php?admin/get_class_sections/' + class_id ,
             success: function(response)
             {
                 jQuery('#section_selection_holder2').html(response);

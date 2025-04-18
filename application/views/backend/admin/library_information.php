@@ -92,7 +92,7 @@
                                                             </td>
                                                             <td class="text-center">
                                                                 <?php if (!empty($file['url_file'])): ?>
-                                                                    <a href="<?php echo $file['url_file']; ?>" download class="btn btn-table btn-white btn-info-hover" title="<?php echo ucfirst(get_phrase('download')); ?>">
+                                                                    <a href="uploads/library/<?php echo $section_data['class_id']; ?>-<?php echo $section_data['letter_name']; ?>/subject_<?php echo $file['file_subject_id']; ?>/<?php echo $file['url_file']; ?>" download class="btn btn-table btn-white btn-info-hover" title="<?php echo ucfirst(get_phrase('download')); ?>">
                                                                         <i class="fa fa-download"></i>
                                                                     </a>
                                                                 <?php endif; ?>

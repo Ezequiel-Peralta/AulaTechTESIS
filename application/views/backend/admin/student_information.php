@@ -33,7 +33,7 @@ $titleES = 'Reporte de Estudiantes - ' . $section_name . ' - ' . date('d-m-Y');
                 
                 foreach ($sections as $row):
                 ?>
-                    <option id="actualSectionId" value="<?php echo base_url(); ?>index.php?admin/student_information/<?php echo $row['section_id']; ?>"
+                    <option id="actualSectionId" value="<?php echo base_url(); ?>index.php?admin/students_information/<?php echo $row['section_id']; ?>"
                         <?php if ($section_id == $row['section_id']) echo 'selected="selected"'; ?>>
                         <?php echo $row['name']; ?>
                     </option>
@@ -68,8 +68,8 @@ $titleES = 'Reporte de Estudiantes - ' . $section_name . ' - ' . date('d-m-Y');
             <div class="tab-pane active" id="home">
                 <br>
                 <div class="mt-2 mb-4">
-                    <a href="<?php echo base_url(); ?>index.php?admin/student_add" class="btn btn-table btn-white btn-green-hover" title=" <?php echo ucfirst(get_phrase('add')); ?>" style="padding: 6px 10px;"><i class="fa fa-plus"></i></a>
-                    <a href="<?php echo base_url(); ?>index.php?admin/student_bulk_add" class="btn btn-table btn-white btn-info-hover" title="<?php echo ucfirst(get_phrase('import')); ?>" style="padding: 6px 10px;"><i class="fa fa-upload"></i></a>
+                    <a href="<?php echo base_url(); ?>index.php?admin/students_add" class="btn btn-table btn-white btn-green-hover" title=" <?php echo ucfirst(get_phrase('add')); ?>" style="padding: 6px 10px;"><i class="fa fa-plus"></i></a>
+                    <a href="<?php echo base_url(); ?>index.php?admin/students_bulk_add" class="btn btn-table btn-white btn-info-hover" title="<?php echo ucfirst(get_phrase('import')); ?>" style="padding: 6px 10px;"><i class="fa fa-upload"></i></a>
                     <button type="button" onclick="reload_ajax()" class="btn btn-table btn-white btn-warning-hover" title="<?php echo ucfirst(get_phrase('reload')); ?>" style="padding: 6px 10px;"><i class="fa fa-refresh"></i></button>
                     <div class="pull-right"> 
                       
@@ -138,7 +138,7 @@ $titleES = 'Reporte de Estudiantes - ' . $section_name . ' - ' . date('d-m-Y');
                                 <a href="<?php echo base_url();?>index.php?admin/students_profile/<?php echo $row['student_id'];?>" class="btn btn-table btn-white btn-info-hover" title="<?php echo ucfirst(get_phrase('view_profile')); ?>">
                                     <i class="entypo-user"></i>
                                 </a>
-                                <a  href="<?php echo base_url();?>index.php?admin/student_edit/<?php echo $row['student_id'];?>" class="btn btn-table btn-white btn-orange-hover" title="<?php echo ucfirst(get_phrase('edit')); ?>">
+                                <a  href="<?php echo base_url();?>index.php?admin/students_edit/<?php echo $row['student_id'];?>" class="btn btn-table btn-white btn-orange-hover" title="<?php echo ucfirst(get_phrase('edit')); ?>">
                                     <i class="entypo-pencil"></i>
                                 </a>
                                

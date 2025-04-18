@@ -104,6 +104,7 @@ $titleES = 'Reporte de Estudiantes en Matriculación - ' . date('d-m-Y');
         $this->db->where('academic_period_id', $new_academic_period_id);
         $sections = $this->db->get('section')->result_array();
 
+
         if ($row['gender_id'] == 0) {
             $gender = ucfirst(get_phrase('male'));
         } else if ($row['gender_id'] == 1) {

@@ -128,7 +128,7 @@ $titleES = 'Reporte de Estudiantes - ' . $section_name . ' - ' . date('d-m-Y');
                 <h2 style="font-weight: 600; margin: 0;"><?php echo ucfirst(get_phrase('class_attendance')); ?> - <?php echo ucfirst(get_phrase('percentage_graph')); ?></h2>
                 <div class="sidebuttons text-right">
                     <?php if (!$used_section_history): ?>
-                        <a class="btn btn-info" href="<?php echo base_url(); ?>index.php?admin/manage_attendance_student/<?php echo date("d"); ?>/<?php echo date("m"); ?>/<?php echo date("Y"); ?>/<?php echo $section_id; ?>">
+                        <a class="btn btn-info" href="<?php echo base_url(); ?>index.php?admin/manage_attendance_students/<?php echo date("d"); ?>/<?php echo date("m"); ?>/<?php echo date("Y"); ?>/<?php echo $section_id; ?>">
                             <i class="entypo-pencil"></i> <?php echo ucfirst(get_phrase('register_attendance')); ?>
                         </a>
                     <?php endif; ?>
@@ -267,7 +267,7 @@ $titleES = 'Reporte de Estudiantes - ' . $section_name . ' - ' . date('d-m-Y');
                 <h2 style="font-weight: 600; margin: 0;"><?php echo ucfirst(get_phrase('class_attendance')); ?> - <?php echo ucfirst(get_phrase('quantity_graph')); ?></h2>
                 <div class="sidebuttons text-right">
                     <?php if (!$used_section_history): ?>
-                        <a class="btn btn-info" href="<?php echo base_url(); ?>index.php?admin/manage_attendance_student/<?php echo date("d"); ?>/<?php echo date("m"); ?>/<?php echo date("Y"); ?>/<?php echo $section_id; ?>">
+                        <a class="btn btn-info" href="<?php echo base_url(); ?>index.php?admin/manage_attendance_students/<?php echo date("d"); ?>/<?php echo date("m"); ?>/<?php echo date("Y"); ?>/<?php echo $section_id; ?>">
                             <i class="entypo-pencil"></i> <?php echo ucfirst(get_phrase('register_attendance')); ?>
                         </a>
                     <?php endif; ?>
@@ -503,7 +503,7 @@ $titleES = 'Reporte de Estudiantes - ' . $section_name . ' - ' . date('d-m-Y');
                                     </span>
                                 </td>
                                 <td class="text-center">
-                                    <a href="<?php echo base_url(); ?>index.php?admin/details_attendance_student/<?php echo $student['student_id']; ?>" class="btn btn-table btn-white btn-info-hover" title="<?php echo ucfirst(get_phrase('view_attendance_details')); ?>">
+                                    <a href="<?php echo base_url(); ?>index.php?admin/details_attendance_students/<?php echo $student['student_id']; ?>" class="btn btn-table btn-white btn-info-hover" title="<?php echo ucfirst(get_phrase('view_attendance_details')); ?>">
                                         <i class="entypo-eye"></i>
                                     </a>
                                 </td>
@@ -527,7 +527,7 @@ $titleES = 'Reporte de Estudiantes - ' . $section_name . ' - ' . date('d-m-Y');
 <script type="text/javascript">
     function get_sections(academic_period_id) {
         $.ajax({
-            url: '<?php echo base_url(); ?>index.php?admin/get_section_content_by_academic_period/' + academic_period_id + '/summary_attendance_students',
+            url: '<?php echo base_url(); ?>index.php?admin/get_sections_content_by_academic_period/' + academic_period_id + '/summary_attendance_students',
             success: function(response) {
                 const emptyOption = '<option value="" selected disabled><?php echo ucfirst(get_phrase('select')); ?></option>';
                 jQuery('#class_select').html(emptyOption + response);

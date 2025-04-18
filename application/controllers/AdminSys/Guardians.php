@@ -30,7 +30,7 @@ class Guardians extends CI_Controller
             ),
             array(
                 'text' => ucfirst(get_phrase('manage_guardians')) . '&nbsp;&nbsp;/&nbsp;&nbsp;' . ucfirst(get_phrase('view_profile')),
-                'url' => base_url('index.php?admin/guardian_profile/' . $guardian_id)
+                'url' => base_url('index.php?admin/guardians_profile/' . $guardian_id)
             )
         );
 
@@ -56,7 +56,7 @@ class Guardians extends CI_Controller
         }
     }
 
-    function guardian_add()
+    function guardians_add()
     {
         if ($this->session->userdata('admin_login') != 1)
             redirect(base_url(), 'refresh');
@@ -68,7 +68,7 @@ class Guardians extends CI_Controller
             ),
             array(
                 'text' => ucfirst(get_phrase('add_guardian')),
-                'url' => base_url('index.php?admin/guardian_add')
+                'url' => base_url('index.php?admin/guardians_add')
             )
         );
 
@@ -79,7 +79,7 @@ class Guardians extends CI_Controller
         $this->load->view('backend/index', $page_data);
     }
 
-    function guardian($param1 = '', $param2 = '', $param3 = '')
+    function guardians($param1 = '', $param2 = '', $param3 = '')
     {
         if ($this->session->userdata('admin_login') != 1)
             redirect('login', 'refresh');
@@ -147,7 +147,7 @@ class Guardians extends CI_Controller
                 'timer' => '10000',
                 'timerProgressBar' => 'true',
             ));
-            redirect(base_url() . 'index.php?admin/guardian_add/', 'refresh');
+            redirect(base_url() . 'index.php?admin/guardians_add/', 'refresh');
         }
 
         if ($param1 == 'update') {
@@ -232,7 +232,7 @@ class Guardians extends CI_Controller
                 'timerProgressBar' => 'true',
             ));
 
-            redirect(base_url() . 'index.php?admin/guardian_edit/' . $guardian_id, 'refresh');
+            redirect(base_url() . 'index.php?admin/guardians_edit/' . $guardian_id, 'refresh');
         }
 
         if ($param1 == 'disable_guardian') {
@@ -296,7 +296,7 @@ class Guardians extends CI_Controller
                 ));
             }
 
-            redirect(base_url() . 'index.php?admin/student_profile/' . $param3, 'refresh');
+            redirect(base_url() . 'index.php?admin/students_profile/' . $param3, 'refresh');
         }
 
         $page_data['page_title'] = ucfirst(get_phrase('guardian_section'));
@@ -305,7 +305,7 @@ class Guardians extends CI_Controller
         $this->load->view('backend/index', $page_data);
     }
 
-    function guardian_edit($param2 = '')
+    function guardians_edit($param2 = '')
     {
         if ($this->session->userdata('admin_login') != 1)
             redirect('login', 'refresh');

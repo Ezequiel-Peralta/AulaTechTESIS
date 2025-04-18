@@ -133,7 +133,7 @@ $friday_schedules_count = $this->db->count_all_results();
             <div class="tab-pane active" id="home">
                 <br>
                 <div class="mt-2 mb-4">
-                    <a href="<?php echo base_url(); ?>index.php?admin/add_schedule" class="btn btn-table btn-white btn-green-hover" title=" <?php echo ucfirst(get_phrase('add')); ?>" style="padding: 6px 10px;"><i class="fa fa-plus"></i></a>
+                    <a href="<?php echo base_url(); ?>index.php?admin/add_schedules" class="btn btn-table btn-white btn-green-hover" title=" <?php echo ucfirst(get_phrase('add')); ?>" style="padding: 6px 10px;"><i class="fa fa-plus"></i></a>
                     <button type="button" onclick="reload_ajax()" class="btn btn-table btn-white btn-warning-hover" title="<?php echo ucfirst(get_phrase('reload')); ?>" style="padding: 6px 10px;"><i class="fa fa-refresh"></i></button>
                     <div class="pull-right"> 
                        
@@ -205,7 +205,7 @@ $friday_schedules_count = $this->db->count_all_results();
                                 <a href="<?php echo base_url();?>index.php?admin/view_schedules/<?php echo $row['section_id'];?>" class="btn btn-table btn-white btn-info-hover" title="<?php echo ucfirst(get_phrase('view')); ?>">
                                     <i class="entypo-eye"></i>
                                 </a>
-                                <a href="<?php echo base_url();?>index.php?admin/edit_schedule/<?php echo $row['schedule_id'];?>" class="btn btn-table btn-white btn-orange-hover" title="<?php echo ucfirst(get_phrase('edit')); ?>">
+                                <a href="<?php echo base_url();?>index.php?admin/edit_schedules/<?php echo $row['schedule_id'];?>" class="btn btn-table btn-white btn-orange-hover" title="<?php echo ucfirst(get_phrase('edit')); ?>">
                                     <i class="entypo-pencil"></i>
                                 </a>
                                 
@@ -228,7 +228,7 @@ $friday_schedules_count = $this->db->count_all_results();
             <div class="tab-pane" id="day_2">
                 <br>
                 <div class="mt-2 mb-4">
-                    <a href="<?php echo base_url(); ?>index.php?admin/add_schedule" class="btn btn-table btn-white btn-green-hover" title=" <?php echo ucfirst(get_phrase('add')); ?>" style="padding: 6px 10px;"><i class="fa fa-plus"></i></a>
+                    <a href="<?php echo base_url(); ?>index.php?admin/add_schedules" class="btn btn-table btn-white btn-green-hover" title=" <?php echo ucfirst(get_phrase('add')); ?>" style="padding: 6px 10px;"><i class="fa fa-plus"></i></a>
                     <button type="button" onclick="reload_ajax()" class="btn btn-table btn-white btn-warning-hover" title="<?php echo ucfirst(get_phrase('reload')); ?>" style="padding: 6px 10px;"><i class="fa fa-refresh"></i></button>
                     <div class="pull-right"> 
                        
@@ -292,10 +292,10 @@ $friday_schedules_count = $this->db->count_all_results();
                             </td>
                             <td class="text-center"><?php echo $status_label; ?></td>
                             <td class="text-center">
-                                <a href="<?php echo base_url();?>index.php?admin/view_schedule/<?php echo $row['schedule_id'];?>" class="btn btn-table btn-white btn-info-hover" title="<?php echo ucfirst(get_phrase('view')); ?>">
+                                <a href="<?php echo base_url();?>index.php?admin/view_schedules/<?php echo $row['schedule_id'];?>" class="btn btn-table btn-white btn-info-hover" title="<?php echo ucfirst(get_phrase('view')); ?>">
                                     <i class="entypo-eye"></i>
                                 </a>
-                                <a href="<?php echo base_url();?>index.php?admin/edit_schedule/<?php echo $row['schedule_id'];?>" class="btn btn-table btn-white btn-orange-hover" title="<?php echo ucfirst(get_phrase('edit')); ?>">
+                                <a href="<?php echo base_url();?>index.php?admin/edit_schedules/<?php echo $row['schedule_id'];?>" class="btn btn-table btn-white btn-orange-hover" title="<?php echo ucfirst(get_phrase('edit')); ?>">
                                     <i class="entypo-pencil"></i>
                                 </a>
                                 
@@ -321,7 +321,7 @@ $friday_schedules_count = $this->db->count_all_results();
             <div class="tab-pane" id="day_3">
                 <br>
                 <div class="mt-2 mb-4">
-                    <a href="<?php echo base_url(); ?>index.php?admin/add_schedule" class="btn btn-table btn-white btn-green-hover" title=" <?php echo ucfirst(get_phrase('add')); ?>" style="padding: 6px 10px;"><i class="fa fa-plus"></i></a>
+                    <a href="<?php echo base_url(); ?>index.php?admin/add_schedules" class="btn btn-table btn-white btn-green-hover" title=" <?php echo ucfirst(get_phrase('add')); ?>" style="padding: 6px 10px;"><i class="fa fa-plus"></i></a>
                     <button type="button" onclick="reload_ajax()" class="btn btn-table btn-white btn-warning-hover" title="<?php echo ucfirst(get_phrase('reload')); ?>" style="padding: 6px 10px;"><i class="fa fa-refresh"></i></button>
                     <div class="pull-right"> 
                        
@@ -385,10 +385,10 @@ $friday_schedules_count = $this->db->count_all_results();
                             </td>
                             <td class="text-center"><?php echo $status_label; ?></td>
                             <td class="text-center">
-                                <a href="<?php echo base_url();?>index.php?admin/view_schedule/<?php echo $row['schedule_id'];?>" class="btn btn-table btn-white btn-info-hover" title="<?php echo ucfirst(get_phrase('view')); ?>">
+                                <a href="<?php echo base_url();?>index.php?admin/view_schedules/<?php echo $row['schedule_id'];?>" class="btn btn-table btn-white btn-info-hover" title="<?php echo ucfirst(get_phrase('view')); ?>">
                                     <i class="entypo-eye"></i>
                                 </a>
-                                <a href="<?php echo base_url();?>index.php?admin/edit_schedule/<?php echo $row['schedule_id'];?>" class="btn btn-table btn-white btn-orange-hover" title="<?php echo ucfirst(get_phrase('edit')); ?>">
+                                <a href="<?php echo base_url();?>index.php?admin/edit_schedules/<?php echo $row['schedule_id'];?>" class="btn btn-table btn-white btn-orange-hover" title="<?php echo ucfirst(get_phrase('edit')); ?>">
                                     <i class="entypo-pencil"></i>
                                 </a>
                                 
@@ -413,7 +413,7 @@ $friday_schedules_count = $this->db->count_all_results();
             <div class="tab-pane" id="day_4">
                 <br>
                 <div class="mt-2 mb-4">
-                    <a href="<?php echo base_url(); ?>index.php?admin/add_schedule" class="btn btn-table btn-white btn-green-hover" title=" <?php echo ucfirst(get_phrase('add')); ?>" style="padding: 6px 10px;"><i class="fa fa-plus"></i></a>
+                    <a href="<?php echo base_url(); ?>index.php?admin/add_schedules" class="btn btn-table btn-white btn-green-hover" title=" <?php echo ucfirst(get_phrase('add')); ?>" style="padding: 6px 10px;"><i class="fa fa-plus"></i></a>
                     <button type="button" onclick="reload_ajax()" class="btn btn-table btn-white btn-warning-hover" title="<?php echo ucfirst(get_phrase('reload')); ?>" style="padding: 6px 10px;"><i class="fa fa-refresh"></i></button>
                     <div class="pull-right"> 
                        
@@ -477,10 +477,10 @@ $friday_schedules_count = $this->db->count_all_results();
                             </td>
                             <td class="text-center"><?php echo $status_label; ?></td>
                             <td class="text-center">
-                                <a href="<?php echo base_url();?>index.php?admin/view_schedule/<?php echo $row['schedule_id'];?>" class="btn btn-table btn-white btn-info-hover" title="<?php echo ucfirst(get_phrase('view')); ?>">
+                                <a href="<?php echo base_url();?>index.php?admin/view_schedules/<?php echo $row['schedule_id'];?>" class="btn btn-table btn-white btn-info-hover" title="<?php echo ucfirst(get_phrase('view')); ?>">
                                     <i class="entypo-eye"></i>
                                 </a>
-                                <a href="<?php echo base_url();?>index.php?admin/edit_schedule/<?php echo $row['schedule_id'];?>" class="btn btn-table btn-white btn-orange-hover" title="<?php echo ucfirst(get_phrase('edit')); ?>">
+                                <a href="<?php echo base_url();?>index.php?admin/edit_schedules/<?php echo $row['schedule_id'];?>" class="btn btn-table btn-white btn-orange-hover" title="<?php echo ucfirst(get_phrase('edit')); ?>">
                                     <i class="entypo-pencil"></i>
                                 </a>
                                 
@@ -505,7 +505,7 @@ $friday_schedules_count = $this->db->count_all_results();
             <div class="tab-pane" id="day_5">
                 <br>
                 <div class="mt-2 mb-4">
-                    <a href="<?php echo base_url(); ?>index.php?admin/add_schedule" class="btn btn-table btn-white btn-green-hover" title=" <?php echo ucfirst(get_phrase('add')); ?>" style="padding: 6px 10px;"><i class="fa fa-plus"></i></a>
+                    <a href="<?php echo base_url(); ?>index.php?admin/add_schedules" class="btn btn-table btn-white btn-green-hover" title=" <?php echo ucfirst(get_phrase('add')); ?>" style="padding: 6px 10px;"><i class="fa fa-plus"></i></a>
                     <button type="button" onclick="reload_ajax()" class="btn btn-table btn-white btn-warning-hover" title="<?php echo ucfirst(get_phrase('reload')); ?>" style="padding: 6px 10px;"><i class="fa fa-refresh"></i></button>
                     <div class="pull-right"> 
                        
@@ -569,10 +569,10 @@ $friday_schedules_count = $this->db->count_all_results();
                             </td>
                             <td class="text-center"><?php echo $status_label; ?></td>
                             <td class="text-center">
-                                <a href="<?php echo base_url();?>index.php?admin/view_schedule/<?php echo $row['schedule_id'];?>" class="btn btn-table btn-white btn-info-hover" title="<?php echo ucfirst(get_phrase('view')); ?>">
+                                <a href="<?php echo base_url();?>index.php?admin/view_schedules/<?php echo $row['schedule_id'];?>" class="btn btn-table btn-white btn-info-hover" title="<?php echo ucfirst(get_phrase('view')); ?>">
                                     <i class="entypo-eye"></i>
                                 </a>
-                                <a href="<?php echo base_url();?>index.php?admin/edit_schedule/<?php echo $row['schedule_id'];?>" class="btn btn-table btn-white btn-orange-hover" title="<?php echo ucfirst(get_phrase('edit')); ?>">
+                                <a href="<?php echo base_url();?>index.php?admin/edit_schedules/<?php echo $row['schedule_id'];?>" class="btn btn-table btn-white btn-orange-hover" title="<?php echo ucfirst(get_phrase('edit')); ?>">
                                     <i class="entypo-pencil"></i>
                                 </a>
                                 
@@ -597,7 +597,7 @@ $friday_schedules_count = $this->db->count_all_results();
             <div class="tab-pane" id="day_6">
                 <br>
                 <div class="mt-2 mb-4">
-                    <a href="<?php echo base_url(); ?>index.php?admin/add_schedule" class="btn btn-table btn-white btn-green-hover" title=" <?php echo ucfirst(get_phrase('add')); ?>" style="padding: 6px 10px;"><i class="fa fa-plus"></i></a>
+                    <a href="<?php echo base_url(); ?>index.php?admin/add_schedules" class="btn btn-table btn-white btn-green-hover" title=" <?php echo ucfirst(get_phrase('add')); ?>" style="padding: 6px 10px;"><i class="fa fa-plus"></i></a>
                     <button type="button" onclick="reload_ajax()" class="btn btn-table btn-white btn-warning-hover" title="<?php echo ucfirst(get_phrase('reload')); ?>" style="padding: 6px 10px;"><i class="fa fa-refresh"></i></button>
                     <div class="pull-right"> 
                        
@@ -661,10 +661,10 @@ $friday_schedules_count = $this->db->count_all_results();
                             </td>
                             <td class="text-center"><?php echo $status_label; ?></td>
                             <td class="text-center">
-                                <a href="<?php echo base_url();?>index.php?admin/view_schedule/<?php echo $row['schedule_id'];?>" class="btn btn-table btn-white btn-info-hover" title="<?php echo ucfirst(get_phrase('view')); ?>">
+                                <a href="<?php echo base_url();?>index.php?admin/view_schedules/<?php echo $row['schedule_id'];?>" class="btn btn-table btn-white btn-info-hover" title="<?php echo ucfirst(get_phrase('view')); ?>">
                                     <i class="entypo-eye"></i>
                                 </a>
-                                <a href="<?php echo base_url();?>index.php?admin/edit_schedule/<?php echo $row['schedule_id'];?>" class="btn btn-table btn-white btn-orange-hover" title="<?php echo ucfirst(get_phrase('edit')); ?>">
+                                <a href="<?php echo base_url();?>index.php?admin/edit_schedules/<?php echo $row['schedule_id'];?>" class="btn btn-table btn-white btn-orange-hover" title="<?php echo ucfirst(get_phrase('edit')); ?>">
                                     <i class="entypo-pencil"></i>
                                 </a>
                                 

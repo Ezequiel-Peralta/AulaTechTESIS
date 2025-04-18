@@ -17,7 +17,7 @@ foreach ( $edit_data as $row):
                 <div class="panel-body">
                     <div class="form-group">
                         <div class="group">
-                            <label><?php echo get_phrase(('attendance_type'));?><span class="required-value">&nbsp;*</span></label>
+                            <label><?php echo ucfirst(get_phrase(('attendance_type')));?><span class="required-value">&nbsp;*</span></label>
                             <br><br>
                             <select name="status" id="status" class="form-control select" data-validate="required" data-message-required="<?php echo ucfirst(get_phrase('required_value')); ?>">
                                 <option value="" selected disabled><?php echo get_phrase(('select'));?></option>

@@ -572,7 +572,7 @@ foreach ($students as $student):
 <script type="text/javascript">
         function get_sections(academic_period_id) {
             $.ajax({
-                url: '<?php echo base_url();?>index.php?admin/get_section_content_by_academic_period/' + academic_period_id + '/view_students_mark',
+                url: '<?php echo base_url();?>index.php?admin/get_sections_content_by_academic_period/' + academic_period_id + '/view_students_mark',
                 success: function(response) {
                     const emptyOption = '<option value="" selected disabled><?php echo ucfirst(get_phrase('select')); ?></option>';
                     jQuery('#class_select').html(emptyOption + response);
@@ -861,7 +861,7 @@ foreach ($students as $student):
             }
 
             $.ajax({
-                url: `index.php?admin/mark/${operation}/${classId}/${sectionId}/${subjectId}/${studentId}/${examType}/${markObtained}/${date}/${markId}`,
+                url: `index.php?admin/marks/${operation}/${classId}/${sectionId}/${subjectId}/${studentId}/${examType}/${markObtained}/${date}/${markId}`,
                 success: function(response) {
                     console.log('Operación realizada exitosamente.');
                 },
@@ -939,7 +939,7 @@ foreach ($students as $student):
 
             // Guarda cada solicitud AJAX en el arreglo requests
             const request = $.ajax({
-                url: `index.php?admin/mark/${operation}/${class_id}/${section_id}/${subject_id}/${student_id}/${exam_type}/${mark_obtained}/${date}/${mark_id}`,
+                url: `index.php?admin/marks/${operation}/${class_id}/${section_id}/${subject_id}/${student_id}/${exam_type}/${mark_obtained}/${date}/${mark_id}`,
                 success: function(response) {
                     console.log('Operación realizada exitosamente.');
                 },

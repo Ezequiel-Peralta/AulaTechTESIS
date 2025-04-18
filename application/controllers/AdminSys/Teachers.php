@@ -67,7 +67,7 @@ class Teachers extends CI_Controller
         $this->load->view('backend/index', $page_data);
     }
 
-    function teacher($param1 = '', $param2 = '', $param3 = '')
+    function teachers($param1 = '', $param2 = '', $param3 = '')
     {
         if ($this->session->userdata('admin_login') != 1)
             redirect(base_url(), 'refresh');
@@ -180,7 +180,7 @@ class Teachers extends CI_Controller
             redirect(base_url() . 'index.php?admin/teachers_information/', 'refresh');
         }
 
-        if ($param1 == 'disable_teacher') {
+        if ($param1 == 'disable_teachers') {
             $teacher_id = $param2;
 
             if ($teacher_id) {
@@ -212,7 +212,7 @@ class Teachers extends CI_Controller
             redirect(base_url() . 'index.php?admin/teachers_information/', 'refresh');
         }
 
-        if ($param1 == 'enable_teacher') {
+        if ($param1 == 'enable_teachers') {
             $teacher_id = $param2;
 
             if ($teacher_id) {
@@ -245,7 +245,7 @@ class Teachers extends CI_Controller
         }
     }
 
-    function add_teacher()
+    function add_teachers()
     {
         if ($this->session->userdata('admin_login') != 1)
             redirect(base_url(), 'refresh');
@@ -257,7 +257,7 @@ class Teachers extends CI_Controller
             ),
             array(
                 'text' => ucfirst(get_phrase('add_teacher')),
-                'url' => base_url('index.php?admin/add_teacher')
+                'url' => base_url('index.php?admin/add_teachers')
             )
         );
 
@@ -284,7 +284,7 @@ class Teachers extends CI_Controller
         }
     }
 
-    function edit_teacher($teacher_id = '')
+    function edit_teachers($teacher_id = '')
     {
         if ($this->session->userdata('admin_login') != 1)
             redirect('login', 'refresh');
@@ -296,12 +296,13 @@ class Teachers extends CI_Controller
             ),
             array(
                 'text' => ucfirst(get_phrase('manage_teachers')) . '&nbsp;&nbsp;/&nbsp;&nbsp;' . ucfirst(get_phrase('edit_teacher')),
-                'url' => base_url('index.php?admin/edit_teacher/' . $teacher_id)
+                'url' => base_url('index.php?admin/edit_teachers/' . $teacher_id)
             )
         );
 
         $page_data['breadcrumb'] = $breadcrumb;
         $page_data['teacher'] = $this->Teachers_model->get_teacher_info($teacher_id);
+        $page_data['teacher_id'] = $teacher_id;
         $page_data['page_name'] = 'edit_teacher';
         $page_data['page_title'] = ucfirst(get_phrase('edit_teacher'));
 

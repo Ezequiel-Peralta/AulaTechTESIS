@@ -39,12 +39,24 @@ class News_model extends CI_Model {
     public function get_news_by_id($news_id) {
         try {
             $news_id = $this->db->escape_str($news_id);
-            return $this->db->get_where('news', array('news_id' => $news_id))->row_array();
+    
+            log_message('error', 'Buscando noticia con ID: ' . $news_id);
+    
+            $result = $this->db->get_where('news', array('news_id' => $news_id))->row_array();
+    
+            if (empty($result)) {
+                log_message('error', 'No se encontró la noticia con ID: ' . $news_id);
+            } else {
+                log_message('error', 'Noticia encontrada: ' . print_r($result, true));
+            }
+    
+            return $result;
         } catch (Exception $e) {
-            log_message('error', 'Error in get_news_by_id: ' . $e->getMessage());
+            log_message('error', 'Error en get_news_by_id: ' . $e->getMessage());
             return false;
         }
     }
+    
 
     public function get_news_types() {
         try {
