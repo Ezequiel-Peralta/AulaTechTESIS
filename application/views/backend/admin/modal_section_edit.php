@@ -11,7 +11,7 @@ foreach ($edit_data as $section):
 
 <div class="modal-header text-center">
     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-    <h4 class="modal-title"><?php echo ucfirst(get_phrase('add_section'));?></h4>
+    <h4 class="modal-title"><?php echo ucfirst(get_phrase('edit_section'));?></h4>
 </div>
 
 <?php echo form_open(base_url() . 'index.php?admin/sections/update/' . $section['section_id'] , array('class' => 'form-horizontal form-groups-bordered validate'));?>

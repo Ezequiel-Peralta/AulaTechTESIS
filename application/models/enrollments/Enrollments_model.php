@@ -7,7 +7,7 @@ class Enrollments_model extends CI_Model {
     public function get_students_for_re_enrollment($section_id) {
         try {
             $section_id = $this->db->escape_str($section_id);
-            $this->db->select('student_id, firstname, lastname, enrollment');
+            $this->db->select('student_id, firstname, lastname, enrollment, photo, dni');
             $this->db->where('section_id', $section_id);
             return $this->db->get('student_details')->result_array();
         } catch (Exception $e) {
@@ -18,10 +18,12 @@ class Enrollments_model extends CI_Model {
 
     public function get_students_for_pre_enrollment() {
         try {
-            $this->db->select('student_id, firstname, lastname, enrollment');
-            $this->db->where('class_id IS NULL');
-            $this->db->or_where('section_id IS NULL');
-            return $this->db->get('student_details')->result_array();
+            $this->db->select('student_details.*, student.*'); 
+            $this->db->from('student_details');
+            $this->db->join('student', 'student.student_id = student_details.student_id', 'left');
+            $this->db->where('student_details.class_id IS NULL');
+            $this->db->or_where('student_details.section_id IS NULL');
+            return $this->db->get()->result_array();
         } catch (Exception $e) {
             log_message('error', 'Error in get_students_for_pre_enrollment: ' . $e->getMessage());
             return false;

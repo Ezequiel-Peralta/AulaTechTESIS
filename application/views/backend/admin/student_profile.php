@@ -22,7 +22,7 @@ foreach($student_info as $row):?>
                 <i class="entypo-vcard"></i>
                 <?php echo ucfirst(get_phrase('academic_history'));?>
             </a>
-            <a href="<?php echo base_url(); ?>index.php?admin/details_attendance_student/<?php echo $row['student_id'];?>" class="btn btn-secondary"><i class="entypo-pencil" style="font-size: 12px;"></i> <?php echo ucfirst(get_phrase('attendance'));?></a>
+            <a href="<?php echo base_url(); ?>index.php?admin/details_attendance_students/<?php echo $row['student_id'];?>" class="btn btn-secondary"><i class="entypo-pencil" style="font-size: 12px;"></i> <?php echo ucfirst(get_phrase('attendance'));?></a>
             <a href="<?php echo base_url(); ?>index.php?admin/view_schedules/<?php echo $row['section_id']; ?>" class="btn btn-secondary">
                 <i class="entypo-clock"></i>
                 <?php echo ucfirst(get_phrase('schedules'));?>
@@ -253,7 +253,7 @@ foreach($student_info as $row):?>
                     $guardian_info = $this->Students_model->get_guardian_info_per_student($row['student_id']);
                     if (!empty($guardian_info)) {
                         foreach ($guardian_info as $guardian): ?>
-                            <a href="<?php echo base_url(); ?>index.php?admin/guardian_profile/<?php echo $guardian['guardian_id'];?>">
+                            <a href="<?php echo base_url(); ?>index.php?admin/guardians_profile/<?php echo $guardian['guardian_id'];?>">
                                 <div class="profile-card"> 
                                     <img src="<?php echo $guardian['photo']; ?>" class="img-circle" alt="Profile Picture" width="80" height="80">
                                     <h3 style="font-weight: 600;">

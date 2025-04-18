@@ -1,5 +1,5 @@
 <?php 
-$edit_data		=	$this->Subjects_model->get_student_info_per_section2($subject_id);
+$edit_data		=	$this->Subjects_model->get_subject_info($subject_id);
 foreach ( $edit_data as $row):
 ?>
 
@@ -42,7 +42,7 @@ foreach ( $edit_data as $row):
 										<br>
 										<div class="fileinput fileinput-new" data-provides="fileinput">
 											<div class="fileinput-new thumbnail" style="width: 100px; height: 100px;" data-trigger="fileinput">
-                                                <img src="<?php echo $row['image'];?>"  alt="...">
+                                                <img src="uploads/subject_image/<?php echo $row['image'];?>"  alt="...">
 											</div>
 											<div class="fileinput-preview fileinput-exists thumbnail" style="width: 200px !important; height: 150px !important; max-width: 200px !important; max-height: 150px !important; border: 4px solid #ebebeb;"></div>
 											<div>
@@ -188,7 +188,7 @@ endforeach;
 	function get_class_sections(class_id) {
 
 		$.ajax({
-			url: '<?php echo base_url();?>index.php?admin/get_section_content_by_class/' + class_id ,
+			url: '<?php echo base_url();?>index.php?admin/get_sections_content_by_class/' + class_id ,
 			success: function(response) {
 				const emptyOption = '<option value="" selected disabled><?php echo ucfirst(get_phrase('select')); ?></option>';
 				jQuery('#section_selector_holder').html(emptyOption + response);

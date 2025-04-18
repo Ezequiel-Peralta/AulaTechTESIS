@@ -11,6 +11,8 @@ class Marks extends CI_Controller
         $this->load->model('marks/Marks_model');
         $this->load->library('Marks_service');
 
+        $this->load->model('sections/Sections_model');
+
         date_default_timezone_set('America/Argentina/Buenos_Aires');
 
         /*cache control*/
@@ -18,7 +20,7 @@ class Marks extends CI_Controller
         $this->output->set_header('Pragma: no-cache');
     }
 
-    function student_mark_history($class_id = '')
+    function students_mark_history($class_id = '')
     {
         if ($this->session->userdata('admin_login') != 1)
             redirect('login', 'refresh');
@@ -30,7 +32,7 @@ class Marks extends CI_Controller
             ),
             array(
                 'text' => ucfirst(get_phrase('manage_marks')),
-                'url' => base_url('index.php?admin/attendance_student/' . $class_id)
+                'url' => base_url('index.php?admin/attendance_students/' . $class_id)
             )
         );
 
@@ -142,7 +144,7 @@ class Marks extends CI_Controller
         $this->load->view('backend/index', $page_data);
     }
 
-    function student_mark($class_id = '')
+    function students_mark($class_id = '')
     {
         if ($this->session->userdata('admin_login') != 1)
             redirect('login', 'refresh');
@@ -154,7 +156,7 @@ class Marks extends CI_Controller
             ),
             array(
                 'text' => ucfirst(get_phrase('marks_sheet')),
-                'url' => base_url('index.php?admin/student_mark/' . $class_id)
+                'url' => base_url('index.php?admin/students_mark/' . $class_id)
             )
         );
 
@@ -298,7 +300,7 @@ class Marks extends CI_Controller
         $this->load->view('backend/index', $page_data);
     }
 
-    function mark($operation = '', $class_id = '', $section_id = '', $subject_id = '', $student_id = '', $exam_type = '', $mark_obtained = '', $date = '', $mark_id = '')
+    function marks($operation = '', $class_id = '', $section_id = '', $subject_id = '', $student_id = '', $exam_type = '', $mark_obtained = '', $date = '', $mark_id = '')
     {
         if ($this->session->userdata('admin_login') != 1)
             redirect('login', 'refresh');

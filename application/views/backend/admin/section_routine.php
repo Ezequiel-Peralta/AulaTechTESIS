@@ -219,7 +219,7 @@
 <script type="text/javascript">
      function get_class_section(class_id) {
         $.ajax({
-            url: '<?php echo base_url();?>index.php?admin/get_class_section/' + class_id ,
+            url: '<?php echo base_url();?>index.php?admin/get_class_sections/' + class_id ,
             success: function(response)
             {
                 jQuery('#section_selection_holder').html(response);

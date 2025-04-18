@@ -22,7 +22,7 @@ class Students_model extends CI_Model
 
     function get_students_per_section($section_id)
     {
-        $this->db->select('student_details.firstname, student_details.lastname, student_details. enrollment, student_details.dni, student_details.gender_id, student_details.phone_cel, student_details.phone_fij, student_details.class_id, student_details.section_id, student_details.birthday, student.email, student.username, address.state, address.postalcode, address.locality, address.neighborhood, address.address, address.address_line');
+        $this->db->select('student_details.student_id, student_details.firstname, student_details.lastname, student_details. enrollment, student_details.dni, student_details.gender_id, student_details.phone_cel, student_details.phone_fij, student_details.class_id, student_details.section_id, student_details.birthday, student.email, student.username, address.state, address.postalcode, address.locality, address.neighborhood, address.address, address.address_line');
         $this->db->from('student_details');
         $this->db->join('student', 'student.student_id = student_details.student_id');
         $this->db->join('address', 'address.address_id = student_details.address_id'); // Unión con la tabla address
@@ -292,7 +292,7 @@ class Students_model extends CI_Model
 
     function get_students_by_section($section_id)
     {
-        $this->db->select('student_details.firstname, student_details.lastname, student_details.enrollment, student_details.dni, student_details.gender_id, student_details.phone_cel, student_details.phone_fij, student_details.class_id, student_details.section_id, student_details.birthday, student.email, student.username, address.state, address.postalcode, address.locality, address.neighborhood, address.address, address.address_line');
+        $this->db->select('student_details.student_id, student_details.firstname, student_details.user_status_id, student_details.photo, student_details.lastname, student_details.enrollment, student_details.dni, student_details.gender_id, student_details.phone_cel, student_details.phone_fij, student_details.class_id, student_details.section_id, student_details.birthday, student.email, student.username, address.state, address.postalcode, address.locality, address.neighborhood, address.address, address.address_line');
         $this->db->from('student_details');
         $this->db->join('student', 'student.student_id = student_details.student_id');
         $this->db->join('address', 'address.address_id = student_details.address_id');
@@ -321,13 +321,27 @@ class Students_model extends CI_Model
             $student_details_data['address_id'] = $this->db->insert_id();
 
             $this->db->insert('student', $student_data);
+            $student_id = $this->db->insert_id();
             $student_details_data['student_id'] = $this->db->insert_id();
 
             $this->db->insert('student_details', $student_details_data);
 
-            return true;
+            return $student_id;
         } catch (Exception $e) {
             log_message('error', 'Error in create_student: ' . $e->getMessage());
+            return false;
+        }
+    }
+
+    function upload_medical_record_student($student_id, $file_name)
+    {
+        try {
+            $this->db->where('student_id', $student_id);
+            $this->db->update('student_details', array('medical_record' => $file_name));
+
+            return true;
+        } catch (Exception $e) {
+            log_message('error', 'Error in upload_medical_record_student: ' . $e->getMessage());
             return false;
         }
     }
@@ -338,7 +352,7 @@ class Students_model extends CI_Model
             $this->db->where('student_id', $student_id);
             $this->db->update('student', $student_data);
 
-            $this->db->where('address_id', $student_details_data['address_id']);
+            $this->db->where('address_id', $address_data['address_id']);
             $this->db->update('address', $address_data);
 
             $this->db->where('student_id', $student_id);
@@ -355,7 +369,7 @@ class Students_model extends CI_Model
     {
         try {
             $this->db->where('student_id', $student_id);
-            $this->db->update('student', array('user_status_id' => 0, 'status_reason' => $status_reason, 'class_id' => null, 'section_id' => null));
+            $this->db->update('student_details', array('user_status_id' => 0, 'status_reason' => $status_reason, 'class_id' => null, 'section_id' => null));
 
             return true;
         } catch (Exception $e) {

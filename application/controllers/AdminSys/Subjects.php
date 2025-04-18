@@ -13,6 +13,8 @@ class Subjects extends CI_Controller
         $this->load->model('teachers/Teachers_model');
         $this->load->library('Subjects_service');
 
+        $this->load->model('crud_model');
+
         date_default_timezone_set('America/Argentina/Buenos_Aires');
 
         /*cache control*/
@@ -364,7 +366,7 @@ class Subjects extends CI_Controller
         $this->load->view('backend/index', $page_data);
     }
 
-    function add_subject()
+    function add_subjects()
     {
         if ($this->session->userdata('admin_login') != 1)
             redirect(base_url(), 'refresh');
@@ -376,7 +378,7 @@ class Subjects extends CI_Controller
             ),
             array(
                 'text' => ucfirst(get_phrase('add_subject')),
-                'url' => base_url('index.php?admin/subject_add')
+                'url' => base_url('index.php?admin/add_subjects')
             )
         );
 
@@ -386,7 +388,7 @@ class Subjects extends CI_Controller
         $this->load->view('backend/index', $page_data);
     }
 
-    function edit_subject($subject_id)
+    function edit_subjects($subject_id)
     {
         if ($this->session->userdata('admin_login') != 1)
             redirect(base_url(), 'refresh');
@@ -398,7 +400,7 @@ class Subjects extends CI_Controller
             ),
             array(
                 'text' => ucfirst(get_phrase('edit_subject')),
-                'url' => base_url('index.php?admin/edit_subject/' . $subject_id)
+                'url' => base_url('index.php?admin/edit_subjects/' . $subject_id)
             )
         );
 

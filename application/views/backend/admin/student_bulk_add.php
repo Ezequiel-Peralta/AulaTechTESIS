@@ -3,7 +3,7 @@
 		<div class="panel" data-collapsed="0">
 			<div class="panel-body">
 				
-                <?php echo form_open(base_url() . 'index.php?admin/student_bulk_add/import_excel/' , array('class' => 'form-horizontal form-groups-bordered validate', 'enctype' => 'multipart/form-data'));?>
+                <?php echo form_open(base_url() . 'index.php?admin/students_bulk_add/import_excel/' , array('class' => 'form-horizontal form-groups-bordered validate', 'enctype' => 'multipart/form-data'));?>
 	
 					<div class="form-group text-center">
 						<label for="field-1" class="col-sm-3 control-label"><?php echo ucfirst(get_phrase('select_excel_file')); ?></label>
@@ -76,7 +76,7 @@
 	function get_class_sections(class_id) {
 
 		$.ajax({
-			url: '<?php echo base_url();?>index.php?admin/get_section_content_by_class/' + class_id ,
+			url: '<?php echo base_url();?>index.php?admin/get_sections_content_by_class/' + class_id ,
 			success: function(response) {
 				const emptyOption = '<option value="" selected disabled><?php echo ucfirst(get_phrase('select')); ?></option>';
 				jQuery('#section_selector_holder').html(emptyOption + response);

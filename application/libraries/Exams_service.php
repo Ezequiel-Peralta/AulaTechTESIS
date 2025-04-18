@@ -65,15 +65,15 @@ class Exams_service extends CI_Model {
 
             $this->load->library('upload');
 
-            $number_of_files = count($files['attachments']['name']);
+            $number_of_files = count($files['name']);
             $uploaded_files = [];
 
             for ($i = 0; $i < $number_of_files; $i++) {
-                $_FILES['attachment']['name'] = $files['attachments']['name'][$i];
-                $_FILES['attachment']['type'] = $files['attachments']['type'][$i];
-                $_FILES['attachment']['tmp_name'] = $files['attachments']['tmp_name'][$i];
-                $_FILES['attachment']['error'] = $files['attachments']['error'][$i];
-                $_FILES['attachment']['size'] = $files['attachments']['size'][$i];
+                $_FILES['attachment']['name'] = $files['name'][$i];
+                $_FILES['attachment']['type'] = $files['type'][$i];
+                $_FILES['attachment']['tmp_name'] = $files['tmp_name'][$i];
+                $_FILES['attachment']['error'] = $files['error'][$i];
+                $_FILES['attachment']['size'] = $files['size'][$i];
 
                 $config['upload_path'] = $exam_directory;
                 $config['allowed_types'] = '*';
@@ -101,7 +101,7 @@ class Exams_service extends CI_Model {
             }
 
             $files_json = json_encode($uploaded_files);
-            $this->Exams_model->update_exam($exam_id, ['files' => $files_json]);
+            $this->Exams_model->update_exam_files($exam_id, ['files' => $files_json]);
         } catch (Exception $e) {
             log_message('error', 'Error in upload_exam_files: ' . $e->getMessage());
             return false;
@@ -110,17 +110,23 @@ class Exams_service extends CI_Model {
 
     public function get_section_data($section_id) {
         try {
+            log_message('debug', 'Section ID usado: ' . $section_id);
+
             $section_data = $this->Exams_model->get_section($section_id);
+            log_message('debug', 'Section data: ' . print_r($section_data, true));
+            
             $used_section_history = false;
             $academic_period_name = '';
 
-            if (empty($section_data)) {
+            if (!isset($section_data['section_id'])) {
                 $section_data = $this->Exams_model->get_section_history($section_id);
                 $used_section_history = true;
+                log_message('debug', 'Se usó section_history para el section_id: ' . $section_id);
             }
 
             if ($used_section_history) {
                 $academic_period_name = $this->crud_model->get_academic_period_name_per_section2($section_id);
+                log_message('debug', 'section_history es true: ');
             }
 
             return array(
@@ -128,6 +134,14 @@ class Exams_service extends CI_Model {
                 'used_section_history' => $used_section_history,
                 'academic_period_name' => $academic_period_name
             );
+
+            log_message('debug', 'Datos retornados por get_section_data: ' . print_r([
+                'section_data' => $section_data,
+                'used_section_history' => $used_section_history,
+                'academic_period_name' => $academic_period_name
+            ], true));
+            
+
         } catch (Exception $e) {
             log_message('error', 'Error in get_section_data: ' . $e->getMessage());
             return false;
@@ -182,6 +196,15 @@ class Exams_service extends CI_Model {
             if (!empty($subject_id)) {
                 return $this->db->get_where('exam', array('subject_id' => $subject_id))->result_array();
             } else {
+                if (empty($section_id)) {
+                    $query = $this->db->select('section_id')->order_by('section_id', 'ASC')->limit(1)->get('exam');
+                    if ($query->num_rows() > 0) {
+                        $section_id = $query->row()->section_id;
+                    } else {
+                        return []; 
+                    }
+                }
+    
                 return $this->db->get_where('exam', array('section_id' => $section_id))->result_array();
             }
         } catch (Exception $e) {

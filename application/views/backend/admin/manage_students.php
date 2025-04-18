@@ -50,7 +50,7 @@ $filenameExcelClass = ucfirst(get_phrase('student_report')) . ' ' . date('d-m-Y'
             <div class="tab-pane active" id="home">
                 <br>
                 <div class="mt-2 mb-4">
-                    <a href="<?php echo base_url(); ?>index.php?admin/student_add" class="btn btn-table btn-white btn-green-hover" title=" <?php echo ucfirst(get_phrase('add')); ?>" style="padding: 6px 10px;"><i class="fa fa-plus"></i></a>
+                    <a href="<?php echo base_url(); ?>index.php?admin/students_add" class="btn btn-table btn-white btn-green-hover" title=" <?php echo ucfirst(get_phrase('add')); ?>" style="padding: 6px 10px;"><i class="fa fa-plus"></i></a>
                     <button type="button" onclick="reload_ajax()" class="btn btn-table btn-white btn-warning-hover" title="<?php echo ucfirst(get_phrase('reload')); ?>" style="padding: 6px 10px;"><i class="fa fa-refresh"></i></button>
                 </div>
                 <br>
@@ -89,7 +89,7 @@ $filenameExcelClass = ucfirst(get_phrase('student_report')) . ' ' . date('d-m-Y'
 								?>
                             </td>
                             <td class="text-center">
-                                <a href="<?php echo base_url(); ?>index.php?admin/student_information/<?php echo $section['section_id']; ?>" class="btn btn-table btn-white btn-info-hover" title="<?php echo ucfirst(get_phrase('view')); ?>">
+                                <a href="<?php echo base_url(); ?>index.php?admin/students_information/<?php echo $section['section_id']; ?>" class="btn btn-table btn-white btn-info-hover" title="<?php echo ucfirst(get_phrase('view')); ?>">
                                     <i class="entypo-eye"></i>
                                 </a>
                             </td>
@@ -106,7 +106,7 @@ $filenameExcelClass = ucfirst(get_phrase('student_report')) . ' ' . date('d-m-Y'
             <div class="tab-pane" id="class_<?php echo $class['class_id'];?>">
                 <br>
                 <div class="mt-2 mb-4">
-                    <a href="<?php echo base_url(); ?>index.php?admin/student_add" class="btn btn-table btn-white btn-green-hover" title=" <?php echo ucfirst(get_phrase('add')); ?>" style="padding: 6px 10px;"><i class="fa fa-plus"></i></a>
+                    <a href="<?php echo base_url(); ?>index.php?admin/students_add" class="btn btn-table btn-white btn-green-hover" title=" <?php echo ucfirst(get_phrase('add')); ?>" style="padding: 6px 10px;"><i class="fa fa-plus"></i></a>
                     <button type="button" onclick="reload_ajax()" class="btn btn-table btn-white btn-warning-hover" title="<?php echo ucfirst(get_phrase('reload')); ?>" style="padding: 6px 10px;"><i class="fa fa-refresh"></i></button>
                 </div>
                 <br>
@@ -143,7 +143,7 @@ $filenameExcelClass = ucfirst(get_phrase('student_report')) . ' ' . date('d-m-Y'
 								?>
                             </td>
                             <td class="text-center">
-                                <a href="<?php echo base_url(); ?>index.php?admin/student_information/<?php echo $section['section_id']; ?>" class="btn btn-table btn-white btn-info-hover" title="<?php echo ucfirst(get_phrase('view')); ?>">
+                                <a href="<?php echo base_url(); ?>index.php?admin/students_information/<?php echo $section['section_id']; ?>" class="btn btn-table btn-white btn-info-hover" title="<?php echo ucfirst(get_phrase('view')); ?>">
                                     <i class="entypo-eye"></i>
                                 </a>
                             </td>

@@ -37,7 +37,7 @@
             <div class="tab-pane active" id="home">
                 <br>
                 <div class="mt-2 mb-4">
-                    <a href="<?php echo base_url(); ?>index.php?admin/add_schedule" class="btn btn-table btn-white btn-green-hover" title=" <?php echo ucfirst(get_phrase('add')); ?>" style="padding: 6px 10px;"><i class="fa fa-plus"></i></a>
+                    <a href="<?php echo base_url(); ?>index.php?admin/add_schedules" class="btn btn-table btn-white btn-green-hover" title=" <?php echo ucfirst(get_phrase('add')); ?>" style="padding: 6px 10px;"><i class="fa fa-plus"></i></a>
                     <button type="button" onclick="reload_ajax()" class="btn btn-table btn-white btn-warning-hover" title="<?php echo ucfirst(get_phrase('reload')); ?>" style="padding: 6px 10px;"><i class="fa fa-refresh"></i></button>
                 </div>
                 <br>
@@ -88,7 +88,7 @@
             <div class="tab-pane" id="class_<?php echo $class['class_id'];?>">
                 <br>
                 <div class="mt-2 mb-4">
-                    <a href="<?php echo base_url(); ?>index.php?admin/add_schedule" class="btn btn-table btn-white btn-green-hover" title=" <?php echo ucfirst(get_phrase('add')); ?>" style="padding: 6px 10px;"><i class="fa fa-plus"></i></a>
+                    <a href="<?php echo base_url(); ?>index.php?admin/add_schedules" class="btn btn-table btn-white btn-green-hover" title=" <?php echo ucfirst(get_phrase('add')); ?>" style="padding: 6px 10px;"><i class="fa fa-plus"></i></a>
                     <button type="button" onclick="reload_ajax()" class="btn btn-table btn-white btn-warning-hover" title="<?php echo ucfirst(get_phrase('reload')); ?>" style="padding: 6px 10px;"><i class="fa fa-refresh"></i></button>
                 </div>
                 <br>
@@ -99,9 +99,7 @@
                             <th class="text-center" width="50"><?php echo ucfirst(get_phrase('section')); ?></th>
                             <th class="text-center"><?php echo ucfirst(get_phrase('shift')); ?></th>
                             <th class="text-center" width="120"><?php echo ucfirst(get_phrase('action')); ?></th>
-                            <th class="text-center" width="50">
-                                <input type="checkbox" id="chk-all-class-<?php echo $class['class_id'];?>">
-                            </th>
+                         
                         </tr>
                     </thead>
                     <tbody>
@@ -126,9 +124,7 @@
                                     <i class="entypo-eye"></i>
                                 </a>
                             </td>
-                            <td class="text-center">
-                                <input type="checkbox" id="<?php echo $class['class_id'];?>">
-                            </td>
+                           
                         </tr>
                         <?php 
                             endif;

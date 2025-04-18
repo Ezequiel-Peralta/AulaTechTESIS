@@ -8,7 +8,7 @@ foreach ( $edit_data as $row):
     <h4 class="modal-title"><i class="entypo-pencil"></i><?php echo 'Editar asignatura' ?></h4>
 </div>
 
-<?php echo form_open(base_url() . 'index.php?admin/subject/do_update/'.$row['subject_id'] , array('class' => 'form-horizontal form-groups-bordered validate','target'=>'_top'));?>
+<?php echo form_open(base_url() . 'index.php?admin/subjects/update/'.$row['subject_id'] , array('class' => 'form-horizontal form-groups-bordered validate','target'=>'_top'));?>
 
 <div class="modal-body" style="height:500px; overflow:auto;">
     <div class="row">
@@ -121,7 +121,7 @@ endforeach;
      function get_class_sections(class_id) {
 
 $.ajax({
-    url: '<?php echo base_url();?>index.php?admin/get_class_section/' + class_id ,
+    url: '<?php echo base_url();?>index.php?admin/get_class_sections/' + class_id ,
     success: function(response)
     {
         jQuery('#section_selector_holder').html(response);

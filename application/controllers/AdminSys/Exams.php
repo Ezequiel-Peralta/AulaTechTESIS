@@ -8,6 +8,7 @@ class Exams extends CI_Controller
         $this->load->database();
         $this->load->library('session');
 
+        $this->load->model('students/Students_model');
         $this->load->model('subjects/Subjects_model');
         $this->load->model('exams/Exams_model');
         $this->load->library('Exams_service');
@@ -19,7 +20,7 @@ class Exams extends CI_Controller
         $this->output->set_header('Pragma: no-cache');
     }
 
-    function exam_edit($param2 = '')
+    function exams_edit($param2 = '')
     {
         if ($this->session->userdata('admin_login') != 1)
             redirect(base_url(), 'refresh');
@@ -31,7 +32,7 @@ class Exams extends CI_Controller
             ),
             array(
                 'text' => ucfirst(get_phrase('exam_edit')),
-                'url' => base_url('index.php?admin/exam_edit')
+                'url' => base_url('index.php?admin/exams_edit')
             )
         );
 
@@ -50,7 +51,7 @@ class Exams extends CI_Controller
         $this->load->view('backend/index', $page_data);
     }
 
-    function exam_add()
+    function exams_add()
     {
         if ($this->session->userdata('admin_login') != 1)
             redirect(base_url(), 'refresh');
@@ -62,7 +63,7 @@ class Exams extends CI_Controller
             ),
             array(
                 'text' => ucfirst(get_phrase('exam_add')),
-                'url' => base_url('index.php?admin/exam_add')
+                'url' => base_url('index.php?admin/exams_add')
             )
         );
 
@@ -80,7 +81,7 @@ class Exams extends CI_Controller
         if ($this->session->userdata('admin_login') != 1)
             redirect('login', 'refresh');
 
-        $subject_data = $this->subjects_model->get_subject($subject_id);
+        $subject_data = $this->Subjects_model->get_subject($subject_id);
         $active_academic_period = $this->db->get_where('academic_period', array('status_id' => 1))->row();
         $sections = array();
 
@@ -163,7 +164,7 @@ class Exams extends CI_Controller
         $this->load->view('backend/index', $page_data);
     }
 
-    function exam($param1 = '', $param2 = '', $param3 = '', $param4 = '')
+    function exams($param1 = '', $param2 = '', $param3 = '', $param4 = '')
     {
         if ($this->session->userdata('admin_login') != 1)
             redirect(base_url(), 'refresh');
@@ -181,7 +182,7 @@ class Exams extends CI_Controller
 
             $exam_id = $this->exams_service->create_exam($data);
 
-            if ($exam_id && !empty($_FILES['attachments']['name'][0])) {
+            if ($exam_id && !empty($_FILES['attachments']['name'])) {
                 $this->exams_service->upload_exam_files($exam_id, $_FILES['attachments']);
             }
 
@@ -212,9 +213,33 @@ class Exams extends CI_Controller
 
             $this->exams_service->update_exam($param2, $data);
 
+            $existing_files = isset($_POST['existing_files']) && is_array($_POST['existing_files']) ? $_POST['existing_files'] : [];
+
+$files_to_delete_raw = isset($_POST['files_to_delete']) ? $_POST['files_to_delete'] : '';
+$files_to_delete = [];
+
+if (is_string($files_to_delete_raw)) {
+    $files_to_delete = array_filter(explode(',', $files_to_delete_raw));
+}
+
+if (!empty($files_to_delete)) {
+    $exam_directory = 'uploads/exams/' . $param2 . '/';
+    foreach ($files_to_delete as $file) {
+        $file_path = $exam_directory . $file;
+        if (file_exists($file_path)) {
+            unlink($file_path);
+        }
+    }
+
+    $updated_files = array_values(array_diff($existing_files, $files_to_delete));
+    $this->Exams_model->update_exam_files($param2, ['files' => json_encode($updated_files)]);
+}
+
+
             if (!empty($_FILES['attachments']['name'][0])) {
                 $this->exams_service->upload_exam_files($param2, $_FILES['attachments']);
             }
+
 
             $this->session->set_flashdata('flash_message', array(
                 'title' => '¡' . ucfirst(get_phrase('evaluation_modified_successfully')) . '!',
@@ -230,7 +255,7 @@ class Exams extends CI_Controller
             redirect(base_url() . 'index.php?admin/exams_information/' . $data['section_id'], 'refresh');
         }
 
-        if ($param1 == 'disable_exam_bulk') {
+        if ($param1 == 'disable_exams_bulk') {
             $this->exams_service->bulk_update_exam_status($this->uri->segment_array(), 'disable');
 
             $this->session->set_flashdata('flash_message', array(
@@ -249,7 +274,7 @@ class Exams extends CI_Controller
 
         
 
-        if ($param1 == 'disable_exam') {
+        if ($param1 == 'disable_exams') {
             $this->exams_service->update_exam_status($param2, 0);
 
             $this->session->set_flashdata('flash_message', array(
@@ -266,7 +291,7 @@ class Exams extends CI_Controller
             redirect(base_url() . 'index.php?admin/exams_information/' . $param3, 'refresh');
         }
 
-        if ($param1 == 'enable_exam') {
+        if ($param1 == 'enable_exams') {
             $this->exams_service->update_exam_status($param2, 1);
 
             $this->session->set_flashdata('flash_message', array(
@@ -283,7 +308,7 @@ class Exams extends CI_Controller
             redirect(base_url() . 'index.php?admin/exams_information/' . $param3, 'refresh');
         }
 
-        if ($param1 == 'enable_exam_bulk') {
+        if ($param1 == 'enable_exams_bulk') {
             $this->exams_service->bulk_update_exam_status($this->uri->segment_array(), 'enable');
 
             $this->session->set_flashdata('flash_message', array(
@@ -303,70 +328,89 @@ class Exams extends CI_Controller
     }
 
     function view_exams($section_id = '', $subject_id = '', $teacher_id = '')
-    {
-        if ($this->session->userdata('admin_login') != 1) {
-            redirect('login', 'refresh');
-        }
-        
-        $section_data = $this->exams_service->get_section_data($section_id);
-        $subject_data = $this->exams_service->get_subject_data($subject_id);
-        $teacher_data = $this->exams_service->get_teacher_data($teacher_id);
-
-        $used_section_history = $section_data['used_section_history'];
-        $used_subject_history = $subject_data['used_subject_history'];
-        $academic_period_name = $section_data['academic_period_name'];
-
-        $section_name = isset($section_data['section_data']['name']) ? $section_data['section_data']['name'] : '';
-        $subject_name = isset($subject_data['subject_data']['name']) ? $subject_data['subject_data']['name'] : '';
-        $teacher_name = isset($teacher_data['lastname']) && isset($teacher_data['firstname']) ? ucfirst($teacher_data['lastname']) . ', ' . ucfirst($teacher_data['firstname']) : '';
-
-        $breadcrumb = array(
-            array(
-                'text' => ucfirst(get_phrase('home')),
-                'url' => base_url('index.php?admin/dashboard')
-            )
-        );
-
-        switch (true) {
-            case !empty($teacher_id):
-                $breadcrumb[] = array(
-                    'text' => ucfirst(get_phrase('view_exams')) . '&nbsp;&nbsp;/&nbsp;&nbsp;' . $teacher_name,
-                    'url' => base_url('index.php?admin/view_exams/' . $section_id . '/' . $subject_id . '/' . $teacher_id)
-                );
-                break;
-            case !empty($subject_id):
-                $breadcrumb[] = array(
-                    'text' => ucfirst(get_phrase('view_exams'))  . ($used_section_history ? '&nbsp;&nbsp;/&nbsp;&nbsp;' . $academic_period_name : '') . '&nbsp;&nbsp;/&nbsp;&nbsp;' . $section_name . '&nbsp;&nbsp;/&nbsp;&nbsp;' . ucfirst($subject_name),
-                    'url' => base_url('index.php?admin/view_exams/' . $section_id . '/' . $subject_id)
-                );
-                break;
-            default:
-                $breadcrumb[] = array(
-                    'text' => ucfirst(get_phrase('view_exams'))  . ($used_section_history ? '&nbsp;&nbsp;/&nbsp;&nbsp;' . $academic_period_name : '') . '&nbsp;&nbsp;/&nbsp;&nbsp;' . $section_name,
-                    'url' => base_url('index.php?admin/view_exams/' . $section_id)
-                );
-                break;
-        }
-
-        $exams = $this->exams_service->get_exams($section_id, $subject_id, $teacher_id, $used_section_history, $used_subject_history);
-
-        $page_data = array(
-            'teacher_id' => $teacher_id,
-            'breadcrumb' => $breadcrumb,
-            'section_id' => $section_id,
-            'subject_id' => $subject_id,
-            'used_subject_history' => $used_subject_history,
-            'used_section_history' => $used_section_history,
-            'page_name' => 'view_exams',
-            'page_title' => ucfirst(get_phrase('view_exams')),
-            'exams' => $exams
-        );
-
-        $this->load->view('backend/index', $page_data);
+{
+    if ($this->session->userdata('admin_login') != 1) {
+        redirect('login', 'refresh');
     }
 
+    if (empty($section_id)) {
+        $section_id = $this->db->select('section_id')
+                               ->order_by('section_id', 'ASC')
+                               ->limit(1)
+                               ->get('section')
+                               ->row_array()['section_id'];
+    }
 
+    $section_data = $this->exams_service->get_section_data($section_id);
+    $teacher_data = $this->exams_service->get_teacher_data($teacher_id);
 
+    $used_section_history = $section_data['used_section_history'];
+    $academic_period_name = $section_data['academic_period_name'];
+
+    if (!empty($subject_id)) {
+        $subject_data = $this->exams_service->get_subject_data($subject_id);
+        $used_subject_history = $subject_data['used_subject_history'];
+    } else {
+        $subject_data = [];
+        $used_subject_history = false;
+    }
+ 
+    $section_name = isset($section_data['section_data']['name']) ? $section_data['section_data']['name'] : '';
+    $subject_name = isset($subject_data['subject_data']['name']) ? $subject_data['subject_data']['name'] : '';
+    $teacher_name = isset($teacher_data['lastname']) && isset($teacher_data['firstname']) ? ucfirst($teacher_data['lastname']) . ', ' . ucfirst($teacher_data['firstname']) : '';
+
+    $breadcrumb = array(
+        array(
+            'text' => ucfirst(get_phrase('home')),
+            'url' => base_url('index.php?admin/dashboard')
+        )
+    );
+
+    switch (true) {
+        case !empty($teacher_id):
+            $breadcrumb[] = array(
+                'text' => ucfirst(get_phrase('view_exams')) . '&nbsp;&nbsp;/&nbsp;&nbsp;' . $teacher_name,
+                'url' => base_url('index.php?admin/view_exams/' . $section_id . '/' . $subject_id . '/' . $teacher_id)
+            );
+            break;
+        case !empty($subject_id):
+            $breadcrumb[] = array(
+                'text' => ucfirst(get_phrase('view_exams'))  . ($used_section_history ? '&nbsp;&nbsp;/&nbsp;&nbsp;' . $academic_period_name : '') . '&nbsp;&nbsp;/&nbsp;&nbsp;' . $section_name . '&nbsp;&nbsp;/&nbsp;&nbsp;' . ucfirst($subject_name),
+                'url' => base_url('index.php?admin/view_exams/' . $section_id . '/' . $subject_id)
+            );
+            break;
+        default:
+            $breadcrumb[] = array(
+                'text' => ucfirst(get_phrase('view_exams'))  . ($used_section_history ? '&nbsp;&nbsp;/&nbsp;&nbsp;' . $academic_period_name : '') . '&nbsp;&nbsp;/&nbsp;&nbsp;' . $section_name,
+                'url' => base_url('index.php?admin/view_exams/' . $section_id)
+            );
+            break;
+    }
+
+    $exams = $this->exams_service->get_exams($section_id, $subject_id, $teacher_id, $used_section_history, $used_subject_history);
+
+    $page_data = array(
+        'teacher_id' => $teacher_id,
+        'breadcrumb' => $breadcrumb,
+        'section_id' => $section_id,
+        'subject_id' => $subject_id,
+        'used_subject_history' => $used_subject_history,
+        'used_section_history' => $used_section_history,
+        'page_name' => 'view_exams',
+        'page_title' => ucfirst(get_phrase('view_exams')),
+        'exams' => $exams
+    );
+
+    $this->load->view('backend/index', $page_data);
+}
+
+    function get_subject_exams($subject_id)
+    {
+        $exams = $this->Exams_model->get_exams_by_subject($subject_id);
+        foreach ($exams as $row) {
+            echo '<option value="' . $row['exam_id'] . '">' . $row['name'] . '</option>';
+        }
+    }
 
 
 

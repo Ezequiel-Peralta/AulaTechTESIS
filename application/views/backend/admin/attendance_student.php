@@ -87,10 +87,10 @@ endif;
                                 ?>
                             </td>
                             <td class="text-center">
-                                <a href="<?php echo base_url(); ?>index.php?admin/summary_attendance_students/<?php echo $section['section_id']; ?>" class="btn btn-table btn-white btn-info-hover" title="<?php echo ucfirst(get_phrase('Resumen')); ?>">
+                                <a href="<?php echo base_url(); ?>index.php?admin/summary_attendance_students/<?php echo $section['class_id']; ?>/<?php echo $section['section_id']; ?>" class="btn btn-table btn-white btn-info-hover" title="<?php echo ucfirst(get_phrase('Resumen')); ?>">
                                     <i class="entypo-clipboard"></i>
                                 </a>
-                                <a href="<?php echo base_url(); ?>index.php?admin/manage_attendance_student/<?php echo date("d"); ?>/<?php echo date("m"); ?>/<?php echo date("Y"); ?>/<?php echo $section['section_id']; ?>" class="btn btn-table btn-white btn-orange-hover" title="<?php echo ucfirst(get_phrase('Asistencia')); ?>">
+                                <a href="<?php echo base_url(); ?>index.php?admin/manage_attendance_students/<?php echo date("d"); ?>/<?php echo date("m"); ?>/<?php echo date("Y"); ?>/<?php echo $section['section_id']; ?>" class="btn btn-table btn-white btn-orange-hover" title="<?php echo ucfirst(get_phrase('Asistencia')); ?>">
                                     <i class="entypo-pencil"></i>
                                 </a>
                             </td>
@@ -153,14 +153,11 @@ endif;
                                 ?>
                             </td>
                             <td class="text-center">
-                                <a href="<?php echo base_url(); ?>index.php?admin/summary_attendance_student/<?php echo $section_id;?>; ?>" class="btn btn-table btn-white btn-info-hover" title="<?php echo ucfirst(get_phrase('Resumen')); ?>">
+                                <a href="<?php echo base_url(); ?>index.php?admin/summary_attendance_students/<?php echo $section['class_id']; ?>/<?php echo $section['section_id']; ?>" class="btn btn-table btn-white btn-info-hover" title="<?php echo ucfirst(get_phrase('Resumen')); ?>">
                                     <i class="entypo-clipboard"></i>
                                 </a>
-                                <a href="<?php echo base_url(); ?>index.php?admin/manage_attendance_student/<?php echo date("d/m/Y"); ?>" class="btn btn-table btn-white btn-orange-hover" title=" <?php echo ucfirst(get_phrase('asistencia')); ?>">
+                                <a href="<?php echo base_url(); ?>index.php?admin/manage_attendance_students/<?php echo date("d/m/Y"); ?>" class="btn btn-table btn-white btn-orange-hover" title=" <?php echo ucfirst(get_phrase('asistencia')); ?>">
                                     <i class="entypo-pencil"></i>
-                                </a>
-                                <a href="javascript:;" onclick="" class="btn btn-table btn-white btn-danger-hover" title="<?php echo ucfirst(get_phrase('historico')); ?>">
-                                    <i class="entypo-calendar"></i>
                                 </a>
                             </td>
                            

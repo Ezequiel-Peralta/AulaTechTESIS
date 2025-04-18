@@ -21,7 +21,7 @@ class Students extends CI_Controller
         $this->output->set_header('Pragma: no-cache');
     }
 
-    function student_add()
+    function students_add()
     {
         if ($this->session->userdata('admin_login') != 1)
             redirect(base_url(), 'refresh');
@@ -33,7 +33,7 @@ class Students extends CI_Controller
             ),
             array(
                 'text' => ucfirst(get_phrase('student_add')),
-                'url' => base_url('index.php?admin/student_add')
+                'url' => base_url('index.php?admin/students_add')
             )
         );
 
@@ -44,7 +44,7 @@ class Students extends CI_Controller
         $this->load->view('backend/index', $page_data);
     }
 
-    function student_bulk_add($param1 = '')
+    function students_bulk_add($param1 = '')
     {
         if ($this->session->userdata('admin_login') != 1) {
             redirect(base_url(), 'refresh');
@@ -229,7 +229,7 @@ class Students extends CI_Controller
                 redirect(base_url() . 'index.php?admin/pre_enrollments', 'refresh');
             } else {
                 // De lo contrario, redirigir a student_information con el section_id
-                redirect(base_url() . 'index.php?admin/student_information/' . $dataDetails['section_id'], 'refresh');
+                redirect(base_url() . 'index.php?admin/students_information/' . $dataDetails['section_id'], 'refresh');
             }
         }
     
@@ -240,7 +240,7 @@ class Students extends CI_Controller
                 ),
                 array(
                     'text' => ucfirst(get_phrase('bulk_add_students')),
-                    'url' => base_url('index.php?admin/student_bulk_add')
+                    'url' => base_url('index.php?admin/students_bulk_add')
                 )
             );
                     
@@ -253,7 +253,7 @@ class Students extends CI_Controller
 
 
 
-        function student_information($section_id = '')
+        function students_information($section_id = '')
         {
             if ($this->session->userdata('admin_login') != 1)
                 redirect('login', 'refresh');
@@ -265,7 +265,7 @@ class Students extends CI_Controller
                 ),
                 array(
                     'text' => ucfirst(get_phrase('manage_students')) . "&nbsp;&nbsp;/&nbsp;&nbsp;" . $this->crud_model->get_section_name($section_id),
-                    'url' => base_url('index.php?admin/student_information/' . $section_id)
+                    'url' => base_url('index.php?admin/students_information/' . $section_id)
                 )
             );
     
@@ -303,7 +303,7 @@ class Students extends CI_Controller
             $this->load->view('backend/index', $page_data);
         }
     
-        function student($param1 = '', $param2 = '', $param3 = '')
+        function students($param1 = '', $param2 = '', $param3 = '')
     {
         if ($this->session->userdata('admin_login') != 1)
             redirect('login', 'refresh');
@@ -362,16 +362,20 @@ class Students extends CI_Controller
             'gender_id' => $data['gender_id'],
             'phone_cel' => $data['phone_cel'],
             'phone_fij' => $data['phone_fij'],
-            'class_id' => $data['class_id'],
-            'section_id' => $data['section_id'],
+            'class_id' => null,
+            'section_id' => null,
             'birthday' => $data['birthday'],
             'photo' => $this->upload_photo('userfile', 'student_image', 'assets/images/default-user-img.jpg'),
-            'medical_record' => $this->upload_photo('medical_record_file', 'fichas_medicas')
+            'medical_record' => null,
         );
 
-        $result = $this->Students_model->create_student($student_data, $address_data, $student_details_data);
+        $student_id = $this->Students_model->create_student($student_data, $address_data, $student_details_data);
 
-        if ($result) {
+        if ($student_id) {
+            $medical_record_path = $this->upload_medical_record('medical_record_file', $student_id);
+
+            $this->Students_model->upload_medical_record_student($student_id, $medical_record_path);
+
             $this->session->set_flashdata('flash_message', array(
                 'title' => ucfirst(get_phrase('student_added_successfully')),
                 'text' => '',
@@ -394,7 +398,7 @@ class Students extends CI_Controller
                 'timer' => '10000',
                 'timerProgressBar' => 'true',
             ));
-            redirect(base_url() . 'index.php?admin/student_add', 'refresh');
+            redirect(base_url() . 'index.php?admin/students_add', 'refresh');
         }
     }
 
@@ -408,7 +412,10 @@ class Students extends CI_Controller
             'password' => $data['password']
         );
 
+        $address_id = $this->get_address_id_by_student_id($student_id);
+
         $address_data = array(
+            'address_id' => $address_id,
             'state' => $data['state'],
             'postalcode' => $data['postalcode'],
             'locality' => $data['locality'],
@@ -427,8 +434,8 @@ class Students extends CI_Controller
             'class_id' => $data['class_id'],
             'section_id' => $data['section_id'],
             'birthday' => $data['birthday'],
-            'photo' => $this->upload_photo('userfile', 'student_image', $data['photo']),
-            'medical_record' => $this->upload_photo('medical_record_file', 'fichas_medicas', $data['medical_record'])
+            'photo' => $this->upload_photo('photo', 'student_image', 'student_id_' . $student_id),
+            'medical_record' => $this->upload_medical_record('medical_record_file', $student_id),
         );
 
         $result = $this->Students_model->update_student($student_id, $student_data, $address_data, $student_details_data);
@@ -444,7 +451,7 @@ class Students extends CI_Controller
                 'timer' => '10000',
                 'timerProgressBar' => 'true',
             ));
-            redirect(base_url() . 'index.php?admin/student_information/' . $data['section_id'], 'refresh');
+            redirect(base_url() . 'index.php?admin/students_information/' . $data['section_id'], 'refresh');
         } else {
             $this->session->set_flashdata('flash_message', array(
                 'title' => ucfirst(get_phrase('error_updating_student')),
@@ -456,7 +463,7 @@ class Students extends CI_Controller
                 'timer' => '10000',
                 'timerProgressBar' => 'true',
             ));
-            redirect(base_url() . 'index.php?admin/student_edit/' . $student_id, 'refresh');
+            redirect(base_url() . 'index.php?admin/students_edit/' . $student_id, 'refresh');
         }
     }
 
@@ -520,16 +527,64 @@ class Students extends CI_Controller
         redirect(base_url() . 'index.php?admin/pre_enrollments/', 'refresh');
     }
 
-    private function upload_photo($input_name, $upload_path, $default = '')
+    public function get_address_id_by_student_id($student_id)
+    {
+        $this->db->select('address_id');
+        $this->db->from('student_details');
+        $this->db->where('student_details.student_id', $student_id);
+        $query = $this->db->get();
+
+        if ($query->num_rows() > 0) {
+            return $query->row()->address_id;
+        }
+        return null; 
+    }
+
+    private function upload_medical_record($input_name, $student_id)
     {
         if (!empty($_FILES[$input_name]['name'])) {
-            $file_name = $input_name . ' - ' . uniqid() . '.' . pathinfo($_FILES[$input_name]['name'], PATHINFO_EXTENSION);
+            $ext = pathinfo($_FILES[$input_name]['name'], PATHINFO_EXTENSION);
+
+            $file_name = 'medical_record_student_id_' . $student_id . '.' . $ext;
+            $file_path = 'uploads/medical_record/' . $file_name;
+
+            if (!file_exists('uploads/medical_record')) {
+                mkdir('uploads/medical_record', 0777, true);
+            }
+
+            if (file_exists($file_path)) {
+                unlink($file_path);
+            }
+
+            move_uploaded_file($_FILES[$input_name]['tmp_name'], $file_path);
+
+            return $file_path;
+        }
+
+        return null;
+    }
+
+    private function upload_photo($input_name, $upload_path, $custom_filename = '')
+    {
+        if (!empty($_FILES[$input_name]['name'])) {
+            $file_name = $custom_filename . '.jpg';
             $file_path = 'uploads/' . $upload_path . '/' . $file_name;
+    
+            if (!file_exists('uploads/' . $upload_path)) {
+                mkdir('uploads/' . $upload_path, 0777, true);
+            }
+    
+            if (file_exists($file_path)) {
+                unlink($file_path);
+            }
+
             move_uploaded_file($_FILES[$input_name]['tmp_name'], $file_path);
             return $file_path;
         }
-        return $default;
+    
+        return $custom_filename ? 'uploads/' . $upload_path . '/' . $custom_filename . '.jpg' : '';
     }
+    
 
     function manage_students()
 	{
@@ -554,7 +609,7 @@ class Students extends CI_Controller
 	}
 
 
-    function student_edit($param2 = '')
+    function students_edit($param2 = '')
 	{
 		if ($this->session->userdata('admin_login') != 1)
             redirect('login', 'refresh');
@@ -588,7 +643,7 @@ class Students extends CI_Controller
     }
 
 
-    function get_students_content_by_section($section_id)
+    function get_students_content_by_sections($section_id)
     {
         $students = $this->db->get_where('student_details', array('section_id' => $section_id))->result_array();
         foreach ($students as $row) {

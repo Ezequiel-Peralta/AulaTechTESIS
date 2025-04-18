@@ -7,7 +7,7 @@ $current_date = date('Y-m-d');
     <div class="col-md-12">
         <div class="panel panel-primary" data-collapsed="0">
             <div class="panel-body">
-                <?php echo form_open(base_url() . 'index.php?admin/behavior_information/create/' , array('class' => 'form-wizard validate', 'enctype' => 'multipart/form-data'));?>
+                <?php echo form_open(base_url() . 'index.php?admin/behaviors_information/create/' , array('class' => 'form-wizard validate', 'enctype' => 'multipart/form-data'));?>
                 
                     <div class="steps-progress">
                         <div class="progress-indicator"></div>
@@ -45,6 +45,20 @@ $current_date = date('Y-m-d');
                                         </select>
                                     </div>
                                 </div>
+                                <?php 
+    echo '<pre>';
+    echo '$param2 (class_id): ';
+    var_dump($class_id);
+
+    echo '$param3 (section_id): ';
+    var_dump($section_id);
+
+    echo '$sections: ';
+    var_dump($sections);
+    echo '</pre>';
+?>
+
+                                
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label for="field-2" class="control-label"><?php echo ucfirst(get_phrase('section')); ?><span class="required-value">&nbsp;*</span></label>
@@ -56,11 +70,10 @@ $current_date = date('Y-m-d');
 
                                             <?php 
                                             foreach ($sections as $section):
-                                                $selected = ($section['section_id'] == $section_id) ? 'selected' : '';
                                             ?>
                                             <option value="<?php echo $section['section_id']; ?>"
-                                                <?php if($section['section_id'] == $section_id)echo 'selected';?>>
-                                                <?php echo $section['name']; ?>
+                                                <?php if($section['section_id'] == $section_id) echo 'selected';?>>
+                                                <?php echo $section['name']; ?> <?php echo $section['section_id']; ?>
                                             </option>
                                             <?php endforeach; ?>
                                         </select>
@@ -175,13 +188,14 @@ $current_date = date('Y-m-d');
           
 	function get_class_sections(class_id) {
         $.ajax({
-            url: '<?php echo base_url();?>index.php?admin/get_section_content_by_class/' + class_id ,
+            url: '<?php echo base_url();?>index.php?admin/get_sections_content_by_class/' + class_id ,
             success: function(response) {
                 var select = $('#section_selector_holder_student');
                 select.empty(); 
 
                 const emptyOption = '<option value="" selected disabled><?php echo ucfirst(get_phrase('select')); ?></option>';
-                jQuery('#section_selector_holder').html(emptyOption + response);
+                var select = $('#section_selector_holder');
+                select.html(emptyOption + response);
             }
         });
 
@@ -189,7 +203,7 @@ $current_date = date('Y-m-d');
 
     function get_section_students(section_id) {
      	$.ajax({
-         url: '<?php echo base_url();?>index.php?admin/get_students_content_by_section/' + section_id ,
+         url: '<?php echo base_url();?>index.php?admin/get_students_content_by_sections/' + section_id ,
              success: function(response)
              {
                 const emptyOption = '<option value="" selected disabled><?php echo ucfirst(get_phrase('select')); ?></option>';

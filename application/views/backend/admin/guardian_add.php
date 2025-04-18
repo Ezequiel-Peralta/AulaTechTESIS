@@ -2,7 +2,7 @@
 	<div class="col-md-12">
 		<div class="panel panel-primary" data-collapsed="0">
 			<div class="panel-body">
-                <?php echo form_open(base_url() . 'index.php?admin/guardian/create/' , array('class' => 'form-wizard validate', 'id' => 'guardianForm', 'enctype' => 'multipart/form-data'));?>
+                <?php echo form_open(base_url() . 'index.php?admin/guardians/create/' , array('class' => 'form-wizard validate', 'id' => 'guardianForm', 'enctype' => 'multipart/form-data'));?>
 				
 					<div class="steps-progress">
 						<div class="progress-indicator"></div>
