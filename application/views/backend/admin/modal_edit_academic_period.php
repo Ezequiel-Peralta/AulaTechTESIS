@@ -9,7 +9,7 @@ foreach ( $edit_data as $row):
     <h4 class="modal-title"><i class="entypo-pencil"></i><?php echo 'Editar ciclo escolar'?></h4>
 </div>
 
-<?php echo form_open(base_url() . 'index.php?admin/academic_period/do_update/'.$row['id'] , array('class' => 'form-horizontal form-groups-bordered validate'));?>
+<?php echo form_open(base_url() . 'index.php?admin/academic_period/update/'.$row['id'] , array('class' => 'form-horizontal form-groups-bordered validate'));?>
 
 <div class="modal-body" style="height:500px; overflow:auto;">
     <div class="row">

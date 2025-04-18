@@ -172,51 +172,6 @@ class Marks extends CI_Controller
         if ($this->session->userdata('admin_login') != 1)
             redirect('login', 'refresh');
 
-        $page_complete_name = 'view_student_mark'; // Nombre de la página
-        $user_id = $this->session->userdata('login_user_id'); // ID del usuario actual
-        $user_group = $this->session->userdata('login_type'); // Grupo del usuario actual
-        $element_id = $section_id; // ID del elemento específico (ej. curso o sección)
-
-        // Buscar registros para este page_name y element_id
-        $this->db->where('page_name', $page_complete_name);
-        $this->db->where('element_id', $element_id);
-        $tracking = $this->db->get('page_tracking')->row_array();
-
-        if (!empty($tracking)) {
-            // Verificar si el registro está siendo utilizado por otro usuario
-            if ($tracking['user_id'] !== NULL && $tracking['user_group'] !== NULL && ($tracking['user_id'] !== $user_id || $tracking['user_group'] !== $user_group)) {
-                // Si otro usuario está accediendo a este elemento, redirige con un mensaje
-                $this->session->set_flashdata('flash_message', array(
-                    'title' => '¡' . ucfirst(get_phrase('this_page_is_being_used_by_another_user')) . '!',
-                    'text' => '',
-                    'icon' => 'error',
-                    'showCloseButton' => 'true',
-                    'confirmButtonText' => ucfirst(get_phrase('accept')),
-                    'confirmButtonColor' => '#1a92c4',
-                    'timer' => '10000',
-                    'timerProgressBar' => 'true',
-                ));
-                redirect(base_url() . 'index.php?admin/dashboard/', 'refresh');
-            } else {
-                // Si el usuario actual ya tiene acceso al elemento, actualiza el registro
-                $dataTracking = array(
-                    'user_id' => $user_id,
-                    'user_group' => $user_group
-                );
-                $this->db->where('page_tracking_id', $tracking['page_tracking_id']);
-                $this->db->update('page_tracking', $dataTracking);
-            }
-        } else {
-            // Si no existe un registro con este element_id, se inserta uno nuevo
-            $dataTracking = array(
-                'page_name' => $page_complete_name,
-                'element_id' => $element_id,
-                'user_id' => $user_id,
-                'user_group' => $user_group
-            );
-            $this->db->insert('page_tracking', $dataTracking);
-        }
-
         $used_section_history = false;
 
         // Buscar datos de la sección

@@ -48,7 +48,7 @@ class Sections_model extends CI_Model {
 
     public function get_active_academic_period() {
         try {
-            return $this->db->get_where('academic_period', array('status' => 1))->row();
+            return $this->db->get_where('academic_period', array('status_id' => 1))->row();
         } catch (Exception $e) {
             log_message('error', 'Error in get_active_academic_period: ' . $e->getMessage());
             return false;

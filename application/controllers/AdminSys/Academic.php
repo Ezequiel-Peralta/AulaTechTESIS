@@ -62,6 +62,7 @@ class Academic extends CI_Controller
             $data['name'] = $this->input->post('name');
             $data['start_date'] = $this->input->post('start_date');
             $data['end_date'] = $this->input->post('end_date');
+            $data['status_id'] = $this->input->post('status_id');
 
             $result = $this->Academic_model->update_academic_period($param2, $data);
             if ($result) {

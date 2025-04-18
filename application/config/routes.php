@@ -108,12 +108,21 @@ $route['admin/get_all_students'] = 'AdminSys/Students/get_all_students';
 //Academic - academic period
 $route['admin/academic_period/(:any)/(:any)'] = 'AdminSys/Academic/academic_period/$1/$2';
 $route['admin/academic_period/(:any)'] = 'AdminSys/Academic/academic_period/$1';
+$route['admin/academic_period'] = 'AdminSys/Academic/academic_period';
 
 //Academic - academic history
 $route['admin/academic_history/(:any)'] = 'AdminSys/Academic/academic_history/$1';
 
 //Academic - academic period add
 $route['admin/academic_period_add'] = 'AdminSys/Academic/academic_period_add';
+
+$route['admin/academic_period/create/(:any)'] = 'AdminSys/Academic/academic_period/create/$1';
+
+$route['admin/academic_period/update/(:any)'] = 'AdminSys/Academic/academic_period/update/$1';
+
+$route['admin/academic_period/disable_academic_period/(:any)'] = 'AdminSys/Academic/academic_period/disable_academic_period/$1';
+
+$route['admin/academic_period/enable_academic_period/(:any)'] = 'AdminSys/Academic/academic_period/enable_academic_period/$1';
 
 //Academic - manage academic history
 $route['admin/manage_academic_history'] = 'AdminSys/Academic/manage_academic_history';
@@ -210,8 +219,8 @@ $route['admin/teachers/enable_teachers/(:any)'] = 'AdminSys/Teachers/teachers/en
 
 //TeachersAide - teachers_aide
 $route['admin/teachers_aide/(:any)/(:any)/(:any)'] = 'AdminSys/TeachersAide/teachers_aide/$1/$2/$3';
-$route['admin/teachers_aide/(:any)/(:any)'] = 'AdminSys/Teachers/teachers_aide/$1/$2';
-$route['admin/teachers_aide/(:any)'] = 'AdminSys/Teachers/teachers_aide/$1';
+$route['admin/teachers_aide/(:any)/(:any)'] = 'AdminSys/TeachersAide/teachers_aide/$1/$2';
+$route['admin/teachers_aide/(:any)'] = 'AdminSys/TeachersAide/teachers_aide/$1';
 
 //TeachersAide - teachers_aide_information
 $route['admin/teachers_aide_information'] = 'AdminSys/TeachersAide/teachers_aide_information';
@@ -437,6 +446,7 @@ $route['admin/edit_subjects/(:any)'] = 'AdminSys/Subjects/edit_subjects/$1';
 //Classes - classes
 $route['admin/classes/(:any)/(:any)'] = 'AdminSys/Classes/classes/$1/$2';
 $route['admin/classes/(:any)'] = 'AdminSys/Classes/classes/$1';
+$route['admin/classes'] = 'AdminSys/Classes/classes';
 
 //Classes - get_class_content2
 $route['admin/get_class_content2'] = 'AdminSys/Classes/get_class_content2';
@@ -727,10 +737,6 @@ $route['admin/change_theme'] = 'AdminSys/UserSys/change_theme';
 $route['admin/change_language/(:any)/(:any)'] = 'AdminSys/UserSys/change_language/$1/$2';
 $route['admin/change_language/(:any)'] = 'AdminSys/UserSys/change_language/$1';
 $route['admin/change_language'] = 'AdminSys/UserSys/change_language';
-
-// UserSys - reset_page_tracking
-$route['admin/reset_page_tracking/(:any)/(:any)'] = 'AdminSys/UserSys/reset_page_tracking/$1/$2';
-$route['admin/reset_page_tracking/(:any)'] = 'AdminSys/UserSys/reset_page_tracking/$1';
 
 // UserSys - language_settings
 $route['admin/language_settings/(:any)/(:any)/(:any)'] = 'AdminSys/UserSys/language_settings/$1/$2/$3';
