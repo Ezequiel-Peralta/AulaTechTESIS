@@ -6,12 +6,16 @@ class Secretaries_model extends CI_Model {
 
     public function get_all_secretaries() {
         try {
-            return $this->db->get('secretary')->result_array();
+            $this->db->select('secretary.*, secretary_details.*');
+            $this->db->from('secretary');
+            $this->db->join('secretary_details', 'secretary.secretary_id = secretary_details.secretary_id', 'left');
+            return $this->db->get()->result_array();
         } catch (Exception $e) {
             log_message('error', 'Error in get_all_secretaries: ' . $e->getMessage());
             return false;
         }
     }
+    
 
     public function get_secretary_info($secretary_id) {
         try {
@@ -53,7 +57,7 @@ class Secretaries_model extends CI_Model {
         try {
             $secretary_id = $this->db->escape_str($secretary_id);
             $this->db->where('secretary_id', $secretary_id);
-            return $this->db->update('secretary', array('status' => $status));
+            return $this->db->update('secretary_details', array('user_status_id' => $status));
         } catch (Exception $e) {
             log_message('error', 'Error in update_secretary_status: ' . $e->getMessage());
             return false;

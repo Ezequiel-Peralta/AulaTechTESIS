@@ -1,13 +1,13 @@
 <?php
 $guardian_info = $this->Guardians_model->get_guardian_info($param2);
-foreach($guardian_info as $row):?>
+?>
 
     <div class="profile-header" style="border-radius: 15px;">
         <img src="assets/images/photo-header.png" class="cover-photo" alt="Cover Photo">
-        <img src="<?php echo $row['photo'];?>" class="img-fluid" alt="Profile Picture" width="150" height="150">
+        <img src="<?php echo $guardian_info['photo'];?>" class="img-fluid" alt="Profile Picture" width="150" height="150">
         <div class="profile-info">
             <h2 style="font-weight: 600;">
-            <?php echo $row['lastname'];?>, <?php echo $row['firstname'];?>.
+            <?php echo $guardian_info['lastname'];?>, <?php echo $guardian_info['firstname'];?>.
             </h2>
         </div>
         <div class="profile-buttons">
@@ -23,29 +23,29 @@ foreach($guardian_info as $row):?>
             <ul class="info-list">
                 <li>
                     <strong class="info-title"><i class="fa fa-address-card"></i> Dni</strong>
-                    <span class="info-cell"><?php echo $row['dni'];?></span>
+                    <span class="info-cell"><?php echo $guardian_info['dni'];?></span>
                 </li>
                 <li>
                     <strong class="info-title"><i class="entypo-mail"></i> Email</strong>
-                    <span class="info-cell"><?php echo $row['email'];?></span>
+                    <span class="info-cell"><?php echo $guardian_info['email'];?></span>
                 </li>
                 <li>
                     <strong class="info-title"><i class="entypo-user"></i> <?php echo ucfirst(get_phrase('user_name'));?></strong>
-                    <span class="info-cell"><?php echo $row['username'];?></span>
+                    <span class="info-cell"><?php echo $guardian_info['username'];?></span>
                 </li>
                 <li>
                     <strong class="info-title"><i class="fa fa-phone"></i> <?php echo ucfirst(get_phrase('cell_phone'));?></strong>
-                    <span class="info-cell"><?php echo $row['phone_cel'];?></span>
+                    <span class="info-cell"><?php echo $guardian_info['phone_cel'];?></span>
                 </li>
                 <li>
                     <strong class="info-title"><i class="fa fa-phone"></i> <?php echo ucfirst(get_phrase('landline'));?></strong>
-                    <span class="info-cell"><?php echo $row['phone_fij'];?></span>
+                    <span class="info-cell"><?php echo $guardian_info['phone_fij'];?></span>
                 </li>
                 <li>
                     <strong class="info-title"><i class="entypo-calendar"></i> <?php echo ucfirst(get_phrase('birthday'));?></strong>
                     <span class="info-cell">
                         <?php 
-                            $original_date = $row['birthday'];
+                            $original_date = $guardian_info['birthday'];
                             $formatted_date = date("d/m/Y", strtotime($original_date));
                             echo $formatted_date;
                         ?>
@@ -55,11 +55,11 @@ foreach($guardian_info as $row):?>
                     <strong class="info-title"><i class="entypo-user"></i> <?php echo ucfirst(get_phrase('gender'));?></strong>
                     <span class="info-cell">
                         <?php 
-                            if ($row['gender_id'] == '0') {
+                            if ($guardian_info['gender_id'] == '0') {
                                 echo ucfirst(get_phrase('male'));
-                            } elseif ($row['gender_id'] == '1') {
+                            } elseif ($guardian_info['gender_id'] == '1') {
                                 echo ucfirst(get_phrase('female'));
-                            } elseif ($row['gender_id'] == '2') {
+                            } elseif ($guardian_info['gender_id'] == '2') {
                                 echo ucfirst(get_phrase('other'));
                             } 
                         ?>
@@ -67,31 +67,29 @@ foreach($guardian_info as $row):?>
                 </li>
                 <li>
                     <strong class="info-title"><i class="entypo-location"></i> <?php echo ucfirst(get_phrase('locality'));?></strong>
-                    <span class="info-cell"><?php echo $row['locality'];?></span>
+                    <span class="info-cell"><?php echo $guardian_info['locality'];?></span>
                 </li>
                 <li>
                     <strong class="info-title"><i class="entypo-location"></i> <?php echo ucfirst(get_phrase('neighborhood'));?></strong>
-                    <span class="info-cell"><?php echo $row['neighborhood'];?></span>
+                    <span class="info-cell"><?php echo $guardian_info['neighborhood'];?></span>
                 </li>
                 <li>
                     <strong class="info-title"><i class="entypo-location"></i> <?php echo ucfirst(get_phrase('address'));?></strong>
-                    <span class="info-cell"><?php echo $row['address'];?></span>
+                    <span class="info-cell"><?php echo $guardian_info['address'];?></span>
                 </li>
                 <li>
                     <strong class="info-title"><i class="entypo-location"></i> <?php echo ucfirst(get_phrase('address_line'));?></strong>
-                    <span class="info-cell"><?php echo $row['address_line'];?></span>
+                    <span class="info-cell"><?php echo $guardian_info['address_line'];?></span>
                 </li>
             </ul>
         </div>
     </div>
-
 
     
 
 
 
 
-    <?php endforeach;?>
 
 
 

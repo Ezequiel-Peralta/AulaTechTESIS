@@ -128,7 +128,7 @@ class Statistics extends CI_Controller
         $students_graduate = [];
 
         foreach ($academic_periods as $period) {
-            $academic_period_id = $period['academic_period_id'];
+            $academic_period_id = $period['id'];
             $academic_period_name = $period['name'];
 
             $students = $this->Statistics_model->get_graduates_by_period($academic_period_id);

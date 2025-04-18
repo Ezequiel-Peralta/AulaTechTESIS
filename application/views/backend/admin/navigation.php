@@ -418,7 +418,7 @@
                     </a>
                     <ul class="text-left">
                         <li class="<?php if ($page_name == 'add_secretary') echo 'active'; ?>">
-                            <a href="<?php echo base_url(); ?>index.php?admin/add_secretary">
+                            <a href="<?php echo base_url(); ?>index.php?admin/add_secretaries">
                                 <span><i class="entypo-dot"></i><?php echo ucfirst(get_phrase('add_secretary')); ?> </span>
                             </a>
                         </li>

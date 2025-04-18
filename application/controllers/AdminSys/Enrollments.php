@@ -78,7 +78,7 @@ class Enrollments extends CI_Controller
         $this->load->view('backend/index', $page_data);
     }
 
-    function preenroll_student($param1 = '', $param2 = '', $param3 = '')
+    function preenroll_students($param1 = '', $param2 = '', $param3 = '')
     {
         if ($this->session->userdata('admin_login') != 1)
             redirect('login', 'refresh');

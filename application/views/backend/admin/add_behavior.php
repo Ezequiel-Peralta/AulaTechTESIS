@@ -45,19 +45,7 @@ $current_date = date('Y-m-d');
                                         </select>
                                     </div>
                                 </div>
-                                <?php 
-    echo '<pre>';
-    echo '$param2 (class_id): ';
-    var_dump($class_id);
-
-    echo '$param3 (section_id): ';
-    var_dump($section_id);
-
-    echo '$sections: ';
-    var_dump($sections);
-    echo '</pre>';
-?>
-
+                      
                                 
                                 <div class="col-md-4">
                                     <div class="form-group">
@@ -69,11 +57,11 @@ $current_date = date('Y-m-d');
                                                 </option>
 
                                             <?php 
-                                            foreach ($sections as $section):
+                                            foreach ($my_sections as $section):
                                             ?>
                                             <option value="<?php echo $section['section_id']; ?>"
                                                 <?php if($section['section_id'] == $section_id) echo 'selected';?>>
-                                                <?php echo $section['name']; ?> <?php echo $section['section_id']; ?>
+                                                <?php echo $section['name']; ?> 
                                             </option>
                                             <?php endforeach; ?>
                                         </select>

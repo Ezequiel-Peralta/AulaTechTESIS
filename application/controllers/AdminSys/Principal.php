@@ -59,6 +59,7 @@ class Principal extends CI_Controller
         );
 
         $page_data['breadcrumb'] = $breadcrumb;
+        $page_data['param2'] = $principal_id;
         $page_data['page_name'] = 'principal_profile';
         $page_data['page_title'] = ucfirst(get_phrase('view_profile'));
         $page_data['principal_info'] = $this->Principal_model->get_principal_info($principal_id);

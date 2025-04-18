@@ -49,7 +49,7 @@ class Behaviors extends CI_Controller
             'section_id' => $param3,
             'page_title' => ucfirst(get_phrase('add_behavior')),
             'classes' => $classes,
-            'sections' => $sections,
+            'my_sections' => $sections,
             'students' => $students,
             'behavior_types' => $behavior_types
         );
@@ -69,7 +69,7 @@ class Behaviors extends CI_Controller
             ),
             array(
                 'text' => ucfirst(get_phrase('edit_behavior')),
-                'url' => base_url('index.php?admin/edit_behavior')
+                'url' => base_url('index.php?admin/edit_behaviors')
             )
         );
 
@@ -144,7 +144,6 @@ class Behaviors extends CI_Controller
             $success = $this->Behaviors_model->create_behavior($data);
 
             if ($success) {
-                // Mensaje de exito
                 $this->session->set_flashdata('flash_message', array(
                     'title' => ucfirst(get_phrase('student_behavior_added_successfully')),
                     'text' => '',
@@ -196,7 +195,7 @@ class Behaviors extends CI_Controller
             redirect(base_url() . 'index.php?admin/students_behaviors/' . $data['student_id'], 'refresh');
         }
 
-        if ($param1 == 'disable_behavior') {
+        if ($param1 == 'disable_behaviors') {
             $this->Behaviors_model->update_behavior_status($param2, 0);
 
             $this->session->set_flashdata('flash_message', array(
@@ -212,7 +211,7 @@ class Behaviors extends CI_Controller
             redirect(base_url() . 'index.php?admin/students_behaviors/' . $param3, 'refresh');
         }
 
-        if ($param1 == 'enable_behavior') {
+        if ($param1 == 'enable_behaviors') {
             $this->Behaviors_model->update_behavior_status($param2, 1);
 
             $this->session->set_flashdata('flash_message', array(

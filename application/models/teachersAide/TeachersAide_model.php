@@ -154,7 +154,7 @@ class TeachersAide_model extends CI_Model {
         try {
             $teacher_aide_id = $this->db->escape_str($teacher_aide_id);
             $this->db->where('teacher_aide_id', $teacher_aide_id);
-            return $this->db->update('teacher_aide', array('status' => $status));
+            return $this->db->update('teacher_aide_details', array('user_status_id' => $status));
         } catch (Exception $e) {
             log_message('error', 'Error in update_teacher_aide_status: ' . $e->getMessage());
             return false;

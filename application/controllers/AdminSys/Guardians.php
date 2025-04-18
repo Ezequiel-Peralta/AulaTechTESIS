@@ -18,7 +18,7 @@ class Guardians extends CI_Controller
         $this->output->set_header('Pragma: no-cache');
     }
 
-    function guardian_profile($guardian_id = '')
+    function guardians_profile($guardian_id = '')
     {
         if ($this->session->userdata('admin_login') != 1)
             redirect('login', 'refresh');
@@ -235,7 +235,7 @@ class Guardians extends CI_Controller
             redirect(base_url() . 'index.php?admin/guardians_edit/' . $guardian_id, 'refresh');
         }
 
-        if ($param1 == 'disable_guardian') {
+        if ($param1 == 'disable_guardians') {
             $guardian_id = $param2;
 
             if ($guardian_id) {
@@ -267,7 +267,7 @@ class Guardians extends CI_Controller
             redirect(base_url() . 'index.php?admin/students_profile/' . $param3, 'refresh');
         }
 
-        if ($param1 == 'enable_guardian') {
+        if ($param1 == 'enable_guardians') {
             $guardian_id = $param2;
 
             if ($guardian_id) {

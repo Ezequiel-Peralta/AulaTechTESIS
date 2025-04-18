@@ -78,15 +78,15 @@ $all_student_behavior_count = $query->num_rows();
                             <td class="text-center"><?php echo $row['comment'];?></td>
                             <td class="text-center"><?php echo $status_label; ?></td>
                             <td class="text-center">
-                                <a  href="<?php echo base_url();?>index.php?admin/edit_behavior/<?php echo $row['behavior_id'];?>" class="btn btn-table btn-white btn-orange-hover" title="<?php echo ucfirst(get_phrase('edit')); ?>">
+                                <a  href="<?php echo base_url();?>index.php?admin/edit_behaviors/<?php echo $row['behavior_id'];?>" class="btn btn-table btn-white btn-orange-hover" title="<?php echo ucfirst(get_phrase('edit')); ?>">
                                     <i class="entypo-pencil"></i>
                                 </a>
                                 <?php if ($row['status_id'] == 1): ?>
-                                    <a href="javascript:;" onclick="confirm_disable_sweet_modal('<?php echo base_url();?>index.php?admin/behaviors_information/disable_behavior/<?php echo $row['behavior_id'];?>/<?php echo $row['student_id'];?>');" class="btn btn-table btn-white btn-danger-hover" title="<?php echo ucfirst(get_phrase('disable')); ?>">
+                                    <a href="javascript:;" onclick="confirm_disable_sweet_modal('<?php echo base_url();?>index.php?admin/behaviors_information/disable_behaviors/<?php echo $row['behavior_id'];?>/<?php echo $row['student_id'];?>');" class="btn btn-table btn-white btn-danger-hover" title="<?php echo ucfirst(get_phrase('disable')); ?>">
                                         <i class="entypo-block"></i>
                                     </a>
                                 <?php elseif ($row['status_id'] == 0): ?>
-                                    <a href="javascript:;" onclick="confirm_enable_sweet_modal('<?php echo base_url();?>index.php?admin/behaviors_information/enable_behavior/<?php echo $row['behavior_id'];?>/<?php echo $row['student_id'];?>');" class="btn btn-table btn-white btn-green-hover" title="<?php echo ucfirst(get_phrase('enable')); ?>">
+                                    <a href="javascript:;" onclick="confirm_enable_sweet_modal('<?php echo base_url();?>index.php?admin/behaviors_information/enable_behaviors/<?php echo $row['behavior_id'];?>/<?php echo $row['student_id'];?>');" class="btn btn-table btn-white btn-green-hover" title="<?php echo ucfirst(get_phrase('enable')); ?>">
                                         <i class="fa fa-check-circle-o"></i>
                                     </a>
                                 <?php endif; ?>

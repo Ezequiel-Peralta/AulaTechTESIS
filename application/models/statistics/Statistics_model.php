@@ -61,7 +61,7 @@ class Statistics_model extends CI_Model {
         try {
             $class_id = $this->db->escape_str($class_id);
             $status = $this->db->escape_str($status);
-            return $this->db->get_where('student_details', array('class_id' => $class_id, 'status' => $status))->result_array();
+            return $this->db->get_where('student_details', array('class_id' => $class_id, 'user_status_id' => $status))->result_array();
         } catch (Exception $e) {
             log_message('error', 'Error in get_students_by_status: ' . $e->getMessage());
             return false;
@@ -72,22 +72,22 @@ class Statistics_model extends CI_Model {
         try {
             $class_id = $this->db->escape_str($class_id);
             $status = $this->db->escape_str($status);
-            return $this->db->where(array('class_id' => $class_id, 'status' => $status))->count_all_results('student_details');
+            return $this->db->where(array('class_id' => $class_id, 'user_status_id' => $status))->count_all_results('student_details');
         } catch (Exception $e) {
             log_message('error', 'Error in count_students_by_status: ' . $e->getMessage());
             return false;
         }
     }
 
-    public function get_graduates_by_period($academic_period_id) {
-        try {
-            $academic_period_id = $this->db->escape_str($academic_period_id);
-            return $this->db->get_where('graduates', array('academic_period_id' => $academic_period_id))->result_array();
-        } catch (Exception $e) {
-            log_message('error', 'Error in get_graduates_by_period: ' . $e->getMessage());
-            return false;
-        }
-    }
+    // public function get_graduates_by_period($academic_period_id) {
+    //     try {
+    //         $academic_period_id = $this->db->escape_str($academic_period_id);
+    //         return $this->db->get_where('graduates', array('academic_period_id' => $academic_period_id))->result_array();
+    //     } catch (Exception $e) {
+    //         log_message('error', 'Error in get_graduates_by_period: ' . $e->getMessage());
+    //         return false;
+    //     }
+    // }
 
     public function count_failed_marks($student_id, $subject_id) {
         try {

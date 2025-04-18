@@ -42,7 +42,7 @@ class Secretaries extends CI_Controller
         $this->load->view('backend/index', $page_data);
     }
 
-    function secretary_profile($secretary_id = '')
+    function secretaries_profile($secretary_id = '')
     {
         if ($this->session->userdata('admin_login') != 1)
             redirect('login', 'refresh');
@@ -54,11 +54,12 @@ class Secretaries extends CI_Controller
             ),
             array(
                 'text' => ucfirst(get_phrase('manage_secretaries')) . '&nbsp;&nbsp;/&nbsp;&nbsp;' . ucfirst(get_phrase('view_profile')),
-                'url' => base_url('index.php?admin/secretary_profile/' . $secretary_id)
+                'url' => base_url('index.php?admin/secretaries_profile/' . $secretary_id)
             )
         );
 
         $page_data['breadcrumb'] = $breadcrumb;
+        $page_data['param2'] = $secretary_id;
         $page_data['page_name'] = 'secretary_profile';
         $page_data['page_title'] = ucfirst(get_phrase('view_profile'));
         $page_data['secretary_info'] = $this->Secretaries_model->get_secretary_info($secretary_id);
@@ -66,7 +67,7 @@ class Secretaries extends CI_Controller
         $this->load->view('backend/index', $page_data);
     }
 
-    function secretary($param1 = '', $param2 = '', $param3 = '')
+    function secretaries($param1 = '', $param2 = '', $param3 = '')
     {
         if ($this->session->userdata('admin_login') != 1)
             redirect(base_url(), 'refresh');
@@ -179,7 +180,7 @@ class Secretaries extends CI_Controller
             redirect(base_url() . 'index.php?admin/secretaries_information/', 'refresh');
         }
 
-        if ($param1 == 'disable_secretary') {
+        if ($param1 == 'disable_secretaries') {
             $secretary_id = $param2;
 
             if ($secretary_id) {
@@ -211,7 +212,7 @@ class Secretaries extends CI_Controller
             redirect(base_url() . 'index.php?admin/secretaries_information/', 'refresh');
         }
 
-        if ($param1 == 'enable_secretary') {
+        if ($param1 == 'enable_secretaries') {
             $secretary_id = $param2;
 
             if ($secretary_id) {
@@ -244,7 +245,7 @@ class Secretaries extends CI_Controller
         }
     }
 
-    function add_secretary()
+    function add_secretaries()
     {
         if ($this->session->userdata('admin_login') != 1)
             redirect(base_url(), 'refresh');
@@ -256,7 +257,7 @@ class Secretaries extends CI_Controller
             ),
             array(
                 'text' => ucfirst(get_phrase('add_secretary')),
-                'url' => base_url('index.php?admin/add_secretary')
+                'url' => base_url('index.php?admin/add_secretaries')
             )
         );
 
@@ -267,7 +268,7 @@ class Secretaries extends CI_Controller
         $this->load->view('backend/index', $page_data);
     }
 
-    function edit_secretary($secretary_id = '')
+    function edit_secretaries($secretary_id = '')
     {
         if ($this->session->userdata('admin_login') != 1)
             redirect('login', 'refresh');
@@ -279,7 +280,7 @@ class Secretaries extends CI_Controller
             ),
             array(
                 'text' => ucfirst(get_phrase('edit_secretary')),
-                'url' => base_url('')
+                'url' => base_url('index.php?admin/edit_secretaries/' . $secretary_id)
             )
         );
 

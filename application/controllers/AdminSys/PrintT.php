@@ -352,23 +352,24 @@ class PrintT extends CI_Controller
             </tr>
         </thead>
         <tbody>';
-    
+        $exam_types = $this->Exams_model->get_exam_types(); // Asumimos que devuelve un array de tipos con su ID
+
         foreach ($subjects as $subject) {
             // Obtener las marcas del estudiante para la asignatura
             $marks = $this->Marks_model->get_marks_by_student_subject2($student_id, $subject['subject_id'], $section['academic_period_id']);
-    
-            // Inicializar un array para almacenar los marks organizados por exam_type_id
-            $marks_by_exam_type = array_fill(1, 21, ''); // Rellenar todas las posiciones con valores vacíos
-    
-            // Rellenar los valores existentes en $marks_by_exam_type
+        
+            // Inicializar array vacío por cada exam_type_id real
+            $marks_by_exam_type = array();
+            foreach ($exam_types as $type) {
+                $marks_by_exam_type[$type['id']] = '';
+            }
+        
+            // Rellenar los valores existentes
             foreach ($marks as $mark) {
-                if ($mark['exam_type_id'] >= 1 && $mark['exam_type_id'] <= 21) {
-                    // Validar si mark_obtained no está vacío
-                    if (!empty($mark['mark_obtained'])) {
-                        $mark_value = floatval($mark['mark_obtained']);
-                        // Si el valor es 0.00, establecer como vacío; si no, usar el valor correspondiente
-                        $marks_by_exam_type[$mark['exam_type_id']] = ($mark_value === 0.00) ? '' : $mark_value;
-                    }
+                $exam_type_id = $mark['exam_type_id'];
+                if (isset($marks_by_exam_type[$exam_type_id]) && !empty($mark['mark_obtained'])) {
+                    $mark_value = floatval($mark['mark_obtained']);
+                    $marks_by_exam_type[$exam_type_id] = ($mark_value === 0.00) ? '' : $mark_value;
                 }
             }
         
@@ -376,10 +377,9 @@ class PrintT extends CI_Controller
             $html .= '<tr>';
             $html .= '<td class="subject-column">' . $subject['name'] . '</td>';
         
-            for ($exam_type_id = 1; $exam_type_id <= 21; $exam_type_id++) {
-                // Usar directamente el valor almacenado en $marks_by_exam_type
-                $value = $marks_by_exam_type[$exam_type_id];
-                $html .= '<td>' .  ($value !== '' ? $value : '') . '</td>';
+            foreach ($exam_types as $type) {
+                $value = $marks_by_exam_type[$type['id']];
+                $html .= '<td>' . ($value !== '' ? $value : '') . '</td>';
             }
         
             $html .= '</tr>';
