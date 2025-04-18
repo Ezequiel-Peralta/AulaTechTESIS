@@ -215,7 +215,7 @@ foreach ($schedules as $schedule) {
             <div class="tab-pane active" id="home">
                 <br>
                 <div class="mt-2 mb-4">
-                    <a href="<?php echo base_url(); ?>index.php?admin/add_schedule" class="btn btn-table btn-white btn-green-hover" title="<?php echo ucfirst(get_phrase('add')); ?>" style="padding: 6px 10px;">
+                    <a href="<?php echo base_url(); ?>index.php?admin/add_schedules" class="btn btn-table btn-white btn-green-hover" title="<?php echo ucfirst(get_phrase('add')); ?>" style="padding: 6px 10px;">
                         <i class="fa fa-plus"></i>
                     </a>
                     <button type="button" onclick="reload_ajax()" class="btn btn-table btn-white btn-warning-hover" title="<?php echo ucfirst(get_phrase('reload')); ?>" style="padding: 6px 10px;">
@@ -277,7 +277,7 @@ foreach ($schedules as $schedule) {
                                                                                         <a href="<?php echo base_url(); ?>index.php?admin/subjects_profile/<?php echo $class['subject_id']; ?>" class="btn btn-table btn-white btn-info-hover" title="<?php echo ucfirst(get_phrase('view_profile')); ?>">
                                                                                             <i class="entypo-eye"></i>
                                                                                         </a>
-                                                                                        <a href="<?php echo base_url(); ?>index.php?admin/edit_schedule/<?php echo $class['schedule_id']; ?>" class="btn btn-table btn-white btn-orange-hover" title="<?php echo ucfirst(get_phrase('edit')); ?>">
+                                                                                        <a href="<?php echo base_url(); ?>index.php?admin/edit_schedules/<?php echo $class['schedule_id']; ?>" class="btn btn-table btn-white btn-orange-hover" title="<?php echo ucfirst(get_phrase('edit')); ?>">
                                                                                             <i class="entypo-pencil"></i> 
                                                                                         </a>
                                                                                         <a href="javascript:;" onclick="confirm_disable_sweet_modal('<?php echo base_url();?>index.php?admin/schedules/disable_schedule/<?php echo $class['schedule_id'];?>/<?php echo $section_id;?>');" class="btn btn-table btn-white btn-danger-hover" title="<?php echo ucfirst(get_phrase('disable')); ?>">
@@ -306,7 +306,7 @@ foreach ($schedules as $schedule) {
 <script type="text/javascript">
         function get_sections(academic_period_id) {
             $.ajax({
-                url: '<?php echo base_url();?>index.php?admin/get_section_content_by_academic_period/' + academic_period_id + '/view_schedules',
+                url: '<?php echo base_url();?>index.php?admin/get_sections_content_by_academic_period/' + academic_period_id + '/view_schedules',
                 success: function(response) {
                     const emptyOption = '<option value="" selected disabled><?php echo ucfirst(get_phrase('select')); ?></option>';
                     jQuery('#class_select').html(emptyOption + response);

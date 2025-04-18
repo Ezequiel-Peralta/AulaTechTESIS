@@ -1,8 +1,5 @@
 
-<?php 
-    foreach ($edit_data as $row):
 
-?>
 
 <div class="row">
 	<div class="col-md-12">
@@ -35,7 +32,7 @@
 								<div class="col-md-6">
 									<div class="form-group">
 										<label class="control-label" for="title"><?php echo ucfirst(get_phrase('title')); ?><span class="required-value">&nbsp;*</span></label>
-										<input class="form-control" name="title" id="title" value="<?php echo $row['title'];?>" data-validate="required" data-message-required="<?php echo ucfirst(get_phrase('required_value')); ?>" autofocus/>
+										<input class="form-control" name="title" id="title" value="<?php echo $edit_data['title'];?>" data-validate="required" data-message-required="<?php echo ucfirst(get_phrase('required_value')); ?>" autofocus/>
 									</div>
 								</div>
 								<div class="col-md-6">
@@ -44,7 +41,7 @@
 										<select name="news_type_id" class="form-control" id="news_type_id" data-validate="required" data-message-required="<?php echo ucfirst(get_phrase('required_value')); ?>">
 											<option value="" selected disabled><?php echo ucfirst(get_phrase('select')); ?></option>
                             <?php foreach ($news_types as $news_type): ?>
-                                                <option value="<?php echo $news_type['news_type_id']; ?>" <?php echo (isset($row['news_type_id']) && $row['news_type_id'] == $news_type['news_type_id']) ? 'selected' : ''; ?>>
+                                                <option value="<?php echo $news_type['news_type_id']; ?>" <?php echo (isset($edit_data['news_type_id']) && $edit_data['news_type_id'] == $news_type['news_type_id']) ? 'selected' : ''; ?>>
                                                     <?php echo  ucfirst(get_phrase($news_type['name'])); ?>
                                                 </option>
                                             <?php endforeach; ?>
@@ -54,7 +51,7 @@
 								<div class="col-md-12">
 									<div class="form-group">
 										<label class="control-label" for="body"><?php echo ucfirst(get_phrase('body')); ?><span class="required-value">&nbsp;*</span></label>
-										<textarea style="resize: vertical;" class="form-control" name="body" id="body" rows="5" data-validate="required" data-message-required="<?php echo ucfirst(get_phrase('required_value')); ?>"><?php echo $row['body'];?></textarea>
+										<textarea style="resize: vertical;" class="form-control" name="body" id="body" rows="5" data-validate="required" data-message-required="<?php echo ucfirst(get_phrase('required_value')); ?>"><?php echo $edit_data['body'];?></textarea>
 									</div>
 								</div>
 							</div>
@@ -62,7 +59,7 @@
 								<div class="col-md-6">
 									<div class="form-group">
                                         <label class="control-label" for="date"><?php echo ucfirst(get_phrase('date')); ?><span class="required-value">&nbsp;*</span></label>
-                                        <input type="date" value="<?php echo $row['date'];?>" class="form-control text-center" name="date" id="date" data-validate="required" data-message-required="<?php echo ucfirst(get_phrase('required_value')); ?>" />
+                                        <input type="date" value="<?php echo $edit_data['date'];?>" class="form-control text-center" name="date" id="date" data-validate="required" data-message-required="<?php echo ucfirst(get_phrase('required_value')); ?>" />
                                     </div>
 								</div>
 								<div class="col-md-6">
@@ -70,8 +67,8 @@
                                         <label class="control-label" for="status_id"><?php echo ucfirst(get_phrase('status')); ?><span class="required-value">&nbsp;*</span></label>
 										<select name="status_id" class="form-control" id="status_id" data-validate="required" data-message-required="<?php echo ucfirst(get_phrase('required_value')); ?>">
                                         <option value="" selected disabled><?php echo ucfirst(get_phrase('select')); ?></option>    
-											<option value="0" <?php echo $row['status_id'] == "0" ? "selected" : ""; ?>><?php echo ucfirst(get_phrase('inactive')); ?></option>
-											<option value="1" <?php echo $row['status_id'] == "1" ? "selected" : ""; ?>><?php echo ucfirst(get_phrase('active')); ?></option>
+											<option value="0" <?php echo $edit_data['status_id'] == "0" ? "selected" : ""; ?>><?php echo ucfirst(get_phrase('inactive')); ?></option>
+											<option value="1" <?php echo $edit_data['status_id'] == "1" ? "selected" : ""; ?>><?php echo ucfirst(get_phrase('active')); ?></option>
 										</select>
                                     </div>
 								</div>
@@ -87,18 +84,18 @@
 											data-validate="required" data-message-required="<?php echo ucfirst(get_phrase('required_value')); ?>"
 											onchange="toggleClassSectionVisibility();">
 											<option value="" selected disabled><?php echo ucfirst(get_phrase('select')); ?></option>
-											<option value="all" <?php echo $row['user_type'] == "all" ? "selected" : ""; ?>><?php echo ucfirst(get_phrase('all')); ?></option>    
-											<option value="students" <?php echo $row['user_type'] == "students" ? "selected" : ""; ?>><?php echo ucfirst(get_phrase('students')); ?></option>
-											<option value="guardians" <?php echo $row['user_type'] == "guardians" ? "selected" : ""; ?>><?php echo ucfirst(get_phrase('guardians')); ?></option>
-											<option value="teachers" <?php echo $row['user_type'] == "teachers" ? "selected" : ""; ?>><?php echo ucfirst(get_phrase('teachers')); ?></option>
-											<option value="teachers_aide" <?php echo $row['user_type'] == "teachers_aide" ? "selected" : ""; ?>><?php echo ucfirst(get_phrase('teachers_aide')); ?></option>
-											<option value="secretaries" <?php echo $row['user_type'] == "secretaries" ? "selected" : ""; ?>><?php echo ucfirst(get_phrase('secretaries')); ?></option>
-											<option value="principals" <?php echo $row['user_type'] == "principals" ? "selected" : ""; ?>><?php echo ucfirst(get_phrase('principals')); ?></option>
+											<option value="all" <?php echo $edit_data['user_type'] == "all" ? "selected" : ""; ?>><?php echo ucfirst(get_phrase('all')); ?></option>    
+											<option value="students" <?php echo $edit_data['user_type'] == "students" ? "selected" : ""; ?>><?php echo ucfirst(get_phrase('students')); ?></option>
+											<option value="guardians" <?php echo $edit_data['user_type'] == "guardians" ? "selected" : ""; ?>><?php echo ucfirst(get_phrase('guardians')); ?></option>
+											<option value="teachers" <?php echo $edit_data['user_type'] == "teachers" ? "selected" : ""; ?>><?php echo ucfirst(get_phrase('teachers')); ?></option>
+											<option value="teachers_aide" <?php echo $edit_data['user_type'] == "teachers_aide" ? "selected" : ""; ?>><?php echo ucfirst(get_phrase('teachers_aide')); ?></option>
+											<option value="secretaries" <?php echo $edit_data['user_type'] == "secretaries" ? "selected" : ""; ?>><?php echo ucfirst(get_phrase('secretaries')); ?></option>
+											<option value="principals" <?php echo $edit_data['user_type'] == "principals" ? "selected" : ""; ?>><?php echo ucfirst(get_phrase('principals')); ?></option>
 										</select>
 									</div>
 								</div>
 							</div>
-							<div class="row" id="class-section-container" style="<?php if (in_array($row['user_type'], ['students', 'guardians', 'teachers', 'teachers_aide'])) echo ''; else echo 'display: none;'; ?>">
+							<div class="row" id="class-section-container" style="<?php if (in_array($edit_data['user_type'], ['students', 'guardians', 'teachers', 'teachers_aide'])) echo ''; else echo 'display: none;'; ?>">
 								<div class="col-md-6">
 									<div class="form-group">
 										<label for="field-2" class="control-label"><?php echo ucfirst(get_phrase('class')); ?></label>
@@ -107,11 +104,11 @@
 											<option value="" selected disabled><?php echo ucfirst(get_phrase('select')); ?></option>
 											<?php 
 												$classes = $this->db->get('class')->result_array();
-												foreach($classes as $row2):
+												foreach($classes as $edit_data2):
 													?>
-												<option value="<?php echo $row2['class_id'];?>"
-                                                    <?php if($row['class_id'] == $row2['class_id'])echo 'selected';?>>
-                                                            <?php echo $row2['name'];?>°
+												<option value="<?php echo $edit_data2['class_id'];?>"
+                                                    <?php if($edit_data['class_id'] == $edit_data2['class_id'])echo 'selected';?>>
+                                                            <?php echo $edit_data2['name'];?>°
                                                         </option>
 												<?php
 												endforeach;
@@ -124,7 +121,7 @@
 										<label for="field-2" class="control-label"><?php echo ucfirst(get_phrase('section')); ?></label>
 										<select name="section_id" class="form-control" id="section_selector_holder">
 										<?php
-											if (empty($row['class_id'])) {
+											if (empty($edit_data['class_id'])) {
 												?>
 												<option value=""><?php echo ucfirst(get_phrase('first_select_the_class')); ?></option>
 												<?php
@@ -132,7 +129,7 @@
 												?>
 												<option value="" selected disabled><?php echo ucfirst(get_phrase('select')); ?></option>
 												<?php
-												$all_sections = $this->db->get_where('section', array('class_id' => $row['class_id']))->result_array();
+												$all_sections = $this->db->get_where('section', array('class_id' => $edit_data['class_id']))->result_array();
 
 												$sections = [];
 												foreach ($all_sections as $section) {
@@ -149,7 +146,7 @@
 												foreach ($sections as $section) {
 													?>
 													<option value="<?php echo $section['section_id']; ?>"
-														<?php if ($row['section_id'] == $section['section_id']) echo 'selected'; ?>>
+														<?php if ($edit_data['section_id'] == $section['section_id']) echo 'selected'; ?>>
 														<?php echo $section['name']; ?>
 													</option>
 													<?php
@@ -163,7 +160,7 @@
 						</div>
 
                         <?php 
-							$files = isset($row['images']) ? json_decode($row['images'], true) : [];
+							$files = isset($edit_data['images']) ? json_decode($edit_data['images'], true) : [];
 						?>
 
 						<div class="tab-pane" id="tab2-3">
@@ -176,7 +173,7 @@
 											<?php foreach ($files as $file): ?>
 												<div class="fileinput fileinput-exists" data-provides="fileinput">
 													<div class="image-preview mt-2">
-														<img src="<?= base_url() . 'uploads/news/' . $row['news_id'] . '/' . $file; ?>" alt="Image Preview" class="img-thumbnail" style="max-width: 150px;">
+														<img src="<?= base_url() . 'uploads/news/' . $edit_data['news_id'] . '/' . $file; ?>" alt="Image Preview" class="img-thumbnail" style="max-width: 150px;">
 													</div>
 													<div class="input-group">
 														<div class="form-control uneditable-input" data-trigger="fileinput">
@@ -224,10 +221,6 @@
     </div>
 </div>
 
-<?php
-endforeach;
-?>
-
 
 
 <script>
@@ -269,7 +262,7 @@ endforeach;
     
 	function get_class_sections(class_id) {
     $.ajax({
-        url: '<?php echo base_url();?>index.php?admin/get_class_section/' + class_id,
+        url: '<?php echo base_url();?>index.php?admin/get_class_sections/' + class_id,
         success: function(response) {
             const sectionSelect = $('#section_selector_holder');
             sectionSelect.empty().append(response);

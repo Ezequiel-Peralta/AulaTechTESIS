@@ -144,7 +144,7 @@ $all_exams_count = count($exams);
             <div class="tab-pane active" id="home">
                 <br>
                 <div class="mt-2 mb-4">
-                    <a href="<?php echo base_url(); ?>index.php?admin/exam_add" class="btn btn-table btn-white btn-green-hover" title=" <?php echo ucfirst(get_phrase('add')); ?>" style="padding: 6px 10px;"><i class="fa fa-plus"></i></a>
+                    <a href="<?php echo base_url(); ?>index.php?admin/exams_add" class="btn btn-table btn-white btn-green-hover" title=" <?php echo ucfirst(get_phrase('add')); ?>" style="padding: 6px 10px;"><i class="fa fa-plus"></i></a>
                     <button type="button" onclick="reload_ajax()" class="btn btn-table btn-white btn-warning-hover" title="<?php echo ucfirst(get_phrase('reload')); ?>" style="padding: 6px 10px;"><i class="fa fa-refresh"></i></button>
                     <div class="pull-right"> 
                        
@@ -305,7 +305,7 @@ $all_exams_count = count($exams);
 <script type="text/javascript">
         function get_sections(academic_period_id) {
             $.ajax({
-                url: '<?php echo base_url();?>index.php?admin/get_section_content_by_academic_period/' + academic_period_id + '/view_exams',
+                url: '<?php echo base_url();?>index.php?admin/get_sections_content_by_academic_period/' + academic_period_id + '/view_exams',
                 success: function(response) {
                     const emptyOption = '<option value="" selected disabled><?php echo ucfirst(get_phrase('select')); ?></option>';
                     jQuery('#class_select').html(emptyOption + response);

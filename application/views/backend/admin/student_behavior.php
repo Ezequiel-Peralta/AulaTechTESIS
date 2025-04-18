@@ -38,7 +38,7 @@ $all_student_behavior_count = $query->num_rows();
             <div class="tab-pane active" id="home">
                 <br>
                 <div class="mt-2 mb-4">
-                    <a href="<?php echo base_url(); ?>index.php?admin/add_behavior/<?php echo $student_id;?>/<?php echo $student['class_id'];?>/<?php echo $student['section_id'];?>" class="btn btn-table btn-white btn-green-hover" title=" <?php echo ucfirst(get_phrase('add')); ?>" style="padding: 6px 10px;"><i class="fa fa-plus"></i></a>
+                    <a href="<?php echo base_url(); ?>index.php?admin/add_behaviors/<?php echo $student_id;?>/<?php echo $student['class_id'];?>/<?php echo $student['section_id'];?>" class="btn btn-table btn-white btn-green-hover" title=" <?php echo ucfirst(get_phrase('add')); ?>" style="padding: 6px 10px;"><i class="fa fa-plus"></i></a>
                     <button type="button" onclick="reload_ajax()" class="btn btn-table btn-white btn-warning-hover" title="<?php echo ucfirst(get_phrase('reload')); ?>" style="padding: 6px 10px;"><i class="fa fa-refresh"></i></button>
                     <div class="pull-right"> 
                       
@@ -82,11 +82,11 @@ $all_student_behavior_count = $query->num_rows();
                                     <i class="entypo-pencil"></i>
                                 </a>
                                 <?php if ($row['status_id'] == 1): ?>
-                                    <a href="javascript:;" onclick="confirm_disable_sweet_modal('<?php echo base_url();?>index.php?admin/behavior_information/disable_behavior/<?php echo $row['behavior_id'];?>/<?php echo $row['student_id'];?>');" class="btn btn-table btn-white btn-danger-hover" title="<?php echo ucfirst(get_phrase('disable')); ?>">
+                                    <a href="javascript:;" onclick="confirm_disable_sweet_modal('<?php echo base_url();?>index.php?admin/behaviors_information/disable_behavior/<?php echo $row['behavior_id'];?>/<?php echo $row['student_id'];?>');" class="btn btn-table btn-white btn-danger-hover" title="<?php echo ucfirst(get_phrase('disable')); ?>">
                                         <i class="entypo-block"></i>
                                     </a>
                                 <?php elseif ($row['status_id'] == 0): ?>
-                                    <a href="javascript:;" onclick="confirm_enable_sweet_modal('<?php echo base_url();?>index.php?admin/behavior_information/enable_behavior/<?php echo $row['behavior_id'];?>/<?php echo $row['student_id'];?>');" class="btn btn-table btn-white btn-green-hover" title="<?php echo ucfirst(get_phrase('enable')); ?>">
+                                    <a href="javascript:;" onclick="confirm_enable_sweet_modal('<?php echo base_url();?>index.php?admin/behaviors_information/enable_behavior/<?php echo $row['behavior_id'];?>/<?php echo $row['student_id'];?>');" class="btn btn-table btn-white btn-green-hover" title="<?php echo ucfirst(get_phrase('enable')); ?>">
                                         <i class="fa fa-check-circle-o"></i>
                                     </a>
                                 <?php endif; ?>

@@ -60,21 +60,25 @@ $all_student_count = count($students);
 
                                 $old_section = $this->db->get_where('section_history', array('section_id' => $old_section_id))->row();
 
-                                $new_academic_period = $this->db->get_where('academic_period', array('status_id' => 1))->row();
-                                $new_academic_period_id = $new_academic_period->id;
-
-                                $this->db->where('academic_period_id', $new_academic_period_id);
-                                $this->db->where('class_id', $old_section->class_id + 1);
-                                $sections = $this->db->get('section')->result_array();
-                        
-                                if (!empty($sections)) {
-                                    foreach ($sections as $section_row): ?>
-                                        <option value="<?php echo $section_row['section_id']; ?>" data-class-id="<?php echo $section_row['class_id']; ?>">
-                                            <?php echo $section_row['name'];?>
-                                        </option>
-                                    <?php endforeach; 
-                                } else {
+                                if ($old_section === null) {
                                     echo "<option value='' disabled>No hay cursos disponibles</option>";
+                                } else {
+                                    $new_academic_period = $this->db->get_where('academic_period', array('status_id' => 1))->row();
+                                    $new_academic_period_id = $new_academic_period->id;
+                        
+                                    $this->db->where('academic_period_id', $new_academic_period_id);
+                                    $this->db->where('class_id', $old_section->class_id + 1);
+                                    $sections = $this->db->get('section')->result_array();
+                        
+                                    if (!empty($sections)) {
+                                        foreach ($sections as $section_row): ?>
+                                            <option value="<?php echo $section_row['section_id']; ?>" data-class-id="<?php echo $section_row['class_id']; ?>">
+                                                <?php echo $section_row['name']; ?>
+                                            </option>
+                                        <?php endforeach;
+                                    } else {
+                                        echo "<option value='' disabled>No hay cursos disponibles</option>";
+                                    }
                                 }
                             ?>
                         </select>
@@ -110,9 +114,16 @@ $all_student_count = count($students);
         $new_academic_period = $this->db->get_where('academic_period', array('status_id' => 1))->row();
         $new_academic_period_id = $new_academic_period->id;
 
-        $this->db->where('academic_period_id', $new_academic_period_id);
-        $this->db->where('class_id', $old_section->class_id + 1);
-        $sections = $this->db->get('section')->result_array();
+        if ($old_section === null) {
+            $sections = null; 
+        } else {
+            $new_academic_period = $this->db->get_where('academic_period', array('status_id' => 1))->row();
+            $new_academic_period_id = $new_academic_period->id;
+
+            $this->db->where('academic_period_id', $new_academic_period_id);
+            $this->db->where('class_id', $old_section->class_id + 1);
+            $sections = $this->db->get('section')->result_array();
+        }
     ?>
     <tr>
         <td class="text-center">

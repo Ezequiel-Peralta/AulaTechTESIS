@@ -108,15 +108,15 @@ $news = $this->db->get()->result_array();
                         <div class="date-overlay">
                             <?php
                             $date = DateTime::createFromFormat('Y-m-d', $new['date']);
-                            
-                            // Obtener día y mes en español o inglés
-                           
-                            
 
                             if ($this->session->userdata('language_preference') === 'spanish') {
                                 $day = strftime('%A', $date->getTimestamp());
                                 $month = strftime('%B', $date->getTimestamp());
-                                echo DAYSMAP[$day] . ', ' . $date->format('d') . ' de ' . MONTHSMAP[$month] . ' del ' . $date->format('Y');
+
+                                $daysMap = unserialize(DAYSMAP);
+                                $monthsMap = unserialize(MONTHSMAP);
+
+                                echo $daysMap[$day] . ', ' . $date->format('d') . ' de ' . $monthsMap[$month] . ' del ' . $date->format('Y');
                             } else {
                                 echo $date->format('l, d F Y');
                             }

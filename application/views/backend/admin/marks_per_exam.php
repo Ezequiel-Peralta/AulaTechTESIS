@@ -31,7 +31,7 @@
                                         foreach($classes as $row):
                                     ?>
                                        <option value="<?php echo $row['class_id'];?>">
-                                             <?php echo $row['name'];?>
+                                             <?php echo $row['name'];?>°
                                         </option>
                                     <?php endforeach; ?>
 							</select>
@@ -175,7 +175,7 @@
 
     function get_class_sections(class_id) {
         $.ajax({
-            url: '<?php echo base_url();?>index.php?admin/get_class_section/' + class_id,
+            url: '<?php echo base_url();?>index.php?admin/get_class_sections/' + class_id,
             success: function(response) {
                 var select = $('#section_selector_holder');
                 select.empty();
@@ -205,7 +205,7 @@
                 // jQuery('#section_selector_holder_subject').html(response);
                 var select = $('#section_selector_holder_exam');
                 select.empty();
-                // select.append($('<option>', { value: '', text: '<?php echo ("Seleccionar"); ?>', selected: 'selected' }));
+                 select.append($('<option>', { value: '', text: '<?php echo ("Seleccionar"); ?>', selected: 'selected' }));
                 select.append(response);
             }
         });

@@ -57,6 +57,23 @@ class Exams_model extends CI_Model {
         }
     }
 
+    function update_exam_files($exam_id, $files) {
+        try {
+            $exam_id = $this->db->escape_str($exam_id);
+    
+            if (!isset($files['files']) || $files['files'] === null || $files['files'] === 'null') {
+                $files['files'] = '';
+            }
+    
+            $this->db->where('exam_id', $exam_id);
+            $this->db->update('exam', $files);
+        } catch (Exception $e) {
+            log_message('error', 'Error in update_exam_files: ' . $e->getMessage());
+            return false;
+        }
+    }
+    
+
     function update_exam_status($exam_id, $status) {
         try {
             $exam_id = $this->db->escape_str($exam_id);
@@ -107,6 +124,16 @@ class Exams_model extends CI_Model {
             return $this->db->get_where('section_history', array('section_id' => $section_id))->row_array();
         } catch (Exception $e) {
             log_message('error', 'Error in get_section_history: ' . $e->getMessage());
+            return false;
+        }
+    }
+
+    public function get_exams_by_subject($subject_id) {
+        try {
+            $subject_id = $this->db->escape_str($subject_id);
+            return $this->db->get_where('exam', array('subject_id' => $subject_id))->result_array();
+        } catch (Exception $e) {
+            log_message('error', 'Error in get_exams_by_subject: ' . $e->getMessage());
             return false;
         }
     }

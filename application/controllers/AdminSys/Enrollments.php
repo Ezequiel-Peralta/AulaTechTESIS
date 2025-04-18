@@ -8,7 +8,7 @@ class Enrollments extends CI_Controller
         $this->load->database();
         $this->load->library('session');
 
-        $this->load->model('enrollments/Enrollments_model');
+        $this->load->model('Enrollments_model');
         $this->load->library('Enrollments_service');
 
         date_default_timezone_set('America/Argentina/Buenos_Aires');
@@ -221,7 +221,7 @@ class Enrollments extends CI_Controller
                     'timerProgressBar' => true,
                 ));
 
-                redirect(base_url() . 'index.php?admin/student_information/' . $section_id, 'refresh');
+                redirect(base_url() . 'index.php?admin/students_information/' . $section_id, 'refresh');
             }
         }
     }

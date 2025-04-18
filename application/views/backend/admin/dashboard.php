@@ -2,7 +2,7 @@
 	<div class="col-md-12">
 		<div class="row">            
             <div class="col-md-4">
-                <a href="<?php echo base_url(); ?>index.php?admin/student_information/17">
+                <a href="<?php echo base_url(); ?>index.php?admin/students_information/17">
                     <div class="tile-stats tile-white">
                         <div class="icon">
                             <i class="entypo-graduation-cap student-icon" style="color:transparent; background-image: url('assets/images/light_mode/studentIcon.png'); background-size: cover;"></i>

@@ -9,7 +9,7 @@ foreach ($edit_data as $row):
 	<div class="col-md-12">
 		<div class="panel" data-collapsed="0">
 			<div class="panel-body">
-				<?php echo form_open(base_url() . 'index.php?admin/exam/update/' . $param2 , array('class' => 'form-wizard validate', 'enctype' => 'multipart/form-data'));?>
+				<?php echo form_open(base_url() . 'index.php?admin/exams/update/' . $param2 , array('class' => 'form-wizard validate', 'enctype' => 'multipart/form-data'));?>
 					<div class="steps-progress">
 						<div class="progress-indicator"></div>
 					</div>
@@ -217,7 +217,7 @@ $(document).ready(function() {
 
 function get_class_sections(class_id) {
     $.ajax({
-        url: '<?php echo base_url();?>index.php?admin/get_class_section/' + class_id,
+        url: '<?php echo base_url();?>index.php?admin/get_class_sections/' + class_id,
         success: function(response) {
             const sectionSelect = $('#section_selector_holder');
             sectionSelect.empty();

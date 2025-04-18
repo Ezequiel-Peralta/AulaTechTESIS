@@ -8,8 +8,10 @@ class Behaviors extends CI_Controller
         $this->load->database();
         $this->load->library('session');
 
-        $this->load->model('behaviors/behaviors_model');
+        $this->load->model('behaviors/Behaviors_model');
         $this->load->library('Behaviors_service');
+
+        $this->load->model('sections/Sections_model');
 
         date_default_timezone_set('America/Argentina/Buenos_Aires');
 
@@ -18,7 +20,7 @@ class Behaviors extends CI_Controller
         $this->output->set_header('Pragma: no-cache');
     }
 
-    function add_behavior($param1 = '', $param2 = '', $param3 = '')
+    function add_behaviors($param1 = '', $param2 = '', $param3 = '')
     {
         if ($this->session->userdata('admin_login') != 1)
             redirect(base_url(), 'refresh');
@@ -30,14 +32,14 @@ class Behaviors extends CI_Controller
             ),
             array(
                 'text' => ucfirst(get_phrase('add_behavior')),
-                'url' => base_url('index.php?admin/add_behavior')
+                'url' => base_url('index.php?admin/add_behaviors')
             )
         );
 
-        $classes = $this->behaviors_model->get_classes();
-        $sections = $this->behaviors_model->get_sections_by_class($param2);
-        $students = $this->behaviors_model->get_students_by_section($param3);
-        $behavior_types = $this->behaviors_model->get_behavior_types();
+        $classes = $this->Behaviors_model->get_classes();
+        $sections = $this->Sections_model->get_sections_by_class($param2);
+        $students = $this->Behaviors_model->get_students_by_section($param3);
+        $behavior_types = $this->Behaviors_model->get_behavior_types();
 
         $page_data = array(
             'breadcrumb' => $breadcrumb,
@@ -55,7 +57,7 @@ class Behaviors extends CI_Controller
         $this->load->view('backend/index', $page_data);
     }
 
-    function edit_behavior($behavior_id = '')
+    function edit_behaviors($behavior_id = '')
     {
         if ($this->session->userdata('admin_login') != 1)
             redirect(base_url(), 'refresh');
@@ -71,11 +73,11 @@ class Behaviors extends CI_Controller
             )
         );
 
-        $behavior_data = $this->behaviors_model->get_behavior_student($behavior_id);
-        $classes = $this->behaviors_model->get_classes();
-        $sections = $this->behaviors_model->get_sections_by_class($behavior_data['class_id']);
-        $students = $this->behaviors_model->get_students_by_section($behavior_data['section_id']);
-        $behavior_types = $this->behaviors_model->get_behavior_types();
+        $behavior_data = $this->Behaviors_model->get_behavior_student($behavior_id);
+        $classes = $this->Behaviors_model->get_classes();
+        $sections = $this->Behaviors_model->get_sections_by_class($behavior_data['class_id']);
+        $students = $this->Behaviors_model->get_students_by_section($behavior_data['section_id']);
+        $behavior_types = $this->Behaviors_model->get_behavior_types();
         
         $page_data = array(
             'breadcrumb' => $breadcrumb,
@@ -92,7 +94,7 @@ class Behaviors extends CI_Controller
         $this->load->view('backend/index', $page_data);
     }
 
-    function behavior($section_id = '')
+    function behaviors($section_id = '')
     {
         if ($this->session->userdata('admin_login') != 1)
             redirect('login', 'refresh');
@@ -104,7 +106,7 @@ class Behaviors extends CI_Controller
             ),
             array(
                 'text' => ucfirst(get_phrase('manage_behavior')) . "&nbsp;&nbsp;/&nbsp;&nbsp;" . $this->crud_model->get_section_name($section_id),
-                'url' => base_url('index.php?admin/behavior/' . $section_id)
+                'url' => base_url('index.php?admin/behaviors/' . $section_id)
             )
         );
 
@@ -123,7 +125,7 @@ class Behaviors extends CI_Controller
         $this->load->view('backend/index', $page_data);
     }
 
-    function behavior_information($param1 = '', $param2 = '', $param3 = '')
+    function behaviors_information($param1 = '', $param2 = '', $param3 = '')
     {
         if ($this->session->userdata('admin_login') != 1)
             redirect('login', 'refresh');
@@ -260,7 +262,7 @@ class Behaviors extends CI_Controller
         $this->load->view('backend/index', $page_data);
     }
 
-    function manage_behavior()
+    function manage_behaviors()
     {
         if ($this->session->userdata('admin_login') != 1)
             redirect('login', 'refresh');
@@ -272,7 +274,7 @@ class Behaviors extends CI_Controller
             ),
             array(
                 'text' => ucfirst(get_phrase('manage_behavior')),
-                'url' => base_url('index.php?admin/manage_behavior/')
+                'url' => base_url('index.php?admin/manage_behaviors/')
             )
         );
 

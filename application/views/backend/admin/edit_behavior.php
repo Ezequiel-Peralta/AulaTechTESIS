@@ -7,7 +7,7 @@
 	<div class="col-md-12">
 		<div class="panel panel-primary" data-collapsed="0">
 			<div class="panel-body">
-                <?php echo form_open(base_url() . 'index.php?admin/behavior_information/update/' . $behavior_id , array('class' => 'form-wizard validate', 'enctype' => 'multipart/form-data'));?>
+                <?php echo form_open(base_url() . 'index.php?admin/behaviors_information/update/' . $behavior_id , array('class' => 'form-wizard validate', 'enctype' => 'multipart/form-data'));?>
 				
 			
 					<div class="steps-progress">
@@ -52,7 +52,7 @@
 										<label for="field-2" class="control-label"><?php echo ucfirst(get_phrase('section')); ?><span class="required-value">&nbsp;*</span></label>
 										<select name="section_id" class="form-control" id="section_selector_holder"  data-validate="required" value="<?php echo $rowBehavior['section_id'];?>"
                                                 onchange="get_section_students(this.value);" data-message-required="<?php echo ucfirst(get_phrase('required_value')); ?>">
-                                                <option value="" selected disabled>
+                                                <option value="" disabled>
                                                     <?php echo ucfirst(get_phrase(empty($rowBehavior['class_id']) ? 'first_select_the_class' : 'select')); ?>
                                                 </option>
 
@@ -212,7 +212,7 @@ endforeach;
           
 	function get_class_sections(class_id) {
         $.ajax({
-            url: '<?php echo base_url();?>index.php?admin/get_section_content_by_class/' + class_id ,
+            url: '<?php echo base_url();?>index.php?admin/get_sections_content_by_class/' + class_id ,
             success: function(response) {
                 var select = $('#section_selector_holder_student');
                 select.empty(); 
@@ -226,7 +226,7 @@ endforeach;
 
     function get_section_students(section_id) {
      	$.ajax({
-         url: '<?php echo base_url();?>index.php?admin/get_students_content_by_section/' + section_id ,
+         url: '<?php echo base_url();?>index.php?admin/get_students_content_by_sections/' + section_id ,
              success: function(response)
              {
                 const emptyOption = '<option value="" selected disabled><?php echo ucfirst(get_phrase('select')); ?></option>';

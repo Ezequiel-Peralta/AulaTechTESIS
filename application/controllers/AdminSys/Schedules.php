@@ -165,7 +165,7 @@ class Schedules extends CI_Controller
         }
     }
 
-    function add_schedule()
+    function add_schedules()
     {
         if ($this->session->userdata('admin_login') != 1)
             redirect(base_url(), 'refresh');
@@ -177,7 +177,7 @@ class Schedules extends CI_Controller
             ),
             array(
                 'text' => ucfirst(get_phrase('add_schedule')),
-                'url' => base_url('index.php?admin/add_schedule')
+                'url' => base_url('index.php?admin/add_schedules')
             )
         );
 
@@ -187,7 +187,7 @@ class Schedules extends CI_Controller
         $this->load->view('backend/index', $page_data);
     }
 
-    function edit_schedule($schedule_id = '')
+    function edit_schedules($schedule_id = '')
     {
         if ($this->session->userdata('admin_login') != 1)
             redirect(base_url(), 'refresh');
@@ -202,7 +202,7 @@ class Schedules extends CI_Controller
             ),
             array(
                 'text' => ucfirst(get_phrase('edit_schedule')),
-                'url' => base_url('index.php?admin/edit_schedule')
+                'url' => base_url('index.php?admin/edit_schedules')
             )
         );
 

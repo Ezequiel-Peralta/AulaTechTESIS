@@ -13,6 +13,8 @@ class Attendances extends CI_Controller
         
         $this->load->library('Attendances_service'); // Cargar la librería de servicio de asistencia 
 
+        $this->load->model('crud_model'); 
+
         date_default_timezone_set('America/Argentina/Buenos_Aires');
 		
        /*cache control*/
@@ -21,7 +23,7 @@ class Attendances extends CI_Controller
 		
     }
 
-    function attendance_student($class_id = '')
+    function attendance_students($class_id = '')
     {
         if ($this->session->userdata('admin_login') != 1)
             redirect(base_url(), 'refresh');
@@ -35,7 +37,7 @@ class Attendances extends CI_Controller
             ),
             array(
                 'text' => ucfirst(get_phrase('manage_student_attendance')),
-                'url' => base_url('index.php?admin/attendance_student/' . $class_id)
+                'url' => base_url('index.php?admin/attendance_students/' . $class_id)
             )
         );
         
@@ -49,7 +51,7 @@ class Attendances extends CI_Controller
         $this->load->view('backend/index', $page_data);    
     }
 
-    function manage_attendance_student($date = '', $month = '', $year = '', $section_id = '') {
+    function manage_attendance_students($date = '', $month = '', $year = '', $section_id = '') {
         if ($this->session->userdata('admin_login') != 1) {
             redirect(base_url(), 'refresh');
         }
@@ -77,7 +79,7 @@ class Attendances extends CI_Controller
                 'timer' => '10000',
                 'timerProgressBar' => 'true',
             ));
-            redirect(base_url() . 'index.php?admin/manage_attendance_student/' . $date . '/' . $month . '/' . $year . '/' . $section_id, 'refresh');
+            redirect(base_url() . 'index.php?admin/manage_attendance_students/' . $date . '/' . $month . '/' . $year . '/' . $section_id, 'refresh');
         }
 
         $breadcrumb = array(
@@ -87,7 +89,7 @@ class Attendances extends CI_Controller
             ),
             array(
                 'text' => ucfirst(get_phrase('manage_student_attendance')),
-                'url' => base_url('index.php?admin/attendance_student/')
+                'url' => base_url('index.php?admin/attendance_students/')
             ),
             array(
                 'text' => ucfirst(get_phrase('register_attendance')),
@@ -112,7 +114,7 @@ class Attendances extends CI_Controller
     function manage_attendance_student_selector()
     {
         // Construye la URL base
-        $redirect_url = base_url() . 'index.php?admin/manage_attendance_student/';
+        $redirect_url = base_url() . 'index.php?admin/manage_attendance_students/';
 
         // Agrega los parámetros solo si no están vacíos
         if ($this->input->post('date')) {
@@ -132,7 +134,7 @@ class Attendances extends CI_Controller
         redirect($redirect_url, 'refresh');
     }
 
-    function summary_attendance_students($section_id='') {
+    function summary_attendance_students($class_id = '', $section_id='') {
         if ($this->session->userdata('admin_login') != 1) {
             redirect(base_url(), 'refresh');
         }
@@ -180,7 +182,7 @@ class Attendances extends CI_Controller
             ),
             array(
                 'text' => ucfirst(get_phrase('manage_student_attendance')),
-                'url' => base_url('index.php?admin/attendance_student/' . $section_id)
+                'url' => base_url('index.php?admin/attendance_students/' . $section_id)
             ),
             array(
                 'text' => ucfirst(get_phrase('attendance_summary')).  ($used_section_history ? '&nbsp;&nbsp;/&nbsp;&nbsp;' . $academic_period_name : '') .  '&nbsp;&nbsp;/&nbsp;&nbsp;' . $this->crud_model->get_section_name2($section_id),
@@ -289,7 +291,7 @@ class Attendances extends CI_Controller
         ]);
     }
 
-    function details_attendance_student($student_id='')
+    function details_attendance_students($student_id='')
     {
         if ($this->session->userdata('admin_login') != 1)
             redirect(base_url(), 'refresh');
@@ -320,7 +322,7 @@ class Attendances extends CI_Controller
             ),
             array(
                 'text' => ucfirst(get_phrase('manage_student_attendance')),
-                'url' => base_url('index.php?admin/attendance_student/')
+                'url' => base_url('index.php?admin/attendance_students/')
             ),
             array(
                 'text' => $this->crud_model->get_class_name_numeric($student_info[0]['class_id']) . '° ' . $this->crud_model->get_section_letter_name($student_info[0]['section_id']),
@@ -382,7 +384,7 @@ class Attendances extends CI_Controller
                 'timer' => '10000',
                 'timerProgressBar' => 'true',
             ));
-            redirect(base_url() . 'index.php?admin/details_attendance_student/' . $student_id, 'refresh');
+            redirect(base_url() . 'index.php?admin/details_attendance_students/' . $student_id, 'refresh');
     }
 
 

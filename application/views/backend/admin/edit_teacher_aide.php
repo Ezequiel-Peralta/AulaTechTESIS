@@ -1,6 +1,6 @@
 <?php 
 
-$edit_data = $this->Teachers_model->get_teacher_aide_info($teacher_aide_id);
+$edit_data = $this->TeachersAide_model->get_teacher_aide_info($teacher_aide_id);
 foreach ($edit_data as $row):
 
 ?>
@@ -9,7 +9,7 @@ foreach ($edit_data as $row):
 	<div class="col-md-12">
 		<div class="panel panel-primary" data-collapsed="0">
 			<div class="panel-body">
-                <?php echo form_open(base_url() . 'index.php?admin/teacher_aide/update/'.$teacher_aide_id , array('class' => 'form-wizard validate', 'enctype' => 'multipart/form-data'));?>
+                <?php echo form_open(base_url() . 'index.php?admin/teachers_aide/update/'.$teacher_aide_id , array('class' => 'form-wizard validate', 'enctype' => 'multipart/form-data'));?>
 				
 					<div class="steps-progress">
 						<div class="progress-indicator"></div>

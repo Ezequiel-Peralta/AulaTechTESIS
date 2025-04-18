@@ -174,7 +174,7 @@ const classId = '<?php echo $row['class_id']; ?>';
 
 function get_class_sections(class_id) {
     $.ajax({
-        url: '<?php echo base_url();?>index.php?admin/get_class_section/' + class_id,
+        url: '<?php echo base_url();?>index.php?admin/get_class_sections/' + class_id,
         success: function(response) {
             const sectionSelect = $('#section_selector_holder');
             sectionSelect.empty();

@@ -22,7 +22,7 @@ $all_teacher_aide_count = $query->num_rows();
     <div class="tab-pane active" id="all_teacher_aide">
     <br>
                 <div class="mt-2 mb-4">
-                    <a href="<?php echo base_url(); ?>index.php?admin/teacher_aide_add"  class="btn btn-table btn-white btn-green-hover" title=" <?php echo ucfirst(get_phrase('add')); ?>" style="padding: 6px 10px;"><i class="fa fa-plus"></i></a>
+                    <a href="<?php echo base_url(); ?>index.php?admin/teachers_aide_add"  class="btn btn-table btn-white btn-green-hover" title=" <?php echo ucfirst(get_phrase('add')); ?>" style="padding: 6px 10px;"><i class="fa fa-plus"></i></a>
                     <a href="#" class="btn btn-table btn-white btn-info-hover" title="<?php echo ucfirst(get_phrase('import')); ?>" style="padding: 6px 10px;"><i class="fa fa-upload"></i></a>
                     <button type="button" onclick="reload_ajax()" class="btn btn-table btn-white btn-warning-hover" title="<?php echo ucfirst(get_phrase('reload')); ?>" style="padding: 6px 10px;"><i class="fa fa-refresh"></i></button>
                     <div class="pull-right">
@@ -60,10 +60,10 @@ $all_teacher_aide_count = $query->num_rows();
                                 <a href="javascript:;" onclick="showAjaxModal('<?php echo base_url();?>index.php?modal/popup/modal_teacher_aide_profile/<?php echo $row['teacher_aide_id'];?>');" class="btn btn-table btn-white btn-info-hover" title="<?php echo ucfirst(get_phrase('profile')); ?>">
                                     <i class="entypo-user"></i>
                                 </a>
-                                <a  href="<?php echo base_url();?>index.php?admin/teacherAide_edit/<?php echo $row['teacher_aide_id'];?>" class="btn btn-table btn-white btn-orange-hover" title="<?php echo ucfirst(get_phrase('edit')); ?>">
+                                <a  href="<?php echo base_url();?>index.php?admin/teachersAide_edit/<?php echo $row['teacher_aide_id'];?>" class="btn btn-table btn-white btn-orange-hover" title="<?php echo ucfirst(get_phrase('edit')); ?>">
                                     <i class="entypo-pencil"></i>
                                 </a>
-                                <a  href="javascript:;" onclick="confirm_modal('<?php echo base_url();?>index.php?admin/teacherAide/delete/<?php echo $row['teacher_aide_id'];?>');" class="btn btn-table btn-white btn-danger-hover" title="desactivar">
+                                <a  href="javascript:;" onclick="confirm_modal('<?php echo base_url();?>index.php?admin/teachersAide/delete/<?php echo $row['teacher_aide_id'];?>');" class="btn btn-table btn-white btn-danger-hover" title="desactivar">
                                     <i class="entypo-block"></i>
                                 </a>
                             </td>
@@ -251,7 +251,7 @@ $all_teacher_aide_count = $query->num_rows();
             });
 
             if (selectedLanguages.length > 0) {
-                var url = '<?php echo base_url();?>index.php?admin/teacherAide/delete_teacher_aide_bulk/' + selectedLanguages.join('/');
+                var url = '<?php echo base_url();?>index.php?admin/teachersAide/delete_teachers_aide_bulk/' + selectedLanguages.join('/');
                 confirm_sweet_modal_bulk(url);
                 console.log(url);
             } else {

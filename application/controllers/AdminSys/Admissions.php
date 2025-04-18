@@ -121,7 +121,7 @@ class Admissions extends CI_Controller
                     'timerProgressBar' => true,
                 ));
 
-                redirect(base_url() . 'index.php?admin/student_information/' . $section_id, 'refresh');
+                redirect(base_url() . 'index.php?admin/students_information/' . $section_id, 'refresh');
             }
         }
     }

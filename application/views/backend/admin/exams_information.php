@@ -47,7 +47,7 @@ if (empty($subject_id)) {
             <div class="tab-pane active" id="home">
                 <br>
                 <div class="mt-2 mb-4">
-                    <a href="<?php echo base_url(); ?>index.php?admin/exam_add" class="btn btn-table btn-white btn-green-hover" title=" <?php echo ucfirst(get_phrase('add')); ?>" style="padding: 6px 10px;"><i class="fa fa-plus"></i></a>
+                    <a href="<?php echo base_url(); ?>index.php?admin/exams_add" class="btn btn-table btn-white btn-green-hover" title=" <?php echo ucfirst(get_phrase('add')); ?>" style="padding: 6px 10px;"><i class="fa fa-plus"></i></a>
                     <button type="button" onclick="reload_ajax()" class="btn btn-table btn-white btn-warning-hover" title="<?php echo ucfirst(get_phrase('reload')); ?>" style="padding: 6px 10px;"><i class="fa fa-refresh"></i></button>
                     <div class="pull-right"> 
                         <a href="javascript:;" id="enabled_exam_bulk_btn" onclick="" class="btn btn-table btn-white btn-green-hover" title="<?php echo ucfirst(get_phrase('enable')); ?>">
@@ -121,16 +121,16 @@ if (empty($subject_id)) {
                             </td>
                             <td class="text-center"><?php echo $status_label; ?></td>
                             <td class="text-center">
-                                <a href="<?php echo base_url();?>index.php?admin/exam_edit/<?php echo $row['exam_id'];?>" class="btn btn-table btn-white btn-orange-hover" title="<?php echo ucfirst(get_phrase('edit')); ?>">
+                                <a href="<?php echo base_url();?>index.php?admin/exams_edit/<?php echo $row['exam_id'];?>" class="btn btn-table btn-white btn-orange-hover" title="<?php echo ucfirst(get_phrase('edit')); ?>">
                                     <i class="entypo-pencil"></i>
                                 </a>
                                 
                                 <?php if ($row['status_id'] == 1): ?>
-                                    <a href="javascript:;" onclick="confirm_disable_sweet_modal('<?php echo base_url();?>index.php?admin/exam/disable_exam/<?php echo $row['exam_id'];?>/<?php echo $row['section_id'];?>');" class="btn btn-table btn-white btn-danger-hover" title="<?php echo ucfirst(get_phrase('disable')); ?>">
+                                    <a href="javascript:;" onclick="confirm_disable_sweet_modal('<?php echo base_url();?>index.php?admin/exams/disable_exams/<?php echo $row['exam_id'];?>/<?php echo $row['section_id'];?>');" class="btn btn-table btn-white btn-danger-hover" title="<?php echo ucfirst(get_phrase('disable')); ?>">
                                         <i class="entypo-block"></i>
                                     </a>
                                 <?php elseif ($row['status_id'] == 0): ?>
-                                    <a href="javascript:;" onclick="confirm_enable_sweet_modal('<?php echo base_url();?>index.php?admin/exam/enable_exam/<?php echo $row['exam_id'];?>/<?php echo $row['section_id'];?>');" class="btn btn-table btn-white btn-green-hover" title="<?php echo ucfirst(get_phrase('enable')); ?>">
+                                    <a href="javascript:;" onclick="confirm_enable_sweet_modal('<?php echo base_url();?>index.php?admin/exams/enable_exams/<?php echo $row['exam_id'];?>/<?php echo $row['section_id'];?>');" class="btn btn-table btn-white btn-green-hover" title="<?php echo ucfirst(get_phrase('enable')); ?>">
                                         <i class="fa fa-check-circle-o"></i>
                                     </a>
                                 <?php endif; ?>
@@ -338,7 +338,7 @@ if (empty($subject_id)) {
             });
 
             if (selectedExams.length > 0) {
-                var url = '<?php echo base_url();?>index.php?admin/exam/disable_exam_bulk/<?php echo $section_id;?>/' + selectedExams.join('/');
+                var url = '<?php echo base_url();?>index.php?admin/exams/disable_exams_bulk/<?php echo $section_id;?>/' + selectedExams.join('/');
                 console.log(url);
                 confirm_disable_sweet_modal_bulk(url);
             } else {
@@ -361,7 +361,7 @@ if (empty($subject_id)) {
             });
 
             if (selectedExams.length > 0) {
-                var url = '<?php echo base_url();?>index.php?admin/exam/enable_exam_bulk/<?php echo $section_id;?>/' + selectedExams.join('/');
+                var url = '<?php echo base_url();?>index.php?admin/exams/enable_exams_bulk/<?php echo $section_id;?>/' + selectedExams.join('/');
                 console.log(url);
                 confirm_enable_sweet_modal_bulk(url);
             } else {

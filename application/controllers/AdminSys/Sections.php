@@ -9,7 +9,7 @@ class Sections extends CI_Controller
         $this->load->library('session');
 
         $this->load->model('sections/Sections_model');
-        $this->load->model('teacherAide/TeacherAide_model');
+        $this->load->model('teachersAide/TeachersAide_model');
         $this->load->library('Sections_service');
 
         date_default_timezone_set('America/Argentina/Buenos_Aires');
@@ -209,7 +209,7 @@ class Sections extends CI_Controller
         }
     }
 
-    function get_class_section($class_id)
+    function get_class_sections($class_id)
     {
         $sections = $this->Sections_model->get_sections_by_class($class_id);
         foreach ($sections as $row) {
@@ -225,7 +225,7 @@ class Sections extends CI_Controller
         }
     }
 
-    function get_section_content_by_class($class_id)
+    function get_sections_content_by_class($class_id)
     {
         $sections = $this->Sections_model->get_sections_by_class($class_id);
         foreach ($sections as $row) {
@@ -233,7 +233,7 @@ class Sections extends CI_Controller
         }
     }
 
-    function get_section_content_by_academic_period($academic_period_id, $url)
+    function get_sections_content_by_academic_period($academic_period_id, $url)
     {
         $sections = $this->Sections_model->get_sections_by_academic_period($academic_period_id);
         foreach ($sections as $row) {

@@ -70,7 +70,7 @@ class News_service extends CI_Model {
 
             $final_files = $files_to_keep;
 
-            if (!empty($files['name'][0])) {
+            if (!empty($files) && isset($files['name'][0]) && !empty($files['name'][0])) {
                 $exam_directory = 'uploads/news/' . $news_id . '/';
                 if (!is_dir($exam_directory)) {
                     mkdir($exam_directory, 0777, true);

@@ -50,7 +50,7 @@
             <div class="tab-pane active" id="home">
                 <br>
                 <div class="mt-2 mb-4">
-                    <a href="<?php echo base_url(); ?>index.php?admin/add_subject" class="btn btn-table btn-white btn-green-hover" title=" <?php echo ucfirst(get_phrase('add')); ?>" style="padding: 6px 10px;"><i class="fa fa-plus"></i></a>
+                    <a href="<?php echo base_url(); ?>index.php?admin/add_subjects" class="btn btn-table btn-white btn-green-hover" title=" <?php echo ucfirst(get_phrase('add')); ?>" style="padding: 6px 10px;"><i class="fa fa-plus"></i></a>
                     <button type="button" onclick="reload_ajax()" class="btn btn-table btn-white btn-warning-hover" title="<?php echo ucfirst(get_phrase('reload')); ?>" style="padding: 6px 10px;"><i class="fa fa-refresh"></i></button>
                     <div class="pull-right"> 
                        
@@ -112,7 +112,7 @@
                                 <a href="<?php echo base_url();?>index.php?admin/subjects_profile/<?php echo $row['subject_id'];?>" class="btn btn-table btn-white btn-info-hover" title="<?php echo ucfirst(get_phrase('view_profile')); ?>">
                                     <i class="entypo-user"></i>
                                 </a>
-                                <a href="<?php echo base_url();?>index.php?admin/edit_subject/<?php echo $row['subject_id'];?>" class="btn btn-table btn-white btn-orange-hover" title="<?php echo ucfirst(get_phrase('edit')); ?>">
+                                <a href="<?php echo base_url();?>index.php?admin/edit_subjects/<?php echo $row['subject_id'];?>" class="btn btn-table btn-white btn-orange-hover" title="<?php echo ucfirst(get_phrase('edit')); ?>">
                                     <i class="entypo-pencil"></i>
                                 </a>
                                 
@@ -325,7 +325,7 @@
             });
 
             if (selectedExams.length > 0) {
-                var url = '<?php echo base_url();?>index.php?admin/exam/disable_exam_bulk/<?php echo $section_id;?>/' + selectedExams.join('/');
+                var url = '<?php echo base_url();?>index.php?admin/exams/disable_exams_bulk/<?php echo $section_id;?>/' + selectedExams.join('/');
                 console.log(url);
                 confirm_disable_sweet_modal_bulk(url);
             } else {
@@ -348,7 +348,7 @@
             });
 
             if (selectedExams.length > 0) {
-                var url = '<?php echo base_url();?>index.php?admin/exam/enable_exam_bulk/<?php echo $section_id;?>/' + selectedExams.join('/');
+                var url = '<?php echo base_url();?>index.php?admin/exams/enable_exams_bulk/<?php echo $section_id;?>/' + selectedExams.join('/');
                 console.log(url);
                 confirm_enable_sweet_modal_bulk(url);
             } else {

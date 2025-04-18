@@ -139,7 +139,7 @@ if ($all_subjects_count == 0) {
             <div class="tab-pane active" id="home">
                 <br>
                 <div class="mt-2 mb-4">
-                    <a href="<?php echo base_url(); ?>index.php?admin/add_subject" class="btn btn-table btn-white btn-green-hover" title=" <?php echo ucfirst(get_phrase('add')); ?>" style="padding: 6px 10px;"><i class="fa fa-plus"></i></a>
+                    <a href="<?php echo base_url(); ?>index.php?admin/add_subjects" class="btn btn-table btn-white btn-green-hover" title=" <?php echo ucfirst(get_phrase('add')); ?>" style="padding: 6px 10px;"><i class="fa fa-plus"></i></a>
                     <button type="button" onclick="reload_ajax()" class="btn btn-table btn-white btn-warning-hover" title="<?php echo ucfirst(get_phrase('reload')); ?>" style="padding: 6px 10px;"><i class="fa fa-refresh"></i></button>
                     <div class="pull-right"> 
                        
@@ -229,7 +229,7 @@ if (empty($subjects)) {
 <script type="text/javascript">
         function get_sections(academic_period_id) {
             $.ajax({
-                url: '<?php echo base_url();?>index.php?admin/get_section_content_by_academic_period/' + academic_period_id + '/view_subjects',
+                url: '<?php echo base_url();?>index.php?admin/get_sections_content_by_academic_period/' + academic_period_id + '/view_subjects',
                 success: function(response) {
                     const emptyOption = '<option value="" selected disabled><?php echo ucfirst(get_phrase('select')); ?></option>';
                     jQuery('#class_select').html(emptyOption + response);
@@ -412,7 +412,7 @@ if (empty($subjects)) {
             });
 
             if (selectedExams.length > 0) {
-                var url = '<?php echo base_url();?>index.php?admin/exam/disable_exam_bulk/<?php echo $section_id;?>/' + selectedExams.join('/');
+                var url = '<?php echo base_url();?>index.php?admin/exams/disable_exams_bulk/<?php echo $section_id;?>/' + selectedExams.join('/');
                 console.log(url);
                 confirm_disable_sweet_modal_bulk(url);
             } else {
@@ -435,7 +435,7 @@ if (empty($subjects)) {
             });
 
             if (selectedExams.length > 0) {
-                var url = '<?php echo base_url();?>index.php?admin/exam/enable_exam_bulk/<?php echo $section_id;?>/' + selectedExams.join('/');
+                var url = '<?php echo base_url();?>index.php?admin/exams/enable_exams_bulk/<?php echo $section_id;?>/' + selectedExams.join('/');
                 console.log(url);
                 confirm_enable_sweet_modal_bulk(url);
             } else {
