@@ -352,34 +352,63 @@ class PrintT extends CI_Controller
             </tr>
         </thead>
         <tbody>';
-        $exam_types = $this->Exams_model->get_exam_types(); // Asumimos que devuelve un array de tipos con su ID
-
-        foreach ($subjects as $subject) {
-            // Obtener las marcas del estudiante para la asignatura
-            $marks = $this->Marks_model->get_marks_by_student_subject2($student_id, $subject['subject_id'], $section['academic_period_id']);
+        $exam_order = [
+            'E1','R1','E2','R2','E3','R3','E4','R4','E5','R5','E6','R6','E7','R7',
+            'JIIS1','JIIS1-R','JIIS2','JIIS2-R',
+            'COL-DIC','COL-FEB','CAL-DEF'
+        ];
         
-            // Inicializar array vacío por cada exam_type_id real
-            $marks_by_exam_type = array();
-            foreach ($exam_types as $type) {
-                $marks_by_exam_type[$type['id']] = '';
+        // Obtener todos los tipos de examen disponibles
+        $exam_types_all = $this->Exams_model->get_exam_types_for_report(); // id, name, short_name
+        
+        // Crear un mapa de short_name => exam_type
+        $exam_types_by_short_name = [];
+        foreach ($exam_types_all as $exam_type) {
+            $exam_types_by_short_name[$exam_type['short_name']] = $exam_type;
+        }
+        
+        // Generar las filas por materia
+        foreach ($subjects as $subject) {
+            $marks_by_short_name = [];
+        
+            // Inicializar con valores vacíos
+            foreach ($exam_order as $short_name) {
+                $marks_by_short_name[$short_name] = '';
             }
         
-            // Rellenar los valores existentes
+            // Obtener notas del alumno para esta materia
+            $marks = $this->Marks_model->get_marks_by_student_subject2(
+                $student_id, 
+                $subject['subject_id'], 
+                $section['academic_period_id']
+            );
+        
+            // Mapear notas por short_name usando exam_type_id
             foreach ($marks as $mark) {
-                $exam_type_id = $mark['exam_type_id'];
-                if (isset($marks_by_exam_type[$exam_type_id]) && !empty($mark['mark_obtained'])) {
-                    $mark_value = floatval($mark['mark_obtained']);
-                    $marks_by_exam_type[$exam_type_id] = ($mark_value === 0.00) ? '' : $mark_value;
+                // Buscar short_name correspondiente
+                foreach ($exam_types_all as $exam_type) {
+                    if ($exam_type['id'] == $mark['exam_type_id']) {
+                        $short = $exam_type['short_name'];
+                        $marks_by_short_name[$short] = $mark['mark_obtained'];
+                        break;
+                    }
                 }
             }
         
-            // Generar la fila HTML
+            // Generar fila HTML
             $html .= '<tr>';
             $html .= '<td class="subject-column">' . $subject['name'] . '</td>';
         
-            foreach ($exam_types as $type) {
-                $value = $marks_by_exam_type[$type['id']];
-                $html .= '<td>' . ($value !== '' ? $value : '') . '</td>';
+            foreach ($exam_order as $short_name) {
+                $valor = $marks_by_short_name[$short_name];
+            
+                if ($short_name === 'CAL-DEF' && is_numeric($valor)) {
+                    // Mostrar como decimal (puede tener coma)
+                    $html .= '<td>' . number_format($valor, 2, ',', '') . '</td>';
+                } else {
+                    // Mostrar como entero
+                    $html .= '<td>' . (is_numeric($valor) ? intval($valor) : $valor) . '</td>';
+                }
             }
         
             $html .= '</tr>';

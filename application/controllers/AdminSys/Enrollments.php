@@ -151,7 +151,7 @@ class Enrollments extends CI_Controller
         }
     }
 
-    function re_enrollments_student($param1 = '', $param2 = '', $param3 = '', $param4 = '')
+    function re_enrollments_students($param1 = '', $param2 = '', $param3 = '', $param4 = '')
     {
         if ($this->session->userdata('admin_login') != 1)
             redirect('login', 'refresh');
@@ -197,18 +197,16 @@ class Enrollments extends CI_Controller
         }
 
         if ($param1 == 're_enrollment_bulk') {
-            $segments = $this->uri->segment_array();
-            $index = array_search('re_enrollment_bulk', $segments);
+            $student_ids_json = $this->input->post('selected_student_ids');
+            $section_id = $this->input->post('target_section_id');
+            $class_id = $this->input->post('target_class_id');
+        
+            $student_ids = json_decode($student_ids_json, true);
 
-            $class_id = isset($segments[$index + 1]) ? $segments[$index + 1] : null;
-            $section_id = isset($segments[$index + 2]) ? $segments[$index + 2] : null;
-            $students = array_slice($segments, $index + 2);
-            $students = array_filter($students, 'is_numeric');
+            if (!empty($student_ids)) {
+                $this->Enrollments_model->bulk_update_student_details($student_ids, $class_id, $section_id);
 
-            if (!empty($students)) {
-                $this->Enrollments_model->bulk_update_student_details($students, $class_id, $section_id);
-
-                $this->Enrollments_model->bulk_update_academic_history($students, $class_id, $section_id);
+                $this->Enrollments_model->bulk_update_academic_history($student_ids, $class_id, $section_id);
 
                 $this->session->set_flashdata('flash_message', array(
                     'title' => '¡' . ucfirst(get_phrase('students_re_enrolled_successfully')) . '!',

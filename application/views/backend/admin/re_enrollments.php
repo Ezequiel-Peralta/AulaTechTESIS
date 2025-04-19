@@ -83,9 +83,10 @@ $all_student_count = count($students);
                             ?>
                         </select>
 
-                        <button id="inscription-btn-bulk" class="btn btn-secondary inscription-btn-bulk" style="display:none;">
+                        <button type="button" id="inscription-btn-bulk" class="btn btn-secondary inscription-btn-bulk" style="display:none;">
                             <?php echo ucfirst(get_phrase('re_enrollment'));?>
                         </button>
+
                     </div>
                 </div>
                 <br>
@@ -190,6 +191,12 @@ $all_student_count = count($students);
         
         
     </div>
+    <form id="bulk-reenrollment-form" method="POST" action="<?php echo base_url('index.php?admin/re_enrollments_students/re_enrollment_bulk'); ?>">
+        <input type="hidden" name="selected_student_ids" id="selected_student_ids">
+        <input type="hidden" name="target_section_id" id="target_section_id">
+        <input type="hidden" name="target_class_id" id="target_class_id">
+    </form>
+
 </div>
 
 <script>
@@ -361,33 +368,25 @@ $all_student_count = count($students);
             });
         });
 
-        // Inscripción en masa cuando se hace clic en el botón "Inscribir al curso"
-        $('#inscription-btn-bulk').on('click', function () {
-            var selectedSectionId = $('#re_enrollment_student_bulk_btn').val(); // Obtiene el section_id
-            var selectedClassId = $('#re_enrollment_student_bulk_btn option:selected').data('class-id'); // Obtiene el class_id asociado al section_id
-            var selectedStudents = [];
+        $('#inscription-btn-bulk').click(function () {
+            var selectedIDs = [];
 
-            // Obtener los student_id de los checkboxes seleccionados
             $('.chk-student:checked').each(function () {
-                selectedStudents.push($(this).attr('id')); // El id del checkbox debe ser el student_id
+                selectedIDs.push($(this).attr('id'));
             });
 
-            if (selectedStudents.length > 0) {
-                var url = '<?php echo base_url(); ?>index.php?admin/re_enrollments_student/re_enrollment_bulk/' + selectedClassId + '/' + selectedSectionId + '/' + selectedStudents.join('/');
-                console.log(url); // Para depurar y ver cómo queda la URL
-                confirm_sweet_modal(url);
-            } else {
-                Swal.fire({
-                    title: "¡<?php echo ucfirst(get_phrase('no_students_selected')); ?>!",
-                    text: "",
-                    showCloseButton: true,
-                    icon: "warning",
-                    iconColor: "#d33",
-                    confirmButtonColor: "#3085d6",
-                    confirmButtonText: "<?php echo ucfirst(get_phrase('accept')); ?>"
-                })
-            }
+            const sectionID = $('#re_enrollment_student_bulk_btn').val();
+
+            const classID = $('#re_enrollment_student_bulk_btn option:selected').data('class-id');
+
+            $('#selected_student_ids').val(JSON.stringify(selectedIDs));
+            $('#target_section_id').val(sectionID);
+            $('#target_class_id').val(classID);
+
+            $('#bulk-reenrollment-form').submit();
         });
+
+        
 
         $('#chk-all-students').on('change', function() {
             var is_checked = $(this).is(':checked');
@@ -425,24 +424,21 @@ $(document).ready(function () {
         }
     });
 
-    // Realizar la reinscripción
-    $('.inscription-btn').on('click', function () {
-        var studentId = $(this).attr('id').split('-')[2];
-        var sectionId = $('#select_section_' + studentId).val();
+     // Marcar todos
+     $('#chk-all-students').change(function () {
+        $('.chk-student').prop('checked', $(this).prop('checked'));
+    });
 
-        if (sectionId !== "") {
-                $.ajax({
-                    url: '<?php echo base_url(); ?>index.php?admin/re_enrollments_student/create/' + studentId + '/' + sectionId,
-                    success: function (response) {
-                        console.log('Operación realizada exitosamente.');
-                        location.reload();
-                    },
-                    error: function(xhr, status, error) {
-                        console.error('Error:', error);
-                    }
-                });
+    // Mostrar botón si hay sección seleccionada
+    $('#re_enrollment_student_bulk_btn').change(function () {
+        if ($(this).val() !== '') {
+            $('#inscription-btn-bulk').show();
+        } else {
+            $('#inscription-btn-bulk').hide();
         }
     });
+
+   
 
     $('#re_enrollment_student_bulk_btn').on('change', function () {
         var selectedSectionId = $(this).val();

@@ -46,6 +46,8 @@ class Exams_model extends CI_Model {
         }
     }
 
+
+
     function update_exam($exam_id, $data) {
         try {
             $exam_id = $this->db->escape_str($exam_id);
@@ -217,4 +219,16 @@ class Exams_model extends CI_Model {
             return false;
         }
     }
+
+    public function get_exam_types_for_report() {
+        try {
+            $this->db->where_not_in('name', array('EXAM-PREV', 'EXAM-PREV-DATE'));
+            $query = $this->db->get('exam_type');
+            return $query->result_array();
+        } catch (Exception $e) {
+            log_message('error', 'Error in get_exam_types: ' . $e->getMessage());
+            return false;
+        }
+    }
+    
 }

@@ -232,7 +232,7 @@ $titleES = 'Reporte de Estudiantes - ' . $section_name . ' - ' . date('d-m-Y');
                         text: '<i class="fa fa-print"></i> Print / <i class="fa fa-file-pdf-o"></i> PDF',
                         className: 'btn buttons-html5 btn-white btn-sm btn-danger-hover',
                         action: function (e, dt, node, config) {
-                            window.location.href = '<?php echo base_url(); ?>index.php?admin/printStudentTableEN/<?php echo $section_id;?>';
+                            window.open('<?php echo base_url(); ?>index.php?admin/printStudentTableEN/<?php echo $section_id;?>', '_blank');
                         }
                     }
                 ],
@@ -296,7 +296,7 @@ $titleES = 'Reporte de Estudiantes - ' . $section_name . ' - ' . date('d-m-Y');
                         text: '<i class="fa fa-print"></i> Imprimir / <i class="fa fa-file-pdf-o"></i> PDF',
                         className: 'btn buttons-html5 btn-white btn-sm btn-danger-hover',
                         action: function (e, dt, node, config) {
-                            window.location.href = '<?php echo base_url(); ?>index.php?admin/printStudentTableES/<?php echo $section_id;?>';
+                            window.open('<?php echo base_url(); ?>index.php?admin/printStudentTableES/<?php echo $section_id;?>', '_blank');
                         }
                     }
                 ],
