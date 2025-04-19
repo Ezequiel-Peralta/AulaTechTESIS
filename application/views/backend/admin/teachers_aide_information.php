@@ -66,11 +66,11 @@ $all_teacher_aide_count = $query->num_rows();
                                 </a>
                                
                                 <?php if ($row['user_status_id'] == 1): ?>
-                                    <a href="javascript:;" onclick="confirm_disable_sweet_modal('<?php echo base_url();?>index.php?admin/teachers_aide/disable_teacher_aide/<?php echo $row['teacher_aide_id'];?>');" class="btn btn-table btn-white btn-danger-hover" title="<?php echo ucfirst(get_phrase('disable')); ?>">
+                                    <a href="javascript:;" onclick="confirm_disable_sweet_modal('<?php echo base_url();?>index.php?admin/teachers_aide/disable_teachers_aide/<?php echo $row['teacher_aide_id'];?>');" class="btn btn-table btn-white btn-danger-hover" title="<?php echo ucfirst(get_phrase('disable')); ?>">
                                         <i class="entypo-block"></i>
                                     </a>
                                 <?php elseif ($row['user_status_id'] == 0): ?>
-                                    <a href="javascript:;" onclick="confirm_enable_sweet_modal('<?php echo base_url();?>index.php?admin/teachers_aide/enable_teacher_aide/<?php echo $row['teacher_aide_id'];?>');" class="btn btn-table btn-white btn-green-hover" title="<?php echo ucfirst(get_phrase('enable')); ?>">
+                                    <a href="javascript:;" onclick="confirm_enable_sweet_modal('<?php echo base_url();?>index.php?admin/teachers_aide/enable_teachers_aide/<?php echo $row['teacher_aide_id'];?>');" class="btn btn-table btn-white btn-green-hover" title="<?php echo ucfirst(get_phrase('enable')); ?>">
                                         <i class="fa fa-check-circle-o"></i>
                                     </a>
                                 <?php endif; ?>

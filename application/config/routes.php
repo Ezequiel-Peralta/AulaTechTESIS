@@ -164,13 +164,22 @@ $route['admin/add_behaviors'] = 'AdminSys/Behaviors/add_behaviors';
 //Behaviors - edit_behaviors
 $route['admin/edit_behaviors/(:any)'] = 'AdminSys/Behaviors/edit_behaviors/$1';
 
+$route['admin/behaviors_information/create/(:any)'] = 'AdminSys/Behaviors/behaviors_information/create/$1';
+$route['admin/behaviors_information/create'] = 'AdminSys/Behaviors/behaviors_information/create';
+
+$route['admin/news/create/(:any)'] = 'AdminSys/News/news/create/$1';
+$route['admin/news/create'] = 'AdminSys/News/news/create';
+
+$route['admin/behaviors_information/update/(:any)'] = 'AdminSys/Behaviors/behaviors_information/update/$1';
+
+$route['admin/behaviors_information/enable_behaviors/(:any)/(:any)'] = 'AdminSys/Behaviors/behaviors_information/enable_behaviors/$1/$2';
+$route['admin/behaviors_information/enable_behaviors/(:any)'] = 'AdminSys/Behaviors/behaviors_information/enable_behaviors/$1';
+
+$route['admin/behaviors_information/disable_behaviors/(:any)/(:any)'] = 'AdminSys/Behaviors/behaviors_information/disable_behaviors/$1/$2';
+$route['admin/behaviors_information/disable_behaviors/(:any)'] = 'AdminSys/Behaviors/behaviors_information/disable_behaviors/$1';
+
 //Behaviors - behaviors
 $route['admin/behaviors/(:any)'] = 'AdminSys/Behaviors/behaviors/$1';
-
-//Behaviors - behaviors_information
-$route['admin/behaviors_information/(:any)/(:any)/(:any)'] = 'AdminSys/Behaviors/behaviors_information/$1/$2/$3';
-$route['admin/behaviors_information/(:any)/(:any)'] = 'AdminSys/Behaviors/behaviors_information/$1/$2';
-$route['admin/behaviors_information/(:any)'] = 'AdminSys/Behaviors/behaviors_information/$1';
 
 //Behaviors - students_behaviors
 $route['admin/students_behaviors/(:any)'] = 'AdminSys/Behaviors/students_behaviors/$1';
@@ -274,6 +283,22 @@ $route['admin/add_secretaries'] = 'AdminSys/Secretaries/add_secretaries';
 //Secretaries - edit_secretaries
 $route['admin/edit_secretaries/(:any)'] = 'AdminSys/Secretaries/edit_secretaries/$1';
 
+
+//Secretaries create
+
+$route['admin/secretaries/create/(:any)'] = 'AdminSys/Secretaries/secretaries/create/$1';
+
+//Secretaries update
+
+$route['admin/secretaries/update/(:any)'] = 'AdminSys/Secretaries/secretaries/update/$1';
+
+// Secretaries disable_teachers
+
+$route['admin/secretaries/disable_teachers/(:any)'] = 'AdminSys/Secretaries/secretaries/disable_secretaries/$1';
+
+//Secretaries enable_teachers
+$route['admin/secretaries/enable_teachers/(:any)'] = 'AdminSys/Secretaries/secretaries/enable_secretaries/$1';
+
 //Principal Routes
 
 //Principal - principal_information
@@ -293,6 +318,21 @@ $route['admin/add_principal'] = 'AdminSys/Principal/add_principal';
 //Principal - edit_principal
 $route['admin/edit_principal/(:any)'] = 'AdminSys/Principal/edit_principal/$1';
 
+//Principal create
+
+$route['admin/principal/create/(:any)'] = 'AdminSys/Principal/principal/create/$1';
+
+//Principal update
+
+$route['admin/principal/update/(:any)'] = 'AdminSys/Principal/principal/update/$1';
+
+// Principal disable_principal
+
+$route['admin/principal/disable_teachers/(:any)'] = 'AdminSys/Principal/principal/disable_principal/$1';
+
+//Principal enable_principal
+$route['admin/principal/enable_principal/(:any)'] = 'AdminSys/Principal/principal/enable_principal/$1';
+
 //Enrollment Routes
 
 //Enrollment - re_enrollments
@@ -305,6 +345,8 @@ $route['admin/pre_enrollments'] = 'AdminSys/Enrollments/pre_enrollments';
 $route['admin/preenroll_students/(:any)/(:any)/(:any)'] = 'AdminSys/Enrollments/preenroll_students/$1/$2/$3';
 $route['admin/preenroll_students/(:any)/(:any)'] = 'AdminSys/Enrollments/preenroll_students/$1/$2';
 $route['admin/preenroll_students/(:any)'] = 'AdminSys/Enrollments/preenroll_students/$1';
+
+$route['admin/preenroll_students/pre_enrollment_bulk(/:any)?(/:any)?(/:any)?(/:any)?(/:any)?(/:any)?(/:any)?(/:any)?(/:any)?(/:any)?(/:any)?(/:any)?(/:any)?(/:any)?(/:any)?(/:any)?(/:any)?(/:any)?(/:any)?(/:any)?'] = 'AdminSys/Preenroll_students/pre_enrollment_bulk$1$2$3$4$5$6$7$8$9$10$11$12$13$14$15$16$17$18$19$20';
 
 //Enrollment - re_enrollments_students
 $route['admin/re_enrollments_students/(:any)/(:any)/(:any)'] = 'AdminSys/Enrollments/re_enrollments_students/$1/$2/$3';
@@ -806,3 +848,12 @@ $route['admin/exams/disable_exams/(:any)/(:any)'] = 'AdminSys/Exams/exams/disabl
 
 $route['admin/exams/disable_exams_bulk(/:any)?(/:any)?(/:any)?(/:any)?(/:any)?(/:any)?(/:any)?(/:any)?(/:any)?(/:any)?(/:any)?(/:any)?(/:any)?(/:any)?(/:any)?(/:any)?(/:any)?(/:any)?(/:any)?(/:any)?'] = 'AdminSys/Exams/exams/disable_exams_bulk$1$2$3$4$5$6$7$8$9$10$11$12$13$14$15$16$17$18$19$20';
 
+//Print Routes
+
+//printAllStudentTableES
+
+$route['admin/printAllStudentTableES'] = 'AdminSys/PrintT/printAllStudentTableES';
+$route['admin/printAllStudentTableEN'] = 'AdminSys/PrintT/printAllStudentTableEN';
+
+$route['admin/printStudentTableES/(:any)'] = 'AdminSys/PrintT/printStudentTableES/$1';
+$route['admin/printStudentTableEN/(:any)'] = 'AdminSys/PrintT/printStudentTableEN/$1';

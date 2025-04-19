@@ -53,7 +53,7 @@ class Students extends CI_Controller
         if ($param1 == 'import_excel') {
             move_uploaded_file($_FILES['userfile']['tmp_name'], 'uploads/student_import.xlsx');
     
-            include 'simplexlsx.class.php';
+            include 'Simplexlsx.class.php';
     
             $xlsx = new SimpleXLSX('uploads/student_import.xlsx');
     

@@ -373,7 +373,7 @@ $titleES = 'Reporte de Estudiantes en Matriculación - ' . date('d-m-Y');
             });
 
             if (selectedStudents.length > 0) {
-                var url = '<?php echo base_url(); ?>index.php?admin/preenroll_student/pre_enrollment_bulk/' + selectedClassId + '/' + selectedSectionId + '/' + selectedStudents.join('/');
+                var url = '<?php echo base_url(); ?>index.php?admin/preenroll_students/pre_enrollment_bulk/' + selectedClassId + '/' + selectedSectionId + '/' + selectedStudents.join('/');
                 console.log(url); // Para depurar y ver cómo queda la URL
                 confirm_sweet_modal(url);
             } else {
@@ -433,7 +433,7 @@ $titleES = 'Reporte de Estudiantes en Matriculación - ' . date('d-m-Y');
 
             if (sectionId !== "") {
                 $.ajax({
-                    url: '<?php echo base_url(); ?>index.php?admin/preenroll_student' + '/' + 'create' + '/' + studentId + '/' + sectionId,
+                    url: '<?php echo base_url(); ?>index.php?admin/preenroll_students' + '/' + 'create' + '/' + studentId + '/' + sectionId,
                     success: function (response) {
                         console.log('Operación realizada exitosamente.');
                         location.reload();

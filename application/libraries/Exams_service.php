@@ -191,7 +191,7 @@ class Exams_service extends CI_Model {
         }
     }
 
-    public function get_exams($section_id, $subject_id, $teacher_id, $used_section_history, $used_subject_history) {
+    public function get_exams($section_id, $subject_id, $teacher_id = '', $used_section_history = '', $used_subject_history = '') {
         try {
             $table = ($used_section_history || $used_subject_history) ? 'exam_history' : 'exam';
     

@@ -9,7 +9,7 @@ foreach ($edit_data as $row):
 	<div class="col-md-12">
 		<div class="panel panel-primary" data-collapsed="0">
 			<div class="panel-body">
-                <?php echo form_open(base_url() . 'index.php?admin/secretary/update/'.$secretary_id , array('class' => 'form-wizard validate', 'enctype' => 'multipart/form-data'));?>
+                <?php echo form_open(base_url() . 'index.php?admin/secretaries/update/'.$secretary_id , array('class' => 'form-wizard validate', 'enctype' => 'multipart/form-data'));?>
 				
 					<div class="steps-progress">
 						<div class="progress-indicator"></div>
