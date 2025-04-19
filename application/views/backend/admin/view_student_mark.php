@@ -843,10 +843,10 @@ foreach ($students as $student):
             });
         }
 
-        studentRow.find('.evaluation-input, .recovery-input, .evaluation-input-jiis1, .evaluation-input-jiis1r, .evaluation-input-jiis2, .evaluation-input-jiis2r, .evaluation-input-coldic, .evaluation-input-colfeb, .evaluation-input-examprev, .date-evaluation-input-exam-prev').on('change', function() {
-            sendAjaxOnChange($(this));
+        // studentRow.find('.evaluation-input, .recovery-input, .evaluation-input-jiis1, .evaluation-input-jiis1r, .evaluation-input-jiis2, .evaluation-input-jiis2r, .evaluation-input-coldic, .evaluation-input-colfeb, .evaluation-input-examprev, .date-evaluation-input-exam-prev').on('change', function() {
+        //     sendAjaxOnChange($(this));
 
-        });
+        // });
 
 
     }

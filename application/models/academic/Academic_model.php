@@ -77,6 +77,7 @@ class Academic_model extends CI_Model {
         try {
             $this->db->where('id', $academic_period_id);
             $this->db->update('academic_period', $data);
+            return true; 
         } catch (Exception $e) {
             log_message('error', 'Error in update_academic_period: ' . $e->getMessage());
             return false;

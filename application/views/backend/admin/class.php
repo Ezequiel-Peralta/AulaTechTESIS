@@ -41,13 +41,10 @@
                             <td class="text-center"><?php echo $row['name'];?> ° <?php echo ucfirst(get_phrase('year')); ?></td>
                             <!-- <td><?php echo $this->crud_model->get_type_name_by_id('teacher_aide',$row['teacher_aide_id']);?></td> -->
                             <td class="text-center">
-                                <a href="javascript:;" onclick="showAjaxModal('<?php echo base_url();?>index.php?modal/popup/modal_class_profile/<?php echo $row['class_id'];?>');" class="btn btn-table btn-white btn-info-hover" title="<?php echo ucfirst(get_phrase('view_definitions')); ?>">
-                                    <i class="entypo-eye"></i>
-                                </a>
                                 <a  href="javascript:;" onclick="showAjaxModal('<?php echo base_url();?>index.php?modal/popup/modal_edit_class/<?php echo $row['class_id'];?>');" class="btn btn-table btn-white btn-orange-hover" title="<?php echo ucfirst(get_phrase('edit')); ?>">
                                     <i class="entypo-pencil"></i>
                                 </a>
-                                <a  href="javascript:;" onclick="confirm_sweet_modal('<?php echo base_url();?>index.php?admin/classes/delete/<?php echo $row['class_id'];?>');" class="btn btn-table btn-white btn-danger-hover" title="desactivar">
+                                <a  href="javascript:;" onclick="confirm_sweet_modal('<?php echo base_url();?>index.php?admin/classes/inactive/<?php echo $row['class_id'];?>');" class="btn btn-table btn-white btn-danger-hover" title="desactivar">
                                     <i class="entypo-block"></i>
                                 </a>
                             </td>

@@ -246,11 +246,15 @@ foreach ($edit_data as $row):
 							->result_array();
 						?>
 
+
+
 						<div class="tab-pane" id="tab2-6">
 							<div class="row">
 								<div class="col-md-12">
 									<div class="form-group">
 										<label for="field-2" class="control-label"><?php echo ucfirst(get_phrase('class_and_section')); ?><span class="required-value">&nbsp;*</span></label>
+										
+
 										<select name="section_id[]" class="select2" multiple>
 											<?php 
 											foreach ($all_sections as $section):

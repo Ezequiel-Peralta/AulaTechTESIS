@@ -470,18 +470,6 @@
                     <a href="<?php echo base_url(); ?>index.php?admin/classes">
                         <span><i class="entypo-dot"></i> <?php echo ucfirst(get_phrase('manage_classes')); ?></span>
                     </a>
-                    <ul class="text-left">
-                        <?php
-                            $classes = $this->db->get('class')->result_array();
-                            foreach ($classes as $row):
-                        ?>
-                            <li class="<?php if ($page_name == 'student_mark_history' && $class_id == $row['class_id']) echo 'active'; ?>">
-                                <a href="<?php echo base_url(); ?>index.php?admin/classes">
-                                    <span><i class="entypo-dot"></i><?php echo $row['name']; ?> ° <?php echo ucfirst(get_phrase('year')); ?> </span>
-                                </a>
-                            </li>
-                        <?php endforeach; ?>
-                    </ul>
                 </li>
                 
                 <li class="<?php if ($page_name == 'manage_academic_history' || $page_name == 'academic_history') echo 'active'; ?> ">

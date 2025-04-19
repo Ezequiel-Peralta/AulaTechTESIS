@@ -161,6 +161,16 @@ class TeachersAide_model extends CI_Model {
         }
     }
 
+    public function get_teacher_aide_sections($teacher_aide_id) {
+        try {
+            $teacher_aide_id = $this->db->escape_str($teacher_aide_id);
+            return $this->db->get_where('section', array('teacher_aide_id' => $teacher_aide_id))->result_array();
+        } catch (Exception $e) {
+            log_message('error', 'Error in get_student_guardians: ' . $e->getMessage());
+            return false;
+        }
+    }
+
     public function insert_address($data) {
         try {
             $this->db->insert('address', $data);
@@ -236,4 +246,28 @@ class TeachersAide_model extends CI_Model {
             return false;
         }
     }
+
+    public function delete_teacher_aide_sections($teacher_aide_id, $sections_id) {
+        try {
+            $teacher_aide_id = $this->db->escape_str($teacher_aide_id);
+            $this->db->where('teacher_aide_id', $teacher_aide_id);
+            $this->db->where_in('section_id', $sections_id);
+            return $this->db->update('section', array('teacher_aide_id' => NULL));
+        } catch (Exception $e) {
+            log_message('error', 'Error in delete_teacher_aide_sections: ' . $e->getMessage());
+            return false;
+        }
+    }
+
+    public function insert_teacher_aide_section($data) {
+        try {
+            $this->db->update('section', $data);
+            return $this->db->insert_id();
+        } catch (Exception $e) {
+            log_message('error', 'Error in insert_teacher_aide_section: ' . $e->getMessage());
+            return false;
+        }
+    }
+
+ 
 }

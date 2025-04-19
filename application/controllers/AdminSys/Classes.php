@@ -55,6 +55,36 @@ class Classes extends CI_Controller
             redirect(base_url() . 'index.php?admin/classes/', 'refresh');
         }
 
+        if($param2 == 'inactive') {
+            $this->Classes_model->update_status_class($param1, array('status_id' => 0));
+            $this->session->set_flashdata('flash_message', array(
+                'title' => 'Curso inactivado correctamente!',
+                'text' => '',
+                'icon' => 'success',
+                'showCloseButton' => 'true',
+                'confirmButtonText' => 'Aceptar',
+                'confirmButtonColor' => '#1a92c4',
+                'timer' => '10000',
+                'timerProgressBar' => 'true',
+            ));
+            redirect(base_url() . 'index.php?admin/classes/', 'refresh');
+        }
+
+        if($param2 == 'active') {
+            $this->Classes_model->update_status_class($param1, array('status_id' => 1));
+            $this->session->set_flashdata('flash_message', array(
+                'title' => 'Curso activado correctamente!',
+                'text' => '',
+                'icon' => 'success',
+                'showCloseButton' => 'true',
+                'confirmButtonText' => 'Aceptar',
+                'confirmButtonColor' => '#1a92c4',
+                'timer' => '10000',
+                'timerProgressBar' => 'true',
+            ));
+            redirect(base_url() . 'index.php?admin/classes/', 'refresh');
+        }
+
 
         $breadcrumb = array(
             array(

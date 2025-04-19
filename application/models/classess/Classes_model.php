@@ -14,6 +14,17 @@ class Classes_model extends CI_Model {
         }
     }
 
+    public function update_status_class($class_id, $data) {
+        try {
+            $class_id = $this->db->escape_str($class_id);
+            $this->db->where('class_id', $class_id);
+            return $this->db->update('class', $data);
+        } catch (Exception $e) {
+            log_message('error', 'Error in update_status_class: ' . $e->getMessage());
+            return false;
+        }
+    }
+
     public function update_class($class_id, $data) {
         try {
             $class_id = $this->db->escape_str($class_id);
