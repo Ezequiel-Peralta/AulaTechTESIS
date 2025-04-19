@@ -353,6 +353,8 @@ $route['admin/re_enrollments_students/(:any)/(:any)/(:any)'] = 'AdminSys/Enrollm
 $route['admin/re_enrollments_students/(:any)/(:any)'] = 'AdminSys/Enrollments/re_enrollments_students/$1/$2';
 $route['admin/re_enrollments_students/(:any)'] = 'AdminSys/Enrollments/re_enrollments_students/$1';
 
+$route['admin/re_enrollments_students/re_enrollment_bulk'] = 'AdminSys/Enrollments/re_enrollments_students/re_enrollment_bulk';
+
 //Admissions Routes
 
 //Admissions - admissions
@@ -494,6 +496,8 @@ $route['admin/classes'] = 'AdminSys/Classes/classes';
 $route['admin/get_class_content2'] = 'AdminSys/Classes/get_class_content2';
 
 //Attendance Routes
+
+$route['admin/manage_attendances_student_selector'] = 'AdminSys/Attendances/manage_attendances_student_selector';
 
 //Attendance - attendance_students
 $route['admin/attendance_students/(:any)'] = 'AdminSys/Attendances/attendance_students/$1';

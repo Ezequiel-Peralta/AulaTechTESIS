@@ -111,7 +111,7 @@ class Attendances extends CI_Controller
     }
 
 
-    function manage_attendance_student_selector()
+    function manage_attendances_student_selector()
     {
         // Construye la URL base
         $redirect_url = base_url() . 'index.php?admin/manage_attendance_students/';

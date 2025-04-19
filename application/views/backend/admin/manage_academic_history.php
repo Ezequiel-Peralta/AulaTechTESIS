@@ -190,7 +190,7 @@ $filenameExcelClass = ucfirst(get_phrase('student_report')) . ' ' . date('d-m-Y'
                         text: '<i class="fa fa-print"></i> Print / <i class="fa fa-file-pdf-o"></i> PDF',
                         className: 'btn buttons-html5 btn-white btn-sm btn-danger-hover',
                         action: function (e, dt, node, config) {
-                            window.location.href = '<?php echo base_url(); ?>index.php?admin/printAllStudentTableEN/';
+                            window.open('<?php echo base_url(); ?>index.php?admin/printAllStudentTableEN/', '_blank');
                         }
                     }
                 ],

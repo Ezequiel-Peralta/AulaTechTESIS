@@ -8,7 +8,7 @@
         </tr>
     </thead>
     <tbody>
-        <form method="post" action="<?php echo base_url(); ?>index.php?admin/manage_attendance_student_selector" class="form">
+        <form method="post" action="<?php echo base_url(); ?>index.php?admin/manage_attendances_student_selector" class="form">
             <tr class="gradeA">
                 <td>
                     <div class="input-group">

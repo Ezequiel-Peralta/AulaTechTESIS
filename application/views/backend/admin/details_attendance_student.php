@@ -547,7 +547,7 @@ foreach($student_info as $row):?>
                         text: '<i class="fa fa-print"></i> Print / <i class="fa fa-file-pdf-o"></i> PDF',
                         className: 'btn buttons-html5 btn-white btn-sm btn-danger-hover',
                         action: function (e, dt, node, config) {
-                            window.location.href = '<?php echo base_url(); ?>index.php?admin/printStudentTableEN/';
+                            window.open('<?php echo base_url(); ?>index.php?admin/printStudentTableEN/', '_blank');
                         }
                     }
                 ],
@@ -611,7 +611,7 @@ foreach($student_info as $row):?>
                         text: '<i class="fa fa-print"></i> Imprimir / <i class="fa fa-file-pdf-o"></i> PDF',
                         className: 'btn buttons-html5 btn-white btn-sm btn-danger-hover',
                         action: function (e, dt, node, config) {
-                            window.location.href = '<?php echo base_url(); ?>index.php?admin/printStudentTableES/';
+                            window.open('<?php echo base_url(); ?>index.php?admin/printStudentTableES/', '_blank');
                         }
                     }
                 ],
