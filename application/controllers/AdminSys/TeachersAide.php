@@ -125,25 +125,32 @@ class TeachersAide extends CI_Controller
 
             $this->TeachersAide_model->update_teacher_aide_details($teacher_aide_id, $dataDetails);
 
-            $section_ids = $this->input->post('section_id');
-            if (!is_array($section_ids)) {
-                $section_ids = [];
+            // $existing_section_ids = $this->TeachersAide_model->get_sections_by_teacher_aide($teacher_aide_id);
+
+            $existing_section_ids = $this->input->post('existing_section_ids') ?: [];
+            $section_ids = $this->input->post('section_id') ?: [];
+
+            // Obtener las secciones actuales del auxiliar
+            $current_sections = $this->TeachersAide_model->get_teacher_aide_sections($teacher_aide_id);
+            $current_section_ids = array_column($current_sections, 'section_id');
+
+            // Secciones a eliminar (ya no están seleccionadas)
+            $section_ids_to_delete = array_diff($current_section_ids, $section_ids);
+
+            // Secciones a agregar (nuevas seleccionadas)
+            $section_ids_to_add = array_diff($section_ids, $current_section_ids);
+
+            // Eliminar las asociaciones de secciones que ya no están seleccionadas
+            if (!empty($section_ids_to_delete)) {
+                $this->TeachersAide_model->remove_teacher_aide_from_sections($teacher_aide_id, $section_ids_to_delete);
             }
 
-            $existing_section_ids = $this->TeachersAide_model->get_sections_by_teacher_aide($teacher_aide_id);
-
-            $sections_to_delete = array_diff($existing_section_ids, $section_ids);
-            $sections_to_add = array_diff($section_ids, $existing_section_ids);
-
-            if (!empty($sections_to_delete)) {
-                $this->TeachersAide_model->remove_teacher_aide_from_sections($teacher_aide_id, $sections_to_delete);
+            // Agregar nuevas secciones
+            foreach ($section_ids_to_add as $section_id) {
+                $this->TeachersAide_model->update_section_teacher_aide($section_id, $teacher_aide_id);
             }
 
-            if (!empty($sections_to_add)) {
-                foreach ($sections_to_add as $section_id) {
-                    $this->TeachersAide_model->update_section_teacher_aide($section_id, $teacher_aide_id);
-                }
-            }
+
 
             $this->session->set_flashdata('flash_message', array(
                 'title' => ucfirst(get_phrase('teacher_aide_updated_successfully')),

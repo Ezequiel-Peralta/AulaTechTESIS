@@ -56,7 +56,12 @@
 
                                             </div>
                                             <div class="button-container">
-                                                <button id="reportCard" onclick="window.location.href = '<?php echo base_url('index.php?admin/printReportCardES/'.$student_id . '/' . $section['section_id']); ?>';" class="btn buttons-html5 btn-white btn-sm btn-danger-hover" title="<?php echo ucfirst(get_phrase('report_card')); ?>"><i class="fa fa-file-pdf-o"></i> <?php echo ucfirst(get_phrase('report_card')); ?></button>
+                                                <button id="reportCard" 
+                                                    onclick="window.open('<?php echo base_url('index.php?admin/printReportCardES/'.$student_id . '/' . $section['section_id']); ?>', '_blank');" 
+                                                    class="btn buttons-html5 btn-white btn-sm btn-danger-hover" 
+                                                    title="<?php echo ucfirst(get_phrase('report_card')); ?>">
+                                                    <i class="fa fa-file-pdf-o"></i> <?php echo ucfirst(get_phrase('report_card')); ?>
+                                                </button>
                                             </div>
                                             <div id="collapse-section<?php echo $section['section_id']; ?>" class="panel-collapse collapse">
                                                 <div class="panel-body">

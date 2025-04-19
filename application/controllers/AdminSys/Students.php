@@ -582,7 +582,7 @@ class Students extends CI_Controller
             return $file_path;
         }
     
-        return $custom_filename ? 'uploads/' . $upload_path . '/' . $custom_filename . '.jpg' : '';
+        return $custom_filename ? 'uploads/' . $upload_path . '/' . $custom_filename : '';
     }
     
 

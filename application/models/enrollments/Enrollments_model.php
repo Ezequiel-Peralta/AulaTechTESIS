@@ -8,7 +8,8 @@ class Enrollments_model extends CI_Model {
         try {
             $section_id = $this->db->escape_str($section_id);
             $this->db->select('student_id, firstname, lastname, enrollment, photo, dni');
-            $this->db->where('section_id', $section_id);
+            $this->db->where('class_id', NULL);
+            $this->db->where('section_id', NULL);
             return $this->db->get('student_details')->result_array();
         } catch (Exception $e) {
             log_message('error', 'Error in get_students_for_re_enrollment: ' . $e->getMessage());
